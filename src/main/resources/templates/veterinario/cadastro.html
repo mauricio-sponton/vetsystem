@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+
+		<div th:replace="fragments/alert  :: alerta-sucesso"></div>
+
+
+		<form
+			th:action="${veterinario.id == null} ? @{/veterinarios/salvar} : @{/veterinarios/editar}"
+			th:object="${veterinario}" method="POST">
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="nome">Nome</label> <input type="text"
+						class="form-control" id="nome"
+						placeholder="Nome completo"
+						th:field="*{nome}"
+						th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" >
+					<div class="invalid-feedback">
+						<span th:errors="*{nome}"></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="crmv">Inscrição CRMV</label> <input type="text"
+						class="form-control" id="crmv" placeholder="00000"
+						th:field="*{crmv}"
+						th:classappend="${#fields.hasErrors('crmv')} ? 'is-invalid'" />
+					<div class="invalid-feedback">
+						<span th:errors="*{crmv}"></span>
+					</div>
+				</div>
+			</div>
+
+			<input type="hidden" name="uid" th:field="*{usuario.id}"> <input
+				type="hidden" name="id" th:field="*{id}">
+
+			<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+		</form>
+
+	</section>
+
+	<script th:src="@{/js/veterinario.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		
+	</script>
+</body>
+</html>

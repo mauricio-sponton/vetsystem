@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<form th:action="@{/racas/salvar}" method="POST"
+			th:object="${raca}">
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="nome">Nome da Raça</label> <input type="text"
+						class="form-control" id="nome" placeholder="Labrador..."
+						autofocus="autofocus" th:field="*{nome}"
+						th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" />
+					<div class="invalid-feedback">
+						<span th:errors="*{nome}"></span>
+					</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="especie">Espécie</label> <select th:classappend="${#fields.hasErrors('especie')} ? 'is-invalid'"
+						id="especie" class="form-control" th:field=*{especie}>
+						<option value="">Selecione</option>
+						<option th:each="e : ${especies}" th:value="${e.id}"
+							th:text="${e.nome}">Labrador</option>
+
+					</select>
+					<div class="invalid-feedback">
+							<span th:errors="*{especie}"></span>
+						</div>
+				</div>
+			</div>
+			<input type="hidden" id="id" th:field="*{id}" />
+			<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+		</form>
+
+	</section>
+	<script th:src="@{/js/raca.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+<style>
+h2 {
+	color: red
+}
+
+.layout-content span {
+	color: indigo
+}
+
+.historico-novo {
+	width: 50%;
+	background-color: #3ffc7e;
+	margin-top: 20px
+}
+
+.historico-editado {
+	width: 50%;
+	background-color: yellow;
+	margin-top: 20px
+}
+</style>
+</head>
+<body>
+	<div th:replace="fragments/alert :: alerta-sucesso"></div>
+	<section class="layout-content" layout:fragment="corpo">
+
+		<h2 th:text="${animal.nome}"></h2>
+		<span th:text="${animal.especie.nome}"></span> <span
+			th:text="${#temporals.format(animal.dataNascimento, 'dd/MM/yyyy')}"></span>
+
+		<p>
+			<button class="btn btn-primary" type="button" data-toggle="collapse"
+				data-target="#collapseTipo" aria-controls="collapseTipo">Tipos
+			</button>
+			<button class="btn btn-primary" type="button" data-toggle="collapse"
+				data-target="#collapseData" aria-controls="collapseData">Datas
+			</button>
+
+		</p>
+		<div class="row">
+			<div class="col">
+				<div class="collapse" id="collapseTipo">
+
+					<nav class="navbar navbar-light bg-light">
+						<form class="form-inline" method="post"
+							th:action="@{/pacientes/buscar/tipo/paciente/{id} (id=${animal.id})}">
+							<select class="form-control mr-sm-2" th:name="tipo"
+								aria-label="Search">
+								<option value="">Tipo</option>
+								<option value="Dados">Dados</option>
+								<option value="Mudar dados">Mudar dados</option>
+							</select>
+							<button class="btn btn-outline-success my-2 my-sm-0">Search</button>
+						</form>
+					</nav>
+
+				</div>
+			</div>
+		</div>
+		<div class="row">
+	                <div class="col">
+	                    <div class="collapse" id="collapseData">
+	                        <nav class="navbar navbar-light bg-light">
+	                            <form class="form-inline" method="post" th:action="@{/pacientes/buscar/data/paciente/{id} (id=${animal.id})}">
+	                                <input class="form-control mr-sm-2" type="date" aria-label="Search"
+	                                       th:name="teste" />
+	                                <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
+	                            </form>
+	                        </nav>
+	
+	                    </div>
+	                </div>
+	            </div>
+		<div th:each="h: ${historico}">
+			<div th:if="${h.tipo == 'Dados'}">
+				<div class="historico-novo">
+					<p>
+						<span th:text="'Descrição: ' + ${h.descricao}"></span>
+					</p>
+					<p>
+						<span th:text="'Tipo: ' + ${h.tipo}"></span>
+					</p>
+					<p>
+						<span th:text="'Usuario: ' + ${h.usuario}"></span>
+					</p>
+					<p>
+						<span
+							th:text="'No dia : ' + ${#temporals.format(h.data, 'dd/MM/yyyy')} + ' às: ' + ${#temporals.format(h.hora, 'HH:mm')}"></span>
+					</p>
+				</div>
+
+			</div>
+			<div th:if="${h.tipo == 'Mudar dados'}">
+				<div class="historico-editado">
+					<p>
+						<span th:text="'Descrição: ' + ${h.descricao}"></span>
+					</p>
+					<p>
+						<span th:text="'Tipo: ' + ${h.tipo}"></span>
+					</p>
+					<p>
+						<span th:text="'Usuario: ' + ${h.usuario}"></span>
+					</p>
+					<p>
+						<span
+							th:text="'No dia : ' + ${#temporals.format(h.data, 'dd/MM/yyyy')} + ' às: ' + ${#temporals.format(h.hora, 'HH:mm')}"></span>
+					</p>
+				</div>
+
+			</div>
+		</div>
+
+
+
+	</section>
+	<script th:src="@{/js/especie.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript"></script>
+</body>
+</html>

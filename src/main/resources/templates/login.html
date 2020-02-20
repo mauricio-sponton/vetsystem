@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>VetSystem</title>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<!-- <link rel="icon" th:href="@{/image/favicon.ico}" />  -->
+<!-- Icons fontawesome -->
+<link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+	crossorigin="anonymous" rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link th:href="@{/css/style-login.css(v=${version})}" rel="stylesheet" />
+</head>
+<body>
+	<img th:src="@{/image/veterinaria.jpg}" class="img_login" />
+
+	<form th:action="@{/login}" method="post" class="form_login">
+		
+		<h1>Login</h1>
+
+		<label for="inputEmail" class="label-login">Email</label> <input
+			type="text" id="inputEmail" class="input-login"
+			placeholder="Email address" name="username" required autofocus>
+		<div class="invalid-feedback">Use seu email cadastrado como
+			login.</div>
+
+		<label for="inputPassword" class="label-login">Senha</label> <input
+			type="password" id="inputPassword" class="input-login"
+			placeholder="Password" name="password" required>
+		<div class="invalid-feedback">Digite sua senha.</div>
+
+		<div class="remember-me">
+			<label> <input type="checkbox" id="remember-me"
+				name="remember-me"> Remember me
+			</label>
+		</div>
+		
+		<button class="btn-login" type="submit">Entrar</button>
+		<div th:if="${alerta != null}"
+			th:class="${alerta == 'erro'} ? 'alert alert-danger' : 'alert alert-success'"
+			role="alert">
+			<h4 th:text="${titulo}" class="alert-heading">Credenciais...</h4>
+			<p th:text="${texto}">Login ou senha incorretos...</p>
+			<hr>
+			<p class="mb-0">
+				<small th:text="${subtexto}">Acesso permitido...</small>
+			</p>
+		</div>
+	</form>
+</body>
+</html>

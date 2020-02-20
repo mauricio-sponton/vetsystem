@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="menu" class="menu-lateral">
+		<ul>
+
+			<li><a th:href="@{/home}"><i class="fas fa-clinic-medical"></i>Dashboard</a></li>
+			<li><a><i class="fas fa-clock"></i>Agenda</a></li>
+			<li><a th:href="@{/u/listar}"><i class="fas fa-user-md"></i>Usuários</a></li>
+			<li><a th:href="@{/clientes/listar}"><i
+					class="fas fa-handshake"></i>Clientes</a></li>
+			<li class="nav-item dropdown"><a
+				class="btn btn-dark dropdown-toggle" href="#" id="dropdown02"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+					class="fas fa-paw"></i>Pacientes</a>
+				<div class="dropdown-menu" aria-labelledby="dropdown02">
+				<a class="dropdown-item" th:href="@{/pacientes/listar}">Listar Pacientes</a> 
+					<a class="dropdown-item" th:href="@{/especies/listar}">Listar
+						Espécie</a> 
+					<a class="dropdown-item" th:href="@{/racas/listar}">Listar
+						Raça</a>
+				</div></li>
+			<li><a>Consultas</a></li>
+			<li><a><i class="fas fa-heartbeat"></i>Internação</a></li>
+			<li><a>Exames</a></li>
+			<li class="nav-item dropdown"><a
+				class="btn btn-dark dropdown-toggle" href="#" id="dropdown02"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Secretárias</a>
+				<div class="dropdown-menu" aria-labelledby="dropdown02">
+					<a class="dropdown-item" th:href="@{/secretarias/dados}">Dados
+						Cadastrais</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">
+						Editar senha</a>
+				</div></li>
+			<li class="nav-item dropdown"><a
+				class="btn btn-dark dropdown-toggle" href="#" id="dropdown02"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Veterinários</a>
+				<div class="dropdown-menu" aria-labelledby="dropdown02">
+					<a class="dropdown-item" th:href="@{/veterinarios/dados}">Dados
+						Cadastrais</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">Editar
+						senha</a>
+				</div></li>
+		</ul>
+
+	</div>
+</body>
+</html>

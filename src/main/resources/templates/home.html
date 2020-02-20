@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.testando span{
+	color: purple
+}
+</style>
+</head>
+<body>
+	<h1>Teste</h1>
+	<section class="layout-content" layout:fragment="corpo">
+	<div class="testando">
+		<p>
+			<span th:text="'Há um total de ' + ${#lists.size(animal)} + ' animais cadastrados'"></span>
+				
+		</p>
+		</div>
+	<div id="container" >
+	
+	
+	</div>
+	</section>
+	<script th:src="@{/js/home.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		
+	</script>
+	
+	
+</body>
+</html>

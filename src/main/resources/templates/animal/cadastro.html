@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<form th:action="@{/pacientes/salvar}" method="POST"
+			th:object="${animal}">
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="nome">Nome do paciente</label> <input type="text"
+						class="form-control" id="nome" placeholder="Taz..."
+						autofocus="autofocus" th:field="*{nome}"
+						th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" />
+					<div class="invalid-feedback">
+						<span th:errors="*{nome}"></span>
+					</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="cliente">Dono</label> <select
+						th:classappend="${#fields.hasErrors('cliente')} ? 'is-invalid'"
+						id="cliente" class="form-control" th:field=*{cliente}>
+						<option value="">Selecione</option>
+						<option th:each="c : ${clientes}" th:value="${c.id}"
+							th:text="${c.nome}">Mauricio</option>
+					</select>
+					<div class="invalid-feedback">
+						<span th:errors="*{cliente}"></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					<label for="datePickerId">Selecione a data da consulta</label> <input
+						class="form-control" type="date" id="datePickerId"
+						th:classappend="${#fields.hasErrors('dataNascimento')} ? 'is-invalid'"
+						th:field="*{dataNascimento}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{dataNascimento}"></span>
+					</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="sexo">Sexo</label> <select
+						th:classappend="${#fields.hasErrors('sexo')} ? 'is-invalid'"
+						id="sexo" class="form-control" th:field=*{sexo}>
+						<option value="">Selecione</option>
+						<option th:value="Macho" th:text="Macho"></option>
+						<option th:value="Fêmea" th:text="Fêmea"></option>
+					</select>
+					<div class="invalid-feedback">
+						<span th:errors="*{sexo}"></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					<label for="especie">Espécie</label> <input type="text"
+						class="form-control" id="especie" placeholder="Canino..."
+						th:classappend="${#fields.hasErrors('especie.nome')} ? 'is-invalid'"
+						th:field="*{especie.nome}"  />
+					<div class="invalid-feedback">
+						<span th:errors="*{especie.nome}"></span>
+					</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="raca">Raça</label> <input type="text"
+						class="form-control" id="raca" placeholder="Labrador..."  onfocus="mudar();"
+						th:classappend="${#fields.hasErrors('raca.nome')} ? 'is-invalid'"
+						th:field="*{raca.nome}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{raca.nome}"></span>
+					</div>
+
+				</div>
+
+
+			</div>
+			<input type="hidden" id="id" th:field="*{id}" />
+			<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+		</form>
+
+	</section>
+	<script th:src="@{/js/animal.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		$(document).ready(
+				function() {
+					document.getElementById('datePickerId').max = new Date(
+							new Date().getTime()
+									- new Date().getTimezoneOffset() * 60000)
+							.toISOString().split("T")[0];
+				})
+		$("#especie").autocomplete({
+			
+			source : function(request, response) {
+				$.ajax({
+					method : "GET",
+					url : "/especies/titulo",
+					data : {
+						termo : request.term
+					},
+					success : function(data) {
+						response(data);
+					}
+				})
+			}
+		})
+		function mudar() {
+			especie = $("#especie").val();
+				$("#raca").autocomplete({
+					source : function(request, response) {
+						$.ajax({
+							method : "GET",
+							url : "/racas/titulo",
+							data : {
+								especie : especie,
+								termo : request.term
+							},
+							success : function(data) {
+								response(data);
+							}
+						})
+					}
+				})
+			}
+			
+	</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+<style type="text/css">
+#table-clientes td:first-child, #table-clientes th:first-child{
+	display:none
+}
+</style>
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+	<main role="main">
+			<div class="album py-5 bg-light">
+				<div class="container">
+
+					<div class="row">
+						<div class="col-md-12">
+
+							<div th:replace="fragments/alert :: alerta-sucesso"></div>
+							<h2>Usuários Cadastrados</h2>
+
+							<table id="table-clientes"
+								class="table table-sm table-striped table-bordered nowrap"
+								style="width: 100%">
+								<thead class="thead-dark">
+									<tr>
+									    <th scope="col">Id</th>
+										<th scope="col">Nome</th>
+										<th scope="col">Email</th>
+										<th scope="col">Telefone</th>
+										<th scope="col">Editar</th>
+										<th scope="col">Excluir</th>
+										<th scope="col">Visualizar</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+				<a th:href="@{/clientes/cadastrar}"
+					class="btn-cadastrar-usuario" role="button">Novo cliente</a>
+			</div>
+		</main>
+	</section>
+	<script th:src="@{/js/cliente.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript"></script>
+</body>
+</html>

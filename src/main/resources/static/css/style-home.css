@@ -1,0 +1,155 @@
+@charset "ISO-8859-1";
+*{
+	font-size: 100%;
+	font-family: 'Open Sans', sans-serif;
+}
+/* 
+CSS referente a pagina error e modal-confirm
+*/
+.jumbotron {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  margin-bottom: 0;
+  background-color: #fff;
+}
+
+@media (min-width: 768px) {
+  .jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 3rem;
+  }
+}
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron-heading {
+  font-weight: 200;
+}
+
+.jumbotron .container {
+  max-width: 80rem;
+}
+
+footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+footer p {
+  margin-bottom: .25rem;
+}
+
+.modal .modal-body input, .modal .modal-body textarea{
+    border: 1px solid #e6e6e6;
+    box-shadow: none;
+}
+
+.modal-header h4.modal-title {
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.modal-body label {
+    font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* jQuery loading autocomplete */
+.ui-autocomplete-loading {
+  background: white url("/image/ui-anim_basic_16x16.gif") right center no-repeat;
+}
+
+/*
+*/
+
+.header{
+	width: 83%;
+	background: linear-gradient(to right, #31E07F, #2AD183, #26C685, #18A98B);
+	height: auto;
+	float:right;
+}
+.menu-lateral{
+	background: #111111;
+    height:100vh;
+    position:fixed;
+    color:black;
+    width: 17%;
+	float:left;
+    -webkit-box-shadow: 0px 3px 5px rgba(50, 50, 50, 0.77);
+    -moz-box-shadow:    0px 3px 5px rgba(50, 50, 50, 0.77);
+    box-shadow: 0px 3px 5px rgba(50, 50, 50, 0.77);
+}
+
+.menu-lateral ul{
+	margin-top: 32%;
+	margin-left: 5%
+}
+.menu-lateral ul li{
+	list-style:none;
+	padding:2%
+}
+
+.menu-lateral ul li a{
+	color: #c1c1c1 !important;
+	font-size: 1.3em;
+
+}
+
+.menu-lateral ul li a:hover{
+	text-decoration:none	
+}
+.layout-content{
+	width: 83%;
+	float: right;
+}
+.layout-content span{
+	color: white
+}
+.btn-cadastrar-usuario{
+	border: none;
+    font-family: inherit;
+    font-size: 15px;
+    color: #fff;
+    background: #4d79ff;
+    cursor: pointer;
+    padding: 15px 5px;
+    width:20%;
+    display: inline-block;
+    margin: 10px 30px;
+    text-transform: uppercase;
+    text-align:center;
+    letter-spacing: 1px;
+    font-weight: 700;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    
+}
+
+i{
+	font-size: 0.75em;
+	margin-right:5%;
+	color:#c1c1c1
+}
+
+.bem-vindo-user{
+	width:50%;
+	margin-left:2.5%;
+	margin-top:1.8%;
+	float:left
+}
+
+.user-menu{
+	width: 47.5%;
+	float:left;
+	
+}
+
+.form-inline.mt-2.mt-md-0{
+	margin-left:60%;
+	margin-top:1% !important;
+}
