@@ -5,25 +5,31 @@
 </head>
 <body>
 	<header th:fragment="cabecalho" class="header">
+		<div class="bem-vindo-user">
+			<span style="color: white; font-size: 20px; float: left">Bem
+				vindo(a), <span class="" sec:authentication="name"> </span>
+			</span>
+			
+		</div>
 
-	<div class="bem-vindo-user"><span style="color:white; font-size:20px; float:left">Bem vindo(a), <span class=""
-						sec:authentication="name"> </span></span></div>
-		<div class="user-menu"><form th:action="@{/logout}" sec:authorize="isAuthenticated()"
-			method="post" class="form-inline mt-2 mt-md-0">
-			<div class="btn-group mb-2 mr-sm-2">
-				<button type="button" class="btn btn-light">
-					<i class="fas fa-user"></i> <span class=""
-						sec:authentication="name"> </span>
-				</button>
-				<button type="button"
-					class="btn btn-danger dropdown-toggle dropdown-toggle-split"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				</button>
-				<div class="dropdown-menu">
-					<button type="submit" class="dropdown-item">Sair</button>
+		<div class="user-menu">
+			<form th:action="@{/logout}" sec:authorize="isAuthenticated()"
+				method="post" class="form-inline mt-2 mt-md-0">
+				<div class="btn-group mb-2 mr-sm-2">
+					<button type="button" class="btn btn-light">
+						<i class="fas fa-user"></i> <span class=""
+							sec:authentication="name"> </span>
+					</button>
+					<button type="button"
+						class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					</button>
+					<div class="dropdown-menu">
+						<button type="submit" class="dropdown-item">Sair</button>
+					</div>
 				</div>
-			</div>
-		</form></div>
+			</form>
+		</div>
 	</header>
 </body>
 </html>

@@ -3,11 +3,14 @@ package com.sponton.vetsystem.domain;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -51,11 +54,35 @@ public class Animal extends AbstractEntity {
 	@Column(name = "sexo", nullable = false)
 	@NotBlank(message = "Informe o sexo")
 	private String sexo;
-	
+
 	@JsonIgnore
-	@OneToMany(mappedBy = "animal")
+	@OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
 	private List<HistoricoAnimal> historico;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
+	private List<Consulta> consultas;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "foto_id_fk")
+	private Foto foto;
+
+	
+	public Foto getFoto() {
+		return foto;
+	}
+
+	public void setFoto(Foto foto) {
+		this.foto = foto;
+	}
+
+	public List<Consulta> getConsultas() {
+		return consultas;
+	}
+
+	public void setConsultas(List<Consulta> consultas) {
+		this.consultas = consultas;
+	}
 
 	public List<HistoricoAnimal> getHistorico() {
 		return historico;
@@ -112,6 +139,8 @@ public class Animal extends AbstractEntity {
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
+
+
 	
 	
 }

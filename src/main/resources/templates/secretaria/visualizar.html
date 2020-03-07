@@ -11,9 +11,21 @@
 
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-		<div class=teste>
-			<span th:text="${secretaria.nome}"></span> 
+		<div class="teste">
+			<span th:text="${secretaria.nome}"></span> <span
+				th:text="${secretaria.sexo}"></span>
 		</div>
+
+		<div th:if="${secretaria.foto.fileName == null}">
+			<img alt="" th:src="@{/image/pessoa.png}"
+				style="width: 200px; height: auto">
+		</div>
+		<div
+			th:if="${secretaria.foto!= null && secretaria.foto.fileName != null}">
+			<img alt="" th:src="@{${'/uploads/' + secretaria.foto.fileName}}"
+				style="width: 200px; height: auto">
+		</div>
+
 
 	</section>
 

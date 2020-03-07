@@ -7,7 +7,7 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<form th:action="@{/pacientes/salvar}" method="POST"
+		<form th:action="@{/pacientes/salvar}" method="POST" enctype="multipart/form-data"
 			th:object="${animal}">
 			<div class="form-row">
 				<div class="form-group col-md-6">
@@ -75,10 +75,13 @@
 					</div>
 
 				</div>
-
-
+			</div>
+			<div class="form-row">
+				<label for="file">Foto</label>
+				<input type="file" id= "file" th:name="file">
 			</div>
 			<input type="hidden" id="id" th:field="*{id}" />
+			<input type="hidden" id="id" th:field="*{foto.id}" />
 			<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 		</form>
 

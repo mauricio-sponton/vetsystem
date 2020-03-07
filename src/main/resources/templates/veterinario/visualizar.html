@@ -12,7 +12,17 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div class=teste>
-			<span th:text="${veterinario.nome}"></span> 
+			<span th:text="${veterinario.nome}"></span> <span
+				th:text="${veterinario.sexo}"></span>
+		</div>
+		<div th:if="${veterinario.foto.fileName == null}">
+			<img alt="" th:src="@{/image/pessoa.png}"
+				style="width: 200px; height: auto">
+		</div>
+		<div
+			th:if="${veterinario.foto!= null && veterinario.foto.fileName != null}">
+			<img alt="" th:src="@{${'/uploads/' + veterinario.foto.fileName}}"
+				style="width: 30%; height: auto">
 		</div>
 
 	</section>

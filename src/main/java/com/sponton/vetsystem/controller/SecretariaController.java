@@ -11,10 +11,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sponton.vetsystem.domain.Foto;
 import com.sponton.vetsystem.domain.Secretaria;
 import com.sponton.vetsystem.domain.Usuario;
+import com.sponton.vetsystem.service.FotoService;
 import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.UsuarioService;
 
@@ -27,6 +31,9 @@ public class SecretariaController {
 
 	@Autowired
 	UsuarioService usuarioService;
+	
+	@Autowired
+	FotoService fotoService;
 
 	@GetMapping("/dados")
 	public String abrirPorVeterinario(Secretaria secretaria, ModelMap model, @AuthenticationPrincipal User user) {
@@ -39,7 +46,7 @@ public class SecretariaController {
 
 	@PostMapping("/salvar")
 	public String salvar(@Valid Secretaria secretaria, BindingResult result, RedirectAttributes attr,
-			@AuthenticationPrincipal User user) {
+			@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file) {
 		if (result.hasErrors()) {
 			return "secretaria/cadastro";
 		}
@@ -47,6 +54,31 @@ public class SecretariaController {
 		if (secretaria.hasNotId() && secretaria.getUsuario().hasNotId()) {
 			Usuario usuario = usuarioService.buscarPorEmail(user.getUsername());
 			secretaria.setUsuario(usuario);
+		}
+		if (!file.isEmpty()) {
+			if(secretaria.getFoto().hasNotId()) {
+				Foto foto = new Foto();
+				foto.setFileName(file.getOriginalFilename());
+				foto.setPath("/uploads/");
+				secretaria.setFoto(foto);
+				try {
+					fotoService.salvarFoto(file, foto);
+				} catch (Exception e) {
+					attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+				}
+			}
+			if(secretaria.getFoto().hasId()) {
+				Foto foto = fotoService.buscarFotoId(secretaria.getFoto().getId());
+				foto.setFileName(file.getOriginalFilename());
+				foto.setPath("/uploads/");
+				secretaria.setFoto(foto);
+				try {
+					fotoService.salvarFoto(file, foto);
+				} catch (Exception e) {
+					attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+				}
+			}
+				
 		}
 		service.salvar(secretaria);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
@@ -56,16 +88,5 @@ public class SecretariaController {
 
 	}
 
-	@PostMapping("/editar")
-	public String editar(@Valid Secretaria secretaria, BindingResult result, RedirectAttributes attr) {
-		if (result.hasErrors()) {
-			return "secretaria/cadastro";
-		}
-
-		service.editar(secretaria);
-		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
-		attr.addFlashAttribute("secretaria", secretaria);
-
-		return "redirect:/secretarias/dados";
-	}
+	
 }

@@ -23,6 +23,25 @@ h2 {
 	background-color: yellow;
 	margin-top: 20px
 }
+
+.historico-editado-consulta {
+	width: 50%;
+	background-color: pink;
+	margin-top: 20px
+}
+
+.historico-nova-consulta {
+	width: 50%;
+	background-color: blue;
+	margin-top: 20px
+}
+.consulta{
+	width:100%;
+	background-color: green;
+	color: white;
+	margin-top: 20px
+
+}
 </style>
 </head>
 <body>
@@ -30,10 +49,22 @@ h2 {
 	<section class="layout-content" layout:fragment="corpo">
 
 		<h2 th:text="${animal.nome}"></h2>
+		<div th:if="${animal.foto.fileName == null}">
+			<img alt="" th:src="@{/image/animal_default.jpg}" style="width: 200px; height: auto">
+		</div>
+		<div th:if="${animal.foto!= null && animal.foto.fileName != null}">
+			<img alt="" th:src="@{${'/uploads/' + animal.foto.fileName}}" style="width: 200px; height: auto">
+		</div>
+		
 		<span th:text="${animal.especie.nome}"></span> <span
 			th:text="${#temporals.format(animal.dataNascimento, 'dd/MM/yyyy')}"></span>
 
 		<p>
+			<div class="consulta" th:each="c: ${consulta}">
+		<span th:text="${c.veterinario.nome}"></span>
+			<span th:text="${c.data}"></span>
+			<span th:text="${c.hora}"></span>
+		</div>
 			<button class="btn btn-primary" type="button" data-toggle="collapse"
 				data-target="#collapseTipo" aria-controls="collapseTipo">Tipos
 			</button>
@@ -54,6 +85,9 @@ h2 {
 								<option value="">Tipo</option>
 								<option value="Dados">Dados</option>
 								<option value="Mudar dados">Mudar dados</option>
+								<option value="Nova consulta">Nova consulta</option>
+								<option value="Alteração de consulta">Alteração de
+									consulta</option>
 							</select>
 							<button class="btn btn-outline-success my-2 my-sm-0">Search</button>
 						</form>
@@ -63,19 +97,21 @@ h2 {
 			</div>
 		</div>
 		<div class="row">
-	                <div class="col">
-	                    <div class="collapse" id="collapseData">
-	                        <nav class="navbar navbar-light bg-light">
-	                            <form class="form-inline" method="post" th:action="@{/pacientes/buscar/data/paciente/{id} (id=${animal.id})}">
-	                                <input class="form-control mr-sm-2" type="date" aria-label="Search"
-	                                       th:name="teste" />
-	                                <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
-	                            </form>
-	                        </nav>
+			<div class="col">
+				<div class="collapse" id="collapseData">
+					<nav class="navbar navbar-light bg-light">
+						<form class="form-inline" method="post"
+							th:action="@{/pacientes/buscar/data/paciente/{id} (id=${animal.id})}">
+							<input class="form-control mr-sm-2" type="date"
+								aria-label="Search" th:name="teste" />
+							<button class="btn btn-outline-success my-2 my-sm-0">Search</button>
+						</form>
+					</nav>
+
+				</div>
+			</div>
+		</div>
 	
-	                    </div>
-	                </div>
-	            </div>
 		<div th:each="h: ${historico}">
 			<div th:if="${h.tipo == 'Dados'}">
 				<div class="historico-novo">
@@ -97,6 +133,42 @@ h2 {
 			</div>
 			<div th:if="${h.tipo == 'Mudar dados'}">
 				<div class="historico-editado">
+					<p>
+						<span th:text="'Descrição: ' + ${h.descricao}"></span>
+					</p>
+					<p>
+						<span th:text="'Tipo: ' + ${h.tipo}"></span>
+					</p>
+					<p>
+						<span th:text="'Usuario: ' + ${h.usuario}"></span>
+					</p>
+					<p>
+						<span
+							th:text="'No dia : ' + ${#temporals.format(h.data, 'dd/MM/yyyy')} + ' às: ' + ${#temporals.format(h.hora, 'HH:mm')}"></span>
+					</p>
+				</div>
+
+			</div>
+			<div th:if="${h.tipo == 'Nova consulta'}">
+				<div class="historico-nova-consulta">
+					<p>
+						<span th:text="'Descrição: ' + ${h.descricao}"></span>
+					</p>
+					<p>
+						<span th:text="'Tipo: ' + ${h.tipo}"></span>
+					</p>
+					<p>
+						<span th:text="'Usuario: ' + ${h.usuario}"></span>
+					</p>
+					<p>
+						<span
+							th:text="'No dia : ' + ${#temporals.format(h.data, 'dd/MM/yyyy')} + ' às: ' + ${#temporals.format(h.hora, 'HH:mm')}"></span>
+					</p>
+				</div>
+
+			</div>
+			<div th:if="${h.tipo == 'Alteração de consulta'}">
+				<div class="historico-editado-consulta">
 					<p>
 						<span th:text="'Descrição: ' + ${h.descricao}"></span>
 					</p>

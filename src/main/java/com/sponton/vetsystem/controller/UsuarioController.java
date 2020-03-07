@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import com.sponton.vetsystem.domain.Perfil;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Secretaria;
@@ -35,10 +34,10 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService service;
-	
-	@Autowired 
+
+	@Autowired
 	private VeterinarioService veterinarioService;
-	
+
 	@Autowired
 	private SecretariaService secretariaService;
 
@@ -89,15 +88,16 @@ public class UsuarioController {
 	public String abrirEditarSenha() {
 		return "usuario/editar-senha";
 	}
+
 	@PostMapping("/confirmar/senha")
-	public String editarSenha(@RequestParam("senha1") String s1, @RequestParam("senha2") String s2, 
+	public String editarSenha(@RequestParam("senha1") String s1, @RequestParam("senha2") String s2,
 			@RequestParam("senha3") String s3, @AuthenticationPrincipal User user, RedirectAttributes attr) {
-		if(!s1.equals(s2)) {
+		if (!s1.equals(s2)) {
 			attr.addFlashAttribute("falha", "Senhas não conferem, tente novamente");
 			return "redirect:/u/editar/senha";
 		}
 		Usuario u = service.buscarPorEmail(user.getUsername());
-		if(!UsuarioService.isSenhaCorreta(s3, u.getSenha())) {
+		if (!UsuarioService.isSenhaCorreta(s3, u.getSenha())) {
 			attr.addFlashAttribute("falha", "Senha atual não confere, tente novamente");
 			return "redirect:/u/editar/senha";
 		}
@@ -105,39 +105,41 @@ public class UsuarioController {
 		attr.addFlashAttribute("sucesso", "Senha alterada com sucesso");
 		return "redirect:/u/editar/senha";
 	}
+
 	@GetMapping("/visualizar/dados/usuario/{id}/perfis/{perfis}")
-	public ModelAndView visualizarDadosPessoais(@PathVariable("id") Long usuarioId, @PathVariable("perfis") Long[] perfisId) {
+	public ModelAndView visualizarDadosPessoais(@PathVariable("id") Long usuarioId,
+			@PathVariable("perfis") Long[] perfisId) {
 		Usuario us = service.buscarPorIdEPerfis(usuarioId, perfisId);
-		
-		if(us.getPerfis().contains(new Perfil(PerfilTipo.ADMIN.getCod())) &&
-				!us.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod())) ) {
-			
+
+		if (us.getPerfis().contains(new Perfil(PerfilTipo.ADMIN.getCod()))
+				&& !us.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))
+				&& !us.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
+
 			return new ModelAndView("usuario/visualizar", "usuario", us);
-		}else if(us.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))){
+		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
 			Veterinario veterinario = veterinarioService.buscarPorUsuarioId(usuarioId);
-			if(veterinario.hasNotId()) {
+			if (veterinario.hasNotId()) {
 				ModelAndView model = new ModelAndView("error");
 				model.addObject("status", 403);
 				model.addObject("error", "Página não encontrada");
 				model.addObject("message", "Os dados do veterinário ainda não foram cadastrados");
 				return model;
-			}else {
+			} else {
 				return new ModelAndView("veterinario/visualizar", "veterinario", veterinario);
 			}
-					
-		}else if(us.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
+
+		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
 			Secretaria secretaria = secretariaService.buscarPorUsuarioId(usuarioId);
-			if(secretaria.hasNotId()) {
+			if (secretaria.hasNotId()) {
 				ModelAndView model = new ModelAndView("error");
 				model.addObject("status", 403);
 				model.addObject("error", "Página não encontrada");
 				model.addObject("message", "Os dados da secretária ainda não foram cadastrados");
-			}else {
+			} else {
 				return new ModelAndView("secretaria/visualizar", "secretaria", secretaria);
 			}
 		}
-		
-		
+
 		return new ModelAndView("redirect:/u/lista");
 	}
 }

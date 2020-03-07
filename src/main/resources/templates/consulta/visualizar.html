@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+<style>
+h2 {
+	color: red
+}
+
+.layout-content span {
+	color: purple
+}
+</style>
+</head>
+<body>
+	<div th:replace="fragments/alert :: alerta-sucesso"></div>
+	<section class="layout-content" layout:fragment="corpo">
+
+		<span th:text="${consulta.data}"></span>
+		<span th:text="${consulta.animal.nome}"></span>
+
+	</section>
+	<script th:src="@{/js/consulta.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript"></script>
+</body>
+</html>

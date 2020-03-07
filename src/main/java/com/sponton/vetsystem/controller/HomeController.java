@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Especie;
+import com.sponton.vetsystem.domain.PerfilTipo;
+import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.EspecieService;
+import com.sponton.vetsystem.service.VeterinarioService;
 
 @Controller
 public class HomeController {
@@ -26,6 +32,9 @@ public class HomeController {
 	
 	@Autowired
 	EspecieService especieService;
+	
+	@Autowired
+	VeterinarioService veterinarioService;
 	
 	@GetMapping({"/home" })
 	public String home(ModelMap model) {
