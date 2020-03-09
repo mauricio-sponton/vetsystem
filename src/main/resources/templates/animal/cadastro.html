@@ -7,8 +7,8 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<form th:action="@{/pacientes/salvar}" method="POST" enctype="multipart/form-data"
-			th:object="${animal}">
+		<form th:action="@{/pacientes/salvar}" method="POST"
+			enctype="multipart/form-data" th:object="${animal}">
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="nome">Nome do paciente</label> <input type="text"
@@ -60,14 +60,15 @@
 					<label for="especie">Espécie</label> <input type="text"
 						class="form-control" id="especie" placeholder="Canino..."
 						th:classappend="${#fields.hasErrors('especie.nome')} ? 'is-invalid'"
-						th:field="*{especie.nome}"  />
+						th:field="*{especie.nome}" />
 					<div class="invalid-feedback">
 						<span th:errors="*{especie.nome}"></span>
 					</div>
 				</div>
 				<div class="form-group col-md-4">
 					<label for="raca">Raça</label> <input type="text"
-						class="form-control" id="raca" placeholder="Labrador..."  onfocus="mudar();"
+						class="form-control" id="raca" placeholder="Labrador..."
+						onfocus="mudar();"
 						th:classappend="${#fields.hasErrors('raca.nome')} ? 'is-invalid'"
 						th:field="*{raca.nome}" />
 					<div class="invalid-feedback">
@@ -77,11 +78,20 @@
 				</div>
 			</div>
 			<div class="form-row">
-				<label for="file">Foto</label>
-				<input type="file" id= "file" th:name="file">
+				<div class="form-group col-md-6">
+					<label for="alergias">Alergias</label>
+					<textarea class="form-control" id="alergias"
+						autofocus="autofocus" th:field="*{alergias}"
+						th:classappend="${#fields.hasErrors('alergias')} ? 'is-invalid'"></textarea>
+					<div class="invalid-feedback">
+						<span th:errors="*{alergias}"></span>
+					</div>
+				</div>
+				<label for="file">Foto</label> <input type="file" id="file"
+					th:name="file">
 			</div>
-			<input type="hidden" id="id" th:field="*{id}" />
-			<input type="hidden" id="id" th:field="*{foto.id}" />
+			<input type="hidden" id="id" th:field="*{id}" /> <input
+				type="hidden" id="id" th:field="*{foto.id}" />
 			<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 		</form>
 
@@ -96,7 +106,7 @@
 							.toISOString().split("T")[0];
 				})
 		$("#especie").autocomplete({
-			
+
 			source : function(request, response) {
 				$.ajax({
 					method : "GET",
@@ -112,23 +122,22 @@
 		})
 		function mudar() {
 			especie = $("#especie").val();
-				$("#raca").autocomplete({
-					source : function(request, response) {
-						$.ajax({
-							method : "GET",
-							url : "/racas/titulo",
-							data : {
-								especie : especie,
-								termo : request.term
-							},
-							success : function(data) {
-								response(data);
-							}
-						})
-					}
-				})
-			}
-			
+			$("#raca").autocomplete({
+				source : function(request, response) {
+					$.ajax({
+						method : "GET",
+						url : "/racas/titulo",
+						data : {
+							especie : especie,
+							termo : request.term
+						},
+						success : function(data) {
+							response(data);
+						}
+					})
+				}
+			})
+		}
 	</script>
 </body>
 </html>

@@ -56,4 +56,19 @@ $(document).ready(function () {
                }
         ]
     });
-});    
+});  
+
+$('#animal').on('change', function() {
+	$('#alergias').text("");
+	var termo = $(this).val(); 
+	if ( termo != '' ) {			
+		$.get( "/pacientes/titulo/" + termo , function( result ) {
+			$("#alergias").show().animate({height: "50px", opacity: "0.5"}, 100);
+				$('#alergias').append('<span>'+ result +'</span>');
+			
+		})
+	}
+	if(termo == ""){
+		$('#alergias').text("");
+	} 
+})

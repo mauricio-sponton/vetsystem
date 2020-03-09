@@ -65,8 +65,19 @@ public class Animal extends AbstractEntity {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "foto_id_fk")
 	private Foto foto;
+	
+	@Column(name = "alergias")
+	private String alergias;
 
 	
+	public String getAlergias() {
+		return alergias;
+	}
+
+	public void setAlergias(String alergias) {
+		this.alergias = alergias;
+	}
+
 	public Foto getFoto() {
 		return foto;
 	}

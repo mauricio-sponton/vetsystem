@@ -3,10 +3,23 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
+<style>
+#alergias{
+	width: 30%;
+	background-color: pink;
+	color: yellow;
+	transition: height 2s;
+}
+
+</style>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<div id="alergias" >
+		
+		
+		</div>
 		<form th:action="@{/consultas/salvar}" method="POST"
 			th:object="${consulta}">
 			<div class="form-row">

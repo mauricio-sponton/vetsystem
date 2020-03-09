@@ -90,5 +90,10 @@ public class AnimalService {
 		 * */
 	}
 
+	@Transactional(readOnly = true)
+	public List<String> buscarAnimaisByTitulo(String termo) {
+		return repository.findAnimaisByTitulo(termo);
+	}
+
 	
 }

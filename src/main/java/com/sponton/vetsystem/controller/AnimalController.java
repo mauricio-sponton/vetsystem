@@ -245,5 +245,9 @@ public class AnimalController {
 		List<String> animais = service.buscarAnimaisByTermo(termo);
 		return ResponseEntity.ok(animais);
 	}
-
+	@GetMapping("/titulo/{termo}")
+	public ResponseEntity<?> getAnimaisPorTitulo(@PathVariable("termo") String termo) {
+		List<String> animais = service.buscarAnimaisByTitulo(termo);
+		return ResponseEntity.ok(animais);
+	}
 }
