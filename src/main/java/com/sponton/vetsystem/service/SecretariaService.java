@@ -39,4 +39,9 @@ public class SecretariaService {
 		return repository.findByUsuarioId(id).orElse(new Secretaria());
 	}
 
+	@Transactional(readOnly = true)
+	public Secretaria buscarPorId(Long id) {
+		return repository.findById(id).get();
+	}
+
 }

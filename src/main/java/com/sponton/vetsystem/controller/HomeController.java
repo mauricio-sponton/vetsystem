@@ -28,13 +28,13 @@ import com.sponton.vetsystem.service.VeterinarioService;
 public class HomeController {
 	
 	@Autowired
-	AnimalService animalService;
+	private AnimalService animalService;
 	
 	@Autowired
-	EspecieService especieService;
+	private EspecieService especieService;
 	
 	@Autowired
-	VeterinarioService veterinarioService;
+	private VeterinarioService veterinarioService;
 	
 	@GetMapping({"/home" })
 	public String home(ModelMap model) {

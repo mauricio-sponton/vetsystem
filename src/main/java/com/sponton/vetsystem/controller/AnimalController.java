@@ -65,31 +65,31 @@ import com.sponton.vetsystem.service.VeterinarioService;
 public class AnimalController {
 
 	@Autowired
-	AnimalService service;
+	private AnimalService service;
 
 	@Autowired
-	EspecieService especieService;
+	private EspecieService especieService;
 
 	@Autowired
-	ClienteService clienteService;
+	private ClienteService clienteService;
 
 	@Autowired
-	HistoricoAnimalService historicoAnimalService;
+	private HistoricoAnimalService historicoAnimalService;
 
 	@Autowired
-	RacaService racaService;
+	private RacaService racaService;
 
 	@Autowired
-	VeterinarioService veterinarioService;
+	private VeterinarioService veterinarioService;
 
 	@Autowired
-	SecretariaService secretariaService;
+	private SecretariaService secretariaService;
 
 	@Autowired
-	ConsultaService consultaService;
+	private ConsultaService consultaService;
 	
 	@Autowired
-	FotoService fotoService;
+	private FotoService fotoService;
 
 	@GetMapping("/cadastrar")
 	public String novoAnimal(Animal animal) {

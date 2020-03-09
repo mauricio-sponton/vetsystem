@@ -21,6 +21,8 @@
 <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet" />
 <!-- Custom styles for this template -->
 <link th:href="@{/css/style-home.css(v=${version}) }" rel="stylesheet" />
+<link th:href="@{/css/tabs.css(v=${version}) }" rel="stylesheet" />
+<link th:href="@{/css/tabstyles.css(v=${version}) }" rel="stylesheet" />
 
 </head>
 <body>
@@ -58,6 +60,7 @@
 	<script src="/webjars/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
 	<script src="https://code.highcharts.com/highcharts.src.js"></script>
 	<!-- 	MEUS JS -->
+	<script th:src="@{/js/cbpFWTabs.js(v=${version})}"></script>
 	<script th:replace=":: js"></script>
 	<script th:replace=":: inlinescript" th:inline="javascript"></script> 
 
@@ -78,7 +81,14 @@
 		
 		$("#btnCancel").on('click', function() {
 			url = '';
-		});		
+		});	
+		(function() {
+
+			[].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+				new CBPFWTabs( el );
+			});
+
+		})();
 	</script>
 </body>
 </html>

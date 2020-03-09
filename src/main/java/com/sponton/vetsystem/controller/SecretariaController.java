@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,23 +28,33 @@ import com.sponton.vetsystem.service.UsuarioService;
 public class SecretariaController {
 
 	@Autowired
-	SecretariaService service;
+	private SecretariaService service;
 
 	@Autowired
-	UsuarioService usuarioService;
+	private UsuarioService usuarioService;
 	
 	@Autowired
-	FotoService fotoService;
+	private FotoService fotoService;
 
 	@GetMapping("/dados")
 	public String abrirPorVeterinario(Secretaria secretaria, ModelMap model, @AuthenticationPrincipal User user) {
+		secretaria = service.buscarPorEmail(user.getUsername());
 		if (secretaria.hasNotId()) {
-			secretaria = service.buscarPorEmail(user.getUsername());
 			model.addAttribute("secretaria", secretaria);
+			return "secretaria/cadastro";
 		}
-		return "secretaria/cadastro";
+		if(secretaria.hasId()) {
+			model.addAttribute("secretaria", secretaria);
+			return "secretaria/visualizar";
+		}
+		return "secretaria/visualizar";
 	}
 
+	@GetMapping("/editar/{id}")
+	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
+		model.addAttribute("secretaria", service.buscarPorId(id));
+		return "secretaria/cadastro";
+	}
 	@PostMapping("/salvar")
 	public String salvar(@Valid Secretaria secretaria, BindingResult result, RedirectAttributes attr,
 			@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file) {

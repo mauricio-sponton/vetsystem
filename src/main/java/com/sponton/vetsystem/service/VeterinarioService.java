@@ -38,4 +38,9 @@ public class VeterinarioService {
 		return repository.findByUsuarioId(id).orElse(new Veterinario());
 	}
 
+	@Transactional(readOnly = true)
+	public Veterinario buscarPorId(Long id) {
+		return repository.findById(id).get();
+	}
+
 }

@@ -44,7 +44,7 @@ public class ConsultaController {
 	private VeterinarioService veterinarioService;
 	
 	@Autowired
-	HistoricoAnimalService historicoAnimalService;
+	private HistoricoAnimalService historicoAnimalService;
 	
 	@GetMapping("/cadastrar")
 	public String novaConsulta(Consulta consulta) {

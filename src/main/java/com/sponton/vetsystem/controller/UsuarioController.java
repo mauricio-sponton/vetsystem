@@ -132,7 +132,7 @@ public class UsuarioController {
 			Secretaria secretaria = secretariaService.buscarPorUsuarioId(usuarioId);
 			if (secretaria.hasNotId()) {
 				ModelAndView model = new ModelAndView("error");
-				model.addObject("status", 403);
+				model.addObject("status", 404);
 				model.addObject("error", "Página não encontrada");
 				model.addObject("message", "Os dados da secretária ainda não foram cadastrados");
 			} else {

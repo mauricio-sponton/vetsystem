@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,14 +35,24 @@ public class VeterinarioController {
 	private UsuarioService usuarioService;
 	
 	@Autowired
-	FotoService fotoService;
+	private FotoService fotoService;
 	
 	@GetMapping("/dados")
 	public String abrirPorVeterinario(Veterinario veterinario, ModelMap model, @AuthenticationPrincipal User user) {
+		veterinario = service.buscarPorEmail(user.getUsername());
 		if(veterinario.hasNotId()) {
-			veterinario = service.buscarPorEmail(user.getUsername());
 			model.addAttribute("veterinario", veterinario);
+			return "veterinario/cadastro";
 		}
+		if(veterinario.hasId()) {
+			model.addAttribute("veterinario", veterinario);
+			return "veterinario/visualizar";
+		}
+		return "veterinario/visualizar";
+	}
+	@GetMapping("/editar/{id}")
+	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
+		model.addAttribute("veterinario", service.buscarPorId(id));
 		return "veterinario/cadastro";
 	}
 	@PostMapping("/salvar")

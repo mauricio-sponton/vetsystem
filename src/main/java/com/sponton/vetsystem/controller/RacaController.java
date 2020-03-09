@@ -31,10 +31,10 @@ import com.sponton.vetsystem.service.RacaService;
 public class RacaController {
 	
 	@Autowired
-	RacaService service;
+	private RacaService service;
 	
 	@Autowired 
-	EspecieService especieService;
+	private EspecieService especieService;
 
 	@GetMapping("/cadastrar")
 	public String novaRaca(Raca raca) {

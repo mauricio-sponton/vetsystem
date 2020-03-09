@@ -12,6 +12,10 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div class=teste>
+			<form class="form-inline" method="get"
+				th:action="@{/veterinarios/editar/{id} (id=${veterinario.id})}">
+				<button class="btn btn-outline-success my-2 my-sm-0">Editar</button>
+			</form>
 			<span th:text="${veterinario.nome}"></span> <span
 				th:text="${veterinario.sexo}"></span>
 		</div>
