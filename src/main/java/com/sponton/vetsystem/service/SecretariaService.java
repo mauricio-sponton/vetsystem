@@ -14,7 +14,7 @@ import com.sponton.vetsystem.repository.SecretariaRepository;
 public class SecretariaService {
 
 	@Autowired
-	SecretariaRepository repository;
+	private SecretariaRepository repository;
 	
 	@Transactional(readOnly = true)
 	public Secretaria buscarPorEmail(String email) {

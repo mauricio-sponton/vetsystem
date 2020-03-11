@@ -59,16 +59,26 @@ $(document).ready(function () {
 });  
 
 $('#animal').on('change', function() {
-	$('#alergias').text("");
+	// $('#alergias').text("");
 	var termo = $(this).val(); 
 	if ( termo != '' ) {			
-		$.get( "/pacientes/titulo/" + termo , function( result ) {
-			$("#alergias").show().animate({height: "50px", opacity: "0.5"}, 100);
-				$('#alergias').append('<span>'+ result +'</span>');
+		$.ajax({
 			
+			url: "/pacientes/titulo/" + termo,
+			beforeSend: function(){
+				$('#alergias').text("");
+			},
+			success:function( result ) {
+				//$("#alergias").show().animate({height: "50px", opacity: "0.5"}, 100);
+					$("#alergias").css({"background-color":"blue"});
+					$('#alergias').append('<span>'+ result +'</span>');
+				
+			}
 		})
 	}
 	if(termo == ""){
 		$('#alergias').text("");
+		$("#alergias").css({"background-color":"white"});
 	} 
+	
 })

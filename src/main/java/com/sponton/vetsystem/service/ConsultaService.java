@@ -21,7 +21,7 @@ import com.sponton.vetsystem.repository.ConsultaRepository;
 public class ConsultaService {
 
 	@Autowired
-	ConsultaRepository repository;
+	private ConsultaRepository repository;
 	
 	@Autowired
 	private Datatables datatables;

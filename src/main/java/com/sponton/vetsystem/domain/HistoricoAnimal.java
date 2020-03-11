@@ -38,8 +38,6 @@ public class HistoricoAnimal extends AbstractEntity {
 	@ManyToOne
 	private Animal animal;
 
-	
-	
 	public LocalTime getHora() {
 		return hora;
 	}

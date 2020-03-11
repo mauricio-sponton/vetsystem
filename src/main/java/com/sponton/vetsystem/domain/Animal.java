@@ -60,6 +60,10 @@ public class Animal extends AbstractEntity {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
+	private List<Internacao> internacao;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
 	private List<Consulta> consultas;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -69,7 +73,26 @@ public class Animal extends AbstractEntity {
 	@Column(name = "alergias")
 	private String alergias;
 
+	@Column(name = "status")
+	private String status;
 	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public List<Internacao> getInternacao() {
+		return internacao;
+	}
+
+	public void setInternacao(List<Internacao> internacao) {
+		this.internacao = internacao;
+	}
+
 	public String getAlergias() {
 		return alergias;
 	}

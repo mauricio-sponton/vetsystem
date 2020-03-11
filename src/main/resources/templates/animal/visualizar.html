@@ -57,7 +57,9 @@ h2 {
 			<img alt="" th:src="@{${'/uploads/' + animal.foto.fileName}}"
 				style="width: 200px; height: auto">
 		</div>
-
+		<div th:if="${animal.status != null}">
+			<span th:text="${animal.status}"></span>
+		</div>
 		<span th:text="${animal.especie.nome}"></span> <span
 			th:text="${#temporals.format(animal.dataNascimento, 'dd/MM/yyyy')}"></span>
 

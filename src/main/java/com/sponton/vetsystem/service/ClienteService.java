@@ -19,7 +19,7 @@ import com.sponton.vetsystem.repository.ClienteRepository;
 @Service
 public class ClienteService {
 	@Autowired
-	ClienteRepository repository;
+	private ClienteRepository repository;
 
 	@Autowired
 	private Datatables datatables;

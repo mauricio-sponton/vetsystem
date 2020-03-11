@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+<style>
+#alergias {
+	width: 30%;
+	height: 25px;
+	background-color: white;
+	transition: height 2s;
+	transition: background-color 1s linear;
+}
+.entrada{
+	display: none;
+}
+.saida{
+	display: none;
+}
+</style>
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<form th:action="@{/internacoes/salvar}" method="POST"
+			th:object="${internacao}">
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					<label for="animal">Paciente</label> <input type="text"
+						class="form-control" id="animal" placeholder="Taz..."
+						th:classappend="${#fields.hasErrors('animal.nome')} ? 'is-invalid'"
+						th:field="*{animal.nome}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{animal.nome}"></span>
+					</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="status">Status da internação</label> <select
+						th:classappend="${#fields.hasErrors('status')} ? 'is-invalid'"
+						id="status" class="form-control" th:field=*{status} th:name="status">
+						<option value="">Selecione</option>
+						<option th:value="Ativa">Ativa</option>
+						<option th:value="Encerrada">Encerrada</option>
+					</select>
+					<div class="invalid-feedback">
+						<span th:errors="*{status}"></span>
+					</div>
+				</div>
+
+			</div>
+			<div class="form-row entrada">
+				<div class="form-group col-md-4">
+					<label for="dataEntrada">Data de admissão do paciente</label> <input
+						class="form-control" type="date" id="dataEntrada"
+						th:classappend="${#fields.hasErrors('dataEntrada')} ? 'is-invalid'"
+						th:field="*{dataEntrada}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{dataEntrada}"></span>
+					</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="inicio">Hora de admissão do paciente</label> <input
+						class="form-control" type="time" id="inicio"
+						th:classappend="${#fields.hasErrors('horaEntrada')} ? 'is-invalid'"
+						th:field="*{horaEntrada}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{horaEntrada}"></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-row saida">
+				<div class="form-group col-md-4">
+					<label for="dataSaida">Data de liberação do paciente</label> <input
+						class="form-control" type="date" id="dataSaida"
+						th:classappend="${#fields.hasErrors('dataSaida')} ? 'is-invalid'"
+						th:field="*{dataSaida}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{dataSaida}"></span>
+					</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="horaSaida">Hora de liberação do paciente</label> <input
+						class="form-control" type="time" id="horaSaida"
+						th:classappend="${#fields.hasErrors('horaSaida')} ? 'is-invalid'"
+						th:field="*{horaSaida}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{horaSaida}"></span>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="descricao">Anotações</label>
+					<textarea class="form-control" id="descricao" autofocus="autofocus"
+						th:field="*{descricao}"
+						th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
+					<div class="invalid-feedback">
+						<span th:errors="*{descricao}"></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="prescricao">Prescrição</label>
+					<textarea class="form-control" id="prescricao"
+						autofocus="autofocus" th:field="*{prescricao}"
+						th:classappend="${#fields.hasErrors('prescricao')} ? 'is-invalid'"></textarea>
+					<div class="invalid-feedback">
+						<span th:errors="*{prescricao}"></span>
+					</div>
+				</div>
+			</div>
+			<input type="hidden" id="id" th:field="*{id}" />
+			<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+		</form>
+
+	</section>
+	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		$(document).ready(
+				function() {
+					document.getElementById('dataEntrada').max = new Date(
+							new Date().getTime()
+									- new Date().getTimezoneOffset() * 60000)
+							.toISOString().split("T")[0];
+				}
+		)
+		$(document).ready(
+				function() {
+					document.getElementById('dataSaida').min = new Date(
+							new Date().getTime()
+									- new Date().getTimezoneOffset() * 60000)
+							.toISOString().split("T")[0];
+				}
+		)
+		$("#animal").autocomplete({
+
+			source : function(request, response) {
+				$.ajax({
+					method : "GET",
+					url : "/pacientes/titulo",
+					data : {
+						termo : request.term
+					},
+					success : function(data) {
+						response(data);
+					}
+				})
+			}
+		})
+	</script>
+</body>
+</html>

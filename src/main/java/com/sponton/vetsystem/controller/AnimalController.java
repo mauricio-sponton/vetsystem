@@ -46,6 +46,7 @@ import com.sponton.vetsystem.domain.Cliente;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Foto;
 import com.sponton.vetsystem.domain.HistoricoAnimal;
+import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Raca;
 import com.sponton.vetsystem.domain.Secretaria;
@@ -56,9 +57,12 @@ import com.sponton.vetsystem.service.ConsultaService;
 import com.sponton.vetsystem.service.EspecieService;
 import com.sponton.vetsystem.service.FotoService;
 import com.sponton.vetsystem.service.HistoricoAnimalService;
+import com.sponton.vetsystem.service.InternacaoService;
 import com.sponton.vetsystem.service.RacaService;
 import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.VeterinarioService;
+
+import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
 
 @Controller
 @RequestMapping("pacientes")
@@ -90,6 +94,9 @@ public class AnimalController {
 	
 	@Autowired
 	private FotoService fotoService;
+	
+	@Autowired
+	private InternacaoService internacaoService;
 
 	@GetMapping("/cadastrar")
 	public String novoAnimal(Animal animal) {
@@ -102,7 +109,7 @@ public class AnimalController {
 		if (result.hasErrors()) {
 			return "animal/cadastro";
 		}
-
+		
 		String titulo = animal.getEspecie().getNome();
 		String titulo2 = animal.getRaca().getNome();
 		Especie especie = especieService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
@@ -122,14 +129,18 @@ public class AnimalController {
 				historico.setUsuario(veterinario.getNome() + " (veterinario)");
 				historico.setData(data);
 				historico.setHora(hora);
+				animal.setStatus("Normal");
 
 			}
 			if (animal.hasId()) {
+				Animal status = service.buscarPorId(animal.getId());
 				historico.setDescricao("O paciente foi alterado com sucesso");
 				historico.setTipo("Mudar dados");
 				historico.setUsuario(veterinario.getNome() + " (veterinario)");
 				historico.setData(data);
 				historico.setHora(hora);
+				animal.setStatus(status.getStatus());
+				
 			}
 		}
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
@@ -140,14 +151,18 @@ public class AnimalController {
 				historico.setUsuario(secretaria.getNome() + " (secretária)");
 				historico.setData(data);
 				historico.setHora(hora);
+				animal.setStatus("Normal");
 
 			}
 			if (animal.hasId()) {
+				Animal status = service.buscarPorId(animal.getId());
 				historico.setDescricao("O paciente foi alterado com sucesso");
 				historico.setTipo("Mudar dados");
 				historico.setUsuario(secretaria.getNome() + " (secretária)");
 				historico.setData(data);
 				historico.setHora(hora);
+				animal.setStatus(status.getStatus());
+				
 			}
 		}
 		if (!file.isEmpty()) {
@@ -175,7 +190,8 @@ public class AnimalController {
 			}
 				
 		}
-
+		
+		
 		animal.setEspecie(especie);
 		animal.setRaca(raca);
 		service.salvarAnimal(animal);

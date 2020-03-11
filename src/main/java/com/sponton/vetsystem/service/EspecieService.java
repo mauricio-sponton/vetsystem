@@ -21,7 +21,7 @@ import com.sponton.vetsystem.repository.EspecieRepository;
 public class EspecieService {
 
 	@Autowired 
-	EspecieRepository repository;
+	private EspecieRepository repository;
 	
 	@Autowired
 	private Datatables datatables;

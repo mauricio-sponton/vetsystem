@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<div th:replace="fragments/alert :: alerta-sucesso"></div>
+	<section class="layout-content" layout:fragment="corpo">
+	<a th:href="@{/internacoes/cadastrar}" class="btn-cadastrar-usuario"
+					role="button">Nova Internação</a>
+		<section>
+			<div class="tabs tabs-style-flip">
+				<nav>
+					<ul>
+						<li><a href="#section-flip-1" class="fas fa-file-medical-alt"><span>Internações
+									Ativas</span></a></li>
+						<li><a href="#section-flip-2" class="fas fa-notes-medical"
+							style="color: purple"><span>Internações Encerradas</span></a></li>
+
+					</ul>
+				</nav>
+				<div class="content-wrap">
+
+					<section id="section-flip-1">
+						<div th:each="i: ${internacaoAtiva}">
+							<p>
+								<span th:text="'Paciente: ' + ${i.animal.nome}"></span>
+							</p>
+							<p>
+								<span th:text="'Status: ' + ${i.status}"></span>
+							</p>
+							<form class="form-inline" method="get"
+								th:action="@{/internacoes/editar/{id} (id=${i.id})}">
+								<button class="btn btn-outline-success my-2 my-sm-0">Editar</button>
+							</form>
+						</div>
+					</section>
+					<section id="section-flip-2">
+						<div th:each="i: ${internacaoEncerrada}">
+							<p>
+								<span th:text="'Paciente: ' + ${i.animal.nome}"></span>
+							</p>
+							<p>
+								<span th:text="'Status: ' + ${i.status}"></span>
+							</p>
+						</div>
+					</section>
+				</div>
+			</div>
+		</section>
+	</section>
+	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript"></script>
+</body>
+</html>

@@ -14,7 +14,7 @@ import com.sponton.vetsystem.repository.HistoricoAnimalRepository;
 public class HistoricoAnimalService {
 
 	@Autowired 
-	HistoricoAnimalRepository repository;
+	private HistoricoAnimalRepository repository;
 	
 	@Transactional(readOnly = false)
 	public void salvar(HistoricoAnimal historico) {

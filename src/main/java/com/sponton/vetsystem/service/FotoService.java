@@ -15,7 +15,7 @@ import com.sponton.vetsystem.repository.FotoRepository;
 public class FotoService {
 
 	@Autowired
-	FotoRepository fotoRepository;
+	private FotoRepository fotoRepository;
 
 	public void salvarFoto(MultipartFile file, Foto foto) throws Exception {
 

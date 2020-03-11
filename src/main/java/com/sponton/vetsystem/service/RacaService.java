@@ -21,7 +21,7 @@ import com.sponton.vetsystem.repository.RacaRepository;
 public class RacaService {
 
 	@Autowired
-	RacaRepository repository;
+	private RacaRepository repository;
 	
 	@Autowired
 	private Datatables datatables;

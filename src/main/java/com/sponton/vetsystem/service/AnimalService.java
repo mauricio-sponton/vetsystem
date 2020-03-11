@@ -29,10 +29,10 @@ import com.sponton.vetsystem.repository.FotoRepository;
 public class AnimalService {
 
 	@Autowired
-	AnimalRepository repository;
+	private AnimalRepository repository;
 	
 	@Autowired
-	FotoRepository fotoRepository;
+	private FotoRepository fotoRepository;
 	
 	@Autowired
 	private Datatables datatables;
