@@ -1,32 +1,22 @@
 package com.sponton.vetsystem.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.commons.compress.compressors.FileNameUtil;
-import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -36,9 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sponton.vetsystem.domain.Animal;
@@ -46,7 +34,6 @@ import com.sponton.vetsystem.domain.Cliente;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Foto;
 import com.sponton.vetsystem.domain.HistoricoAnimal;
-import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Raca;
 import com.sponton.vetsystem.domain.Secretaria;
@@ -57,12 +44,9 @@ import com.sponton.vetsystem.service.ConsultaService;
 import com.sponton.vetsystem.service.EspecieService;
 import com.sponton.vetsystem.service.FotoService;
 import com.sponton.vetsystem.service.HistoricoAnimalService;
-import com.sponton.vetsystem.service.InternacaoService;
 import com.sponton.vetsystem.service.RacaService;
 import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.VeterinarioService;
-
-import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
 
 @Controller
 @RequestMapping("pacientes")
@@ -94,9 +78,6 @@ public class AnimalController {
 	
 	@Autowired
 	private FotoService fotoService;
-	
-	@Autowired
-	private InternacaoService internacaoService;
 
 	@GetMapping("/cadastrar")
 	public String novoAnimal(Animal animal) {
@@ -190,6 +171,15 @@ public class AnimalController {
 			}
 				
 		}
+		if(file.isEmpty() && animal.hasId()) {
+			Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
+			animal.setFoto(foto);
+			try {
+				fotoService.salvar(foto);
+			} catch (Exception e) {
+				attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+			}
+		}
 		
 		
 		animal.setEspecie(especie);
@@ -262,8 +252,8 @@ public class AnimalController {
 		return ResponseEntity.ok(animais);
 	}
 	@GetMapping("/titulo/{termo}")
-	public ResponseEntity<?> getAnimaisPorTitulo(@PathVariable("termo") String termo) {
-		List<String> animais = service.buscarAnimaisByTitulo(termo);
+	public ResponseEntity<?> getAnimaisPorAlergias(@PathVariable("termo") String termo) {
+		List<String> animais = service.buscarAnimaisByAlergias(termo);
 		return ResponseEntity.ok(animais);
 	}
 }

@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sponton.vetsystem.domain.Foto;
@@ -17,6 +18,7 @@ public class FotoService {
 	@Autowired
 	private FotoRepository fotoRepository;
 
+	@Transactional(readOnly = false)
 	public void salvarFoto(MultipartFile file, Foto foto) throws Exception {
 
 		Path currentPath = Paths.get(".");
@@ -28,7 +30,14 @@ public class FotoService {
 		fotoRepository.save(foto);
 	}
 
+	@Transactional(readOnly = true)
 	public Foto buscarFotoId(Long id) {
 		return fotoRepository.findById(id).get();
+	}
+
+	@Transactional(readOnly = false)
+	public void salvar(Foto foto) {
+		fotoRepository.save(foto);
+		
 	}
 }

@@ -9,6 +9,7 @@
 	<section class="layout-content" layout:fragment="corpo">
 		<main role="main">
 
+		
 		<div class="album py-5 bg-light">
 			<div class="container">
 
@@ -17,6 +18,7 @@
 
 						<div th:replace="fragments/alert :: alerta-sucesso"></div>
 
+					
 						<form th:action="@{/u/cadastro/salvar}"
 								th:object="${usuario}" method="POST" class="was-validated">
 							
@@ -73,7 +75,7 @@
 								</div>
 							</div>
 						</form>
-
+				
 					</div>
 				</div>
 			</div>

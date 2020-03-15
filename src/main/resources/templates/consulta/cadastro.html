@@ -119,21 +119,28 @@
 									- new Date().getTimezoneOffset() * 60000)
 							.toISOString().split("T")[0];
 				})
+	
 		$("#animal").autocomplete({
-
+			
+			
 			source : function(request, response) {
+			
 				$.ajax({
 					method : "GET",
 					url : "/pacientes/titulo",
 					data : {
-						termo : request.term 
+						termo : request.term,
+						
 					},
 					success : function(data) {
+						
 						response(data) ;
+					
 					}
 				})
 			}
 		})
+				
 	</script>
 </body>
 </html>
