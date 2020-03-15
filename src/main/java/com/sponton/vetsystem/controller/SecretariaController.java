@@ -91,6 +91,15 @@ public class SecretariaController {
 			}
 				
 		}
+		if(file.isEmpty() && secretaria.hasId()) {
+			Foto foto = fotoService.buscarFotoId(secretaria.getFoto().getId());
+			secretaria.setFoto(foto);
+			try {
+				fotoService.salvar(foto);
+			} catch (Exception e) {
+				attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+			}
+		}
 		service.salvar(secretaria);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 		attr.addFlashAttribute("secretaria", secretaria);

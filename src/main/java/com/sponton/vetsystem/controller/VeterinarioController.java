@@ -90,6 +90,15 @@ public class VeterinarioController {
 				}
 					
 			}
+			if(file.isEmpty() && veterinario.hasId()) {
+				Foto foto = fotoService.buscarFotoId(veterinario.getFoto().getId());
+				veterinario.setFoto(foto);
+				try {
+					fotoService.salvar(foto);
+				} catch (Exception e) {
+					attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+				}
+			}
 			service.salvar(veterinario);
 			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 			attr.addFlashAttribute("veterinario", veterinario);
