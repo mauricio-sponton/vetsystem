@@ -4,36 +4,29 @@
 <head>
 <meta charset="UTF-8" />
 <style>
-#alergias{
+#alergias {
 	width: 30%;
 	height: 25px;
 	background-color: white;
 	transition: height 2s;
 	transition: background-color 1s linear;
+	display:none;
+	
 }
-
 
 </style>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<div id="alergias" >
-		
-		
-		</div>
-		<form th:action="@{/consultas/salvar}" method="POST"
+		<div id="alergias"></div>
+		<form id="form-consulta" th:action="@{/consultas/salvar}" method="POST"
 			th:object="${consulta}">
+		
+				
+
 			<div class="form-row">
-				<div class="form-group col-md-4">
-					<label for="datePickerId">Selecione a data da consulta</label> <input
-						class="form-control" type="date" id="datePickerId"
-						th:classappend="${#fields.hasErrors('data')} ? 'is-invalid'"
-						th:field="*{data}" />
-					<div class="invalid-feedback">
-						<span th:errors="*{data}"></span>
-					</div>
-				</div>
+				
 				<div class="form-group col-md-4">
 					<label for="inicio">Hora de início</label> <input
 						class="form-control" type="time" id="inicio"
@@ -55,6 +48,15 @@
 
 			</div>
 			<div class="form-row">
+			<div class="form-group col-md-4">
+					<label for="datePickerId">Selecione a data da consulta</label> <input
+						class="form-control" type="date" id="datePickerId"
+						th:classappend="${#fields.hasErrors('data')} ? 'is-invalid'"
+						th:field="*{data}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{data}"></span>
+					</div>
+				</div>
 				<div class="form-group col-md-6">
 					<label for="descricao">Anotações</label>
 					<textarea class="form-control" id="descricao" autofocus="autofocus"
@@ -95,7 +97,7 @@
 						<span th:errors="*{peso}"></span>
 					</div>
 				</div>
-					<div class="form-group col-md-6">
+				<div class="form-group col-md-6">
 					<label for="temperatura">Temperatura</label> <input type="text"
 						class="form-control" id="temperatura" data-mask="##,#"
 						data-mask-reverse="true" th:field="*{temperatura}"
@@ -119,28 +121,26 @@
 									- new Date().getTimezoneOffset() * 60000)
 							.toISOString().split("T")[0];
 				})
-	
+
 		$("#animal").autocomplete({
-			
-			
+
 			source : function(request, response) {
-			
+
 				$.ajax({
 					method : "GET",
 					url : "/pacientes/titulo",
 					data : {
 						termo : request.term,
-						
+
 					},
 					success : function(data) {
-						
-						response(data) ;
-					
+
+						response(data);
+
 					}
 				})
 			}
 		})
-				
 	</script>
 </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<div th:replace="fragments/alert :: alerta-sucesso"></div>
+	<section class="layout-content" layout:fragment="corpo">
+		<span style="color:indigo" th:text="${internacao.status}"></span>
+		<div id="imagem" style="display:none">
+			<img alt="" th:src="@{/image/animal_default.jpg}"
+				style="width: 20%; height: auto">
+		</div>
+		<div th:if="${fotos != null}">
+		<div th:each="f: ${fotos}">
+			<img alt="" th:src="@{${'/uploads/' + f.fileName}}"
+				style="width: 20%; height: auto">
+		</div>
+		</div>
+	</section>
+	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		var fotos = [[${fotos}]];
+		$(document).ready(function(){
+			if(fotos == ""){
+				$("#imagem").show();
+			}
+		})
+	</script>
+</body>
+</html>

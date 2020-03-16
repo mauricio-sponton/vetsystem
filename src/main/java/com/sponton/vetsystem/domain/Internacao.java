@@ -2,17 +2,21 @@ package com.sponton.vetsystem.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @SuppressWarnings("serial")
@@ -46,9 +50,22 @@ public class Internacao extends AbstractEntity {
 	@DateTimeFormat(iso = ISO.TIME)
 	private LocalTime horaSaida;
 	
-	
 	@ManyToOne
 	private Animal animal;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "internacao", cascade = CascadeType.REMOVE)
+	private List<Foto> fotos;
+	
+	
+	
+	public List<Foto> getFotos() {
+		return fotos;
+	}
+
+	public void setFotos(List<Foto> fotos) {
+		this.fotos = fotos;
+	}
 
 	public String getStatus() {
 		return status;

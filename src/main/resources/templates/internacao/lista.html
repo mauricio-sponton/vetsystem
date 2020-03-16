@@ -34,6 +34,10 @@
 								th:action="@{/internacoes/editar/{id} (id=${i.id})}">
 								<button class="btn btn-outline-success my-2 my-sm-0">Editar</button>
 							</form>
+							<form class="form-inline" method="get"
+								th:action="@{/internacoes/visualizar/{id} (id=${i.id})}">
+								<button class="btn btn-outline-success my-2 my-sm-0">Visualizar</button>
+							</form>
 						</div>
 					</section>
 					<section id="section-flip-2">

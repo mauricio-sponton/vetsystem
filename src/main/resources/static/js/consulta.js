@@ -70,7 +70,7 @@ $('#animal').on('change', function() {
 			},
 			success:function( result ) {
 				//$("#alergias").show().animate({height: "50px", opacity: "0.5"}, 100);
-					$("#alergias").css({"background-color":"blue"});
+					$("#alergias").fadeIn().css({"background-color":"blue"});
 					$('#alergias').append('<span>'+ result +'</span>');
 				
 			}
@@ -79,6 +79,7 @@ $('#animal').on('change', function() {
 	if(termo == ""){
 		$('#alergias').text("");
 		$("#alergias").css({"background-color":"white"});
+		$("#alergias").fadeOut();
 	} 
 	
 })

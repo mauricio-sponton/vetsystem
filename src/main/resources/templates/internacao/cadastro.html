@@ -11,10 +11,12 @@
 	transition: height 2s;
 	transition: background-color 1s linear;
 }
-.entrada{
+
+.entrada {
 	display: none;
 }
-.saida{
+
+.saida {
 	display: none;
 }
 </style>
@@ -22,7 +24,7 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<form th:action="@{/internacoes/salvar}" method="POST"
+		<form th:action="@{/internacoes/salvar}" method="POST" enctype="multipart/form-data"
 			th:object="${internacao}">
 			<div class="form-row">
 				<div class="form-group col-md-4">
@@ -37,7 +39,8 @@
 				<div class="form-group col-md-4">
 					<label for="status">Status da internação</label> <select
 						th:classappend="${#fields.hasErrors('status')} ? 'is-invalid'"
-						id="status" class="form-control" th:field=*{status} th:name="status">
+						id="status" class="form-control" th:field=*{status}
+						th:name="status">
 						<option value="">Selecione</option>
 						<option th:value="Ativa">Ativa</option>
 						<option th:value="Encerrada">Encerrada</option>
@@ -111,8 +114,10 @@
 						<span th:errors="*{prescricao}"></span>
 					</div>
 				</div>
+				<label for="files">Select files:</label> <input type="file"
+					id="files" th:name="files" multiple>
 			</div>
-			<input type="hidden" id="id" th:field="*{id}" />
+			<input type="hidden" id="id" th:field="*{id}" /> <
 			<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 		</form>
 
@@ -125,16 +130,14 @@
 							new Date().getTime()
 									- new Date().getTimezoneOffset() * 60000)
 							.toISOString().split("T")[0];
-				}
-		)
+				})
 		$(document).ready(
 				function() {
 					document.getElementById('dataSaida').min = new Date(
 							new Date().getTime()
 									- new Date().getTimezoneOffset() * 60000)
 							.toISOString().split("T")[0];
-				}
-		)
+				})
 		$("#animal").autocomplete({
 
 			source : function(request, response) {

@@ -1,6 +1,7 @@
 package com.sponton.vetsystem.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -11,6 +12,19 @@ public class Foto extends AbstractEntity {
 	private String path;
 	
 	private String fileName;
+
+	@ManyToOne
+	private Internacao internacao;
+	
+	
+	
+	public Internacao getInternacao() {
+		return internacao;
+	}
+
+	public void setInternacao(Internacao internacao) {
+		this.internacao = internacao;
+	}
 
 	public String getPath() {
 		return path;
