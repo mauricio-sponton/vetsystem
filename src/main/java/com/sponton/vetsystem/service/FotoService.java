@@ -40,7 +40,7 @@ public class FotoService {
 	@Transactional(readOnly = false)
 	public void salvar(Foto foto) {
 		fotoRepository.save(foto);
-		
+
 	}
 
 	@Transactional(readOnly = false)
@@ -54,8 +54,7 @@ public class FotoService {
 			Files.write(path, bytes);
 			fotoRepository.save(foto);
 		}
-		
-		
+
 	}
 
 	@Transactional(readOnly = true)

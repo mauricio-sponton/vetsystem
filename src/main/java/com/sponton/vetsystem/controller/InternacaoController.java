@@ -78,20 +78,19 @@ public class InternacaoController {
 			animal.setStatus("Normal");
 		}
 
-		
-		if (files.length > 0) {	
-				for (int i = 0; i < files.length; i++) {
-					Foto foto = new Foto();
-					foto.setFileName(files[i].getOriginalFilename());
-					foto.setPath("/uploads/");
-					foto.setInternacao(internacao);
-					try {
-						fotoService.salvarFotos(files, foto);
-					} catch (Exception e) {
-					
-					}
-				}		
-		}	
+		if (files.length > 0) {
+			for (int i = 0; i < files.length; i++) {
+				Foto foto = new Foto();
+				foto.setFileName(files[i].getOriginalFilename());
+				foto.setPath("/uploads/");
+				foto.setInternacao(internacao);
+				try {
+					fotoService.salvarFotos(files, foto);
+				} catch (Exception e) {
+
+				}
+			}
+		}
 		HistoricoAnimal historico = new HistoricoAnimal();
 		LocalDate data = LocalDate.now();
 		LocalTime hora = LocalTime.now();
@@ -121,7 +120,7 @@ public class InternacaoController {
 			}
 
 		}
-		
+
 		internacao.setAnimal(animal);
 		service.salvarInternacao(internacao);
 		historico.setAnimal(animal);

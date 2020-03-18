@@ -50,6 +50,11 @@ public class ConsultaController {
 	public String novaConsulta(Consulta consulta) {
 		return "consulta/cadastro";
 	}
+	@GetMapping("/cadastrar/{id}")
+	public String novaConsultaPorAnimal(Consulta consulta, @PathVariable("id") Long id, ModelMap model ) {
+		model.addAttribute("animal", animalService.buscarPorId(id));
+		return "consulta/cadastro-pelo-paciente";
+	}
 	@PostMapping("/salvar")
 	public String salvarConsulta(@Valid Consulta consulta, BindingResult result, RedirectAttributes attr, @AuthenticationPrincipal User user) {
 		if(result.hasErrors()) {
@@ -57,6 +62,7 @@ public class ConsultaController {
 		}
 		String titulo = consulta.getAnimal().getNome();
 		Animal animal = animalService.buscarPorTitulos(new String[] { titulo}).stream().findFirst().get();
+		
 		
 		HistoricoAnimal historico = new HistoricoAnimal();
 		LocalDate data = LocalDate.now();
@@ -118,6 +124,40 @@ public class ConsultaController {
 	public String visualizar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("consulta", service.buscarPorId(id));
 		return "consulta/visualizar";
+	}
+	@PostMapping("/salvar/{id}")
+	public String salvarConsultaPorAnimal(@Valid Consulta consulta, BindingResult result, RedirectAttributes attr, @AuthenticationPrincipal User user, @PathVariable("id") Long id) {
+		if(result.hasErrors()) {
+			return "consulta/cadastro";
+		}
+		Animal animal = animalService.buscarPorId(id);
+		HistoricoAnimal historico = new HistoricoAnimal();
+		LocalDate data = LocalDate.now();
+		LocalTime hora = LocalTime.now();
+		
+		if(user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
+			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
+			if(veterinario.hasNotId()) {
+				attr.addFlashAttribute("falha", "Por favor preencha seus dados pessoais para continuar usando o sistema");
+				return "redirect:/veterinarios/dados";
+			}
+			if(consulta.hasId()) {
+				historico.setDescricao("Uma nova consulta foi registrada");
+				historico.setTipo("Nova consulta");
+				historico.setUsuario(veterinario.getNome() + " (veterinario)");
+				historico.setData(data);
+				historico.setHora(hora);
+			}
+			consulta.setAnimal(animal);
+			consulta.setVeterinario(veterinario);
+			service.salvarConsulta(consulta);
+
+			historico.setAnimal(animal);
+			historicoAnimalService.salvar(historico);
+			
+			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
+		}
+		return "redirect:/consultas/cadastrar/{id}";
 	}
 
 }

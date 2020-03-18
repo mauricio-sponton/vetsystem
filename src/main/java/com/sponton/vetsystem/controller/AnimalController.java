@@ -1,6 +1,5 @@
 package com.sponton.vetsystem.controller;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -75,7 +74,7 @@ public class AnimalController {
 
 	@Autowired
 	private ConsultaService consultaService;
-	
+
 	@Autowired
 	private FotoService fotoService;
 
@@ -90,7 +89,7 @@ public class AnimalController {
 		if (result.hasErrors()) {
 			return "animal/cadastro";
 		}
-		
+
 		String titulo = animal.getEspecie().getNome();
 		String titulo2 = animal.getRaca().getNome();
 		Especie especie = especieService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
@@ -121,7 +120,7 @@ public class AnimalController {
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus(status.getStatus());
-				
+
 			}
 		}
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
@@ -143,11 +142,11 @@ public class AnimalController {
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus(status.getStatus());
-				
+
 			}
 		}
 		if (!file.isEmpty()) {
-			if(animal.getFoto().hasNotId()) {
+			if (animal.getFoto().hasNotId()) {
 				Foto foto = new Foto();
 				foto.setFileName(file.getOriginalFilename());
 				foto.setPath("/uploads/");
@@ -158,7 +157,7 @@ public class AnimalController {
 					attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 				}
 			}
-			if(animal.getFoto().hasId()) {
+			if (animal.getFoto().hasId()) {
 				Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
 				foto.setFileName(file.getOriginalFilename());
 				foto.setPath("/uploads/");
@@ -169,9 +168,9 @@ public class AnimalController {
 					attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 				}
 			}
-				
+
 		}
-		if(file.isEmpty() && animal.hasId()) {
+		if (file.isEmpty() && animal.hasId()) {
 			Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
 			animal.setFoto(foto);
 			try {
@@ -180,8 +179,7 @@ public class AnimalController {
 				attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 			}
 		}
-		
-		
+
 		animal.setEspecie(especie);
 		animal.setRaca(raca);
 		service.salvarAnimal(animal);
@@ -251,6 +249,7 @@ public class AnimalController {
 		List<String> animais = service.buscarAnimaisByTermo(termo);
 		return ResponseEntity.ok(animais);
 	}
+
 	@GetMapping("/titulo/{termo}")
 	public ResponseEntity<?> getAnimaisPorAlergias(@PathVariable("termo") String termo) {
 		List<String> animais = service.buscarAnimaisByAlergias(termo);

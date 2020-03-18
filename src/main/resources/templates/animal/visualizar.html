@@ -112,7 +112,7 @@ h2 {
 				<div class="content-wrap">
 
 					<section id="section-flip-1">
-						
+
 						<p>
 
 							<button class="btn btn-primary" type="button"
@@ -194,9 +194,13 @@ h2 {
 							<span th:text="${c.veterinario.nome}"></span> <span
 								th:text="${c.data}"></span> <span th:text="${c.hora}"></span>
 						</div>
+						<form class="form-inline" method="get"
+							th:action="@{/consultas/cadastrar/{id} (id=${animal.id})}">
+							<button class="btn btn-outline-success my-2 my-sm-0">Nova Consulta</button>
+						</form>
 					</section>
 					<section id="section-flip-3">
-						<p style="color: purple">3</p>
+						<p style="color: purple" >3</p>
 					</section>
 					<section id="section-flip-4">
 						<p style="color: purple">4</p>
