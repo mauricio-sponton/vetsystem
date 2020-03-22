@@ -6,10 +6,33 @@
 <body>
 	<header th:fragment="cabecalho" class="header">
 		<div class="bem-vindo-user">
-			<span style="color: white; font-size: 20px; float: left">Bem
-				vindo(a), <span class="" sec:authentication="name"> </span>
-			</span>
-			
+
+			<div th:switch="${currentRole}" sec:authorize="isAuthenticated()">
+				<div sec:authorize="hasAuthority('VETERINARIO')"
+					th:if="${veterinario.nome != null}">
+					<span style="color: white; font-size: 20px; float: left">Bem
+						vindo(a), <span class="" th:text="${veterinario.nome}"> </span>
+					</span>
+				</div>
+				<div sec:authorize="hasAuthority('SECRETARIA')"
+					th:if="${secretaria.nome != null}">
+					<span style="color: white; font-size: 20px; float: left">Bem
+						vindo(a), <span class="" th:text="${secretaria.nome}"> </span>
+					</span>
+				</div>
+				<div th:if="${veterinario == null && secretaria == null}">
+					<span style="color: white; font-size: 20px; float: left">Bem
+						vindo(a), <span class="" sec:authentication="name"> </span>
+					</span>
+				</div>
+			</div>
+			<!--  
+			<div th:if="${veterinario.nome != null}">
+				<span style="color: white; font-size: 20px; float: left">Bem
+					vindo(a), <span class="" th:text="${veterinario.nome}" > </span>
+				</span>
+			</div>
+			-->
 		</div>
 
 		<div class="user-menu">

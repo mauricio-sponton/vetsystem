@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -142,4 +144,12 @@ public class UsuarioController {
 
 		return new ModelAndView("redirect:/u/lista");
 	}
+	/*
+	public void consultarNome(@AuthenticationPrincipal User user, ModelMap model) {
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
+			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
+			model.addAttribute("veterinario", veterinario);
+		}
+	}
+	*/
 }

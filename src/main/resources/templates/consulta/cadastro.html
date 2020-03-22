@@ -10,23 +10,18 @@
 	background-color: white;
 	transition: height 2s;
 	transition: background-color 1s linear;
-	display:none;
-	
+	display: none;
 }
-
 </style>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<div id="alergias"></div>
-		<form id="form-consulta" th:action="@{/consultas/salvar}" method="POST"
-			th:object="${consulta}">
-		
-				
-
+		<form id="form-consulta" th:action="@{/consultas/salvar}"
+			method="POST" th:object="${consulta}">
 			<div class="form-row">
-				
+
 				<div class="form-group col-md-4">
 					<label for="inicio">Hora de início</label> <input
 						class="form-control" type="time" id="inicio"
@@ -48,7 +43,7 @@
 
 			</div>
 			<div class="form-row">
-			<div class="form-group col-md-4">
+				<div class="form-group col-md-4">
 					<label for="datePickerId">Selecione a data da consulta</label> <input
 						class="form-control" type="date" id="datePickerId"
 						th:classappend="${#fields.hasErrors('data')} ? 'is-invalid'"
@@ -79,6 +74,7 @@
 				</div>
 			</div>
 			<div class="form-row">
+
 				<div class="form-group col-md-4">
 					<label for="animal">Paciente</label> <input type="text"
 						class="form-control" id="animal" placeholder="Taz..."
@@ -88,7 +84,8 @@
 						<span th:errors="*{animal.nome}"></span>
 					</div>
 				</div>
-				<div class="form-group col-md-6">
+
+				<div class="form-group col-md-3">
 					<label for="peso">Peso</label> <input type="text"
 						class="form-control" id="peso" data-mask="#,##"
 						data-mask-reverse="true" th:field="*{peso}"
@@ -97,7 +94,7 @@
 						<span th:errors="*{peso}"></span>
 					</div>
 				</div>
-				<div class="form-group col-md-6">
+				<div class="form-group col-md-3">
 					<label for="temperatura">Temperatura</label> <input type="text"
 						class="form-control" id="temperatura" data-mask="##,#"
 						data-mask-reverse="true" th:field="*{temperatura}"
@@ -123,24 +120,25 @@
 				})
 
 		$("#animal").autocomplete({
-
+		
 			source : function(request, response) {
 
 				$.ajax({
 					method : "GET",
 					url : "/pacientes/titulo",
 					data : {
-						termo : request.term,
-
+						termo : request.term
 					},
 					success : function(data) {
-
 						response(data);
-
+						
 					}
 				})
+			
 			}
 		})
+		
+			
 	</script>
 </body>
 </html>
