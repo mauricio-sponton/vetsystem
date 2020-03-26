@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,9 +45,9 @@ public class UsuarioController {
 	@Autowired
 	private SecretariaService secretariaService;
 
-	// abrir cadastro de usuarios (medico/admin/paciente)
+	// abrir cadastro de usuarios (vet/admin/secretaria)
 	@GetMapping("/novo/cadastro/usuario")
-	public String cadastroPorAdminParaAdminMedicoPaciente(Usuario usuario) {
+	public String cadastroPorAdminParaAdminVetSecretaria(Usuario usuario) {
 
 		return "usuario/cadastro";
 	}
@@ -63,7 +65,10 @@ public class UsuarioController {
 
 	// salvar cadastro de usuario por administrador
 	@PostMapping("/cadastro/salvar")
-	public String salvarUsuarios(Usuario usuario, RedirectAttributes attr) {
+	public String salvarUsuarios(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr, ModelMap model) {
+		if (result.hasErrors()) {
+			return "usuario/cadastro";
+		}
 		List<Perfil> perfis = usuario.getPerfis();
 		if (perfis.size() > 2 || perfis.containsAll(Arrays.asList(new Perfil(2L), new Perfil(3L)))) {
 			attr.addFlashAttribute("falha",
@@ -144,12 +149,5 @@ public class UsuarioController {
 
 		return new ModelAndView("redirect:/u/lista");
 	}
-	/*
-	public void consultarNome(@AuthenticationPrincipal User user, ModelMap model) {
-		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
-			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
-			model.addAttribute("veterinario", veterinario);
-		}
-	}
-	*/
+	
 }

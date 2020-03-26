@@ -8,7 +8,7 @@
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<form th:action="@{/pacientes/salvar}" method="POST"
-			enctype="multipart/form-data" th:object="${animal}">
+			enctype="multipart/form-data" th:object="${animal}" id="formA">
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="nome">Nome do paciente</label> <input type="text"
@@ -65,6 +65,7 @@
 						<span th:errors="*{especie.nome}"></span>
 					</div>
 				</div>
+
 				<div class="form-group col-md-4">
 					<label for="raca">Raça</label> <input type="text"
 						class="form-control" id="raca" placeholder="Labrador..."
@@ -80,8 +81,8 @@
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="alergias">Alergias</label>
-					<textarea class="form-control" id="alergias"
-						autofocus="autofocus" th:field="*{alergias}"
+					<textarea class="form-control" id="alergias" autofocus="autofocus"
+						th:field="*{alergias}"
 						th:classappend="${#fields.hasErrors('alergias')} ? 'is-invalid'"></textarea>
 					<div class="invalid-feedback">
 						<span th:errors="*{alergias}"></span>

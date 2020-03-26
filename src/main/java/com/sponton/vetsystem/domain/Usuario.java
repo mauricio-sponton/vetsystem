@@ -11,6 +11,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,6 +32,7 @@ public class Usuario extends AbstractEntity {
 	@Column(name = "senha", nullable = false)
 	private String senha;
 	
+	@NotNull
 	@ManyToMany
 	@JoinTable(
 		name = "usuarios_tem_perfis", 

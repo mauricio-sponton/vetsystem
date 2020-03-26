@@ -11,7 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
@@ -40,12 +42,13 @@ public class Animal extends AbstractEntity {
 	@JoinColumn(name = "id_animal_fk")
 	private Cliente cliente;
 	
-	@NotNull(message = "Informe a espécie")
+	@Valid
 	@ManyToOne
 	@JoinColumn(name = "id_animalEspecie_fk")
 	private Especie especie;
 	
-	@NotNull(message = "Informe a raça")
+	
+	@Valid
 	@ManyToOne
 	@JoinColumn(name = "id_animalRaca_fk")
 	private Raca raca;

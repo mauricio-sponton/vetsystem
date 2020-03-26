@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
-	  layout:decorate="~{layout}">
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
 </head>
@@ -9,82 +9,87 @@
 	<section class="layout-content" layout:fragment="corpo">
 		<main role="main">
 
-		
-		<div class="album py-5 bg-light">
-			<div class="container">
 
-				<div class="d-flex justify-content-center">
-					<div class="col-md-8">
+			<div class="album py-5 bg-light">
+				<div class="container">
 
-						<div th:replace="fragments/alert :: alerta-sucesso"></div>
+					<div class="d-flex justify-content-center">
+						<div class="col-md-8">
 
-					
-						<form th:action="@{/u/cadastro/salvar}"
-								th:object="${usuario}" method="POST" class="was-validated">
-							
-							<div class="mb-3">
-								<label for="email">Email</label>
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<span class="input-group-text" 
+							<div th:replace="fragments/alert :: alerta-sucesso"></div>
+
+
+							<form th:action="@{/u/cadastro/salvar}" th:object="${usuario}"
+								method="POST" >
+
+								<div class="mb-3">
+									<label for="email">Email</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text"
 												id="validationTooltipUsernamePrepend">@</span>
+										</div>
+										<input type="email" class="form-control" id="email"
+											th:field="*{email}" placeholder="Email"
+											th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+											aria-describedby="validationTooltipUsernamePrepend" />
+										<div class="invalid-feedback">
+											<span th:errors="*{email}"></span>
+										</div>
 									</div>
-									<input type="email" class="form-control" id="email"
-										    th:field="*{email}" placeholder="Email"
-										    aria-describedby="validationTooltipUsernamePrepend"/>
-									<div class="invalid-feedback">Email é requerido.</div>
 								</div>
-							</div>
-							
-							<div class="mb-3">
-								<label for="senha">Senha</label> 
-								<input type="password" class="form-control" id="senha" maxlength="6"
-										th:field="*{senha}" placeholder="Insira sua senha de acesso" />
-								<div class="invalid-feedback">Senha é requerida para confirmar a operação.</div>
-							</div>
 
-							<div class="mb-3">
-								<label for="perfis">Perfil</label>
-								<select id="perfis" class="custom-select" size="4"
-										th:field="*{perfis}" multiple >
-									<option value="1">Administrador</option>
-									<option value="2">Veterinário</option>
-									<option value="3">Secretária</option>
-								</select>
-								<input type ="hidden" value="0" name="perfis">
-
-								<div class="invalid-feedback">Pelo menos um perfil é requerido.</div>
-							</div>
-							
-							<div class="mb-3">
-								<div class="custom-control custom-switch">
-								  <input type="checkbox" class="custom-control-input" 
-								  			th:field="*{ativo}" id="ativo" 
-								  			th:if="${ativo == true ? 'checked=checked' : ''}" />
-								  <label class="custom-control-label" for="ativo">Cadastro Ativo</label>
+								<div class="mb-3">
+									<label for="senha">Senha</label> <input type="password"
+										class="form-control" id="senha" maxlength="6"
+										th:field="*{senha}" placeholder="Insira sua senha de acesso"
+										th:classappend="${#fields.hasErrors('senha')} ? 'is-invalid'" />
+									<div class="invalid-feedback">
+										<span th:errors="*{senha}"></span>
+									</div>
 								</div>
-							</div>
 
-							<input type="hidden" th:field="*{id}"> 
-							<div class="form-group row">
-								<div class="col-sm-10">
-									<button type="submit" class="btn btn-primary"
-										data-toggle="tooltip" data-placement="right" title="Salvar">
-										<i class="fas fa-save"></i>
-									</button>
+								<div class="mb-3">
+									<label for="perfis">Perfil</label> <select id="perfis"
+										class="custom-select" size="4" th:field="*{perfis}" th:classappend="${#fields.hasErrors('perfis')} ? 'is-invalid'" multiple>
+										<option value="1">Administrador</option>
+										<option value="2">Veterinário</option>
+										<option value="3">Secretária</option>
+									</select> <input type="hidden" value="0" name="perfis">
+
+									<div class="invalid-feedback">Pelo menos um perfil é requerido.</div>
 								</div>
-							</div>
-						</form>
-				
+
+								<div class="mb-3">
+									<div class="custom-control custom-switch">
+										<input type="checkbox" class="custom-control-input"
+											th:field="*{ativo}" id="ativo"
+											th:if="${ativo == true ? 'checked=checked' : ''}" /> <label
+											class="custom-control-label" for="ativo">Cadastro
+											Ativo</label>
+									</div>
+								</div>
+
+								<input type="hidden" th:field="*{id}">
+								<div class="form-group row">
+									<div class="col-sm-10">
+										<button type="submit" class="btn btn-primary"
+											data-toggle="tooltip" data-placement="right" title="Salvar">
+											<i class="fas fa-save"></i>
+										</button>
+									</div>
+								</div>
+							</form>
+
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 
 		</main>
 
 	</section>
-	<script	th:src="~{}" th:fragment="js"></script>
+	<script th:src="~{}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
 		$('#perfis').ready(function(){
 			var perfis = [[${usuario.perfis}]];

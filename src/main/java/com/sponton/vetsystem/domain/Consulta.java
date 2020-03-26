@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,6 +35,7 @@ public class Consulta extends AbstractEntity {
 	@DateTimeFormat(iso = ISO.TIME)
 	private LocalTime termino;
 	
+	@Valid
 	@ManyToOne
 	private Animal animal;
 	

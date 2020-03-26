@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,8 +93,15 @@ public class AnimalController {
 
 		String titulo = animal.getEspecie().getNome();
 		String titulo2 = animal.getRaca().getNome();
+		/*
+		if(titulo.isEmpty() || titulo2.isEmpty()) {
+			attr.addFlashAttribute("falha", "Selecione uma espécie e/ou raça");
+			return "redirect:/pacientes/cadastrar";
+		}
+		*/
 		Especie especie = especieService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
 		Raca raca = racaService.buscarPorTitulos(new String[] { titulo2 }).stream().findFirst().get();
+		
 		if (raca.getEspecie().getId() != especie.getId()) {
 			attr.addFlashAttribute("falha", "Espécie e raça não condizem!");
 			return "redirect:/pacientes/cadastrar";
