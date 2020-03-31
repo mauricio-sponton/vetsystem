@@ -19,7 +19,7 @@ $(document).ready(function () {
             {orderable: false, 
              data: 'id',
                 "render": function(id) {
-                    return '<a class="btn btn-success btn-sm btn-block" href="/clientes/editar/'+ 
+                    return '<a class="btn btn-success  btn-sm btn-block" href="/clientes/editar/'+ 
                     	id +'" role="button"><i class="fas fa-edit"></i></a>';
                 }
             },

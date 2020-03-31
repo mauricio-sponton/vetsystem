@@ -4,14 +4,14 @@
 <head>
 <meta charset="UTF-8" />
 <style type="text/css">
-#table-clientes td:first-child, #table-clientes th:first-child{
-	display:none
+#table-clientes td:first-child, #table-clientes th:first-child {
+	display: none
 }
 </style>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-	<main role="main">
+		<main role="main">
 			<div class="album py-5 bg-light">
 				<div class="container">
 
@@ -26,7 +26,7 @@
 								style="width: 100%">
 								<thead class="thead-dark">
 									<tr>
-									    <th scope="col">Id</th>
+										<th scope="col">Id</th>
 										<th scope="col">Nome</th>
 										<th scope="col">Email</th>
 										<th scope="col">Telefone</th>
@@ -36,15 +36,43 @@
 									</tr>
 								</thead>
 							</table>
+
 						</div>
 					</div>
 				</div>
-				<a th:href="@{/clientes/cadastrar}"
-					class="btn-cadastrar-usuario" role="button">Novo cliente</a>
+				<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-cliente">Novo cliente</a> <span
+					th:replace="cliente/modal :: modal-form"></span>
 			</div>
 		</main>
 	</section>
 	<script th:src="@{/js/cliente.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		var cliente = [[${cliente.id}]];
+		$(document).ready(function() {
+			if(cliente != null){
+				$("#modal-cliente").modal('show');
+				$(".modal-title").text("Editar Cliente");
+			}
+			if(cliente == null){
+				$(".modal-title").text("Novo Cliente");
+			}
+			if ($("#msg-erro").html() != "") {
+				$("#modal-cliente").modal('show');
+				$(".is-invalid").css("border", "1px solid red");
+			}
+
+			$("#modal-cliente").on("hidden.bs.modal", function() {
+				$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+				$("#modal-cliente").modal('hide');
+				
+			});
+			
+			$(".btn-cadastrar-usuario").on("click", function(){
+				$(".form-control").val("");
+				$(".modal-title").text("Novo Cliente");
+			});
+		})
+	</script>
 </body>
 </html>

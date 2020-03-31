@@ -37,9 +37,10 @@ public class ClienteController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
+	public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr, ModelMap model) {
 		if (result.hasErrors()) {
-			return "/cliente/cadastro";
+			model.addAttribute("erro", "por favor preencha os campos");
+			return "/cliente/lista";
 		}
 		try {
 			if (cliente.hasNotId()) {
@@ -53,7 +54,7 @@ public class ClienteController {
 			attr.addFlashAttribute("falha", "Cadastro não realizado pois o email ou cpf já existe");
 		}
 
-		return "redirect:/clientes/cadastrar";
+		return "redirect:/clientes/listar";
 	}
 
 	@ModelAttribute("ufs")
@@ -62,7 +63,7 @@ public class ClienteController {
 	}
 
 	@GetMapping("/listar")
-	public String listarClientes() {
+	public String listarClientes(Cliente cliente) {
 		return "cliente/lista";
 	}
 
@@ -74,7 +75,7 @@ public class ClienteController {
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("cliente", service.buscarPorId(id));
-		return "cliente/cadastro";
+		return "cliente/lista";
 	}
 
 	@GetMapping("/excluir/{id}")
