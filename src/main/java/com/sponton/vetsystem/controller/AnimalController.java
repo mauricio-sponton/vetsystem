@@ -86,25 +86,20 @@ public class AnimalController {
 
 	@PostMapping("/salvar")
 	public String salvarAnimal(@Valid Animal animal, BindingResult result, RedirectAttributes attr,
-			@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file) {
+			@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file, ModelMap model) {
 		if (result.hasErrors()) {
-			return "animal/cadastro";
+			model.addAttribute("erro", "Por favor preencha os dados");
+			return "animal/lista";
 		}
 
 		String titulo = animal.getEspecie().getNome();
 		String titulo2 = animal.getRaca().getNome();
-		/*
-		if(titulo.isEmpty() || titulo2.isEmpty()) {
-			attr.addFlashAttribute("falha", "Selecione uma espécie e/ou raça");
-			return "redirect:/pacientes/cadastrar";
-		}
-		*/
 		Especie especie = especieService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
 		Raca raca = racaService.buscarPorTitulos(new String[] { titulo2 }).stream().findFirst().get();
 		
 		if (raca.getEspecie().getId() != especie.getId()) {
 			attr.addFlashAttribute("falha", "Espécie e raça não condizem!");
-			return "redirect:/pacientes/cadastrar";
+			return "redirect:/pacientes/listar";
 		}
 		HistoricoAnimal historico = new HistoricoAnimal();
 		LocalDate data = LocalDate.now();
@@ -195,7 +190,7 @@ public class AnimalController {
 		historicoAnimalService.salvar(historico);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 
-		return "redirect:/pacientes/cadastrar";
+		return "redirect:/pacientes/listar";
 
 	}
 
@@ -205,7 +200,7 @@ public class AnimalController {
 	}
 
 	@GetMapping("/listar")
-	public String listarAnimais() {
+	public String listarAnimais(Animal animal) {
 		return "animal/lista";
 	}
 
@@ -217,7 +212,7 @@ public class AnimalController {
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("animal", service.buscarPorId(id));
-		return "animal/cadastro";
+		return "animal/lista";
 	}
 
 	@GetMapping("/excluir/{id}")

@@ -22,7 +22,7 @@ public class Raca extends AbstractEntity{
 	@Column(name = "nome", nullable = false, unique = true)
 	private String nome;
 	
-	@NotNull(message = "Informe a espécie")
+	
 	@ManyToOne
 	@JoinColumn(name = "id_raca_fk")
 	private Especie especie;

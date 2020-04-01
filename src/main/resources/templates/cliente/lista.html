@@ -59,11 +59,13 @@
 			}
 			if ($("#msg-erro").html() != "") {
 				$("#modal-cliente").modal('show');
+				$("#msg-erro").css("color", "red");
 				$(".is-invalid").css("border", "1px solid red");
 			}
 
 			$("#modal-cliente").on("hidden.bs.modal", function() {
 				$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+				$("#msg-erro").hide();
 				$("#modal-cliente").modal('hide');
 				
 			});

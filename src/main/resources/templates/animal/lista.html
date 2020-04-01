@@ -40,13 +40,87 @@
 						</div>
 					</div>
 				</div>
-				<a th:href="@{/pacientes/cadastrar}" class="btn-cadastrar-usuario"
-					role="button">Novo Paciente</a>
+				<!-- 	<a th:href="@{/pacientes/cadastrar}" class="btn-cadastrar-usuario"
+					role="button">Novo Paciente</a> -->
+
+				<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-animal">Novo Paciente</a> <span
+					th:replace="animal/modal :: modal-form"></span>
 			</div>
 		</main>
 
 	</section>
-<script th:src="@{/js/animal.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:src="@{/js/animal.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	var animal = [[${animal.id}]];
+	$(document).ready(function() {
+				document.getElementById('datePickerId').max = new Date(
+						new Date().getTime()
+								- new Date().getTimezoneOffset() * 60000)
+						.toISOString().split("T")[0];
+			});
+	$(document).ready(function(){
+		if(animal != null){
+			$("#modal-animal").modal('show');
+			$(".modal-title").text("Editar Paciente");
+		}
+		if(animal == null){
+			$(".modal-title").text("Novo Paciente");
+		}
+		if ($("#msg-erro").html() != "") {
+			
+			$("#modal-animal").modal('show');
+			$("#msg-erro").css("color", "red");
+			$(".is-invalid").css("border", "1px solid red");
+		}
+
+		$("#modal-animal").on("hidden.bs.modal", function() {
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$("#msg-erro").hide();
+			$("#modal-animal").modal('hide');
+			
+		});
+		
+		$(".btn-cadastrar-usuario").on("click", function(){
+			$(".form-control").val("");
+			$(".modal-title").text("Novo Paciente");
+		});	
+	});	
+	
+		$("#especie").autocomplete({
+			
+			source : function(request, response) {
+				$.ajax({
+					method : "GET",
+					url : "/especies/titulo",
+					data : {
+						termo : request.term
+					},
+					success : function(data) {
+						response(data);
+					}
+				})
+			}
+		})
+
+	function mudar() {
+		especie = $("#especie").val();
+		$("#raca").autocomplete({
+			source : function(request, response) {
+				$.ajax({
+					method : "GET",
+					url : "/racas/titulo",
+					data : {
+						especie : especie,
+						termo : request.term
+					},
+					success : function(data) {
+						response(data);
+					}
+				})
+			}
+		})
+	}
+	</script>
 </body>
 </html>

@@ -60,6 +60,9 @@ footer p {
 .ui-autocomplete-loading {
   background: white url("/image/ui-anim_basic_16x16.gif") right center no-repeat;
 }
+.ui-autocomplete{
+	z-index: 9999999999
+}
 
 /*
 */
