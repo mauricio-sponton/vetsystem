@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -22,7 +23,7 @@ public class Raca extends AbstractEntity{
 	@Column(name = "nome", nullable = false, unique = true)
 	private String nome;
 	
-	
+	@Valid
 	@ManyToOne
 	@JoinColumn(name = "id_raca_fk")
 	private Especie especie;

@@ -41,9 +41,14 @@ public class RacaController {
 		return "raca/cadastro";
 	}
 	@PostMapping("/salvar")
-	public String salvarEspecie(@Valid Raca raca, BindingResult result, RedirectAttributes attr) {
+	public String salvarEspecie(@Valid Raca raca, BindingResult result, RedirectAttributes attr, ModelMap model) {
 		if(result.hasErrors()) {
-			return "raca/cadastro";
+			model.addAttribute("erro", "Por favor preencha os dados");
+			return "raca/lista";
+		}
+		if(raca.getEspecie() == null) {
+			model.addAttribute("erro", "Por favor selecione a espécie");
+			return "raca/lista";
 		}
 		try {
 			service.salvarEspecie(raca);
@@ -52,10 +57,10 @@ public class RacaController {
 			attr.addFlashAttribute("falha", "Cadastro não realizado pois essa raça já existe no sistema");
 		}
 		
-		return "redirect:/racas/cadastrar";
+		return "redirect:/racas/listar";
 	}
 	@GetMapping("/listar")
-	public String listarRacas() {
+	public String listarRacas(Raca raca) {
 		return "raca/lista";
 	}
 	@GetMapping("/datatables/server")
@@ -65,7 +70,7 @@ public class RacaController {
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("raca", service.buscarPorId(id));
-		return "raca/cadastro";
+		return "raca/lista";
 	}
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {

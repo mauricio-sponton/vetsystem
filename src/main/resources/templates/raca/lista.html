@@ -37,13 +37,49 @@
 						</div>
 					</div>
 				</div>
-				<a th:href="@{/racas/cadastrar}" class="btn-cadastrar-usuario"
-					role="button">Nova Raça</a>
+				<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-raca">Nova Raça</a> <span
+					th:replace="raca/modal :: modal-form"></span>
 			</div>
 		</main>
 
 	</section>
 <script th:src="@{/js/raca.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	var raca = [[${raca.id}]];
+	$(document).ready(function(){
+		
+		if(raca != null){
+			$("#modal-raca").modal('show');
+			$(".modal-title").text("Editar Raça");
+		}
+		if(raca == null){
+			$(".modal-title").text("Nova Raça");
+		}
+		if ($("#msg-erro").html() != "") {
+			
+			$("#modal-raca").modal('show');
+			if($("#especie option:selected").text() == "Selecione"){
+				$("#especie").addClass('is-invalid');
+				$("#erro-especie").show().text("Por favor informe a espécie");
+			}
+			$("#msg-erro").css("color", "red");
+			$(".is-invalid").css("border", "1px solid red");
+		}
+
+		$("#modal-raca").on("hidden.bs.modal", function() {
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$("#msg-erro").hide();
+			$("#modal-raca").modal('hide');
+			
+		});
+		
+		$(".btn-cadastrar-usuario").on("click", function(){
+			$(".form-control").val("");
+			$("#erro-especie").hide();
+			$(".modal-title").text("Nova Raça");
+		});	
+	});	
+	</script>
 </body>
 </html>

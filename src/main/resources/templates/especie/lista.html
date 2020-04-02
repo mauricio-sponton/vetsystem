@@ -37,13 +37,44 @@
 						</div>
 					</div>
 				</div>
-				<a th:href="@{/especies/cadastrar}" class="btn-cadastrar-usuario"
-					role="button">Nova Espécie</a>
+					<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-especie">Nova Espécie</a> <span
+					th:replace="especie/modal :: modal-form"></span>
 			</div>
 		</main>
 
 	</section>
 <script th:src="@{/js/especie.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	var especie = [[${especie.id}]];
+	$(document).ready(function(){
+		if(especie != null){
+			$("#modal-especie").modal('show');
+			$(".modal-title").text("Editar Espécie");
+		}
+		if(especie == null){
+			$(".modal-title").text("Nova Espécie");
+		}
+		if ($("#msg-erro").html() != "") {
+			
+			$("#modal-especie").modal('show');
+			$("#msg-erro").css("color", "red");
+			$(".is-invalid").css("border", "1px solid red");
+		}
+
+		$("#modal-especie").on("hidden.bs.modal", function() {
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$("#msg-erro").hide();
+			$("#modal-especie").modal('hide');
+			
+		});
+		
+		$(".btn-cadastrar-usuario").on("click", function(){
+			$(".form-control").val("");
+			$(".modal-title").text("Nova Espécie");
+		});	
+	});	
+	
+	</script>
 </body>
 </html>

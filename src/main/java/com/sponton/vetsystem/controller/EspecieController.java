@@ -37,9 +37,10 @@ public class EspecieController {
 		return "especie/cadastro";
 	}
 	@PostMapping("/salvar")
-	public String salvarEspecie(@Valid Especie especie, BindingResult result, RedirectAttributes attr) {
+	public String salvarEspecie(@Valid Especie especie, BindingResult result, RedirectAttributes attr, ModelMap model) {
 		if(result.hasErrors()) {
-			return "especie/cadastro";
+			model.addAttribute("erro", "Por favor preencha os dados");
+			return "especie/lista";
 		}
 		try {
 			service.salvarEspecie(especie);
@@ -48,10 +49,10 @@ public class EspecieController {
 			attr.addFlashAttribute("falha", "Cadastro não realizado pois essa espécie já existe no sistema");
 		}
 		
-		return "redirect:/especies/cadastrar";
+		return "redirect:/especies/listar";
 	}
 	@GetMapping("/listar")
-	public String listarEspecies() {
+	public String listarEspecies(Especie especie) {
 		return "especie/lista";
 	}
 	@GetMapping("/datatables/server")
@@ -61,7 +62,7 @@ public class EspecieController {
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("especie", service.buscarPorId(id));
-		return "especie/cadastro";
+		return "especie/lista";
 	}
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
