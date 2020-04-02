@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+	<!-- Modal -->
+	<div th:fragment="modal-form" class="modal fade" id="modal-internacao"
+		tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Editar
+						Cliente</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span th:text="${erro}" id="msg-erro"></span>
+					<form th:action="@{/internacoes/salvar}" method="POST"
+						enctype="multipart/form-data" th:object="${internacao}">
+						<div class="form-row">
+							<div class="form-group col-md-4">
+								<label for="animal">Paciente</label> <input type="text"
+									class="form-control" id="animal" placeholder="Taz..."
+									th:classappend="${#fields.hasErrors('animal.nome')} ? 'is-invalid'"
+									th:field="*{animal.nome}" />
+									<span id="erro-animal" style="display:none"></span>
+								<div class="invalid-feedback">
+									<span th:errors="*{animal.nome}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="status">Status da internação</label> <select
+									th:classappend="${#fields.hasErrors('status')} ? 'is-invalid'"
+									id="status" class="form-control" th:field=*{status}
+									th:name="status">
+									<option value="">Selecione</option>
+									<option th:value="Ativa">Ativa</option>
+									<option th:value="Encerrada">Encerrada</option>
+								</select>
+								<div class="invalid-feedback">
+									<span th:errors="*{status}"></span>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-row entrada">
+							<div class="form-group col-md-4">
+								<label for="dataEntrada">Data de admissão do paciente</label> <input
+									class="form-control" type="date" id="dataEntrada"
+									th:classappend="${#fields.hasErrors('dataEntrada')} ? 'is-invalid'"
+									th:field="*{dataEntrada}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{dataEntrada}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="inicio">Hora de admissão do paciente</label> <input
+									class="form-control" type="time" id="inicio"
+									th:classappend="${#fields.hasErrors('horaEntrada')} ? 'is-invalid'"
+									th:field="*{horaEntrada}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{horaEntrada}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-row saida">
+							<div class="form-group col-md-4">
+								<label for="dataSaida">Data de liberação do paciente</label> <input
+									class="form-control" type="date" id="dataSaida"
+									th:classappend="${#fields.hasErrors('dataSaida')} ? 'is-invalid'"
+									th:field="*{dataSaida}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{dataSaida}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="horaSaida">Hora de liberação do paciente</label> <input
+									class="form-control" type="time" id="horaSaida"
+									th:classappend="${#fields.hasErrors('horaSaida')} ? 'is-invalid'"
+									th:field="*{horaSaida}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{horaSaida}"></span>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="descricao">Anotações</label>
+								<textarea class="form-control" id="descricao"
+									autofocus="autofocus" th:field="*{descricao}"
+									th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
+								<div class="invalid-feedback">
+									<span th:errors="*{descricao}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="prescricao">Prescrição</label>
+								<textarea class="form-control" id="prescricao"
+									autofocus="autofocus" th:field="*{prescricao}"
+									th:classappend="${#fields.hasErrors('prescricao')} ? 'is-invalid'"></textarea>
+								<div class="invalid-feedback">
+									<span th:errors="*{prescricao}"></span>
+								</div>
+							</div>
+							<label for="files">Select files:</label> <input type="file"
+								id="files" th:name="files" multiple>
+						</div>
+						<input type="hidden" id="id" th:field="*{id}" /> 
+						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+					</form>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

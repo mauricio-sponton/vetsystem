@@ -21,12 +21,12 @@
 		</div>
 		<div th:if="${veterinario.foto.fileName == null}">
 			<img alt="" th:src="@{/image/pessoa.png}"
-				style="width: 200px; height: auto">
+				style="width: auto; height: auto">
 		</div>
 		<div
 			th:if="${veterinario.foto!= null && veterinario.foto.fileName != null}">
 			<img alt="" th:src="@{${'/uploads/' + veterinario.foto.fileName}}"
-				style="width: 30%; height: auto">
+				style="width: auto; height: auto">
 		</div>
 
 	</section>

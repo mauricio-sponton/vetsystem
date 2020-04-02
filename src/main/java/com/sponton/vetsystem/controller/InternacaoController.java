@@ -60,19 +60,22 @@ public class InternacaoController {
 	@PostMapping("/salvar")
 	public String salvarInternacao(@Valid Internacao internacao, BindingResult result, RedirectAttributes attr,
 			@AuthenticationPrincipal User user, @RequestParam("status") String status,
-			@RequestParam("files") MultipartFile[] files) {
-		if (result.hasErrors()) {
-			return "internacao/cadastro";
+			@RequestParam("files") MultipartFile[] files, ModelMap model) {
+		if (result.hasErrors() || internacao.getAnimal().getNome().isEmpty()) {
+			model.addAttribute("erro", "Por favor preencha os dados");
+			model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
+			model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
+			return "internacao/lista";
 		}
 		String titulo = internacao.getAnimal().getNome();
 		Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
 		if (internacao.hasNotId() && animal.getStatus().equals("Internado")) {
 			attr.addFlashAttribute("falha", "O paciente já possui uma internação em andamento!");
-			return "redirect:/internacoes/cadastrar";
+			return "redirect:/internacoes/listar";
 		}
 		if (internacao.hasNotId() && status.equals("Encerrada")) {
 			attr.addFlashAttribute("falha", "O paciente não possui nenhuma internação em andamento!");
-			return "redirect:/internacoes/cadastrar";
+			return "redirect:/internacoes/listar";
 		}
 		if (internacao.hasId() && status.equals("Encerrada")) {
 			animal.setStatus("Normal");
@@ -126,11 +129,11 @@ public class InternacaoController {
 		historico.setAnimal(animal);
 		historicoAnimalService.salvar(historico);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
-		return "redirect:/internacoes/cadastrar";
+		return "redirect:/internacoes/listar";
 	}
 
 	@GetMapping("/listar")
-	public String listarInternacoes(ModelMap model) {
+	public String listarInternacoes(ModelMap model, Internacao internacao) {
 		model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
 		model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
 		return "internacao/lista";
@@ -139,7 +142,9 @@ public class InternacaoController {
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("internacao", service.buscarPorId(id));
-		return "internacao/cadastro";
+		model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
+		model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
+		return "internacao/lista";
 	}
 
 	@GetMapping("/visualizar/{id}")

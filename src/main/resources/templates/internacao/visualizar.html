@@ -15,7 +15,7 @@
 		<div th:if="${fotos != null}">
 		<div th:each="f: ${fotos}">
 			<img alt="" th:src="@{${'/uploads/' + f.fileName}}"
-				style="width: 20%; height: auto">
+				style="width: 30%; height: auto">
 		</div>
 		</div>
 	</section>

@@ -3,12 +3,31 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
+<style>
+	#alergias {
+		width: 30%;
+		height: 25px;
+		background-color: white;
+		transition: height 2s;
+		transition: background-color 1s linear;
+	}
+	
+	.entrada {
+		display: none;
+	}
+	
+	.saida {
+		display: none;
+	}
+</style>
 </head>
 <body>
-	<div th:replace="fragments/alert :: alerta-sucesso"></div>
+	
 	<section class="layout-content" layout:fragment="corpo">
-	<a th:href="@{/internacoes/cadastrar}" class="btn-cadastrar-usuario"
-					role="button">Nova Internação</a>
+	<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-internacao">Nova Interação</a> <span
+					th:replace="internacao/modal :: modal-form"></span>
 		<section>
 			<div class="tabs tabs-style-flip">
 				<nav>
@@ -55,6 +74,71 @@
 		</section>
 	</section>
 	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	 var internacao = [[${internacao.id}]];
+		$(document).ready(
+				function() {
+					document.getElementById('dataEntrada').max = new Date(
+							new Date().getTime()
+									- new Date().getTimezoneOffset() * 60000)
+							.toISOString().split("T")[0];
+				})
+		$(document).ready(
+				function() {
+					document.getElementById('dataSaida').min = new Date(
+							new Date().getTime()
+									- new Date().getTimezoneOffset() * 60000)
+							.toISOString().split("T")[0];
+				})
+		$("#animal").autocomplete({
+
+			source : function(request, response) {
+				$.ajax({
+					method : "GET",
+					url : "/pacientes/titulo",
+					data : {
+						termo : request.term
+					},
+					success : function(data) {
+						response(data);
+					}
+				})
+			}
+		});
+		$(document).ready(function(){
+			if(internacao != null){
+				$("#modal-internacao").modal('show');
+				$(".modal-title").text("Editar Internação");
+				$("#animal").attr('readonly', 'readonly');
+			}
+			if(internacao == null){
+				$(".modal-title").text("Nova Internação");
+			}
+			if ($("#msg-erro").html() != "") {
+				$("#modal-internacao").modal('show');
+				if($("#animal").val() == ""){
+					$("#animal").addClass('is-invalid');
+					$("#erro-animal").show().text("Por favor informe a espécie");
+				}
+				$
+				$("#msg-erro").css("color", "red");
+				$(".is-invalid").css("border", "1px solid red");
+			}
+
+			$("#modal-internacao").on("hidden.bs.modal", function() {
+				$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+				$("#msg-erro").hide();
+				$("#modal-internacao").modal('hide');
+				
+			});
+			
+			$(".btn-cadastrar-usuario").on("click", function(){
+				$(".form-control").val("");
+				$("#animal").removeAttr('readonly');
+				$("#erro-especie").hide();
+				$(".modal-title").text("Nova Internação");
+			});	
+		});	
+	</script>
 </body>
 </html>

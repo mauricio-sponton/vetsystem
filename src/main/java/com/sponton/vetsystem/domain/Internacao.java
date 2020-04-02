@@ -51,7 +51,7 @@ public class Internacao extends AbstractEntity {
 	@DateTimeFormat(iso = ISO.TIME)
 	private LocalTime horaSaida;
 	
-	@Valid
+	//@Valid
 	@ManyToOne
 	private Animal animal;
 	

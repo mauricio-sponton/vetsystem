@@ -47,7 +47,7 @@ public class RacaController {
 			return "raca/lista";
 		}
 		if(raca.getEspecie() == null) {
-			model.addAttribute("erro", "Por favor selecione a espécie");
+			model.addAttribute("erro", "Por favor preencha os dados");
 			return "raca/lista";
 		}
 		try {
