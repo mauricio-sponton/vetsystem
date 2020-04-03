@@ -39,13 +39,76 @@
 						</div>
 					</div>
 				</div>
-				<a th:href="@{/consultas/cadastrar}" class="btn-cadastrar-usuario"
-					role="button">Nova Consulta</a>
+				<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-consulta">Nova Consulta</a>
+				<span th:replace="consulta/modal :: modal-form"></span>
 			</div>
 		</main>
 
 	</section>
-<script th:src="@{/js/consulta.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:src="@{/js/consulta.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	var consulta = [[${consulta.id}]];
+	var data = [[${consulta.data}]];
+	$(document).ready(
+			function() {
+					document.getElementById('datePickerId').min = new Date(
+							new Date().getTime()
+									- new Date().getTimezoneOffset() * 60000)
+							.toISOString().split("T")[0];
+				
+				
+			})
+
+	$("#animal").autocomplete({
+	
+		source : function(request, response) {
+
+			$.ajax({
+				method : "GET",
+				url : "/pacientes/titulo",
+				data : {
+					termo : request.term
+				},
+				success : function(data) {
+					response(data);
+					
+				}
+			})
+		
+		}
+	});
+	$(document).ready(function(){
+		if(consulta != null){
+			$("#modal-consulta").modal('show');
+			$(".modal-title").text("Editar Consulta");
+		}
+		if(consulta == null){
+			$(".modal-title").text("Nova Consulta");
+		}
+		if ($("#msg-erro").html() != "") {
+			$("#modal-consulta").modal('show');
+			if($("#animal").val() == ""){
+				$("#animal").addClass('is-invalid');
+				$("#erro-animal").show().text("Por favor informe a espécie");
+			}
+			$("#msg-erro").css("color", "red");
+			$(".is-invalid").css("border", "1px solid red");
+		}
+
+		$("#modal-consulta").on("hidden.bs.modal", function() {
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$("#msg-erro").hide();
+			$("#modal-consulta").modal('hide');
+			
+		});
+		
+		$(".btn-cadastrar-usuario").on("click", function(){
+			$(".form-control").val("");
+			$(".modal-title").text("Nova Consulta");
+		});	
+	});	
+	
+	</script>
 </body>
 </html>

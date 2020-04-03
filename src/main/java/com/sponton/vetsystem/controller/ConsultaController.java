@@ -56,9 +56,11 @@ public class ConsultaController {
 		return "consulta/cadastro-pelo-paciente";
 	}
 	@PostMapping("/salvar")
-	public String salvarConsulta(@Valid Consulta consulta, BindingResult result, RedirectAttributes attr, @AuthenticationPrincipal User user) {
-		if(result.hasErrors()) {
-			return "consulta/cadastro";
+	public String salvarConsulta(@Valid Consulta consulta, BindingResult result, RedirectAttributes attr, 
+			@AuthenticationPrincipal User user, ModelMap model) {
+		if(result.hasErrors() || consulta.getAnimal().getNome().isEmpty()) {
+			model.addAttribute("erro", "Por favor preencha os dados");
+			return "consulta/lista";
 		}
 		String titulo = consulta.getAnimal().getNome();
 		Animal animal = animalService.buscarPorTitulos(new String[] { titulo}).stream().findFirst().get();
@@ -98,10 +100,10 @@ public class ConsultaController {
 			
 			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 		}
-		return "redirect:/consultas/cadastrar";
+		return "redirect:/consultas/listar";
 	}
 	@GetMapping("/listar")
-	public String listarConsultas() {
+	public String listarConsultas(Consulta consulta) {
 		return "consulta/lista";
 	}
 	@GetMapping("/datatables/server")
@@ -112,7 +114,7 @@ public class ConsultaController {
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("consulta", service.buscarPorId(id));
-		return "consulta/cadastro";
+		return "consulta/lista";
 	}
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
