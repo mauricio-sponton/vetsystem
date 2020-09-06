@@ -13,7 +13,7 @@ h2 {
 }
 
 #generico {
-	width: 50%;
+	width: 70%;
 	margin-top: 20px
 }
 
@@ -173,7 +173,7 @@ h2 {
 							(h.tipo == 'Nova internação' ? 'nova-internacao' : '') +
 							(h.tipo == 'Alteração de internação' ? 'edit-internacao' : '') }">
 									<p>
-										<span th:text="'Descrição: ' + ${h.descricao}"></span>
+										<span id= "quebra" th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
 									</p>
 									<p>
 										<span th:text="'Tipo: ' + ${h.tipo}"></span>
@@ -214,7 +214,7 @@ h2 {
 	</section>
 	<script th:src="@{/js/animal.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
-		
+			$('#quebra').val().replace(/\n\r?/g, '<br />')
 	</script>
 </body>
 </html>

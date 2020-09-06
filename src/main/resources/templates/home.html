@@ -21,7 +21,13 @@
 		<p>
 			<span th:text="'Há um total de ' + ${#lists.size(animal)} + ' animais cadastrados'"></span>
 				
+		</p><p>
+			<span th:text="'Há um total de ' + ${#lists.size(cliente)} + ' animais cadastrados'"></span>	
 		</p>
+		<div th:each="c: ${cliente}">
+		<span th:text="${c.nome}"></span>
+		
+		</div>
 		</div>
  <h2>Basic Modal Example</h2>
   <!-- Trigger the modal with a button -->

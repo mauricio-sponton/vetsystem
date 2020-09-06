@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.HTML;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +118,21 @@ public class AnimalController {
 			}
 			if (animal.hasId()) {
 				Animal status = service.buscarPorId(animal.getId());
-				historico.setDescricao("O paciente foi alterado com sucesso");
+				StringBuilder mud = new StringBuilder();
+				//String newline = System.getProperty("line.separator");
+				if(animal.getNome() != status.getNome()) {
+					mud.append("O nome do paciente foi mudado de " + status.getNome() + " para " + animal.getNome() + "." + ";");
+					historico.setDescricao(mud.toString());
+					
+					
+				}
+				if(animal.getCliente() != status.getCliente()){
+					mud.append("O dono do paciente foi mudado de " + status.getCliente().getNome() + " para " + animal.getCliente().getNome());
+					historico.setDescricao(mud.toString());
+				}
+				//mud = mud.replaceAll("\\s+", newline);
+				
+				//historico.setDescricao(mud.toString());
 				historico.setTipo("Mudar dados");
 				historico.setUsuario(veterinario.getNome() + " (veterinario)");
 				historico.setData(data);

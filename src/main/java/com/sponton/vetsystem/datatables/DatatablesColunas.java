@@ -8,4 +8,5 @@ public class DatatablesColunas {
 	public static final String[] RACAS = {"id", "nome", "especie.nome"};
 	public static final String[] ANIMAIS = {"id", "nome", "cliente.nome","especie.nome","raca.nome"};
 	public static final String[] CONSULTAS = {"id", "data", "hora","animal.nome"};
+	public static final String[] VACINAS = {"id", "descricao", "doses", "intervalo", "especie.nome"};
 }

@@ -21,6 +21,7 @@ import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AnimalService;
+import com.sponton.vetsystem.service.ClienteService;
 import com.sponton.vetsystem.service.EspecieService;
 import com.sponton.vetsystem.service.VeterinarioService;
 
@@ -36,9 +37,13 @@ public class HomeController {
 	@Autowired
 	private VeterinarioService veterinarioService;
 	
+	@Autowired
+	private ClienteService clienteService;
+	
 	@GetMapping({"/home" })
 	public String home(ModelMap model) {
 		model.addAttribute("animal", animalService.buscarTodosAnimais());
+		model.addAttribute("cliente", clienteService.buscarTodosClientes());
 		return "home";
 	}
 

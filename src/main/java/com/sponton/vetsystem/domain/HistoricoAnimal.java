@@ -66,8 +66,8 @@ public class HistoricoAnimal extends AbstractEntity {
 		return descricao;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setDescricao(String string) {
+		this.descricao = string;
 	}
 
 	public String getTipo() {
