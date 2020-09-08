@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sponton.vetsystem.domain.Animal;
+import com.sponton.vetsystem.domain.Aplicacao;
 import com.sponton.vetsystem.domain.Cliente;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Foto;
@@ -38,8 +39,10 @@ import com.sponton.vetsystem.domain.HistoricoAnimal;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Raca;
 import com.sponton.vetsystem.domain.Secretaria;
+import com.sponton.vetsystem.domain.Vacina;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AnimalService;
+import com.sponton.vetsystem.service.AplicacaoService;
 import com.sponton.vetsystem.service.ClienteService;
 import com.sponton.vetsystem.service.ConsultaService;
 import com.sponton.vetsystem.service.EspecieService;
@@ -47,6 +50,7 @@ import com.sponton.vetsystem.service.FotoService;
 import com.sponton.vetsystem.service.HistoricoAnimalService;
 import com.sponton.vetsystem.service.RacaService;
 import com.sponton.vetsystem.service.SecretariaService;
+import com.sponton.vetsystem.service.VacinaService;
 import com.sponton.vetsystem.service.VeterinarioService;
 
 @Controller
@@ -79,6 +83,12 @@ public class AnimalController {
 
 	@Autowired
 	private FotoService fotoService;
+	
+	@Autowired
+	private AplicacaoService aplicacaoService;
+	
+	@Autowired
+	private VacinaService vacinaService;
 
 	@GetMapping("/cadastrar")
 	public String novoAnimal(Animal animal) {
@@ -238,10 +248,11 @@ public class AnimalController {
 	}
 
 	@GetMapping("/visualizar/{id}")
-	public String visualizar(@PathVariable("id") Long id, ModelMap model) {
+	public String visualizar(@PathVariable("id") Long id, ModelMap model, Aplicacao aplicacoes) {
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
 		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
+		//model.addAttribute("aplicacao", aplicacaoService.buscarAplicacaoPorAnimal(id));
 		return "animal/visualizar";
 	}
 
@@ -272,5 +283,9 @@ public class AnimalController {
 	public ResponseEntity<?> getAnimaisPorAlergias(@PathVariable("termo") String termo) {
 		List<String> animais = service.buscarAnimaisByAlergias(termo);
 		return ResponseEntity.ok(animais);
+	}
+	@ModelAttribute("vacinas")
+	public List<Vacina> listaDeEspecies(){
+		return vacinaService.buscarTodasVacinas();
 	}
 }

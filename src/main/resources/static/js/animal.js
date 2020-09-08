@@ -34,7 +34,7 @@ $(document).ready(function () {
              data: 'id',
                 "render": function(id) {
                     return '<a class="btn btn-success btn-sm btn-block" href="/pacientes/editar/'+ 
-                    	id +'" role="button"><i class="fas fa-edit"></i></a>';
+                    	id +'" role="button" ><i class="fas fa-edit"></i></a>';
                 }
             },
             {orderable: false,
@@ -54,5 +54,7 @@ $(document).ready(function () {
         ]
     });
 });    
+
+
 
 

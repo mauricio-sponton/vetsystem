@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<form th:action="@{/aplicacoes/salvar/{id} (id=${animal.id})}"
+			method="POST" th:object="${aplicacao}">
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="datePickerId">Selecione a data da aplicação</label> <input
+						class="form-control" type="date" id="datePickerId" 
+						th:classappend="${#fields.hasErrors('dataAplicacao')} ? 'is-invalid'"
+						th:field="*{dataAplicacao}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{dataAplicacao}"></span>
+					</div>
+
+				</div>
+				<div class="form-group col-md-4">
+					<label for="vacina">Vacina</label> <select
+						th:classappend="${#fields.hasErrors('vacina')} ? 'is-invalid'"
+						id="vacina" class="form-control" th:field=*{vacina}>
+						<option value="">Selecione</option>
+						<option th:each="v : ${vacinas}" th:value="${v.id}"
+							th:text="${v.descricao}">Labrador</option>
+
+					</select> <span id="erro-especie" style="display: none"></span>
+					<div class="invalid-feedback">
+						<span th:errors="*{vacina}"></span>
+					</div>
+				</div>
+			</div>
+
+			 <input
+				type="hidden" id="idAplicacao" th:field="*{id}" />
+			<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+		</form>
+
+	</section>
+	<script th:src="@{/js/aplicacao.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		
+	</script>
+</body>
+</html>

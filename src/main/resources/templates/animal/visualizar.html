@@ -78,6 +78,7 @@ h2 {
 <body>
 	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 	<section class="layout-content" layout:fragment="corpo">
+	
 
 		<h2 th:text="${animal.nome}"></h2>
 		<div th:if="${animal.foto.fileName == null}">
@@ -203,7 +204,30 @@ h2 {
 						<p style="color: purple" >3</p>
 					</section>
 					<section id="section-flip-4">
-						<p style="color: purple">4</p>
+						<div class="container">
+
+					<div class="row">
+						<div class="col-md-12">
+							<h2>Aplicações Cadastradas</h2>
+
+							<table id="table-aplicacoes"
+								class="table table-sm table-striped table-bordered nowrap"
+								style="width: 100%">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">Descrição</th>
+										<th scope="col">Doses</th>
+										<th scope="col">Data da Aplicação</th>
+										<th scope="col">Editar</th>
+										<th scope="col">Excluir</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+					<a class="btn-cadastrar-usuario" th:href="@{/aplicacoes/cadastrar/{id} (id=${animal.id})}" role="button"
+					>Nova Aplicação</a> 
+				</div>
 					</section>
 
 				</div>
@@ -213,8 +237,63 @@ h2 {
 		</section>
 	</section>
 	<script th:src="@{/js/animal.js(v=${version})}" th:fragment="js"></script>
+	
 	<script th:inline="javascript" th:fragment="inlinescript">
-			$('#quebra').val().replace(/\n\r?/g, '<br />')
+			$('#quebra').val().replace(/\n\r?/g, '<br />');
+			var idAnimal = [[${animal.id != null ? animal.id : 0}]];
+			$(document).ready(function () {
+				
+				moment.locale('pt-BR');
+			    var table = $('#table-aplicacoes').DataTable({
+			    	"language":{
+			    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
+			    		"zeroRecords": "Nenhum registro encontrado",
+			            "info": "Mostrando página _PAGE_ de _PAGES_",
+			            "infoEmpty": " ",
+			            "search": "Pesquise: ",
+			            "paginate": {
+			                "first":      "Primeiro",
+			                "last":       "Ultimo",
+			                "next":       "Próximo",
+			                "previous":   "Anterior"
+			            } 
+			    	},
+			    	searching: true,
+			    	lengthMenu: [5, 10],
+			        processing: true,
+			        serverSide: true,
+			        responsive: true,
+			        ajax: {
+			            url: '/aplicacoes/datatables/server/ '+idAnimal+'',
+			            data: 'data'
+			        },
+			        columns: [
+			            {data: 'vacina.descricao'},
+			            {data: 'vacina.doses'},
+			            {data: 'dataAplicacao', render:
+			                function( data ) {
+			                    return moment(data).format('L');
+			                }
+			            },
+			            {orderable: false, 
+			             data: 'id',
+			                "render": function(id) {
+			                    return '<a class="btn btn-success btn-sm btn-block" href="/aplicacoes/editar/'+ 
+			                    	id +'/paciente/'+idAnimal +'" role="button"><i class="fas fa-edit"></i></a>';
+			                }
+			            },
+			            {orderable: false,
+			             data: 'id',
+			                "render": function(id) {
+			                    return '<a class="btn btn-danger btn-sm btn-block" href="/aplicacoes/excluir/'+ 
+			                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+			                }               
+			            },
+			    
+			        ]
+			    });
+			});    
+
 	</script>
 </body>
 </html>
