@@ -41,6 +41,13 @@ public class VacinaController {
 			return "vacina/lista";
 		}
 		try {
+			if(vacina.hasNotId()) {
+				List<Vacina> vacinas = service.buscarVacinasPorNomeEEspecie(vacina.getEspecie().getNome(),vacina.getDescricao());
+				if(vacinas.size() > 0) {
+					attr.addFlashAttribute("falha", "Cadastro não realizado pois essa vacina já está cadastrada no sistema");
+					return "redirect:/vacinas/listar";
+				}
+			}
 			service.salvarVacina(vacina);
 			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 		}catch(DataIntegrityViolationException ex) {

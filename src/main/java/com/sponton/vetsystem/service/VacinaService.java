@@ -53,4 +53,10 @@ public class VacinaService {
 		return repository.findAll();
 	}
 
+	@Transactional(readOnly = true)
+	public List<Vacina> buscarVacinasPorNomeEEspecie(String especie, String descricao) {
+
+		return repository.findByNomeAndEspecie(especie, descricao);
+	}
+
 }
