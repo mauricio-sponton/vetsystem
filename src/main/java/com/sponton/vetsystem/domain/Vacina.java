@@ -21,9 +21,11 @@ public class Vacina extends AbstractEntity {
 	@Column(name = "descricao", nullable = false)
 	private String descricao;
 	
-	@NotBlank(message="Informe o número de aplicações")
+	
+	@NotNull(message="Informe o intervalo de dias entre aplicações")
+	@Digits(integer = 5, fraction = 0)
 	@Column(name = "doses", nullable = false)
-	private String doses;
+	private Integer doses;
 	
 	@NotNull(message="Informe o intervalo de dias entre aplicações")
 	@Digits(integer = 5, fraction = 0)
@@ -44,7 +46,7 @@ public class Vacina extends AbstractEntity {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
+/*
 	public String getDoses() {
 		return doses;
 	}
@@ -52,9 +54,17 @@ public class Vacina extends AbstractEntity {
 	public void setDoses(String doses) {
 		this.doses = doses;
 	}
-
+*/
 	public Integer getIntervalo() {
 		return intervalo;
+	}
+
+	public Integer getDoses() {
+		return doses;
+	}
+
+	public void setDoses(Integer doses) {
+		this.doses = doses;
 	}
 
 	public void setIntervalo(Integer intervalo) {

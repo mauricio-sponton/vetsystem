@@ -49,6 +49,7 @@ public class AplicacaoController {
 	public String salvarAplicacao(@Valid Aplicacao aplicacao, BindingResult result, RedirectAttributes attr,
 			ModelMap model, @PathVariable("id") Long id) {
 		Animal animal = animalService.buscarPorId(id);
+		
 		if (result.hasErrors()) {
 			model.addAttribute("animal", animalService.buscarPorId(id));
 			model.addAttribute("erro", "Por favor preencha os dados");
@@ -56,7 +57,22 @@ public class AplicacaoController {
 		}
 
 		try {
-
+			aplicacao.setDoses(1);	
+			if(aplicacao.hasId() && aplicacao.getDoses() >= 1) {
+				List<Aplicacao> aplic = service.buscarPorDesc(aplicacao.getVacina().getDescricao(), id);
+				//if(aplicacao.getVacina().getDescricao() == aplic.getVacina().getDescricao()) {
+				if(aplic.size() < aplicacao.getVacina().getDoses()) {
+					aplicacao.setDoses(aplic.size() + 1);	
+					aplicacao.setProximaAplicacao(aplicacao.getDataAplicacao().plusDays(aplicacao.getVacina().getIntervalo()));
+	
+				}
+				if(aplic.size() >= aplicacao.getVacina().getDoses()) {
+					aplicacao.setDoses(0);	
+					aplicacao.setProximaAplicacao(aplicacao.getDataAplicacao().plusDays(365));
+				}
+			}
+			
+			
 			aplicacao.setAnimal(animal);
 			service.salvarAplicacao(aplicacao);
 			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");

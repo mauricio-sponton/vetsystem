@@ -57,7 +57,7 @@
 								<label for="doses">Dosagem</label> <select
 									th:classappend="${#fields.hasErrors('doses')} ? 'is-invalid'"
 									id="doses" class="form-control" th:field=*{doses}>
-									<option th:value="indeterminado" th:text="Indeterminado"></option>
+									<option th:value="0" th:text="Indeterminado"></option>
 									<option th:value="1" >1 Doses</option>
 									<option th:value="2" >2 Doses</option>
 									<option th:value="3" >3 Doses</option>

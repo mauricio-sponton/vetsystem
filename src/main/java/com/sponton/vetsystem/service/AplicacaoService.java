@@ -56,6 +56,11 @@ public class AplicacaoService {
 		return repository.findAplicacaoPorAnimal(id);
 	}
 
+	@Transactional(readOnly = true)
+	public List<Aplicacao> buscarPorDesc(String descricao, Long id) {
+		return repository.findByDesc(descricao, id);
+	}
+
 	/*
 	@Transactional(readOnly = false)
 	public void editar(Aplicacao aplicacao) {

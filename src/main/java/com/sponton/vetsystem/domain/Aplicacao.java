@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
 
@@ -24,16 +25,41 @@ public class Aplicacao extends AbstractEntity{
 	@DateTimeFormat(iso = ISO.DATE)
 	private LocalDate dataAplicacao;
 	
+	@Column(name="prox_aplicacao")
+	@DateTimeFormat(iso = ISO.DATE)
+	private LocalDate proximaAplicacao;
+	
 	@Valid
 	@ManyToOne
 	@JoinColumn(name = "id_vacina_fk")
 	private Vacina vacina;
 	
 	
+	@Column(name = "num_doses")
+	private Integer doses;
+	
+	public Integer getDoses() {
+		return doses;
+	}
+
+	public void setDoses(Integer doses) {
+		this.doses = doses;
+	}
+
+	public LocalDate getProximaAplicacao() {
+		return proximaAplicacao;
+	}
+
+	public void setProximaAplicacao(LocalDate proximaAplicacao) {
+		this.proximaAplicacao = proximaAplicacao;
+	}
+
+
 	@JoinColumn(name = "id_animal_fk")
 	@ManyToOne
 	private Animal animal;
 
+	
 	public Animal getAnimal() {
 		return animal;
 	}
