@@ -218,6 +218,7 @@ h2 {
 										<th scope="col">Descrição</th>
 										<th scope="col">Doses</th>
 										<th scope="col">Data da Aplicação</th>
+										<th scope="col">Próxima Aplicação</th>
 										<th scope="col">Editar</th>
 										<th scope="col">Excluir</th>
 									</tr>
@@ -258,19 +259,33 @@ h2 {
 			                "previous":   "Anterior"
 			            } 
 			    	},
+			    	
 			    	searching: true,
 			    	lengthMenu: [5, 10],
 			        processing: true,
 			        serverSide: true,
 			        responsive: true,
 			        ajax: {
+			       
 			            url: '/aplicacoes/datatables/server/ '+idAnimal+'',
-			            data: 'data'
+			            data: 'data',
+			            vacina: 'vacina'
 			        },
 			        columns: [
 			            {data: 'vacina.descricao'},
-			            {data: 'vacina.doses'},
+			            {data:'doses', render: function(data, type, row){
+			            	if(row.doses == 0){
+			            		return 'Anual';
+			            	}
+			            	return row.doses + ' de ' + row.vacina.doses;
+			            	
+			            }},
 			            {data: 'dataAplicacao', render:
+			                function( data ) {
+			                    return moment(data).format('L');
+			                }
+			            },
+			            {data: 'proximaAplicacao', render:
 			                function( data ) {
 			                    return moment(data).format('L');
 			                }
