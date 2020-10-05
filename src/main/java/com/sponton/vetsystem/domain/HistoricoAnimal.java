@@ -6,8 +6,10 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -18,13 +20,14 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @Table(name = "historico_animais")
 public class HistoricoAnimal extends AbstractEntity {
 	
-	@Column(name = "usuario", nullable = false)
+	@Column(name = "usuario")
 	private String usuario;
 	
-	@Column(name = "descricao", nullable = false)
+	@Lob
+	@Column(name = "descricao")
 	private String descricao;
 	
-	@Column(name = "tipo", nullable = false)
+	@Column(name = "tipo")
 	private String tipo;
 	
 	@Column(name="data")

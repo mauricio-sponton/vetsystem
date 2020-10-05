@@ -6,6 +6,7 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -43,9 +44,11 @@ public class Consulta extends AbstractEntity {
 	@ManyToOne
 	private Veterinario veterinario;
 	
+	@Lob
 	@Column(name="descricao")
 	private String descricao;
 	
+	@Lob
 	@Column(name="prescricao")
 	private String prescricao;
 	
