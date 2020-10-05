@@ -126,21 +126,33 @@ public class AnimalController {
 				try {
 					fotoService.salvarFoto(file, foto);
 				} catch (Exception e) {
-					//attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+					attr.addFlashAttribute("falha", "Foto n possui id!");
 				}
 			}
+			/*
 			if (animal.getFoto().hasId()) {
 				Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
 				foto.setFileName(file.getOriginalFilename());
-				foto.setPath("/uploads/");
-				animal.setFoto(foto);
+					foto.setPath("/uploads/");
+					animal.setFoto(foto);
 				try {
 					fotoService.salvarFoto(file, foto);
 				} catch (Exception e) {
-					//attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+					attr.addFlashAttribute("falha", "Foto já cadastrada!");
 				}
 			}
-
+*/
+		}
+		if (!file.isEmpty() && animal.hasId()) {
+			Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
+			foto.setFileName(file.getOriginalFilename());
+			foto.setPath("/uploads/");
+			animal.setFoto(foto);
+			try {
+				fotoService.salvar(foto);
+			} catch (Exception e) {
+				attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+			}
 		}
 		if (file.isEmpty() && animal.hasId()) {
 			Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
@@ -148,12 +160,12 @@ public class AnimalController {
 			try {
 				fotoService.salvar(foto);
 			} catch (Exception e) {
-				//attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+				attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 			}
 		}
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
 			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
-
+			
 			if (animal.hasNotId()) {
 				historico.setDescricao("O paciente foi criado com sucesso");
 				historico.setTipo("Dados");
@@ -165,6 +177,7 @@ public class AnimalController {
 			}
 			if (animal.hasId()) {
 				Animal status = service.buscarPorId(animal.getId());
+				Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
 				StringBuilder mud = new StringBuilder();
 				if (!status.getNome().contains(animal.getNome())) {
 					mud.append("O nome do paciente foi mudado de " + status.getNome() + " para " + animal.getNome()
@@ -205,12 +218,18 @@ public class AnimalController {
 					mud.append("As alergias do paciente foram alteradas " + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				
-				if (!status.getFoto().getFileName().equals(animal.getFoto().getFileName())) {
+				/*
+				if (!status.getFoto().getFileName().equals(file.getOriginalFilename()) && !file.isEmpty()) {
 					mud.append("A foto do paciente foi alterada " + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				
+				if(!file.isEmpty()) {
+					if(!status.getFoto().getId().equals(foto.getId())) {
+						mud.append("A foto do paciente foi alterada " + "." + ";");
+						historico.setDescricao(mud.toString());
+					}
+				}
+				*/
 				if (historico.getDescricao() != null) {
 					historico.setTipo("Mudar dados");
 					historico.setUsuario(veterinario.getNome() + " (veterinario)");
