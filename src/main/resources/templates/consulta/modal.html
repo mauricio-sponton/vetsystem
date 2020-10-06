@@ -94,8 +94,8 @@
 
 							<div class="form-group col-md-3">
 								<label for="peso">Peso</label> <input type="text"
-									class="form-control" id="peso" data-mask="#,##"
-									data-mask-reverse="true" th:field="*{peso}"
+									class="form-control" id="peso" data-mask="##,#"
+									 th:field="*{peso}"
 									th:classappend="${#fields.hasErrors('peso')} ? 'is-invalid'" />
 								<div class="invalid-feedback">
 									<span th:errors="*{peso}"></span>

@@ -50,6 +50,8 @@
 	<script th:inline="javascript" th:fragment="inlinescript">
 	var consulta = [[${consulta.id}]];
 	var data = [[${consulta.data}]];
+	var temperat = [[${consulta.temperatura}]];
+	var pes = [[${consulta.peso}]];
 	$(document).ready(
 			function() {
 					document.getElementById('datePickerId').min = new Date(
@@ -79,9 +81,21 @@
 		}
 	});
 	$(document).ready(function(){
+		
 		if(consulta != null){
 			$("#modal-consulta").modal('show');
 			$(".modal-title").text("Editar Consulta");
+			var teste = $("#temperatura").val();
+			var peso = $("#peso").val();
+			if(teste != temperat){
+				var t =temperat.toString().replace('.', ',');
+				$("#temperatura").val(t);
+			}
+			if(peso != pes){
+				var p =pes.toString().replace('.', ',');
+				$("#peso").val(p);
+			}
+			
 		}
 		if(consulta == null){
 			$(".modal-title").text("Nova Consulta");
@@ -108,7 +122,6 @@
 			$(".modal-title").text("Nova Consulta");
 		});	
 	});	
-	
 	</script>
 </body>
 </html>

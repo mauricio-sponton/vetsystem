@@ -148,6 +148,7 @@ public class AnimalController {
 			foto.setFileName(file.getOriginalFilename());
 			foto.setPath("/uploads/");
 			animal.setFoto(foto);
+			
 			try {
 				fotoService.salvar(foto);
 			} catch (Exception e) {
@@ -218,18 +219,7 @@ public class AnimalController {
 					mud.append("As alergias do paciente foram alteradas " + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				/*
-				if (!status.getFoto().getFileName().equals(file.getOriginalFilename()) && !file.isEmpty()) {
-					mud.append("A foto do paciente foi alterada " + "." + ";");
-					historico.setDescricao(mud.toString());
-				}
-				if(!file.isEmpty()) {
-					if(!status.getFoto().getId().equals(foto.getId())) {
-						mud.append("A foto do paciente foi alterada " + "." + ";");
-						historico.setDescricao(mud.toString());
-					}
-				}
-				*/
+				
 				if (historico.getDescricao() != null) {
 					historico.setTipo("Mudar dados");
 					historico.setUsuario(veterinario.getNome() + " (veterinario)");

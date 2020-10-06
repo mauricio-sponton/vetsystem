@@ -53,13 +53,13 @@ public class Consulta extends AbstractEntity {
 	private String prescricao;
 	
 	@NotNull(message="Insira o pesoa")
-	@NumberFormat(style = Style.NUMBER, pattern = "#,##")
-	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
+	@NumberFormat(style = Style.NUMBER, pattern = "##,#")
+	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 00.0")
 	private BigDecimal peso;
 	
 	@NotNull(message="Insira a temperatura")
 	@NumberFormat(style = Style.NUMBER, pattern = "##,#")
-	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
+	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 00.0")
 	private BigDecimal temperatura;
 
 	

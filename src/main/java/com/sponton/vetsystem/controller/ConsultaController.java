@@ -117,13 +117,13 @@ public class ConsultaController {
 							+ consulta.getTermino() + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				if (!status.getTemperatura().equals(consulta.getTemperatura())) {
+				if (status.getTemperatura().doubleValue() != consulta.getTemperatura().doubleValue()) {
 					mud.append("A temperatura do paciente foi mudada de " + status.getTemperatura() + " para "
 							+ consulta.getTemperatura() + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				if (!status.getPeso().equals(consulta.getPeso())) {
-					mud.append("O peso do paciente foi mudado de " + status.getPeso() + " para " + consulta.getPeso()
+				if (status.getPeso().doubleValue() != consulta.getPeso().doubleValue()) {
+					mud.append("O peso do paciente foi mudado de " + status.getPeso() + " para " + consulta.getPeso().doubleValue()
 							+ "." + ";");
 					historico.setDescricao(mud.toString());
 				}
@@ -133,17 +133,22 @@ public class ConsultaController {
 					historico.setDescricao(mud.toString());
 				}
 
-				historico.setTipo("Alteração de consulta");
-				historico.setUsuario(veterinario.getNome() + " (veterinario)");
-				historico.setData(data);
-				historico.setHora(hora);
+				if(historico.getDescricao() != null) {
+					historico.setTipo("Alteração de consulta");
+					historico.setUsuario(veterinario.getNome() + " (veterinario)");
+					historico.setData(data);
+					historico.setHora(hora);
+				}
+			
 			}
 			consulta.setAnimal(animal);
 			consulta.setVeterinario(veterinario);
 			service.salvarConsulta(consulta);
-
-			historico.setAnimal(animal);
-			historicoAnimalService.salvar(historico);
+			if(historico.getDescricao() != null) {
+				historico.setAnimal(animal);
+				historicoAnimalService.salvar(historico);
+			}
+			
 
 			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 		}
