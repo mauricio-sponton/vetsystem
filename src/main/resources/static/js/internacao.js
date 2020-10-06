@@ -1,4 +1,4 @@
-$(document).ready(function(){
+/*$(document).ready(function(){
 	//
 	var status = $('#status').val();
 	if (status == "Ativa") {
@@ -29,3 +29,4 @@ $(document).ready(function(){
 		}
     })
 })
+*/

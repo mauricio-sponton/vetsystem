@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Internacao extends AbstractEntity {
 
 	@NotBlank(message = "Informe o status da internação")
-	@Column(name = "status", nullable = false)
+	@Column(name = "status")
 	private String status;
 	
 	@Column(name = "descricao")
@@ -35,11 +35,13 @@ public class Internacao extends AbstractEntity {
 	@Column(name = "prescricao")
 	private String prescricao;
 	
-	@Column(name="data_entrada")
+	@NotNull(message="Insira a data de entrada do paciente na internação")
+	@Column(name="data_entrada", nullable = false)
 	@DateTimeFormat(iso = ISO.DATE)
 	private LocalDate dataEntrada;
 	
-	@Column(name="hora_entrada")
+	@NotNull(message="Insira o horário de entrada do paciente na internação")
+	@Column(name="hora_entrada", nullable = false)
 	@DateTimeFormat(iso = ISO.TIME)
 	private LocalTime horaEntrada;
 	

@@ -2,6 +2,8 @@ package com.sponton.vetsystem.controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -97,6 +99,7 @@ public class InternacaoController {
 		HistoricoAnimal historico = new HistoricoAnimal();
 		LocalDate data = LocalDate.now();
 		LocalTime hora = LocalTime.now();
+		StringBuilder mud = new StringBuilder();
 
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
 			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
@@ -105,8 +108,8 @@ public class InternacaoController {
 						"Por favor preencha seus dados pessoais para continuar usando o sistema");
 				return "redirect:/veterinarios/dados";
 			}
-			if (internacao.hasNotId()) {
-				historico.setDescricao("O paciente " + internacao.getAnimal().getNome() + "foi internado.");
+			if (internacao.hasNotId() && status.equals("Ativa")) {
+				historico.setDescricao("O paciente " + internacao.getAnimal().getNome() + " foi internado.");
 				historico.setTipo("Nova internação");
 				historico.setUsuario(veterinario.getNome() + " (veterinario)");
 				historico.setData(data);
@@ -114,20 +117,61 @@ public class InternacaoController {
 				animal.setStatus("Internado");
 
 			}
-			if (internacao.hasId()) {
-				historico.setDescricao("As informações da internação foram alteradas");
-				historico.setTipo("Alteração de internação");
+			if (internacao.hasId() && status.equals("Ativa")) {
+				Internacao statusHistorico = service.buscarPorId(internacao.getId());
+				if (!statusHistorico.getDescricao().contains(internacao.getDescricao())) {
+					mud.append("As anotações da internação foram alteradas" + "." + ";");
+					historico.setDescricao(mud.toString());
+				}
+				if (!statusHistorico.getPrescricao().contains(internacao.getPrescricao())) {
+					mud.append("A prescrição da internação foi alterada" + "." + ";");
+					historico.setDescricao(mud.toString());
+				}
+				if (!statusHistorico.getDataEntrada().equals(internacao.getDataEntrada())) {
+					mud.append("A data de admissão do paciente foi mudada de "
+							+ statusHistorico.getDataEntrada()
+									.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+							+ " para "
+							+ internacao.getDataEntrada().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+							+ "." + ";");
+					historico.setDescricao(mud.toString());
+				}
+				if (!statusHistorico.getHoraEntrada().equals(internacao.getHoraEntrada())) {
+					mud.append("A hora de entrada da internação foi mudada de " + statusHistorico.getHoraEntrada()
+							+ " para " + internacao.getHoraEntrada() + "." + ";");
+					historico.setDescricao(mud.toString());
+				}
+				
+
+				if (historico.getDescricao() != null) {
+					
+					historico.setTipo("Alteração de internação");
+					historico.setUsuario(veterinario.getNome() + " (veterinario)");
+					historico.setData(data);
+					historico.setHora(hora);
+
+				}
+
+			}
+			if(internacao.hasId() && status.equals("Encerrada")) {
+				internacao.setDataSaida(data);
+				internacao.setHoraSaida(hora);
+				historico.setDescricao("O paciente " + internacao.getAnimal().getNome() + " saiu da internação.");
+				historico.setTipo("Nova internação");
 				historico.setUsuario(veterinario.getNome() + " (veterinario)");
 				historico.setData(data);
 				historico.setHora(hora);
+				animal.setStatus("Normal");
 			}
 
 		}
 
 		internacao.setAnimal(animal);
 		service.salvarInternacao(internacao);
-		historico.setAnimal(animal);
-		historicoAnimalService.salvar(historico);
+		if (historico.getDescricao() != null) {
+			historico.setAnimal(animal);
+			historicoAnimalService.salvar(historico);
+		}
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 		return "redirect:/internacoes/listar";
 	}
