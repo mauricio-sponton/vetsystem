@@ -105,7 +105,7 @@ h2 {
 						<li><a href="#section-flip-2" class="fas fa-notes-medical"
 							style="color: purple"><span>Consultas</span></a></li>
 
-						<li><a href="#section-flip-3"><span>Exames</span></a></li>
+						<li><a href="#section-flip-3"><span>Internações</span></a></li>
 						<li><a href="#section-flip-4"><span>Vacinas</span></a></li>
 
 					</ul>
@@ -201,7 +201,33 @@ h2 {
 						</form>
 					</section>
 					<section id="section-flip-3">
-						<p style="color: purple" >3</p>
+						<div class="container">
+
+					<div class="row">
+						<div class="col-md-12">
+
+							<div th:replace="fragments/alert :: alerta-sucesso"></div>
+							<h2>Internações Cadastradas</h2>
+
+							<table id="table-internacoes"
+								class="table table-sm table-striped table-bordered nowrap"
+								style="width: 100%">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">Status</th>
+										<th scope="col">Paciente</th>
+										<th scope="col">Data de Entrada</th>
+										<th scope="col">Data de Saída</th>
+										<th scope="col">Editar</th>
+										<th scope="col">Excluir</th>
+										<th scope="col">Visualizar</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+				
 					</section>
 					<section id="section-flip-4">
 						<div class="container">
@@ -227,10 +253,10 @@ h2 {
 						</div>
 					</div>
 					<a class="btn-cadastrar-usuario" th:href="@{/aplicacoes/cadastrar/{id} (id=${animal.id})}" role="button"
-					>Nova Aplicação</a> 
+					>Nova Aplicação</a> </span>
 				</div>
 					</section>
-
+<span th:replace="internacao/modal :: modal-form"></span>
 				</div>
 				<!-- /content -->
 			</div>
@@ -243,7 +269,6 @@ h2 {
 			$('#quebra').val().replace(/\n\r?/g, '<br />');
 			var idAnimal = [[${animal.id != null ? animal.id : 0}]];
 			$(document).ready(function () {
-				
 				moment.locale('pt-BR');
 			    var table = $('#table-aplicacoes').DataTable({
 			    	"language":{
@@ -307,8 +332,84 @@ h2 {
 			    
 			        ]
 			    });
+			}); 
+			var internacao = [[${internacao.id}]];
+			
+			$(document).ready(function () {
+			
+				moment.locale('pt-BR');
+			    var table = $('#table-internacoes').DataTable({
+			    	searching: true,
+		
+			    	lengthMenu: [5, 10],
+			        processing: true,
+			        serverSide: true,
+			        responsive: true,
+			        ajax: {
+			            url: '/internacoes/datatables/server/' +idAnimal+'',
+			            data: 'data'
+			          
+			      
+	                	
+			        },
+			        columns: [
+			        	{data: 'status', render :
+			        		function(data, type, row){
+			        		if(row.status == "Ativa"){
+			        			return '<strong class = "ativa">'+ row.status +'</strong>';
+			        		}else{
+			        			return '<strong class = "encerrada">'+ row.status +'</strong>';
+			        		}
+			        	}
+			        },
+			            {data: 'animal.nome'},
+			            {data: 'dataEntrada', render:
+			                function( data ) {
+			                    return moment(data).format('L');
+			                }
+			            },
+			            {data: 'dataSaida', render:
+			                function( data, type, row ) {
+			            		if(row.dataSaida == null){
+			            			return "Internação em andamento"
+			            		}
+			                    return moment(data).format('L');
+			                }
+			            },
+			            {orderable: false, 
+			             data: 'id',
+			                "render": function(id) {
+			                		internacao = id;
+			                		return '<a class="btn btn-success btn-sm btn-block" id ="btn_edt" href="/internacoes/editar/'+ 
+			                    	id +'/paciente/'+idAnimal+'" role="button"><i class="fas fa-edit"></i></a>';
+			                	
+			                    
+			                }
+			            },
+			            {orderable: false,
+			             data: 'id',
+			                "render": function(id) {
+			                    return '<a class="btn btn-danger btn-sm btn-block" href="/internacoes/excluir/'+ 
+			                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+			                }               
+			            },
+			            {orderable: false,
+			                data: 'id',
+			                   "render": function(id) {
+			                	   return '<a class="btn btn-success btn-sm btn-block" href="/internacoes/visualizar/'+ 
+			                   	id +'" role="button"><i class="fas fa-eye"></i></a>';
+			                   }               
+			               }
+			        ]
+			    });
+			   
+			    if(internacao != idAnimal){
+    				$("#modal-internacao").modal('show');
+    				$("#animal").attr('readonly', 'readonly');
+            	}
 			});    
-
+			
+			
 	</script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 	<section class="layout-content" layout:fragment="corpo">
 		<span style="color:indigo" th:text="${internacao.status}"></span>
+		<span style="color:indigo" th:text="${internacao.dataSaida}"></span>
 		<div id="imagem" style="display:none">
 			<img alt="" th:src="@{/image/animal_default.jpg}"
 				style="width: 20%; height: auto">

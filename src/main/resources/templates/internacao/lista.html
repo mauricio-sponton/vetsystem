@@ -4,23 +4,60 @@
 <head>
 <meta charset="UTF-8" />
 <style>
-	#alergias {
-		width: 30%;
-		height: 25px;
-		background-color: white;
-		transition: height 2s;
-		transition: background-color 1s linear;
-	}
+#alergias {
+	width: 30%;
+	height: 25px;
+	background-color: white;
+	transition: height 2s;
+	transition: background-color 1s linear;
+}
+.ativa{
+	color: green;
+	
+}
+.encerrada{
+	color: red
+}
 </style>
 </head>
 <body>
-	
+
 	<section class="layout-content" layout:fragment="corpo">
-	<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<a class="btn-cadastrar-usuario" href="#" role="button"
-					data-toggle="modal" data-target="#modal-internacao">Nova Interação</a> <span
-					th:replace="internacao/modal :: modal-form"></span>
-		<section>
+		<main role="main">
+			<div class="album py-5 bg-light">
+				<div class="container">
+
+					<div class="row">
+						<div class="col-md-12">
+
+							<div th:replace="fragments/alert :: alerta-sucesso"></div>
+							<h2>Internações Cadastradas</h2>
+
+							<table id="table-internacoes"
+								class="table table-sm table-striped table-bordered nowrap"
+								style="width: 100%">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">Status</th>
+										<th scope="col">Paciente</th>
+										<th scope="col">Data de Entrada</th>
+										<th scope="col">Data de Saída</th>
+										<th scope="col">Editar</th>
+										<th scope="col">Excluir</th>
+										<th scope="col">Visualizar</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+				<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-internacao">Nova
+					Internação</a> <span th:replace="internacao/modal :: modal-form"></span>
+			</div>
+		</main>
+
+		<!-- 
 			<div class="tabs tabs-style-flip">
 				<nav>
 					<ul>
@@ -59,11 +96,20 @@
 							<p>
 								<span th:text="'Status: ' + ${i.status}"></span>
 							</p>
+							<form class="form-inline" method="get"
+								th:action="@{/internacoes/editar/{id} (id=${i.id})}">
+								<button class="btn btn-outline-success my-2 my-sm-0">Editar</button>
+							</form>
+							<form class="form-inline" method="get"
+								th:action="@{/internacoes/visualizar/{id} (id=${i.id})}">
+								<button class="btn btn-outline-success my-2 my-sm-0">Visualizar</button>
+							</form>
 						</div>
 					</section>
 				</div>
 			</div>
-		</section>
+			-->
+
 	</section>
 	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
@@ -131,6 +177,7 @@
 				$(".modal-title").text("Nova Internação");
 			});	
 		});	
+		
 	</script>
 </body>
 </html>

@@ -38,6 +38,7 @@ import com.sponton.vetsystem.domain.Cliente;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Foto;
 import com.sponton.vetsystem.domain.HistoricoAnimal;
+import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Raca;
 import com.sponton.vetsystem.domain.Secretaria;
@@ -50,6 +51,7 @@ import com.sponton.vetsystem.service.ConsultaService;
 import com.sponton.vetsystem.service.EspecieService;
 import com.sponton.vetsystem.service.FotoService;
 import com.sponton.vetsystem.service.HistoricoAnimalService;
+import com.sponton.vetsystem.service.InternacaoService;
 import com.sponton.vetsystem.service.RacaService;
 import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.VacinaService;
@@ -91,6 +93,9 @@ public class AnimalController {
 
 	@Autowired
 	private VacinaService vacinaService;
+	
+	@Autowired
+	private InternacaoService internacaoService;
 
 	@GetMapping("/cadastrar")
 	public String novoAnimal(Animal animal) {
@@ -342,12 +347,12 @@ public class AnimalController {
 	}
 
 	@GetMapping("/visualizar/{id}")
-	public String visualizar(@PathVariable("id") Long id, ModelMap model, Aplicacao aplicacoes) {
+	public String visualizar(@PathVariable("id") Long id, ModelMap model, Internacao internacao) {
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
 		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
-		// model.addAttribute("aplicacao",
-		// aplicacaoService.buscarAplicacaoPorAnimal(id));
+		
+		
 		return "animal/visualizar";
 	}
 

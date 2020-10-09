@@ -6,9 +6,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -30,6 +32,7 @@ import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AnimalService;
+import com.sponton.vetsystem.service.ConsultaService;
 import com.sponton.vetsystem.service.FotoService;
 import com.sponton.vetsystem.service.HistoricoAnimalService;
 import com.sponton.vetsystem.service.InternacaoService;
@@ -53,6 +56,9 @@ public class InternacaoController {
 
 	@Autowired
 	private FotoService fotoService;
+	
+	@Autowired
+	private ConsultaService consultaService;
 
 	@GetMapping("/cadastrar")
 	public String novaInternacao(Internacao internacao) {
@@ -178,17 +184,44 @@ public class InternacaoController {
 
 	@GetMapping("/listar")
 	public String listarInternacoes(ModelMap model, Internacao internacao) {
-		model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
-		model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
+		//model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
+		//model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
 		return "internacao/lista";
+	}
+	@GetMapping("/datatables/server")
+	public ResponseEntity<?> listarInternacoesDatatables(HttpServletRequest request) {
+		return ResponseEntity.ok(service.buscarTodos(request));
+	}
+	@GetMapping("/datatables/server/{idAnimal}")
+	public ResponseEntity<?> listarInternacoesByAnimalDatatables(HttpServletRequest request, @PathVariable("idAnimal") Long idAnimal) {
+		return ResponseEntity.ok(service.buscarInternacaoPorAnimal(request, idAnimal));
 	}
 
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("internacao", service.buscarPorId(id));
-		model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
-		model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
+		//model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
+		//model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
 		return "internacao/lista";
+	}
+	@GetMapping("/editar/{id}/paciente/{idAnimal}")
+	public String preEditarInternacaoPorAnimal(@PathVariable("id") Long id, ModelMap model,@PathVariable("idAnimal") Long idAnimal) {
+		model.addAttribute("internacao", service.buscarPorId(id));
+		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
+		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
+		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
+		return "animal/visualizar";
+	}
+	@GetMapping("/excluir/{id}")
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
+		Internacao internacao = service.buscarPorId(id);
+		Animal animal = animalService.buscarPorId(internacao.getAnimal().getId());
+		if(animal.getStatus().contains("Internado")) {
+			animal.setStatus("Normal");
+		}
+		service.remover(id);
+		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
+		return "redirect:/internacoes/listar";
 	}
 
 	@GetMapping("/visualizar/{id}")

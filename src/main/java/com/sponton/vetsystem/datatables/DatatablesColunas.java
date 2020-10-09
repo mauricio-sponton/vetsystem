@@ -10,4 +10,5 @@ public class DatatablesColunas {
 	public static final String[] CONSULTAS = {"id", "data", "hora","animal.nome"};
 	public static final String[] VACINAS = {"id", "descricao", "doses", "intervalo", "especie.nome"};
 	public static final String[] APLICACOES = {"vacina.descricao", "aplicacao.doses", "dataAplicacao", "proximaAplicacao"};
+	public static final String[] INTERNACOES = {"status", "animal.nome", "dataEntrada", "dataSaida"};
 }
