@@ -252,11 +252,18 @@ h2 {
 							</table>
 						</div>
 					</div>
-					<a class="btn-cadastrar-usuario" th:href="@{/aplicacoes/cadastrar/{id} (id=${animal.id})}" role="button"
+					<a class="btn-cadastrar-usuario" th:href="@{/aplicacoes/cadastrar/{id} (id=${animal.id})}" data-toggle="modal" data-target="#modal-aplicacao" role="button"
 					>Nova Aplicação</a> </span>
 				</div>
 					</section>
-<span th:replace="internacao/modal :: modal-form"></span>
+				
+				<div th:if="${aplicacao.id != null}">
+					<span th:replace="aplicacao/modal :: modal-form"></span>
+				</div>
+				<div th:if="${internacao.id != null}">
+					<span th:replace="internacao/modal :: modal-form"></span>
+				</div>
+				
 				</div>
 				<!-- /content -->
 			</div>
@@ -268,6 +275,8 @@ h2 {
 	<script th:inline="javascript" th:fragment="inlinescript">
 			$('#quebra').val().replace(/\n\r?/g, '<br />');
 			var idAnimal = [[${animal.id != null ? animal.id : 0}]];
+			var aplicacao = [[${aplicacao.id}]];
+			var internacao = [[${internacao.id}]];
 			$(document).ready(function () {
 				moment.locale('pt-BR');
 			    var table = $('#table-aplicacoes').DataTable({
@@ -294,7 +303,9 @@ h2 {
 			       
 			            url: '/aplicacoes/datatables/server/ '+idAnimal+'',
 			            data: 'data',
-			            vacina: 'vacina'
+			            vacina: 'vacina', 
+			           
+			        
 			        },
 			        columns: [
 			            {data: 'vacina.descricao'},
@@ -318,8 +329,10 @@ h2 {
 			            {orderable: false, 
 			             data: 'id',
 			                "render": function(id) {
-			                    return '<a class="btn btn-success btn-sm btn-block" href="/aplicacoes/editar/'+ 
-			                    	id +'/paciente/'+idAnimal +'" role="button"><i class="fas fa-edit"></i></a>';
+			                	aplicacao = id;
+			               
+			                    return '<a class="btn btn-success btn-sm btn-block" id = "btn-editar" href="/aplicacoes/editar/'+ 
+			                    	id +'/paciente/'+idAnimal +'" role="button" ><i class="fas fa-edit"></i></a>';
 			                }
 			            },
 			            {orderable: false,
@@ -332,8 +345,29 @@ h2 {
 			    
 			        ]
 			    });
+			  
+			  
+			    	
+			    if(aplicacao != idAnimal && $("#animal").val() == ""){
+    				$("#modal-aplicacao").modal('show');
+    				$("#modal-internacao").modal('hide');
+    				$(".modal-title").text("Editar Aplicação");
+    				
+            	}
+            	if(internacao != idAnimal && $("#datePickerId").val() == ""){
+            		$("#modal-aplicacao").modal('hide');
+            		$(".modal-title").text("Editar Internação");
+	    			$("#modal-internacao").modal('show');	
+	    			$("#animal").attr('readonly', 'readonly');
+	    			
+	            } 
+            	 	
+		    	
+			    
+			  			
 			}); 
-			var internacao = [[${internacao.id}]];
+			
+			
 			
 			$(document).ready(function () {
 			
@@ -403,10 +437,7 @@ h2 {
 			        ]
 			    });
 			   
-			    if(internacao != idAnimal){
-    				$("#modal-internacao").modal('show');
-    				$("#animal").attr('readonly', 'readonly');
-            	}
+			    
 			});    
 			
 			

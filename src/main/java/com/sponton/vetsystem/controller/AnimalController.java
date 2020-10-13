@@ -347,7 +347,7 @@ public class AnimalController {
 	}
 
 	@GetMapping("/visualizar/{id}")
-	public String visualizar(@PathVariable("id") Long id, ModelMap model, Internacao internacao) {
+	public String visualizar(@PathVariable("id") Long id, ModelMap model, Internacao internacao, Aplicacao aplicacao) {
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
 		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));

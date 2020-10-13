@@ -21,9 +21,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Aplicacao;
 import com.sponton.vetsystem.domain.Especie;
+import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.Vacina;
 import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.AplicacaoService;
+import com.sponton.vetsystem.service.ConsultaService;
+import com.sponton.vetsystem.service.HistoricoAnimalService;
+import com.sponton.vetsystem.service.InternacaoService;
 import com.sponton.vetsystem.service.VacinaService;
 
 @Controller
@@ -38,11 +42,22 @@ public class AplicacaoController {
 
 	@Autowired
 	private VacinaService vacinaService;
+	
+	@Autowired
+	private HistoricoAnimalService historicoAnimalService;
+
+	@Autowired
+	private ConsultaService consultaService;
+	
+	@Autowired
+	private InternacaoService internacaoService;
 
 	@GetMapping("/cadastrar/{id}")
-	public String novoAnimal(Aplicacao aplicacao, @PathVariable("id") Long id, ModelMap model) {
+	public String novoAnimal(Aplicacao aplicacao, @PathVariable("id") Long id, ModelMap model, Internacao internacao) {
 		model.addAttribute("animal", animalService.buscarPorId(id));
-		return "aplicacao/cadastro";
+		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
+		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
+		return "animal/visualizar";
 	}
 
 	@PostMapping("/salvar/{id}")
@@ -70,6 +85,7 @@ public class AplicacaoController {
 					aplicacao.setDoses(0);	
 					aplicacao.setProximaAplicacao(aplicacao.getDataAplicacao().plusDays(365));
 				}
+				
 			}
 			
 			
@@ -93,10 +109,13 @@ public class AplicacaoController {
 
 	@GetMapping("/editar/{id}/paciente/{idAnimal}")
 	public String preEditar(@PathVariable("id") Long id, @PathVariable("idAnimal") Long idAnimal, ModelMap model,
-			Aplicacao aplicacao) {
+			Aplicacao aplicacao, Internacao internacao) {
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		model.addAttribute("aplicacao", service.buscarPorId(id));
-		return "aplicacao/cadastro";
+		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
+		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
+		
+		return "animal/visualizar";
 	}
 
 	@GetMapping("/excluir/{id}")

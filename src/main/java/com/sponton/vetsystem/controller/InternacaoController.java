@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sponton.vetsystem.domain.Animal;
+import com.sponton.vetsystem.domain.Aplicacao;
 import com.sponton.vetsystem.domain.Foto;
 import com.sponton.vetsystem.domain.HistoricoAnimal;
 import com.sponton.vetsystem.domain.Internacao;
@@ -74,6 +75,15 @@ public class InternacaoController {
 			model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
 			model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
 			return "internacao/lista";
+		}
+		if(internacao.hasId()) {
+			Internacao int2 = service.buscarPorId(internacao.getId());
+			if(int2.getStatus().equals("Encerrada") && status.equals("Ativa")) {
+				attr.addFlashAttribute("falha",
+						"Essa internação já foi encerrada, por favor cadastre uma nova");
+				return "redirect:/internacoes/listar";
+			}
+			
 		}
 		String titulo = internacao.getAnimal().getNome();
 		Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
@@ -173,6 +183,7 @@ public class InternacaoController {
 		}
 
 		internacao.setAnimal(animal);
+		
 		service.salvarInternacao(internacao);
 		if (historico.getDescricao() != null) {
 			historico.setAnimal(animal);
@@ -205,7 +216,7 @@ public class InternacaoController {
 		return "internacao/lista";
 	}
 	@GetMapping("/editar/{id}/paciente/{idAnimal}")
-	public String preEditarInternacaoPorAnimal(@PathVariable("id") Long id, ModelMap model,@PathVariable("idAnimal") Long idAnimal) {
+	public String preEditarInternacaoPorAnimal(@PathVariable("id") Long id, ModelMap model,@PathVariable("idAnimal") Long idAnimal, Aplicacao aplicacao) {
 		model.addAttribute("internacao", service.buscarPorId(id));
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
