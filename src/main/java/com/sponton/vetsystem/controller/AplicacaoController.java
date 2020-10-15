@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sponton.vetsystem.domain.Animal;
@@ -52,32 +53,44 @@ public class AplicacaoController {
 	@Autowired
 	private InternacaoService internacaoService;
 
-	@GetMapping("/cadastrar/{id}")
-	public String novoAnimal(Aplicacao aplicacao, @PathVariable("id") Long id, ModelMap model, Internacao internacao) {
-		model.addAttribute("animal", animalService.buscarPorId(id));
-		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
-		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
-		return "animal/visualizar";
+	@GetMapping("/cadastrar/{idAnimal}")
+	public String novoAnimal(Aplicacao aplicacao, @PathVariable("idAnimal") Long idAnimal, ModelMap model, Internacao internacao) {
+		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
+		//model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
+		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
+		return "aplicacao/cadastro";
 	}
 
-	@PostMapping("/salvar/{id}")
+	@PostMapping("/salvar/{idAnimal}")
 	public String salvarAplicacao(@Valid Aplicacao aplicacao, BindingResult result, RedirectAttributes attr,
-			ModelMap model, @PathVariable("id") Long id) {
-		Animal animal = animalService.buscarPorId(id);
+			ModelMap model, @PathVariable("idAnimal") Long idAnimal) {
+		Animal animal = animalService.buscarPorId(idAnimal);
 		
 		if (result.hasErrors()) {
-			model.addAttribute("animal", animalService.buscarPorId(id));
+			model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 			model.addAttribute("erro", "Por favor preencha os dados");
 			return "aplicacao/cadastro";
 		}
 
 		try {
-			aplicacao.setDoses(1);	
-			if(aplicacao.hasId() && aplicacao.getDoses() >= 1) {
-				List<Aplicacao> aplic = service.buscarPorDesc(aplicacao.getVacina().getDescricao(), id);
-				//if(aplicacao.getVacina().getDescricao() == aplic.getVacina().getDescricao()) {
+			
+				aplicacao.setDoses(1);	
+			
+		
+			if(aplicacao.getDoses() >= 1) {
+				
+				List<Aplicacao> aplic = service.buscarPorDesc(aplicacao.getVacina().getDescricao(), idAnimal);			
+			
 				if(aplic.size() < aplicacao.getVacina().getDoses()) {
-					aplicacao.setDoses(aplic.size() + 1);	
+					if(aplicacao.hasId()) {
+						Aplicacao app = service.buscarPorId(aplicacao.getId());
+						aplicacao.setDoses(app.getDoses());
+						System.out.println("app id " + aplicacao.getId());
+						System.out.println("animal id " + idAnimal);
+					}if(aplicacao.hasNotId()){
+						aplicacao.setDoses(aplic.size() + 1);	
+					}
+					
 					aplicacao.setProximaAplicacao(aplicacao.getDataAplicacao().plusDays(aplicacao.getVacina().getIntervalo()));
 	
 				}

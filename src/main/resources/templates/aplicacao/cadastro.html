@@ -7,8 +7,9 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<form th:action="@{/aplicacoes/salvar/{id} (id=${animal.id})}"
+		<form th:action="@{/aplicacoes/salvar/{idAnimal} (idAnimal=${animal.id})}"
 			method="POST" th:object="${aplicacao}">
+			
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="datePickerId">Selecione a data da aplicação</label> <input
@@ -37,13 +38,28 @@
 
 			 <input
 				type="hidden" id="idAplicacao" th:field="*{id}" />
+				<input
+				type="hidden" id="idAnimal" th:field="*{animal.id}"/>
+				
 			<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 		</form>
-
+		<form>
+		
+		</form>
+			
+			
 	</section>
 	<script th:src="@{/js/aplicacao.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
+	var animal = [[${animal.id}]];
+	var aplicacao = [[${aplicacao.id != null ? aplicacao.id : 0}]];
+	$(document).ready(function () {
+		//alert(animal);
+		//alert(aplicacao);
+		$("#idAnimal").val(animal);
 		
+		
+	});
 	</script>
 </body>
 </html>

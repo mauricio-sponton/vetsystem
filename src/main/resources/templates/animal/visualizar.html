@@ -252,7 +252,7 @@ h2 {
 							</table>
 						</div>
 					</div>
-					<a class="btn-cadastrar-usuario" th:href="@{/aplicacoes/cadastrar/{id} (id=${animal.id})}" data-toggle="modal" data-target="#modal-aplicacao" role="button"
+					<a class="btn-cadastrar-usuario" id="cadastrar-aplicacao" data-toggle="modal" data-target="#modal-aplicacao" href="#" role="button"
 					>Nova Aplicação</a> </span>
 				</div>
 					</section>
@@ -275,9 +275,10 @@ h2 {
 	<script th:inline="javascript" th:fragment="inlinescript">
 			$('#quebra').val().replace(/\n\r?/g, '<br />');
 			var idAnimal = [[${animal.id != null ? animal.id : 0}]];
-			var aplicacao = [[${aplicacao.id}]];
+			var aplicacao = [[${aplicacao.id != null ? aplicacao.id : 0}]];
 			var internacao = [[${internacao.id}]];
 			$(document).ready(function () {
+				
 				moment.locale('pt-BR');
 			    var table = $('#table-aplicacoes').DataTable({
 			    	"language":{
@@ -329,9 +330,8 @@ h2 {
 			            {orderable: false, 
 			             data: 'id',
 			                "render": function(id) {
-			                	aplicacao = id;
-			               
-			                    return '<a class="btn btn-success btn-sm btn-block" id = "btn-editar" href="/aplicacoes/editar/'+ 
+			              
+			                    return '<a class="btn btn-success btn-sm btn-block" id ="btn-editar" href="/aplicacoes/editar/'+ 
 			                    	id +'/paciente/'+idAnimal +'" role="button" ><i class="fas fa-edit"></i></a>';
 			                }
 			            },
@@ -345,24 +345,34 @@ h2 {
 			    
 			        ]
 			    });
-			  
-			  
-			    	
-			    if(aplicacao != idAnimal && $("#animal").val() == ""){
+	
+		$("#cadastrar-aplicacao").on('click', function(){
+			  		
+		$("#datePickerId").val("");
+		$("#vacina").val("");
+			  		 
+		$('#idAplicacao').val(null);           
+		$(".modal-title").text("Nova Aplicação");   
+			});
+			  	
+				//$("#btn-editar").on('click', function(){
+					
+			//	})
+			  if(aplicacao != idAnimal && $("#animal").val() == ""){
     				$("#modal-aplicacao").modal('show');
     				$("#modal-internacao").modal('hide');
     				$(".modal-title").text("Editar Aplicação");
     				
             	}
-            	if(internacao != idAnimal && $("#datePickerId").val() == ""){
-            		$("#modal-aplicacao").modal('hide');
-            		$(".modal-title").text("Editar Internação");
-	    			$("#modal-internacao").modal('show');	
-	    			$("#animal").attr('readonly', 'readonly');
+            //	if(internacao != idAnimal && $("#datePickerId").val() == ""){
+            //		$("#modal-aplicacao").modal('hide');
+            //		$(".modal-title").text("Editar Internação");
+	    	//		$("#modal-internacao").modal('show');	
+	    	//		$("#animal").attr('readonly', 'readonly');
 	    			
-	            } 
-            	 	
-		    	
+	       //     } 
+           	 	
+		  	
 			    
 			  			
 			}); 
