@@ -348,9 +348,12 @@ public class AnimalController {
 
 	@GetMapping("/visualizar/{id}")
 	public String visualizar(@PathVariable("id") Long id, ModelMap model, Internacao internacao, Aplicacao aplicacao) {
+		Animal animal = service.buscarPorId(id);
+		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
 		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
+		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 		
 		
 		return "animal/visualizar";
@@ -385,8 +388,10 @@ public class AnimalController {
 		return ResponseEntity.ok(animais);
 	}
 
+	/*
 	@ModelAttribute("vacinas")
 	public List<Vacina> listaDeEspecies() {
 		return vacinaService.buscarTodasVacinas();
 	}
+	*/
 }

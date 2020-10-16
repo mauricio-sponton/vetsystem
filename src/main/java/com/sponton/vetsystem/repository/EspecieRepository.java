@@ -21,4 +21,7 @@ public interface EspecieRepository extends JpaRepository<Especie, Long>{
 	@Query("select e from Especie e where e.nome IN :titulos")
 	Set<Especie> findByTitulos(String[] titulos);
 
+	@Query("select e from Especie e where e.nome like :string")
+	Especie findEspecieByAnimal(String string);
+
 }

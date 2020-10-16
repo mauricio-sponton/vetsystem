@@ -1,6 +1,7 @@
 package com.sponton.vetsystem.controller;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ import com.sponton.vetsystem.domain.Vacina;
 import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.AplicacaoService;
 import com.sponton.vetsystem.service.ConsultaService;
+import com.sponton.vetsystem.service.EspecieService;
 import com.sponton.vetsystem.service.HistoricoAnimalService;
 import com.sponton.vetsystem.service.InternacaoService;
 import com.sponton.vetsystem.service.VacinaService;
@@ -52,6 +54,9 @@ public class AplicacaoController {
 	
 	@Autowired
 	private InternacaoService internacaoService;
+	
+	@Autowired
+	private EspecieService especieService;
 
 	@GetMapping("/cadastrar/{idAnimal}")
 	public String novoAnimal(Aplicacao aplicacao, @PathVariable("idAnimal") Long idAnimal, ModelMap model, Internacao internacao) {
@@ -69,7 +74,7 @@ public class AplicacaoController {
 		if (result.hasErrors()) {
 			model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 			model.addAttribute("erro", "Por favor preencha os dados");
-			return "aplicacao/cadastro";
+			return "animal/visualizar";
 		}
 
 		try {
@@ -80,13 +85,27 @@ public class AplicacaoController {
 			if(aplicacao.getDoses() >= 1) {
 				
 				List<Aplicacao> aplic = service.buscarPorDesc(aplicacao.getVacina().getDescricao(), idAnimal);			
-			
+				
 				if(aplic.size() < aplicacao.getVacina().getDoses()) {
 					if(aplicacao.hasId()) {
 						Aplicacao app = service.buscarPorId(aplicacao.getId());
-						aplicacao.setDoses(app.getDoses());
-						System.out.println("app id " + aplicacao.getId());
-						System.out.println("animal id " + idAnimal);
+						if(aplicacao.getVacina().getDescricao() != app.getVacina().getDescricao()) {
+							List<Aplicacao> ultimoValor = service.buscarPorDesc(aplicacao.getVacina().getDescricao(), idAnimal);
+							if(ultimoValor.size() >=1) {
+								int count = ultimoValor.size();
+								//Stream<Aplicacao> stream = ultimoValor.stream();
+								//Aplicacao valor = stream.skip(count - 1).findFirst().get();
+								aplicacao.setDoses(count + 1);
+							}else {
+								aplicacao.setDoses(1);	
+							}
+							
+						}else {
+							aplicacao.setDoses(app.getDoses());
+							System.out.println("app id " + aplicacao.getId());
+							System.out.println("animal id " + idAnimal);
+						}
+						
 					}if(aplicacao.hasNotId()){
 						aplicacao.setDoses(aplic.size() + 1);	
 					}
@@ -123,10 +142,13 @@ public class AplicacaoController {
 	@GetMapping("/editar/{id}/paciente/{idAnimal}")
 	public String preEditar(@PathVariable("id") Long id, @PathVariable("idAnimal") Long idAnimal, ModelMap model,
 			Aplicacao aplicacao, Internacao internacao) {
+		Animal animal = animalService.buscarPorId(idAnimal);
+		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		model.addAttribute("aplicacao", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
 		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
+		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 		
 		return "animal/visualizar";
 	}
@@ -138,8 +160,10 @@ public class AplicacaoController {
 		return "redirect:/pacientes/listar";
 	}
 
+	/*
 	@ModelAttribute("vacinas")
 	public List<Vacina> listaDeEspecies() {
 		return vacinaService.buscarTodasVacinas();
 	}
+	*/
 }

@@ -18,5 +18,8 @@ public interface VacinaRepository extends JpaRepository<Vacina, Long>{
 	@Query("select v from Vacina v where v.descricao like :descricao and v.especie.nome like :especie")
 	List<Vacina> findByNomeAndEspecie(String especie, String descricao);
 
+	@Query("select v from Vacina v where v.especie.nome = :especie")
+	List<Vacina> findVacinaByEspecie(String especie);
+
 
 }

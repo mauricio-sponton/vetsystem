@@ -17,7 +17,7 @@ public interface AplicacaoRepository extends JpaRepository<Aplicacao, Long> {
 	@Query("select a from Aplicacao a where a.id = :id order by a.id DESC")
 	List<Aplicacao> findAplicacaoPorAnimal(Long id);
 
-	@Query("select a from Aplicacao a where a.animal.id = :idAnimal order by a.id ASC")
+	@Query("select a from Aplicacao a where a.animal.id = :idAnimal order by a.id DESC")
 	Page<Aplicacao> findByAnimalId(Pageable pageable, Long idAnimal);
 
 	@Query("select a from Aplicacao a where a.vacina.descricao like :descricao and a.animal.id = :id")

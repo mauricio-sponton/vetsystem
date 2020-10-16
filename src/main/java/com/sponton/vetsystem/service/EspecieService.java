@@ -62,4 +62,10 @@ public class EspecieService {
 		return repository.findByTitulos(titulos);
 	}
 
+	@Transactional(readOnly = true)
+	public Especie buscarEspeciePorAnimal(String string) {
+	
+		return repository.findEspecieByAnimal(string);
+	}
+
 }
