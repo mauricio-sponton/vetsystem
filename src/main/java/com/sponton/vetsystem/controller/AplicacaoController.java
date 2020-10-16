@@ -89,21 +89,23 @@ public class AplicacaoController {
 				if(aplic.size() < aplicacao.getVacina().getDoses()) {
 					if(aplicacao.hasId()) {
 						Aplicacao app = service.buscarPorId(aplicacao.getId());
+						
 						if(aplicacao.getVacina().getDescricao() != app.getVacina().getDescricao()) {
 							List<Aplicacao> ultimoValor = service.buscarPorDesc(aplicacao.getVacina().getDescricao(), idAnimal);
-							if(ultimoValor.size() >=1) {
+							if(ultimoValor.size() >1) {
 								int count = ultimoValor.size();
 								//Stream<Aplicacao> stream = ultimoValor.stream();
 								//Aplicacao valor = stream.skip(count - 1).findFirst().get();
 								aplicacao.setDoses(count + 1);
-							}else {
+							}else if(ultimoValor.size() ==1){
 								aplicacao.setDoses(1);	
 							}
 							
-						}else {
+							
+							
+						}if(aplicacao.getVacina().getDescricao() == app.getVacina().getDescricao()) {
 							aplicacao.setDoses(app.getDoses());
-							System.out.println("app id " + aplicacao.getId());
-							System.out.println("animal id " + idAnimal);
+							
 						}
 						
 					}if(aplicacao.hasNotId()){
@@ -113,10 +115,16 @@ public class AplicacaoController {
 					aplicacao.setProximaAplicacao(aplicacao.getDataAplicacao().plusDays(aplicacao.getVacina().getIntervalo()));
 	
 				}
-				if(aplic.size() >= aplicacao.getVacina().getDoses()) {
+				else if(aplicacao.hasNotId() && aplic.size() >= aplicacao.getVacina().getDoses()) {
 					aplicacao.setDoses(0);	
 					aplicacao.setProximaAplicacao(aplicacao.getDataAplicacao().plusDays(365));
 				}
+				else if(aplicacao.hasId() && aplic.size() >= aplicacao.getVacina().getDoses()) {
+					Aplicacao app = service.buscarPorId(aplicacao.getId());
+					aplicacao.setDoses(app.getDoses());
+					aplicacao.setProximaAplicacao(aplicacao.getDataAplicacao().plusDays(aplicacao.getVacina().getIntervalo()));
+				}
+				
 				
 			}
 			
