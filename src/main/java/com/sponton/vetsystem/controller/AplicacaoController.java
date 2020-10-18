@@ -68,11 +68,15 @@ public class AplicacaoController {
 
 	@PostMapping("/salvar/{idAnimal}")
 	public String salvarAplicacao(@Valid Aplicacao aplicacao, BindingResult result, RedirectAttributes attr,
-			ModelMap model, @PathVariable("idAnimal") Long idAnimal) {
+			ModelMap model, @PathVariable("idAnimal") Long idAnimal, Internacao internacao) {
 		Animal animal = animalService.buscarPorId(idAnimal);
 		
 		if (result.hasErrors()) {
+			Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 			model.addAttribute("animal", animalService.buscarPorId(idAnimal));
+			model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
+			model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
+			model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 			model.addAttribute("erro", "Por favor preencha os dados");
 			return "animal/visualizar";
 		}
@@ -137,7 +141,7 @@ public class AplicacaoController {
 			attr.addFlashAttribute("falha", "Cadastro não realizado pois essa aplicação já está cadastrada no sistema");
 		}
 
-		return "redirect:/vacinas/listar";
+		return "redirect:/pacientes/visualizar/{idAnimal}";
 	}
 
 	@GetMapping("/datatables/server/{idAnimal}")
@@ -161,11 +165,11 @@ public class AplicacaoController {
 		return "animal/visualizar";
 	}
 
-	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
+	@GetMapping("/excluir/{id}/paciente/{idAnimal}")
+	public String excluir(@PathVariable("id") Long id, @PathVariable("idAnimal") Long idAnimal, RedirectAttributes attr) {
 		service.remover(id);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
-		return "redirect:/pacientes/listar";
+		return "redirect:/pacientes/visualizar/{idAnimal}";
 	}
 
 	/*

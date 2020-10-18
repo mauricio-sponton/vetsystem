@@ -29,7 +29,7 @@ public class Aplicacao extends AbstractEntity{
 	@DateTimeFormat(iso = ISO.DATE)
 	private LocalDate proximaAplicacao;
 	
-	@Valid
+	@NotNull(message = "Informe a imunização")
 	@ManyToOne
 	@JoinColumn(name = "id_vacina_fk")
 	private Vacina vacina;

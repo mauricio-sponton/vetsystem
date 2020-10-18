@@ -73,13 +73,16 @@ h2 {
 #scrollbar::-webkit-scrollbar-thumb:hover {
 	background: #555;
 }
+.is-invalid{
+	border: 1px solid red; !important
+}
 </style>
 </head>
 <body>
 	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 	<section class="layout-content" layout:fragment="corpo">
-	
 
+<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<h2 th:text="${animal.nome}"></h2>
 		<div th:if="${animal.foto.fileName == null}">
 			<img alt="" th:src="@{/image/animal_default.jpg}"
@@ -92,7 +95,7 @@ h2 {
 		<div th:if="${animal.status != null}">
 			<span th:text="${animal.status}"></span>
 		</div>
-		<span th:text="${animal.especie.nome}" ></span> <span
+		<span th:text="${animal.especie.nome}"></span> <span
 			th:text="${#temporals.format(animal.dataNascimento, 'dd/MM/yyyy')}"></span>
 
 		<span th:text="${animal.cliente.nome}"></span> <span
@@ -174,7 +177,8 @@ h2 {
 							(h.tipo == 'Nova internação' ? 'nova-internacao' : '') +
 							(h.tipo == 'Alteração de internação' ? 'edit-internacao' : '') }">
 									<p>
-										<span id= "quebra" th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
+										<span id="quebra"
+											th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
 									</p>
 									<p>
 										<span th:text="'Tipo: ' + ${h.tipo}"></span>
@@ -197,73 +201,75 @@ h2 {
 						</div>
 						<form class="form-inline" method="get"
 							th:action="@{/consultas/cadastrar/{id} (id=${animal.id})}">
-							<button class="btn btn-outline-success my-2 my-sm-0">Nova Consulta</button>
+							<button class="btn btn-outline-success my-2 my-sm-0">Nova
+								Consulta</button>
 						</form>
 					</section>
 					<section id="section-flip-3">
 						<div class="container">
 
-					<div class="row">
-						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-12">
 
-							<div th:replace="fragments/alert :: alerta-sucesso"></div>
-							<h2>Internações Cadastradas</h2>
+									
+									<h2>Internações Cadastradas</h2>
 
-							<table id="table-internacoes"
-								class="table table-sm table-striped table-bordered nowrap"
-								style="width: 100%">
-								<thead class="thead-dark">
-									<tr>
-										<th scope="col">Status</th>
-										<th scope="col">Paciente</th>
-										<th scope="col">Data de Entrada</th>
-										<th scope="col">Data de Saída</th>
-										<th scope="col">Editar</th>
-										<th scope="col">Excluir</th>
-										<th scope="col">Visualizar</th>
-									</tr>
-								</thead>
-							</table>
+									<table id="table-internacoes"
+										class="table table-sm table-striped table-bordered nowrap"
+										style="width: 100%">
+										<thead class="thead-dark">
+											<tr>
+												<th scope="col">Status</th>
+												<th scope="col">Paciente</th>
+												<th scope="col">Data de Entrada</th>
+												<th scope="col">Data de Saída</th>
+												<th scope="col">Editar</th>
+												<th scope="col">Excluir</th>
+												<th scope="col">Visualizar</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
+							<a class="btn-cadastrar-usuario" id="cadastrar-internacao"
+								data-toggle="modal" data-target="#modal-internacao-paciente" href="#"
+								role="button">Nova Internação</a> 
 						</div>
-					</div>
-				</div>
-				
+
 					</section>
 					<section id="section-flip-4">
 						<div class="container">
 
-					<div class="row">
-						<div class="col-md-12">
-							<h2>Aplicações Cadastradas</h2>
+							<div class="row">
+								<div class="col-md-12">
+									<h2>Aplicações Cadastradas</h2>
 
-							<table id="table-aplicacoes"
-								class="table table-sm table-striped table-bordered nowrap"
-								style="width: 100%">
-								<thead class="thead-dark">
-									<tr>
-										<th scope="col">Descrição</th>
-										<th scope="col">Doses</th>
-										<th scope="col">Data da Aplicação</th>
-										<th scope="col">Próxima Aplicação</th>
-										<th scope="col">Editar</th>
-										<th scope="col">Excluir</th>
-									</tr>
-								</thead>
-							</table>
+									<table id="table-aplicacoes"
+										class="table table-sm table-striped table-bordered nowrap"
+										style="width: 100%">
+										<thead class="thead-dark">
+											<tr>
+												<th scope="col">Descrição</th>
+												<th scope="col">Doses</th>
+												<th scope="col">Data da Aplicação</th>
+												<th scope="col">Próxima Aplicação</th>
+												<th scope="col">Editar</th>
+												<th scope="col">Excluir</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
+							<a class="btn-cadastrar-usuario" id="cadastrar-aplicacao"
+								data-toggle="modal" data-target="#modal-aplicacao" href="#"
+								role="button">Nova Aplicação</a> 
 						</div>
-					</div>
-					<a class="btn-cadastrar-usuario" id="cadastrar-aplicacao" data-toggle="modal" data-target="#modal-aplicacao" href="#" role="button"
-					>Nova Aplicação</a> </span>
-				</div>
 					</section>
-				
-				<div th:if="${aplicacao.id != null}">
-					<span th:replace="aplicacao/modal :: modal-form"></span>
-				</div>
-				<div th:if="${internacao.id != null}">
-					<span th:replace="internacao/modal :: modal-form"></span>
-				</div>
-				
+
+
+					<span th:replace="aplicacao/modal :: modal-form"></span> <span
+						th:replace="internacao/modal-por-paciente :: modal-internacao-paciente"></span>
+
 				</div>
 				<!-- /content -->
 			</div>
@@ -271,11 +277,12 @@ h2 {
 		</section>
 	</section>
 	<script th:src="@{/js/animal.js(v=${version})}" th:fragment="js"></script>
-	
+
 	<script th:inline="javascript" th:fragment="inlinescript">
 			$('#quebra').val().replace(/\n\r?/g, '<br />');
 			var idAnimal = [[${animal.id != null ? animal.id : 0}]];
-			var aplicacao = [[${aplicacao.id != null ? aplicacao.id : 0}]];
+			var nome = [[${animal.nome}]];
+			var aplicacao = [[${aplicacao.id}]];
 			var internacao = [[${internacao.id}]];
 			$(document).ready(function () {
 				
@@ -339,38 +346,68 @@ h2 {
 			             data: 'id',
 			                "render": function(id) {
 			                    return '<a class="btn btn-danger btn-sm btn-block" href="/aplicacoes/excluir/'+ 
-			                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+			                    	id +'/paciente/'+idAnimal +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
 			                }               
 			            },
 			    
 			        ]
 			    });
 	
-		$("#cadastrar-aplicacao").on('click', function(){
-			  		
-		$("#datePickerId").val("");
-		$("#vacina").val("");
-			  		 
-		$('#idAplicacao').val(null);           
-		$(".modal-title").text("Nova Aplicação");   
-			});
-			  	
-				//$("#btn-editar").on('click', function(){
-					
-			//	})
-			  if(aplicacao != idAnimal && $("#animal").val() == ""){
-    				$("#modal-aplicacao").modal('show');
-    				$("#modal-internacao").modal('hide');
-    				$(".modal-title").text("Editar Aplicação");
+		$("#cadastrar-aplicacao").on('click', function(){	  		
+			$("#datePickerId").val("");
+			$("#vacina").val("");	  		 
+			$('#idAplicacao').val(null);           
+			$(".modal-title").text("Nova Aplicação"); 
+			$(".invalid-feedback span").html("");
+			$("#msg-erro").html("");
+			$("input, select").removeClass("is-invalid")
+			
+		});
+		$("#cadastrar-internacao").on('click', function(){	  		
+			$("#animal").val(nome);
+			$("#animal").attr('readonly', 'readonly');	
+			$("#status").val("");	
+			$("#dataEntrada").val("");	
+			$("#inicio").val("");
+			$("#descricao").val("");
+			$("#prescricao").val("");
+			$('#idInternacao').val(null);           
+			$(".modal-title").text("Nova Internacao"); 
+			$(".invalid-feedback span").html("");
+			$("input, select").removeClass("is-invalid");
+			$("#msg-erro").html("");
+			
+			
+		});
+		
+		if(aplicacao != null && $("#animal").val() == ""){
+    		$("#modal-aplicacao").modal('show');
+    		$(".modal-title").text("Editar Aplicação");
     				
-            	}
-            //	if(internacao != idAnimal && $("#datePickerId").val() == ""){
-            //		$("#modal-aplicacao").modal('hide');
-            //		$(".modal-title").text("Editar Internação");
-	    	//		$("#modal-internacao").modal('show');	
-	    	//		$("#animal").attr('readonly', 'readonly');
-	    			
-	       //     } 
+        }
+        if(internacao != null && $("#datePickerId").val() == ""){
+            $(".modal-title").text("Editar Internação");
+	    	$("#modal-internacao-paciente").modal('show');	
+	    	$("#animal").attr('readonly', 'readonly');		
+	    } 
+        if($("#modal-internacao-paciente .invalid-feedback span").html() != null){
+        	$("#modal-internacao-paciente").modal('show');	
+        	if(internacao != null){
+        		$(".modal-title").text("Editar Internacao");   
+        	}else{
+        		$(".modal-title").text("Nova Internacao");   
+        	}
+        	
+        }
+        if($("#modal-aplicacao .invalid-feedback span").html() != null){
+        	$("#modal-aplicacao").modal('show');
+        	if(aplicacao != null){
+        		$(".modal-title").text("Editar Aplicacao");  
+        	}else{
+        		$(".modal-title").text("Nova Aplicacao");   
+        	}
+        	
+        }
            	 	
 		  	
 			    
@@ -434,7 +471,7 @@ h2 {
 			             data: 'id',
 			                "render": function(id) {
 			                    return '<a class="btn btn-danger btn-sm btn-block" href="/internacoes/excluir/'+ 
-			                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
 			                }               
 			            },
 			            {orderable: false,

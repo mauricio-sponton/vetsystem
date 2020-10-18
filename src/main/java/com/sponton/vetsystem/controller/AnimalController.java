@@ -349,6 +349,8 @@ public class AnimalController {
 	@GetMapping("/visualizar/{id}")
 	public String visualizar(@PathVariable("id") Long id, ModelMap model, Internacao internacao, Aplicacao aplicacao) {
 		Animal animal = service.buscarPorId(id);
+		aplicacao.setId(null);
+		internacao.setId(null);
 		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
