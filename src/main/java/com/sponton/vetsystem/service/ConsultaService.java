@@ -53,4 +53,12 @@ public class ConsultaService {
 		return repository.findConsultaByAnimal(id);
 	}
 
+	public Map<String, Object> buscarConsultasPorAnimal(HttpServletRequest request, Long idAnimal) {
+		datatables.setRequest(request);
+		datatables.setColunas(DatatablesColunas.CONSULTAS);
+		Page<Consulta> page =datatables.getSearch().isEmpty() ? repository.findByAnimalId(datatables.getPageable(), idAnimal)
+				: repository.findByName(datatables.getSearch(), datatables.getPageable(), idAnimal);
+		return datatables.getResponse(page);
+	}
+
 }

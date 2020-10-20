@@ -20,4 +20,7 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long>{
 	@Query("select c from Consulta c where c.animal.id = :id order by c.id DESC")
 	List<Consulta> findConsultaByAnimal(Long id);
 
+	@Query("select c from Consulta c where c.animal.id = :idAnimal order by c.id DESC")
+	Page<Consulta> findByAnimalId(Pageable pageable, Long idAnimal);
+
 }

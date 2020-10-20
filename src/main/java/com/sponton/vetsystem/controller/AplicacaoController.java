@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Aplicacao;
+import com.sponton.vetsystem.domain.Consulta;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.Vacina;
@@ -59,7 +60,7 @@ public class AplicacaoController {
 	private EspecieService especieService;
 
 	@GetMapping("/cadastrar/{idAnimal}")
-	public String novoAnimal(Aplicacao aplicacao, @PathVariable("idAnimal") Long idAnimal, ModelMap model, Internacao internacao) {
+	public String novoAnimal(Aplicacao aplicacao, @PathVariable("idAnimal") Long idAnimal, ModelMap model, Internacao internacao, Consulta consulta) {
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		//model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
 		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
@@ -68,14 +69,14 @@ public class AplicacaoController {
 
 	@PostMapping("/salvar/{idAnimal}")
 	public String salvarAplicacao(@Valid Aplicacao aplicacao, BindingResult result, RedirectAttributes attr,
-			ModelMap model, @PathVariable("idAnimal") Long idAnimal, Internacao internacao) {
+			ModelMap model, @PathVariable("idAnimal") Long idAnimal, Internacao internacao, Consulta consulta) {
 		Animal animal = animalService.buscarPorId(idAnimal);
 		
 		if (result.hasErrors()) {
 			Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 			model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 			model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
-			model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
+			//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
 			model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 			model.addAttribute("erro", "Por favor preencha os dados");
 			return "animal/visualizar";
@@ -153,13 +154,13 @@ public class AplicacaoController {
 
 	@GetMapping("/editar/{id}/paciente/{idAnimal}")
 	public String preEditar(@PathVariable("id") Long id, @PathVariable("idAnimal") Long idAnimal, ModelMap model,
-			Aplicacao aplicacao, Internacao internacao) {
+			Aplicacao aplicacao, Internacao internacao, Consulta consulta) {
 		Animal animal = animalService.buscarPorId(idAnimal);
 		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		model.addAttribute("aplicacao", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
-		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
+		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
 		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 		
 		return "animal/visualizar";

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+	<!-- Modal -->
+	<div th:fragment="modal-consulta-paciente" class="modal fade" id="modal-consulta-paciente"
+		tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Editar
+						Cliente</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span th:text="${erro}" id="msg-erro"></span>
+					<form id="form-consulta" th:action="@{/consultas/salvar/paciente/{idAnimal} (idAnimal=${animal.id})}"
+						method="POST" th:object="${consulta}">
+						<div class="form-row">
+
+							<div class="form-group col-md-4">
+								<label for="inicioConsulta">Hora de início</label> <input
+									class="form-control" type="time" id="inicioConsulta"
+									th:classappend="${#fields.hasErrors('hora')} ? 'is-invalid'"
+									th:field="*{hora}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{hora}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="terminoConsulta">Hora de término</label> <input
+									class="form-control" type="time" id="terminoConsulta"
+									th:classappend="${#fields.hasErrors('termino')} ? 'is-invalid'"
+									th:field="*{termino}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{termino}"></span>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-4">
+								<label for="datePickerIdConsulta">Selecione a data da consulta</label> <input
+									class="form-control" type="date" id="datePickerIdConsulta"
+									th:classappend="${#fields.hasErrors('data')} ? 'is-invalid'"
+									th:field="*{data}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{data}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="descricaoConsulta">Anotações</label>
+								<textarea class="form-control" id="descricaoConsulta"
+									autofocus="autofocus" th:field="*{descricao}"
+									th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
+								<div class="invalid-feedback">
+									<span th:errors="*{descricao}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="prescricaoConsulta">Prescrição</label>
+								<textarea class="form-control" id="prescricaoConsulta"
+									autofocus="autofocus" th:field="*{prescricao}"
+									th:classappend="${#fields.hasErrors('prescricao')} ? 'is-invalid'"></textarea>
+								<div class="invalid-feedback">
+									<span th:errors="*{prescricao}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+
+							<div class="form-group col-md-4">
+								<label for="animalConsulta">Paciente</label> <input type="text"
+									class="form-control" id="animalConsulta" placeholder="Taz..."
+									th:classappend="${#fields.hasErrors('animal.nome')} ? 'is-invalid'"
+									th:field="*{animal.nome}" />
+									<span id="erro-animal" style="display:none"></span>
+								<div class="invalid-feedback">
+									<span th:errors="*{animal.nome}"></span>
+								</div>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label for="peso">Peso</label> <input type="text"
+									class="form-control" id="peso" data-mask="##,#"
+									 th:field="*{peso}"
+									th:classappend="${#fields.hasErrors('peso')} ? 'is-invalid'" />
+								<div class="invalid-feedback">
+									<span th:errors="*{peso}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="temperatura">Temperatura</label> <input type="text"
+									class="form-control" id="temperatura" data-mask="##,#"
+									data-mask-reverse="true" th:field="*{temperatura}"
+									th:classappend="${#fields.hasErrors('temperatura')} ? 'is-invalid'" />
+								<div class="invalid-feedback">
+									<span th:errors="*{temperatura}"></span>
+								</div>
+							</div>
+						</div>
+						<input type="hidden" id="idConsulta" th:field="*{id}" />
+						<input
+							type="hidden" th:field="*{animal.id}" />
+						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

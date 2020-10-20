@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Aplicacao;
+import com.sponton.vetsystem.domain.Consulta;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Foto;
 import com.sponton.vetsystem.domain.HistoricoAnimal;
@@ -229,13 +230,13 @@ public class InternacaoController {
 		return "internacao/lista";
 	}
 	@GetMapping("/editar/{id}/paciente/{idAnimal}")
-	public String preEditarInternacaoPorAnimal(@PathVariable("id") Long id, ModelMap model,@PathVariable("idAnimal") Long idAnimal, Aplicacao aplicacao) {
+	public String preEditarInternacaoPorAnimal(@PathVariable("id") Long id, ModelMap model,@PathVariable("idAnimal") Long idAnimal, Aplicacao aplicacao, Consulta consulta) {
 		Animal animal = animalService.buscarPorId(idAnimal);
 		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("internacao", service.buscarPorId(id));
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
-		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
+		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
 		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 		return "animal/visualizar";
 	}
@@ -271,7 +272,7 @@ public class InternacaoController {
 	@PostMapping("/salvar/paciente/{idAnimal}")
 	public String salvarInternacaoPorPaciente(@Valid Internacao internacao, BindingResult result, RedirectAttributes attr,
 			@AuthenticationPrincipal User user, @RequestParam("status") String status,
-			@RequestParam("files") MultipartFile[] files, ModelMap model, @PathVariable("idAnimal") Long idAnimal, Aplicacao aplicacao) {
+			@RequestParam("files") MultipartFile[] files, ModelMap model, @PathVariable("idAnimal") Long idAnimal, Aplicacao aplicacao, Consulta consulta) {
 		
 		if (result.hasErrors() || internacao.getAnimal().getNome().isEmpty()) {
 			Animal animal = animalService.buscarPorId(idAnimal);
@@ -280,7 +281,7 @@ public class InternacaoController {
 			model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 			model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
 			model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
-			model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
+			//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
 			
 			return "animal/visualizar";
 		}

@@ -25,14 +25,21 @@ $(document).ready(function () {
             data: 'data'
         },
         columns: [
-        	{data: 'id'},
+        	 {data: 'animal.nome'},
         	{data: 'data', render:
                 function( data ) {
                     return moment(data).format('L');
                 }
             },
-            {data: 'hora'},
-            {data: 'animal.nome'},
+            {data: 'termino', render:
+                function( data, type, row ) {
+            		if(row.termino == null){
+            			return "Não cadastrado";
+            		}
+                    return  data;
+                }
+            },
+           
             {orderable: false, 
              data: 'id',
                 "render": function(id) {

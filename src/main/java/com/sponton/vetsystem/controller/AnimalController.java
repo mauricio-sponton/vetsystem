@@ -35,6 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Aplicacao;
 import com.sponton.vetsystem.domain.Cliente;
+import com.sponton.vetsystem.domain.Consulta;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Foto;
 import com.sponton.vetsystem.domain.HistoricoAnimal;
@@ -347,14 +348,15 @@ public class AnimalController {
 	}
 
 	@GetMapping("/visualizar/{id}")
-	public String visualizar(@PathVariable("id") Long id, ModelMap model, Internacao internacao, Aplicacao aplicacao) {
+	public String visualizar(@PathVariable("id") Long id, Internacao internacao, Aplicacao aplicacao, Consulta consulta, ModelMap model) {
 		Animal animal = service.buscarPorId(id);
 		aplicacao.setId(null);
 		internacao.setId(null);
+		consulta.setId(null);
 		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
-		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
+		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
 		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 		
 		
@@ -365,7 +367,7 @@ public class AnimalController {
 	public String getPorTipo(@RequestParam("tipo") String tipo, ModelMap model, @PathVariable("id") Long id) {
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorTipo(tipo, id));
-		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
+		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
 		return "animal/visualizar";
 	}
 
@@ -374,7 +376,7 @@ public class AnimalController {
 			ModelMap model, @PathVariable("id") Long id) {
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorData(data, id));
-		model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
+		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
 		return "animal/visualizar";
 	}
 

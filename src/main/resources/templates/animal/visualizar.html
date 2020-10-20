@@ -73,16 +73,19 @@ h2 {
 #scrollbar::-webkit-scrollbar-thumb:hover {
 	background: #555;
 }
-.is-invalid{
-	border: 1px solid red; !important
+
+.is-invalid {
+	border: 1px solid red;
+	!
+	important
 }
 </style>
 </head>
 <body>
-	<div th:replace="fragments/alert :: alerta-sucesso"></div>
+
 	<section class="layout-content" layout:fragment="corpo">
 
-<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<h2 th:text="${animal.nome}"></h2>
 		<div th:if="${animal.foto.fileName == null}">
 			<img alt="" th:src="@{/image/animal_default.jpg}"
@@ -195,15 +198,37 @@ h2 {
 						</div>
 					</section>
 					<section id="section-flip-2">
-						<div class="consulta" th:each="c: ${consulta}">
-							<span th:text="${c.veterinario.nome}"></span> <span
-								th:text="${c.data}"></span> <span th:text="${c.hora}"></span>
+
+						<div class="container">
+
+							<div class="row">
+								<div class="col-md-12">
+
+									
+									<h2>Consultas Cadastradas</h2>
+
+									<table id="table-consultas"
+										class="table table-sm table-striped table-bordered nowrap"
+										style="width: 100%">
+										<thead class="thead-dark">
+											<tr>
+												<th scope="col">Paciente</th>
+												<th scope="col">Data</th>
+												<th scope="col">Término</th>
+												<th scope="col">Editar</th>
+												<th scope="col">Excluir</th>
+												<th scope="col">Visualizar</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
 						</div>
-						<form class="form-inline" method="get"
-							th:action="@{/consultas/cadastrar/{id} (id=${animal.id})}">
-							<button class="btn btn-outline-success my-2 my-sm-0">Nova
-								Consulta</button>
-						</form>
+						<a class="btn-cadastrar-usuario" id="cadastrar-consulta"
+							data-toggle="modal" data-target="#modal-consulta-paciente"
+							href="#" role="button">Nova Consulta</a>
+
+
 					</section>
 					<section id="section-flip-3">
 						<div class="container">
@@ -211,7 +236,7 @@ h2 {
 							<div class="row">
 								<div class="col-md-12">
 
-									
+
 									<h2>Internações Cadastradas</h2>
 
 									<table id="table-internacoes"
@@ -232,8 +257,8 @@ h2 {
 								</div>
 							</div>
 							<a class="btn-cadastrar-usuario" id="cadastrar-internacao"
-								data-toggle="modal" data-target="#modal-internacao-paciente" href="#"
-								role="button">Nova Internação</a> 
+								data-toggle="modal" data-target="#modal-internacao-paciente"
+								href="#" role="button">Nova Internação</a>
 						</div>
 
 					</section>
@@ -262,13 +287,16 @@ h2 {
 							</div>
 							<a class="btn-cadastrar-usuario" id="cadastrar-aplicacao"
 								data-toggle="modal" data-target="#modal-aplicacao" href="#"
-								role="button">Nova Aplicação</a> 
+								role="button">Nova Aplicação</a>
 						</div>
 					</section>
 
 
 					<span th:replace="aplicacao/modal :: modal-form"></span> <span
 						th:replace="internacao/modal-por-paciente :: modal-internacao-paciente"></span>
+					<span
+						th:replace="consulta/modal-consulta-paciente :: modal-consulta-paciente"></span>
+
 
 				</div>
 				<!-- /content -->
@@ -284,6 +312,7 @@ h2 {
 			var nome = [[${animal.nome}]];
 			var aplicacao = [[${aplicacao.id}]];
 			var internacao = [[${internacao.id}]];
+			var consulta = [[${consulta.id}]];
 			$(document).ready(function () {
 				
 				moment.locale('pt-BR');
@@ -337,7 +366,7 @@ h2 {
 			            {orderable: false, 
 			             data: 'id',
 			                "render": function(id) {
-			              
+			              		
 			                    return '<a class="btn btn-success btn-sm btn-block" id ="btn-editar" href="/aplicacoes/editar/'+ 
 			                    	id +'/paciente/'+idAnimal +'" role="button" ><i class="fas fa-edit"></i></a>';
 			                }
@@ -352,7 +381,7 @@ h2 {
 			    
 			        ]
 			    });
-	
+			   
 		$("#cadastrar-aplicacao").on('click', function(){	  		
 			$("#datePickerId").val("");
 			$("#vacina").val("");	  		 
@@ -379,17 +408,53 @@ h2 {
 			
 			
 		});
-		
-		if(aplicacao != null && $("#animal").val() == ""){
-    		$("#modal-aplicacao").modal('show');
-    		$(".modal-title").text("Editar Aplicação");
-    				
-        }
-        if(internacao != null && $("#datePickerId").val() == ""){
-            $(".modal-title").text("Editar Internação");
-	    	$("#modal-internacao-paciente").modal('show');	
-	    	$("#animal").attr('readonly', 'readonly');		
-	    } 
+		$("#cadastrar-consulta").on('click', function(){	  		
+			$("#animalConsulta").val(nome);
+			$("#animalConsulta").attr('readonly', 'readonly');		
+			$("#datePickerIdConsulta").val("");	
+			$("#inicioConsulta").val("");
+			$("#terminoConsulta").val("");
+			$("#descricaoConsulta").val("");
+			$("#prescricaoConsulta").val("");
+			$("#temperatura").val("");
+			$("#peso").val("");
+			$('#idConsulta').val(null);           
+			$(".modal-title").text("Nova Consulta"); 
+			$(".invalid-feedback span").html("");
+			$("input, select").removeClass("is-invalid");
+			$("#msg-erro").html("");
+			
+			
+		});
+			if((aplicacao !=null && $("#animal").val() == "")&&(aplicacao !=null && $("#animalConsulta").val() == "") ){
+				
+				$("#modal-aplicacao").modal('show');
+	    		$(".modal-title").text("Editar Aplicação");
+			}
+			if((internacao !=null && $("#datePickerId").val() == "")&&(internacao !=null && $("#animalConsulta").val() == "") ){
+				   $(".modal-title").text("Editar Internação");
+			    	$("#modal-internacao-paciente").modal('show');
+			    	$("#animal").attr('readonly', 'readonly');		
+			}
+			 var temperat = [[${consulta.temperatura}]];
+				var pes = [[${consulta.peso}]];
+			if((consulta !=null && $("#animal").val() == "")&&(consulta !=null && $("#datePickerId").val() == "") ){
+			
+				var teste = parseFloat($("#temperatura").val());
+				var peso = parseFloat($("#peso").val());
+				$(".modal-title").text("Editar Consulta");
+	 	    	$("#modal-consulta-paciente").modal('show');
+	 	    	$("#animalConsulta").attr('readonly', 'readonly');
+	 	    	if(teste != temperat){
+					var t =temperat.toString().replace('.', ',');
+					$("#temperatura").val(t);
+				}
+				if(peso != pes){
+					var p =pes.toString().replace('.', ',');
+					$("#peso").val(p);
+				}
+			}
+
         if($("#modal-internacao-paciente .invalid-feedback span").html() != null){
         	$("#modal-internacao-paciente").modal('show');	
         	if(internacao != null){
@@ -408,7 +473,15 @@ h2 {
         	}
         	
         }
-           	 	
+        if($("#modal-consulta-paciente .invalid-feedback span").html() != null){
+        	$("#modal-consulta-paciente").modal('show');
+        	if(consulta != null){
+        		$(".modal-title").text("Editar Consulta");  
+        	}else{
+        		$(".modal-title").text("Nova Consulta");   
+        	}
+        	
+        }   	 	
 		  	
 			    
 			  			
@@ -421,7 +494,7 @@ h2 {
 				moment.locale('pt-BR');
 			    var table = $('#table-internacoes').DataTable({
 			    	searching: true,
-		
+			 
 			    	lengthMenu: [5, 10],
 			        processing: true,
 			        serverSide: true,
@@ -460,7 +533,7 @@ h2 {
 			            {orderable: false, 
 			             data: 'id',
 			                "render": function(id) {
-			                		internacao = id;
+			                		
 			                		return '<a class="btn btn-success btn-sm btn-block" id ="btn_edt" href="/internacoes/editar/'+ 
 			                    	id +'/paciente/'+idAnimal+'" role="button"><i class="fas fa-edit"></i></a>';
 			                	
@@ -486,8 +559,74 @@ h2 {
 			   
 			    
 			});    
+			$(document).ready(function () {
+				moment.locale('pt-BR');
+			    var table = $('#table-consultas').DataTable({
+			    	"language":{
+			    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
+			    		"zeroRecords": "Nenhum registro encontrado",
+			            "info": "Mostrando página _PAGE_ de _PAGES_",
+			            "infoEmpty": " ",
+			            "search": "Pesquise: ",
+			            "paginate": {
+			                "first":      "Primeiro",
+			                "last":       "Ultimo",
+			                "next":       "Próximo",
+			                "previous":   "Anterior"
+			            } 
+			    	},
+			    	searching: true,
+			    	order: [ 0, "asc" ],
+			    	lengthMenu: [5, 10],
+			        processing: false,
+			        serverSide: true,
+			        responsive: true,
+			        ajax: {
+			            url: '/consultas/datatables/server/' +idAnimal+'',
+			            data: 'data'
+			        },
+			        columns: [
+			        	 {data: 'animal.nome'},
+			        	{data: 'data', render:
+			                function( data ) {
+			                    return moment(data).format('L');
+			                }
+			            },
+			            {data: 'termino', render:
+			                function( data, type, row ) {
+			            		if(row.termino == null){
+			            			return "Não cadastrado";
+			            		}
+			                    return  data;
+			                }
+			            },
+			           
+			            {orderable: false, 
+			             data: 'id',
+			                "render": function(id) {
+			                    return '<a class="btn btn-success btn-sm btn-block" href="/consultas/editar/'+ 
+			                    id +'/paciente/'+idAnimal+'" role="button"><i class="fas fa-edit"></i></a>';
+			                }
+			            },
+			            {orderable: false,
+			             data: 'id',
+			                "render": function(id) {
+			                    return '<a class="btn btn-danger btn-sm btn-block" href="/consultas/excluir/'+ 
+			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+			                }               
+			            },
+			            {orderable: false,
+			                data: 'id',
+			                   "render": function(id) {
+			                       return '<a class="btn btn-danger btn-sm btn-block" href="/consultas/visualizar/'+ 
+			                       	id +'" role="button"><i class="fas fa-eye"></i></a>';
+			                   }               
+			               }
+			        ]
+			    });
+			});  
 			
-			
+		
 	</script>
 </body>
 </html>
