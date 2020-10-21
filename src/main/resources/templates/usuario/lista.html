@@ -32,12 +32,49 @@
 						</div>
 					</div>
 				</div>
-				<a th:href="@{/u/novo/cadastro/usuario}"
-					class="btn-cadastrar-usuario" role="button">Novo usuario</a>
+				<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-usuario">Novo usuário</a> <span
+					th:replace="usuario/modal :: modal-form"></span>
 			</div>
 		</main>
 	</section>
 	<script th:src="@{/js/usuario.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	var usuario = [[${usuario.id}]];
+	$(document).ready(function() {
+		if(usuario != null){
+			$("#modal-usuario").modal('show');
+			$(".modal-title").text("Editar Usuário");
+		}
+		if(usuario == null){
+			$(".modal-title").text("Novo Usuário");
+		}
+		if ($("#msg-erro").html() != "") {
+			$("#modal-usuario").modal('show');
+			$("#msg-erro").css("color", "red");
+			$(".is-invalid").css("border", "1px solid red");
+		}
+
+		$("#modal-usuario").on("hidden.bs.modal", function() {
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$("#msg-erro").hide();
+			$("#modal-usuario").modal('hide');
+			
+		});
+		
+		$(".btn-cadastrar-usuario").on("click", function(){
+			$(".form-control").val("");
+			$(".modal-title").text("Novo Usuário");
+		});
+	})
+	
+	$('#perfis').ready(function(){
+		var perfis = [[${usuario.perfis}]];
+		$.each(perfis, function(k, v){
+			$('#perfis option[value="'+ v.id + '"]').attr('selected', 'selected');
+		})
+	});
+	
+	</script>
 </body>
 </html>

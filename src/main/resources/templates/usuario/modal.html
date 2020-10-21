@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+.is-invalid {
+	border: 1px solid red !important;
+}
+</style>
+</head>
+<body>
+
+	<!-- Modal -->
+	<div th:fragment="modal-form" class="modal fade" id="modal-usuario"
+		tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Editar
+						Cliente</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span th:text="${erro}" id="msg-erro"></span>
+					<form th:action="@{/u/cadastro/salvar}" method="POST"
+						th:object="${usuario}">
+						<div class="mb-3">
+							<label for="email">Email</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"
+										id="validationTooltipUsernamePrepend">@</span>
+								</div>
+								<input type="email" class="form-control" id="email"
+									th:field="*{email}" placeholder="Email"
+									th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+									aria-describedby="validationTooltipUsernamePrepend" />
+								<div class="invalid-feedback">
+									<span th:errors="*{email}"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="mb-3">
+							<label for="senha">Senha</label> <input type="password"
+								class="form-control" id="senha" maxlength="6"
+								th:field="*{senha}" placeholder="Insira sua senha de acesso"
+								th:classappend="${#fields.hasErrors('senha')} ? 'is-invalid'" />
+							<div class="invalid-feedback">
+								<span th:errors="*{senha}"></span>
+							</div>
+						</div>
+
+						<div class="mb-3">
+							<label for="perfis">Perfil</label> <select id="perfis"
+								class="custom-select" size="4" th:field="*{perfis}"
+								th:classappend="${#fields.hasErrors('perfis')} ? 'is-invalid'"
+								multiple>
+								<option value="1">Administrador</option>
+								<option value="2">Veterinário</option>
+								<option value="3">Secretária</option>
+							</select> <input type="hidden" value="0" name="perfis">
+
+							<div class="invalid-feedback">Pelo menos um perfil é
+								requerido.</div>
+						</div>
+
+						<div class="mb-3">
+							<div class="custom-control custom-switch">
+								<input type="checkbox" class="custom-control-input"
+									th:field="*{ativo}" id="ativo"
+									th:if="${ativo == true ? 'checked=checked' : ''}" /> <label
+									class="custom-control-label" for="ativo">Cadastro Ativo</label>
+							</div>
+						</div>
+
+						<input type="hidden" th:field="*{id}">
+						<div class="form-group row">
+							<div class="col-sm-10">
+								<button type="submit" class="btn btn-primary"
+									data-toggle="tooltip" data-placement="right" title="Salvar">
+									<i class="fas fa-save"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

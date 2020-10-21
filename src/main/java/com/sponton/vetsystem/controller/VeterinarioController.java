@@ -45,6 +45,7 @@ public class VeterinarioController {
 		veterinario = service.buscarPorEmail(user.getUsername());
 		if(veterinario.hasNotId()) {
 			model.addAttribute("veterinario", veterinario);
+			//modal
 			return "veterinario/cadastro";
 		}
 		if(veterinario.hasId()) {

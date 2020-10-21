@@ -15,14 +15,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.PerfilTipo;
+import com.sponton.vetsystem.domain.Secretaria;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.ClienteService;
 import com.sponton.vetsystem.service.EspecieService;
+import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.VeterinarioService;
 
 @Controller
@@ -40,8 +43,27 @@ public class HomeController {
 	@Autowired
 	private ClienteService clienteService;
 	
+	@Autowired
+	private SecretariaService secretariaService;
+	
 	@GetMapping({"/home" })
-	public String home(ModelMap model) {
+	public String home(ModelMap model,@AuthenticationPrincipal User user, RedirectAttributes attr) {
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
+			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
+			if (veterinario.hasNotId()) {
+				attr.addFlashAttribute("falha",
+						"Por favor preencha seus dados pessoais para continuar usando o sistema");
+				return "redirect:/veterinarios/dados";
+			}
+		}
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
+			Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
+			if (secretaria.hasNotId()) {
+				attr.addFlashAttribute("falha",
+						"Por favor preencha seus dados pessoais para continuar usando o sistema");
+				return "redirect:/secretarias/dados";
+			}
+		}
 		model.addAttribute("animal", animalService.buscarTodosAnimais());
 		model.addAttribute("cliente", clienteService.buscarTodosClientes());
 		return "home";

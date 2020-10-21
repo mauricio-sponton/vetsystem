@@ -53,7 +53,7 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/listar")
-	public String listarUsuarios() {
+	public String listarUsuarios(Usuario usuario) {
 		return "usuario/lista";
 	}
 
@@ -67,7 +67,7 @@ public class UsuarioController {
 	@PostMapping("/cadastro/salvar")
 	public String salvarUsuarios(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr, ModelMap model) {
 		if (result.hasErrors()) {
-			return "usuario/cadastro";
+			return "usuario/lista";
 		}
 		List<Perfil> perfis = usuario.getPerfis();
 		if (perfis.size() > 2 || perfis.containsAll(Arrays.asList(new Perfil(2L), new Perfil(3L)))) {
@@ -88,7 +88,7 @@ public class UsuarioController {
 
 	@GetMapping("/editar/credenciais/usuario/{id}")
 	public ModelAndView preEditarCredenciais(@PathVariable("id") Long id) {
-		return new ModelAndView("usuario/cadastro", "usuario", service.buscarPorId(id));
+		return new ModelAndView("usuario/lista", "usuario", service.buscarPorId(id));
 	}
 
 	@GetMapping("/editar/senha")
