@@ -100,4 +100,10 @@ public class UsuarioService implements UserDetailsService{
 		return repository.findByIdAndPerfis(usuarioId, perfisId)
 				.orElseThrow(()-> new UsernameNotFoundException("Usuário inexistente!"));
 	}
+
+	@Transactional(readOnly = false)
+	public void remover(Long id) {
+		repository.deleteById(id);
+		
+	}
 }

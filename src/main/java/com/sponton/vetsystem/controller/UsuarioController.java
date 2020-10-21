@@ -150,5 +150,16 @@ public class UsuarioController {
 
 		return new ModelAndView("redirect:/u/lista");
 	}
+	@GetMapping("/excluir/{id}")
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr, @AuthenticationPrincipal User user) {
+		Usuario usuario = service.buscarPorEmail(user.getUsername());;
+		if(usuario.getId() == id) {
+			attr.addFlashAttribute("falha", "Você não pode deletar esse usuário");
+			return "redirect:/u/listar";
+		}
+		service.remover(id);
+		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
+		return "redirect:/u/listar";
+	}
 	
 }
