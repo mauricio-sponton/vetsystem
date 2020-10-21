@@ -40,7 +40,12 @@ h2 {
 .edit-internacao {
 	background-color: brown;
 }
-
+.edit-aplicacao {
+	background-color: tomato;
+}
+.nova-aplicacao {
+	background-color: beige;
+}
 .consulta {
 	width: 100%;
 	background-color: green;
@@ -178,7 +183,9 @@ h2 {
 							(h.tipo == 'Mudar dados' ? 'historico-editado' : '') +
 							(h.tipo == 'Alteração de consulta' ? 'historico-editado-consulta' : '') +
 							(h.tipo == 'Nova internação' ? 'nova-internacao' : '') +
-							(h.tipo == 'Alteração de internação' ? 'edit-internacao' : '') }">
+							(h.tipo == 'Alteração de internação' ? 'edit-internacao' : '') +
+							(h.tipo == 'Nova aplicacao' ? 'nova-aplicacao' : '') + 
+							(h.tipo == 'Edicao de aplicacao' ? 'edit-aplicacao' : '')}">
 									<p>
 										<span id="quebra"
 											th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
