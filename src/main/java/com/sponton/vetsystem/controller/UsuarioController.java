@@ -67,6 +67,7 @@ public class UsuarioController {
 	@PostMapping("/cadastro/salvar")
 	public String salvarUsuarios(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr, ModelMap model) {
 		if (result.hasErrors()) {
+			model.addAttribute("erro", "Por favor preencha os campos");
 			return "usuario/lista";
 		}
 		List<Perfil> perfis = usuario.getPerfis();

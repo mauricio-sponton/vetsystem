@@ -395,8 +395,9 @@ h2 {
 			$('#idAplicacao').val(null);           
 			$(".modal-title").text("Nova Aplicação"); 
 			$(".invalid-feedback span").html("");
-			$("#msg-erro").html("");
-			$("input, select").removeClass("is-invalid")
+			$("input, select").removeClass("is-invalid");
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$(".msg-erro").hide();
 			
 		});
 		$("#cadastrar-internacao").on('click', function(){	  		
@@ -411,7 +412,8 @@ h2 {
 			$(".modal-title").text("Nova Internacao"); 
 			$(".invalid-feedback span").html("");
 			$("input, select").removeClass("is-invalid");
-			$("#msg-erro").html("");
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$(".msg-erro").hide();
 			
 			
 		});
@@ -429,7 +431,8 @@ h2 {
 			$(".modal-title").text("Nova Consulta"); 
 			$(".invalid-feedback span").html("");
 			$("input, select").removeClass("is-invalid");
-			$("#msg-erro").html("");
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$(".msg-erro").hide();
 			
 			
 		});
@@ -489,7 +492,10 @@ h2 {
         	}
         	
         }   	 	
-		  	
+        if ($(".msg-erro").html() != "") {
+			$(".msg-erro, .invalid-feedback span").css("color", "red");
+			$(".is-invalid").css("border", "1px solid red");
+		} 	
 			    
 			  			
 			}); 

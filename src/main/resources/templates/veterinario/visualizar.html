@@ -12,10 +12,17 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div class=teste>
+		<!--  
 			<form class="form-inline" method="get"
 				th:action="@{/veterinarios/editar/{id} (id=${veterinario.id})}">
-				<button class="btn btn-outline-success my-2 my-sm-0">Editar</button>
+				<button class="btn btn-outline-success my-2 my-sm-0" id="edt-vet">Editar</button>
+				
 			</form>
+		-->
+			<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-veterinario">Editar Dados</a>
+				<span
+					th:replace="veterinario/modal :: modal-form"></span>
 			<span th:text="${veterinario.nome}"></span> <span
 				th:text="${veterinario.sexo}"></span>
 		</div>
@@ -32,6 +39,38 @@
 	</section>
 
 	<script th:src="@{/js/veterinario.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	var vet = [[${veterinario.id}]];
+	
+	$(document).ready(function() {
+		$(".btn-cadastrar-usuario").on('click',function(){
+			$("#modal-veterinario").modal('show');
+			$(".modal-title").text("Editar Dados");
+		})
+			
+		if ($("#msg-erro").html() != "") {
+			$("#modal-veterinario").modal('show');
+			$("#msg-erro").css("color", "red");
+			$(".is-invalid").css("border", "1px solid red");
+		}
+
+		$("#modal-veterinario").on("hidden.bs.modal", function() {
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$("#msg-erro").hide();
+			$("#modal-veterinario").modal('hide');
+			
+		});
+		
+
+	
+		
+		
+		
+	
+	});
+	
+	
+		
+	</script>
 </body>
 </html>

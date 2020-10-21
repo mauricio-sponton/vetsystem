@@ -57,13 +57,14 @@ public class VeterinarioController {
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("veterinario", service.buscarPorId(id));
-		return "veterinario/cadastro";
+		return "veterinario/visualizar";
 	}
 	@PostMapping("/salvar")
 	public String salvar(@Valid Veterinario veterinario, BindingResult result, RedirectAttributes attr, 
-			@AuthenticationPrincipal User user,@RequestParam("file") MultipartFile file) {
+			@AuthenticationPrincipal User user,@RequestParam("file") MultipartFile file, ModelMap model) {
 		if(result.hasErrors()) {
-			return "veterinario/cadastro";
+			model.addAttribute("erro", "Por favor preencha seus dados");
+			return "veterinario/visualizar";
 		}
 		try {
 			if(veterinario.hasNotId() && veterinario.getUsuario().hasNotId()) {

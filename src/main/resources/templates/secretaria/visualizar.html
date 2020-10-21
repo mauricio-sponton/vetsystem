@@ -12,10 +12,10 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div class="teste">
-			<form class="form-inline" method="get"
-				th:action="@{/secretarias/editar/{id} (id=${secretaria.id})}">
-				<button class="btn btn-outline-success my-2 my-sm-0">Editar</button>
-			</form>
+			<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-secretaria">Editar Dados</a>
+				<span
+					th:replace="secretaria/modal :: modal-form"></span>
 			<span th:text="${secretaria.nome}"></span> <span
 				th:text="${secretaria.sexo}"></span>
 		</div>
@@ -34,6 +34,26 @@
 	</section>
 
 	<script th:src="@{/js/secretaria.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	$(document).ready(function() {
+		$(".btn-cadastrar-usuario").on('click',function(){
+			$("#modal-secretaria").modal('show');
+			$(".modal-title").text("Editar Dados");
+		})
+			
+		if ($("#msg-erro").html() != "") {
+			$("#modal-secretaria").modal('show');
+			$("#msg-erro").css("color", "red");
+			$(".is-invalid").css("border", "1px solid red");
+		}
+
+		$("#modal-secretaria").on("hidden.bs.modal", function() {
+			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+			$("#msg-erro").hide();
+			$("#modal-secretaria").modal('hide');
+			
+		});
+	});
+	</script>
 </body>
 </html>

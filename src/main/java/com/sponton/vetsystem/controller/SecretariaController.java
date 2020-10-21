@@ -57,9 +57,10 @@ public class SecretariaController {
 	}
 	@PostMapping("/salvar")
 	public String salvar(@Valid Secretaria secretaria, BindingResult result, RedirectAttributes attr,
-			@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file) {
+			@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file, ModelMap model) {
 		if (result.hasErrors()) {
-			return "secretaria/cadastro";
+			model.addAttribute("erro", "Por favor preencha seus dados");
+			return "secretaria/visualizar";
 		}
 
 		if (secretaria.hasNotId() && secretaria.getUsuario().hasNotId()) {
