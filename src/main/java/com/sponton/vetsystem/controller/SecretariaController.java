@@ -41,7 +41,7 @@ public class SecretariaController {
 		secretaria = service.buscarPorEmail(user.getUsername());
 		if (secretaria.hasNotId()) {
 			model.addAttribute("secretaria", secretaria);
-			return "secretaria/cadastro";
+			return "secretaria/visualizar";
 		}
 		if(secretaria.hasId()) {
 			model.addAttribute("secretaria", secretaria);

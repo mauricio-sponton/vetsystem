@@ -35,6 +35,7 @@
 
 	<script th:src="@{/js/secretaria.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
+	var sec = [[${secretaria.id}]];
 	$(document).ready(function() {
 		$(".btn-cadastrar-usuario").on('click',function(){
 			$("#modal-secretaria").modal('show');
@@ -53,6 +54,10 @@
 			$("#modal-secretaria").modal('hide');
 			
 		});
+		if(sec == null){
+			$("#modal-secretaria").modal('show');
+			$(".modal-title").text("Cadastramento de dados");
+		}
 	});
 	</script>
 </body>

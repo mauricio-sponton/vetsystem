@@ -60,7 +60,10 @@
 			$("#modal-veterinario").modal('hide');
 			
 		});
-		
+		if(vet == null){
+			$("#modal-veterinario").modal('show');
+			$(".modal-title").text("Cadastramento de dados");
+		}
 
 	
 		

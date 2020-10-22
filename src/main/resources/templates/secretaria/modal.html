@@ -29,6 +29,7 @@
 				</div>
 				<div class="modal-body">
 					<span th:text="${erro}" id="msg-erro"></span>
+					<div th:replace="fragments/alert :: alerta-sucesso"></div>
 					<form
 			th:action="@{/secretarias/salvar}"
 			th:object="${secretaria}" method="POST" enctype="multipart/form-data">
