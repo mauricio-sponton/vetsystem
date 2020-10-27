@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+	<!-- Modal -->
+	<div th:fragment="modal-form" class="modal fade" id="modal-agendamento"
+		tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Editar
+						Cliente</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span th:text="${erro}" id="msg-erro"></span>
+					<form th:action="@{/agenda/salvar}" method="POST"
+						enctype="multipart/form-data" th:object="${agendamento}"
+						id="formA">
+						<div class="form-row">
+
+							<div class="form-group col-md-4">
+								<label for="tipo">Tipo</label> <select
+									th:classappend="${#fields.hasErrors('tipo')} ? 'is-invalid'"
+									id="cliente" class="form-control" th:field=*{tipo}>
+									<option value="">Selecione</option>
+									<option th:value="Consulta" th:text="Consulta"></option>
+									<option th:value="Retorno" th:text="Retorno"></option>
+								</select>
+								<div class="invalid-feedback">
+									<span th:errors="*{tipo}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-4">
+								<label for="inicio">Selecione a data de início</label> <input
+									class="form-control" type="datetime-local" id="inicio" name="inicio"
+									th:classappend="${#fields.hasErrors('inicio')} ? 'is-invalid'"
+									th:field="*{inicio}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{inicio}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="fim">Selecione a data de fim</label> <input
+									class="form-control" type="datetime-local" id="fim"
+									th:classappend="${#fields.hasErrors('fim')} ? 'is-invalid'"
+									th:field="*{fim}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{fim}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="descricao">Anotações</label> <textarea
+									class="form-control" id="descricao" placeholder="Taz..."
+									autofocus="autofocus" th:field="*{descricao}"
+									th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
+								<div class="invalid-feedback">
+									<span th:errors="*{descricao}"></span>
+								</div>
+							</div>
+
+						</div>
+						<input type="hidden" id="id" th:field="*{id}" />
+						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

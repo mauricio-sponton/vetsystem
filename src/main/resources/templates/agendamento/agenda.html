@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+
+
+
+  #calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+    color: black
+  }
+
+</style>
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+	<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-agendamento">Novo Evento</a> <span
+					th:replace="agendamento/modal :: modal-form"></span>
+		<div id='calendar'></div>
+
+	</section>
+	<script th:src="@{/js/agendamento.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	//$.getJSON('/todos', function (data) {
+      $(document).ready(function(){
+    	  
+    	 
+    	
+    	  $.getJSON('/agenda/todos', function(data){
+    		 
+    		  var calendarEl = document.getElementById('calendar');
+    			
+    	 		
+  			 var calendar = new FullCalendar.Calendar(calendarEl, {
+  		    	
+  			      headerToolbar: {
+  			        left: 'prev,next today',
+  			        center: 'title',
+  			        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+  			      },
+  			      locale: 'pt-br',
+  			      navLinks: true, // can click day/week names to navigate views
+  			      businessHours: true, // display business hours
+  			      editable: true,
+  			      selectable: true,
+  			   
+ 			    		
+  			   events: data
+  				  
+  				  
+  			    });
+  		    calendar.render();
+ 	   
+    	  })
+	   
+	   
+    	  })
+	
+	 
+  	//})
+  	
+	</script>
+	
+
+</body>
+</html>

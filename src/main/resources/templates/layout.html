@@ -23,6 +23,8 @@
 <link th:href="@{/css/style-home.css(v=${version}) }" rel="stylesheet" />
 <link th:href="@{/css/tabs.css(v=${version}) }" rel="stylesheet" />
 <link th:href="@{/css/tabstyles.css(v=${version}) }" rel="stylesheet" />
+<!-- css agenda full calendar -->
+<link th:href="@{/css/calendar.css(v=${version}) }" rel="stylesheet" />
 
 </head>
 <body>
@@ -62,6 +64,9 @@
 	<script src="https://code.highcharts.com/highcharts.src.js"></script>
 	<!-- 	MEUS JS -->
 	<script th:src="@{/js/cbpFWTabs.js(v=${version})}"></script>
+	<!-- js agenda full calendar -->
+	<script th:src="@{/js/calendar.js(v=${version})}"></script>
+	<script th:src="@{/js/locales/pt-br.js(v=${version})}"></script>
 	<script th:replace=":: js"></script>
 	<script th:replace=":: inlinescript" th:inline="javascript"></script> 
 	<script src="http://jqueryvalidation.org/files/dist/jquery.validate.js"></script>
