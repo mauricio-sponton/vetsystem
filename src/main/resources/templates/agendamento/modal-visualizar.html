@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+	<!-- Modal -->
+	<div th:fragment="modal-form" class="modal fade" id="modal-agendamento-visualizar"
+		tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Informações do agendamento</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span id="visualizar-title"></span><br>
+					<span id="visualizar-start"></span><br>
+					<span id="visualizar-end"></span><br>
+					<span id="visualizar-description"></span><br>
+					
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

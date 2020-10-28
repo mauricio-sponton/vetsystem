@@ -95,6 +95,7 @@ public class AgendamentoController {
 			 tudo.put("title", agendamento.getTipo());
 			 tudo.put("start", agendamento.getInicio());
 			 tudo.put("end", agendamento.getFim());
+			 tudo.put("description", agendamento.getDescricao() != null ? agendamento.getDescricao() : "");
 			 //tudo.putAll(remapear);
 			
 			//json += gson.toJson(tudo);

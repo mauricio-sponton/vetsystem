@@ -13,7 +13,9 @@
     margin: 0 auto;
     color: black
   }
-
+  #modal-agendamento-visualizar span{
+	color: indigo
+  } 
 </style>
 </head>
 <body>
@@ -21,6 +23,8 @@
 	<a class="btn-cadastrar-usuario" href="#" role="button"
 					data-toggle="modal" data-target="#modal-agendamento">Novo Evento</a> <span
 					th:replace="agendamento/modal :: modal-form"></span>
+					<span
+					th:replace="agendamento/modal-visualizar :: modal-form"></span>
 		<div id='calendar'></div>
 
 	</section>
@@ -48,8 +52,26 @@
   			      businessHours: true, // display business hours
   			      editable: true,
   			      selectable: true,
-  			   
- 			    		
+  			    eventClick: function(data) {
+  			    	var inicio = moment(data.event.start).locale('pt-br').format('dddd, DD[/]MM[/]YYYY, [às] h:mm');
+  			    	var termino = moment(data.event.end).locale('pt-br').format('dddd, DD [de] MMMM [de] YYYY, [às] h:mm');
+  			    	$("#visualizar-start").text("Início: " + inicio);
+  			    	$("#visualizar-end").text("Término: " + termino);
+  			    	$("#visualizar-title").text("Tipo do agendamento: " + data.event.title);
+  			    	$("#visualizar-description").text("Anotações: " + data.event.extendedProps.description);
+  			    	$("#modal-agendamento-visualizar").modal('show');
+  			      //alert('Event: ' + data.event.title);
+  			      //alert('Descrição: ' + data.event.extendedProps.description);
+  			     
+  			    },
+  			  eventRender: function(info) {
+  			    var tooltip = new Tooltip(info.el, {
+  			      title: info.event.extendedProps.description,
+  			      placement: 'top',
+  			      trigger: 'hover',
+  			      container: 'body'
+  			    });
+  			  },
   			   events: data
   				  
   				  
