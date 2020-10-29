@@ -16,10 +16,17 @@
   #modal-agendamento-visualizar span{
 	color: indigo
   } 
+ .visualizacao{
+ 	display: block
+ } 
+ .edicao{
+ 	display: none
+ }
 </style>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
+	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 	<a class="btn-cadastrar-usuario" href="#" role="button"
 					data-toggle="modal" data-target="#modal-agendamento">Novo Evento</a> <span
 					th:replace="agendamento/modal :: modal-form"></span>
@@ -30,17 +37,14 @@
 	</section>
 	<script th:src="@{/js/agendamento.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
-	//$.getJSON('/todos', function (data) {
       $(document).ready(function(){
     	  
     	 
     	
     	  $.getJSON('/agenda/todos', function(data){
-    		 
-    		  var calendarEl = document.getElementById('calendar');
-    			
-    	 		
-  			 var calendar = new FullCalendar.Calendar(calendarEl, {
+
+    		  var calendarEl = document.getElementById('calendar');	
+  			  var calendar = new FullCalendar.Calendar(calendarEl, {
   		    	
   			      headerToolbar: {
   			        left: 'prev,next today',
@@ -55,23 +59,28 @@
   			    eventClick: function(data) {
   			    	var inicio = moment(data.event.start).locale('pt-br').format('dddd, DD[/]MM[/]YYYY, [às] h:mm');
   			    	var termino = moment(data.event.end).locale('pt-br').format('dddd, DD [de] MMMM [de] YYYY, [às] h:mm');
+  			    	var inicio_edt = moment(data.event.start).format('YYYY-MM-DDThh:mm:ss.SSS');
+  			    	var fim_edt = moment(data.event.end).format('YYYY-MM-DDThh:mm:ss.SSS');
+  			    	
+  			    	//visualizacao
   			    	$("#visualizar-start").text("Início: " + inicio);
   			    	$("#visualizar-end").text("Término: " + termino);
   			    	$("#visualizar-title").text("Tipo do agendamento: " + data.event.title);
   			    	$("#visualizar-description").text("Anotações: " + data.event.extendedProps.description);
+  			    	$("#visualizar-secretaria").text("Agendamento realizado por: " + data.event.extendedProps.secretaria);
+  			    	//edicao
+  			    	$("#id-edicao").val(data.event.id);
+  			    	$("#tipo-edicao").val(data.event.title);
+  			    	$("#inicio-edicao").val(inicio_edt);
+  			    	$("#fim-edicao").val(fim_edt);
+  			    	$("#descricao-edicao").val(data.event.extendedProps.description);
+  			    	$(".modal-title").text("Informações do Agendamento");
   			    	$("#modal-agendamento-visualizar").modal('show');
   			      //alert('Event: ' + data.event.title);
   			      //alert('Descrição: ' + data.event.extendedProps.description);
   			     
   			    },
-  			  eventRender: function(info) {
-  			    var tooltip = new Tooltip(info.el, {
-  			      title: info.event.extendedProps.description,
-  			      placement: 'top',
-  			      trigger: 'hover',
-  			      container: 'body'
-  			    });
-  			  },
+  			
   			   events: data
   				  
   				  
@@ -82,9 +91,45 @@
 	   
 	   
     	  })
-	
+    	  $("#edit-agendamento").on('click', function(){
+    		  $('.visualizacao').slideToggle();
+    		  $('.edicao').slideToggle();
+    	  })
+    	   $("#cancela-edt").on('click', function(){
+    		   $('.edicao').slideToggle();
+    		   $('.visualizacao').slideToggle();
+    		 
+    	  })
+		  $("#modal-agendamento-visualizar").on("hidden.bs.modal", function(){
+			  $('.visualizacao').show();
+			  $('.edicao').hide();
+		  });
+		  if($("#modal-agendamento .msg-erro").html() != "") {
+				$("#modal-agendamento").modal('show');
+				$("#modal-agendamento .msg-erro, #modal-agendamento .invalid-feedback span").css("color", "red");
+				$("#modal-agendamento .is-invalid").css("border", "1px solid red");
+				$(".modal-title").text("Novo Agendamento");
+		  }
+		  if($("#modal-agendamento-visualizar .msg-erro").html() != "") {
+			 
+				$("#modal-agendamento-visualizar .msg-erro, #modal-agendamento .invalid-feedback span").css("color", "red");
+				$("#modal-agendamento-visualizar .is-invalid").css("border", "1px solid red");
+				$(".modal-title").text("Informações do Agendamento");
+		  }
+
+			$("#modal-agendamento, #modal-agendamento-visualizar").on("hidden.bs.modal", function() {
+				$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+				$("#modal-agendamento .msg-erro, #modal-agendamento-visualizar .msg-erro").hide();
+				
+				
+			});
+			
+			$(".btn-cadastrar-usuario").on("click", function(){
+				$(".form-control").val("");
+				$(".modal-title").text("Novo Agendamento");
+			});
 	 
-  	//})
+ 
   	
 	</script>
 	
