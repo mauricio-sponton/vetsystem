@@ -47,6 +47,19 @@ public class Agendamento extends AbstractEntity {
 	@JoinColumn(name = "id_veterinario_fk")
 	private Veterinario veterinario;
 
+	
+	@Column(name = "cor")
+	private String color;
+	
+	
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
 	public String getDescricao() {
 		return descricao;
 	}

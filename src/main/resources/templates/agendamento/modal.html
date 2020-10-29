@@ -17,8 +17,8 @@
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLongTitle">Editar
 						Cliente</h5>
-					<button type="button" class="close" id="fechar" data-dismiss="modal"
-						aria-label="Close">
+					<button type="button" class="close" id="fechar"
+						data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
@@ -41,11 +41,20 @@
 									<span th:errors="*{tipo}"></span>
 								</div>
 							</div>
+							<div class="form-group col-md-4">
+								<label for="color">Selecione a cor que você deseja:</label> <input
+									th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
+									type="color" id="color" th:field=*{color} class="form-control" name="color" value="#36299e">
+								<div class="invalid-feedback">
+									<span th:errors="*{color}"></span>
+								</div>
+							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-md-4">
 								<label for="inicio">Selecione a data de início</label> <input
-									class="form-control" type="datetime-local" id="inicio" name="inicio"
+									class="form-control" type="datetime-local" id="inicio"
+									name="inicio"
 									th:classappend="${#fields.hasErrors('inicio')} ? 'is-invalid'"
 									th:field="*{inicio}" />
 								<div class="invalid-feedback">
@@ -64,9 +73,10 @@
 						</div>
 						<div class="form-row">
 							<div class="form-group col-md-6">
-								<label for="descricao">Anotações</label> <textarea
-									class="form-control" id="descricao" placeholder="Taz..."
-									autofocus="autofocus" th:field="*{descricao}"
+								<label for="descricao">Anotações</label>
+								<textarea class="form-control" id="descricao"
+									placeholder="Taz..." autofocus="autofocus"
+									th:field="*{descricao}"
 									th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
 								<div class="invalid-feedback">
 									<span th:errors="*{descricao}"></span>

@@ -44,7 +44,7 @@
     	  $.getJSON('/agenda/todos', function(data){
 
     		  var calendarEl = document.getElementById('calendar');	
-  			  var calendar = new FullCalendar.Calendar(calendarEl, {
+  			  var calendar = new FullCalendar.Calendar(calendarEl,  {
   		    	
   			      headerToolbar: {
   			        left: 'prev,next today',
@@ -56,6 +56,7 @@
   			      businessHours: true, // display business hours
   			      editable: true,
   			      selectable: true,
+  			      
   			    eventClick: function(data) {
   			    	var inicio = moment(data.event.start).locale('pt-br').format('dddd, DD[/]MM[/]YYYY, [às] h:mm');
   			    	var termino = moment(data.event.end).locale('pt-br').format('dddd, DD [de] MMMM [de] YYYY, [às] h:mm');
@@ -73,14 +74,22 @@
   			    	$("#tipo-edicao").val(data.event.title);
   			    	$("#inicio-edicao").val(inicio_edt);
   			    	$("#fim-edicao").val(fim_edt);
+  			    	$("#color-edicao").val(data.event.backgroundColor);
   			    	$("#descricao-edicao").val(data.event.extendedProps.description);
   			    	$(".modal-title").text("Informações do Agendamento");
   			    	$("#modal-agendamento-visualizar").modal('show');
-  			      //alert('Event: ' + data.event.title);
-  			      //alert('Descrição: ' + data.event.extendedProps.description);
+  			      
   			     
   			    },
-  			
+  			  eventRender: function(data, $el) {
+  			    $el.popover({
+  			      title: data.event.title,
+  			      content: data.event.extendedProps.description,
+  			      trigger: 'hover',
+  			      placement: 'top',
+  			      container: 'body'
+  			    });
+  			  },
   			   events: data
   				  
   				  

@@ -106,6 +106,7 @@ public class AgendamentoController {
 			tudo.put("start", agendamento.getInicio());
 			tudo.put("end", agendamento.getFim());
 			tudo.put("description", agendamento.getDescricao() != null ? agendamento.getDescricao() : "");
+			tudo.put("backgroundColor", agendamento.getColor());
 			extend.put("secretaria", agendamento.getSecretaria().getNome()!= null ? agendamento.getSecretaria().getNome(): "");
 			tudo.put("extendedProps", extend != null ? extend : "");
 			// tudo.putAll(remapear);
