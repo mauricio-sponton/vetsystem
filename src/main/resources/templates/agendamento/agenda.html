@@ -25,6 +25,12 @@
  .exclusao{
  	display: none
  }
+ #paciente-nao-cadastrado{
+ 	display: none
+ }
+ #paciente-cadastrado{
+ 	display: block
+ }
 </style>
 </head>
 <body>
@@ -41,7 +47,24 @@
 	<script th:src="@{/js/agendamento.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
       $(document).ready(function(){
+    	
+    		
     	  
+    	
+    		  $("#animal, #animal-edicao").autocomplete({
+    	  			source : function(request, response) {
+    	  				$.ajax({
+    	  					method : "GET",
+    	  					url : "/pacientes/titulo",
+    	  					data : {
+    	  						termo : request.term
+    	  					},
+    	  					success : function(data) {
+    	  						response(data);
+    	  					}
+    	  				})
+    	  			}
+    	  	  }); 
     	 
     	
     	  $.getJSON('/agenda/todos', function(data){
@@ -71,8 +94,13 @@
   			    	$("#visualizar-start").text("Início: " + inicio);
   			    	$("#visualizar-end").text("Término: " + termino);
   			    	$("#visualizar-title").text("Tipo do agendamento: " + data.event.title);
-  			    	$("#visualizar-description").text("Anotações: " + data.event.extendedProps.description);
+  			        $("#visualizar-description").text("Anotações: " + data.event.extendedProps.description);
   			    	$("#visualizar-secretaria").text("Agendamento realizado por: " + data.event.extendedProps.secretaria);
+  			    	if(data.event.extendedProps.paciente != null){
+  			    		$("#visualizar-paciente").text("Paciente: " + data.event.extendedProps.paciente);
+  			    	}else{
+  			    		$("#visualizar-paciente").text("Paciente: " + data.event.extendedProps.pacienteNaoCadastrado);
+  			    	}
   			    	//edicao
   			    	$("#id-edicao").val(data.event.id);
   			    	$("#tipo-edicao").val(data.event.title);
@@ -81,6 +109,15 @@
   			    	$("#color-edicao").val(data.event.backgroundColor);
   			    	$("#descricao-edicao").val(data.event.extendedProps.description);
   			    	$(".modal-title").text("Informações do Agendamento");
+  			    	if(data.event.extendedProps.paciente != null){
+  			    		$("#paciente-cadastrado-edicao").show();
+  			    		$("#paciente-nao-cadastrado-edicao").hide();
+  			    		$("#animal-edicao").val(data.event.extendedProps.paciente);
+  			    	}else{
+  			    		$("#paciente-cadastrado-edicao").hide();
+  			    		$("#paciente-nao-cadastrado-edicao").show();
+  			    		$("#sem_cadastro-edicao").val(data.event.extendedProps.pacienteNaoCadastrado);
+  			    	}
   			    	$("#modal-agendamento-visualizar").modal('show');
   			      
   			     
@@ -104,6 +141,19 @@
 	   
 	   
     	  })
+    	   $("#cadastrado").on('change', function(){
+    		  if($(this).is(':checked')){
+    			  $('#paciente-cadastrado').hide(); 
+      		      $('#paciente-nao-cadastrado').show();
+     		  }else{
+     			 $('#paciente-cadastrado').show(); 
+     		     $('#paciente-nao-cadastrado').hide();
+     		  }
+    		    
+     		  
+    	   });
+    			  
+    	   
     	  $("#edit-agendamento").on('click', function(){
     		  $('.visualizacao').slideToggle();
     		  $('.edicao').slideToggle();
@@ -151,7 +201,7 @@
 				$(".form-control").val("");
 				$(".modal-title").text("Novo Agendamento");
 			});
-	 
+	 		
  
   	
 	</script>

@@ -47,11 +47,32 @@ public class Agendamento extends AbstractEntity {
 	@JoinColumn(name = "id_veterinario_fk")
 	private Veterinario veterinario;
 
+	@ManyToOne
+	@JoinColumn(name = "id_animal_fk")
+	private Animal animal;
 	
 	@Column(name = "cor")
 	private String color;
 	
-	
+	@Column(name="sem_cadastro")
+	private String sem_cadastro;
+
+	public String getSem_cadastro() {
+		return sem_cadastro;
+	}
+
+	public void setSem_cadastro(String sem_cadastro) {
+		this.sem_cadastro = sem_cadastro;
+	}
+
+	public Animal getAnimal() {
+		return animal;
+	}
+
+	public void setAnimal(Animal animal) {
+		this.animal = animal;
+	}
+
 	public String getColor() {
 		return color;
 	}

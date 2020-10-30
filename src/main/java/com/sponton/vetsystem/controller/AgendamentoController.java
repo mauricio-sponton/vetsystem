@@ -47,6 +47,7 @@ import com.sponton.vetsystem.domain.Cliente;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Secretaria;
 import com.sponton.vetsystem.service.AgendamentoService;
+import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.SecretariaService;
 
 @Controller
@@ -58,6 +59,9 @@ public class AgendamentoController {
 	
 	@Autowired
 	private SecretariaService secretariaService;
+	
+	@Autowired
+	private AnimalService animalService;
 
 	@GetMapping("/abrir")
 	public String abrirAgenda(Agendamento agendamento, ModelMap model) {
@@ -76,14 +80,23 @@ public class AgendamentoController {
 			model.addAttribute("erro", "A data de ínicio não pode ser igual ou ultapassar a data de término");
 			return "/agendamento/agenda";
 		}
+		
+		
 		try {
 			if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
 				Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
+				if(!agendamento.getAnimal().getNome().isEmpty()) {
+					String titulo = agendamento.getAnimal().getNome();
+					Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
+					agendamento.setAnimal(animal);
+				}else {
+					agendamento.setAnimal(null);
+				}
 				if (agendamento.hasNotId()) {
 					agendamento.setSecretaria(secretaria);
 					service.salvar(agendamento);
 					attr.addFlashAttribute("sucesso", "Agendamento cadastrado com sucesso");
-				} else {
+				} else {		
 					agendamento.setSecretaria(secretaria);
 					service.salvar(agendamento);
 					attr.addFlashAttribute("sucesso", "Dados alterados com sucesso");
@@ -112,6 +125,12 @@ public class AgendamentoController {
 			tudo.put("description", agendamento.getDescricao() != null ? agendamento.getDescricao() : "");
 			tudo.put("backgroundColor", agendamento.getColor());
 			extend.put("secretaria", agendamento.getSecretaria().getNome()!= null ? agendamento.getSecretaria().getNome(): "");
+			if(agendamento.getAnimal() !=null) {
+				extend.put("paciente", agendamento.getAnimal().getNome()!= null ? agendamento.getAnimal().getNome(): "");
+			}else {
+				extend.put("pacienteNaoCadastrado", agendamento.getSem_cadastro()!= null ? agendamento.getSem_cadastro(): "");
+			}
+			
 			tudo.put("extendedProps", extend != null ? extend : "");
 			// tudo.putAll(remapear);
 

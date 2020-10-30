@@ -41,10 +41,37 @@
 									<span th:errors="*{tipo}"></span>
 								</div>
 							</div>
+							<div class="form-group col-md-4" id ="paciente-cadastrado">
+								
+								<label for="animal">Paciente</label> <input type="text"
+									class="form-control" id="animal" placeholder="Rex..." th:name="cadastrado"
+									th:classappend="${#fields.hasErrors('animal.nome')} ? 'is-invalid'"
+									th:field="*{animal.nome}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{animal.nome}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-4" id ="paciente-nao-cadastrado">
+								<label for="sem_cadastro">Paciente</label> <input type="text"
+									class="form-control" id="sem_cadastro" placeholder="Taz..."
+									th:classappend="${#fields.hasErrors('sem_cadastro')} ? 'is-invalid'"
+									th:field="*{sem_cadastro}" />
+								<div class="invalid-feedback">
+									<span th:errors="*{sem_cadastro}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-2">
+								<input type="checkbox" id="cadastrado"  value="1" name="cadastrado">
+								<label for="cadastrado">Paciente não cadastrado</label>
+							</div>
+						</div>
+
+						<div class="form-row">
 							<div class="form-group col-md-4">
 								<label for="color">Selecione a cor que você deseja:</label> <input
 									th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
-									type="color" id="color" th:field=*{color} class="form-control" name="color" value="#36299e">
+									type="color" id="color" th:field=*{color} class="form-control"
+									name="color" value="#36299e">
 								<div class="invalid-feedback">
 									<span th:errors="*{color}"></span>
 								</div>
@@ -65,7 +92,7 @@
 								<label for="fim">Selecione a data de fim</label> <input
 									class="form-control" type="datetime-local" id="fim"
 									th:classappend="${#fields.hasErrors('fim')} ? 'is-invalid'"
-									th:field="*{fim}" name="fim"/>
+									th:field="*{fim}" name="fim" />
 								<div class="invalid-feedback">
 									<span th:errors="*{fim}"></span>
 								</div>
