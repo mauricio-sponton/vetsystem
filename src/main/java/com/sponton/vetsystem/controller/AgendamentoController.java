@@ -72,6 +72,10 @@ public class AgendamentoController {
 			model.addAttribute("erro", "por favor preencha os campos");
 			return "/agendamento/agenda";
 		}
+		if(agendamento.getInicio().isAfter(agendamento.getFim()) || agendamento.getInicio().isEqual(agendamento.getFim())) {
+			model.addAttribute("erro", "A data de ínicio não pode ser igual ou ultapassar a data de término");
+			return "/agendamento/agenda";
+		}
 		try {
 			if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
 				Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
@@ -120,6 +124,12 @@ public class AgendamentoController {
 		// String json = new Gson().toJson(acumulador);
 
 		return allEvents;
+	}
+	@GetMapping("/excluir/{id}")
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
+		service.remover(id);
+		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
+		return "redirect:/agenda/abrir";
 	}
 	/*
 	 * @RequestMapping(value = "/todos.json", method = RequestMethod.GET,

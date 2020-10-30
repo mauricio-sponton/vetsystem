@@ -30,4 +30,9 @@ public class AgendamentoService {
 		// TODO Auto-generated method stub
 		return repository.findAll();
 	}
+
+	@Transactional(readOnly = false)
+	public void remover(Long id) {
+		repository.deleteById(id);	
+	}
 }

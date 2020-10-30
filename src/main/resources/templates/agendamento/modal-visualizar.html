@@ -8,98 +8,118 @@
 <body>
 
 	<!-- Modal -->
-	<div th:fragment="modal-form" class="modal fade" id="modal-agendamento-visualizar"
-		tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-		aria-hidden="true">
+	<div th:fragment="modal-form" class="modal fade"
+		id="modal-agendamento-visualizar" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-lg"
 			role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle">Informações do agendamento</h5>
+					<h5 class="modal-title" id="exampleModalLongTitle">Informações
+						do agendamento</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-				<span th:text="${erro}" class="msg-erro"></span>
-					<div class ="visualizacao">
-						<span id="visualizar-title"></span><br>
-						<span id="visualizar-start"></span><br>
-						<span id="visualizar-end"></span><br>
-						<span id="visualizar-description"></span><br>
-						<span id="visualizar-secretaria"></span><br>
-						<button id="edit-agendamento" class="btn btn-warning"  
-						>Editar</button>
+					<span th:text="${erro}" class="msg-erro"></span>
+					<div class="visualizacao">
+						<div class="modal-body">
+							<span id="visualizar-title"></span><br> <span
+								id="visualizar-start"></span><br> <span id="visualizar-end"></span><br>
+							<span id="visualizar-description"></span><br> <span
+								id="visualizar-secretaria"></span><br>
+						</div>
+
+						<div class="modal-footer">
+							<button id="edit-agendamento" class="btn btn-warning">Editar</button>
+							<button id="edit-excluir" class="btn btn-danger">Excluir</button>
+						</div>
+
 					</div>
-					
-					
-					
-					<div class = "edicao">
-						
-					<form th:action="@{/agenda/salvar}" method="POST"
-						enctype="multipart/form-data" th:object="${agendamento}"
-						id="formA">
-						<div class="form-row">
 
-							<div class="form-group col-md-4">
-								<label for="tipo-edicao">Tipo</label> <select
-									th:classappend="${#fields.hasErrors('tipo')} ? 'is-invalid'"
-									id="tipo-edicao" class="form-control" th:field=*{tipo}>
-									<option value="">Selecione</option>
-									<option th:value="Consulta" th:text="Consulta"></option>
-									<option th:value="Retorno" th:text="Retorno"></option>
-								</select>
-								<div class="invalid-feedback">
-									<span th:errors="*{tipo}"></span>
-								</div>
-							</div>
-							<div class="form-group col-md-4">
-								<label for="color">Selecione a cor que você deseja:</label> <input
-									th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
-									type="color" id="color-edicao" th:field=*{color} class="form-control" name="color" value="#36299e">
-								<div class="invalid-feedback">
-									<span th:errors="*{color}"></span>
-								</div>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col-md-4">
-								<label for="inicio-edicao">Selecione a data de início</label> <input
-									class="form-control" type="datetime-local" id="inicio-edicao" name="inicio"
-									th:classappend="${#fields.hasErrors('inicio')} ? 'is-invalid'"
-									th:field="*{inicio}" />
-								<div class="invalid-feedback">
-									<span th:errors="*{inicio}"></span>
-								</div>
-							</div>
-							<div class="form-group col-md-4">
-								<label for="fim-edicao">Selecione a data de fim</label> <input
-									class="form-control" type="datetime-local" id="fim-edicao"
-									th:classappend="${#fields.hasErrors('fim')} ? 'is-invalid'"
-									th:field="*{fim}" />
-								<div class="invalid-feedback">
-									<span th:errors="*{fim}"></span>
-								</div>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col-md-6">
-								<label for="descricao-edicao">Anotações</label> <textarea
-									class="form-control" id="descricao-edicao" placeholder="Taz..."
-									autofocus="autofocus" th:field="*{descricao}"
-									th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
-								<div class="invalid-feedback">
-									<span th:errors="*{descricao}"></span>
-								</div>
-							</div>
 
+
+					<div class="edicao">
+
+						<form th:action="@{/agenda/salvar}" method="POST"
+							enctype="multipart/form-data" th:object="${agendamento}"
+							id="formA">
+							<div class="form-row">
+
+								<div class="form-group col-md-4">
+									<label for="tipo-edicao">Tipo</label> <select
+										th:classappend="${#fields.hasErrors('tipo')} ? 'is-invalid'"
+										id="tipo-edicao" class="form-control" th:field=*{tipo}>
+										<option value="">Selecione</option>
+										<option th:value="Consulta" th:text="Consulta"></option>
+										<option th:value="Retorno" th:text="Retorno"></option>
+									</select>
+									<div class="invalid-feedback">
+										<span th:errors="*{tipo}"></span>
+									</div>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="color">Selecione a cor que você deseja:</label> <input
+										th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
+										type="color" id="color-edicao" th:field=*{color}
+										class="form-control" name="color" value="#36299e">
+									<div class="invalid-feedback">
+										<span th:errors="*{color}"></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label for="inicio-edicao">Selecione a data de início</label> <input
+										class="form-control" type="datetime-local" id="inicio-edicao"
+										name="inicio"
+										th:classappend="${#fields.hasErrors('inicio')} ? 'is-invalid'"
+										th:field="*{inicio}" />
+									<div class="invalid-feedback">
+										<span th:errors="*{inicio}"></span>
+									</div>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="fim-edicao">Selecione a data de fim</label> <input
+										class="form-control" type="datetime-local" id="fim-edicao"
+										th:classappend="${#fields.hasErrors('fim')} ? 'is-invalid'"
+										th:field="*{fim}" />
+									<div class="invalid-feedback">
+										<span th:errors="*{fim}"></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="descricao-edicao">Anotações</label>
+									<textarea class="form-control" id="descricao-edicao"
+										placeholder="Taz..." autofocus="autofocus"
+										th:field="*{descricao}"
+										th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
+									<div class="invalid-feedback">
+										<span th:errors="*{descricao}"></span>
+									</div>
+								</div>
+
+							</div>
+							<input type="hidden" id="id-edicao" th:field="*{id}" />
+							<button type="submit" class="btn btn-primary ">Salvar</button>
+
+						</form>
+						<div class="modal-footer">
+							<button id="cancela-edt" class="btn btn-primary">Cancelar</button>
 						</div>
-						<input type="hidden" id="id-edicao" th:field="*{id}" />
-						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
-					</form>
-						<button id="cancela-edt" class="btn btn-primary"  
-					>Cancelar</button>
+					</div>
+					<div class="exclusao">
+						<div class="modal-body">Você tem certeza que deseja excluir
+							esse ítem?</div>
+						<div class="modal-footer">
+							<button id="cancela-exclusao" type="button"
+								class="btn btn-danger">Cancelar</button>
+							<a id = "apagar_evento" type="button" class="btn btn-success">Confirmar</a>
+						</div>
 					</div>
 				</div>
 

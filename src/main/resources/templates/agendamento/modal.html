@@ -65,7 +65,7 @@
 								<label for="fim">Selecione a data de fim</label> <input
 									class="form-control" type="datetime-local" id="fim"
 									th:classappend="${#fields.hasErrors('fim')} ? 'is-invalid'"
-									th:field="*{fim}" />
+									th:field="*{fim}" name="fim"/>
 								<div class="invalid-feedback">
 									<span th:errors="*{fim}"></span>
 								</div>

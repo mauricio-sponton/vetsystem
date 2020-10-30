@@ -22,6 +22,9 @@
  .edicao{
  	display: none
  }
+ .exclusao{
+ 	display: none
+ }
 </style>
 </head>
 <body>
@@ -62,7 +65,8 @@
   			    	var termino = moment(data.event.end).locale('pt-br').format('dddd, DD [de] MMMM [de] YYYY, [às] h:mm');
   			    	var inicio_edt = moment(data.event.start).format('YYYY-MM-DDThh:mm:ss.SSS');
   			    	var fim_edt = moment(data.event.end).format('YYYY-MM-DDThh:mm:ss.SSS');
-  			    	
+  			   		//apagar
+  			   		$("#apagar_evento").attr("href", "/agenda/excluir/" + data.event.id);
   			    	//visualizacao
   			    	$("#visualizar-start").text("Início: " + inicio);
   			    	$("#visualizar-end").text("Término: " + termino);
@@ -104,14 +108,24 @@
     		  $('.visualizacao').slideToggle();
     		  $('.edicao').slideToggle();
     	  })
+    	    $("#edit-excluir").on('click', function(){
+    		  $('.visualizacao').slideToggle();
+    		  $('.exclusao').slideToggle();
+    	  })
     	   $("#cancela-edt").on('click', function(){
     		   $('.edicao').slideToggle();
+    		   $('.visualizacao').slideToggle();
+    		 
+    	  })
+    	   $("#cancela-exclusao").on('click', function(){
+    		   $('.exclusao').slideToggle();
     		   $('.visualizacao').slideToggle();
     		 
     	  })
 		  $("#modal-agendamento-visualizar").on("hidden.bs.modal", function(){
 			  $('.visualizacao').show();
 			  $('.edicao').hide();
+			  $('.exclusao').hide();
 		  });
 		  if($("#modal-agendamento .msg-erro").html() != "") {
 				$("#modal-agendamento").modal('show');
