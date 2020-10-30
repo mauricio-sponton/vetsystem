@@ -88,6 +88,7 @@ public class AgendamentoController {
 				if(!agendamento.getAnimal().getNome().isEmpty()) {
 					String titulo = agendamento.getAnimal().getNome();
 					Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
+					agendamento.setSem_cadastro("");
 					agendamento.setAnimal(animal);
 				}else {
 					agendamento.setAnimal(null);

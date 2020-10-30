@@ -29,8 +29,8 @@
 							<span id="visualizar-title"></span><br> <span
 								id="visualizar-start"></span><br> <span id="visualizar-end"></span><br>
 							<span id="visualizar-description"></span><br> <span
-								id="visualizar-secretaria"></span><br>
-							<span id="visualizar-paciente"></span><br>
+								id="visualizar-secretaria"></span><br> <span
+								id="visualizar-paciente"></span><br>
 						</div>
 
 						<div class="modal-footer">
@@ -72,14 +72,21 @@
 										<span th:errors="*{animal.nome}"></span>
 									</div>
 								</div>
-								<div class="form-group col-md-4" id="paciente-nao-cadastrado-edicao">
-									<label for="sem_cadastro-edicao">Paciente</label> <input type="text"
-										class="form-control" id="sem_cadastro-edicao" placeholder="Taz..."
+								<div class="form-group col-md-4"
+									id="paciente-nao-cadastrado-edicao">
+									<label for="sem_cadastro-edicao">Paciente</label> <input
+										type="text" class="form-control" id="sem_cadastro-edicao"
+										placeholder="Taz..."
 										th:classappend="${#fields.hasErrors('sem_cadastro')} ? 'is-invalid'"
 										th:field="*{sem_cadastro}" />
 									<div class="invalid-feedback">
 										<span th:errors="*{sem_cadastro}"></span>
 									</div>
+								</div>
+								<div class="form-group col-md-2">
+									<input type="checkbox" id="cadastrado-edicao" value="1"
+										name="cadastrado"> <label for="cadastrado">Paciente
+										não cadastrado</label>
 								</div>
 							</div>
 							<div class="form-row">

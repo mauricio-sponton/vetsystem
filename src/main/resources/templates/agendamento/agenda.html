@@ -116,6 +116,7 @@
   			    	}else{
   			    		$("#paciente-cadastrado-edicao").hide();
   			    		$("#paciente-nao-cadastrado-edicao").show();
+  			    		 $("#cadastrado-edicao").prop("checked", true);
   			    		$("#sem_cadastro-edicao").val(data.event.extendedProps.pacienteNaoCadastrado);
   			    	}
   			    	$("#modal-agendamento-visualizar").modal('show');
@@ -150,10 +151,19 @@
      			 $('#paciente-cadastrado').show(); 
      		     $('#paciente-nao-cadastrado').hide();
      		     $('#sem_cadastro').val("");
-     		  }
-    		    
-     		  
+     		  }  
     	   });
+      $("#cadastrado-edicao").on('change', function(){
+		  if($(this).is(':checked')){
+			  $('#paciente-cadastrado-edicao').hide(); 
+  		      $('#paciente-nao-cadastrado-edicao').show();
+  		      $('#animal-edicao, #sem_cadastro-edicao').val("");
+ 		  }else{
+ 			 $('#paciente-cadastrado-edicao').show(); 
+ 		     $('#paciente-nao-cadastrado-edicao').hide();
+ 		     $('#animal-edicao, #sem_cadastro-edicao').val("");
+ 		  }  
+	   });
     			  
     	   
     	  $("#edit-agendamento").on('click', function(){
@@ -175,6 +185,7 @@
     		 
     	  })
 		  $("#modal-agendamento-visualizar").on("hidden.bs.modal", function(){
+			 
 			  $('.visualizacao').show();
 			  $('.edicao').hide();
 			  $('.exclusao').hide();
@@ -193,6 +204,7 @@
 		  }
 
 			$("#modal-agendamento, #modal-agendamento-visualizar").on("hidden.bs.modal", function() {
+				 $("#cadastrado-edicao, #cadastrado").prop("checked", false);
 				$(".is-invalid").removeClass("is-invalid").removeAttr('style');
 				$("#modal-agendamento .msg-erro, #modal-agendamento-visualizar .msg-erro").hide();
 				
