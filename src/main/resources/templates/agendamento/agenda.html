@@ -145,9 +145,11 @@
     		  if($(this).is(':checked')){
     			  $('#paciente-cadastrado').hide(); 
       		      $('#paciente-nao-cadastrado').show();
+      		      $('#animal').val("");
      		  }else{
      			 $('#paciente-cadastrado').show(); 
      		     $('#paciente-nao-cadastrado').hide();
+     		     $('#sem_cadastro').val("");
      		  }
     		    
      		  
