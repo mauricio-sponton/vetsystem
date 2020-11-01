@@ -12,7 +12,7 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div class=teste>
-		<!--  
+			<!--  
 			<form class="form-inline" method="get"
 				th:action="@{/veterinarios/editar/{id} (id=${veterinario.id})}">
 				<button class="btn btn-outline-success my-2 my-sm-0" id="edt-vet">Editar</button>
@@ -20,10 +20,9 @@
 			</form>
 		-->
 			<a class="btn-cadastrar-usuario" href="#" role="button"
-					data-toggle="modal" data-target="#modal-veterinario">Editar Dados</a>
-				<span
-					th:replace="veterinario/modal :: modal-form"></span>
-			<span th:text="${veterinario.nome}"></span> <span
+				data-toggle="modal" data-target="#modal-veterinario">Editar
+				Dados</a> <span th:replace="veterinario/modal :: modal-form"></span> <span
+				th:text="${veterinario.nome}"></span> <span
 				th:text="${veterinario.sexo}"></span>
 		</div>
 		<div th:if="${veterinario.foto.fileName == null}">
@@ -35,7 +34,29 @@
 			<img alt="" th:src="@{${'/uploads/' + veterinario.foto.fileName}}"
 				style="width: auto; height: auto">
 		</div>
-
+		<form th:action="@{/veterinarios/salvar/horarios}"
+			th:object="${form}" method="post">
+				<table>
+					<thead>
+						<tr>
+							<th>Dia</th>
+							<th>De</th>
+							<th>Ate</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr  class="row item" th:each="cargaHoraria, itemStat : *{cargas}">
+						
+							<td><input type ="number" th:field="*{cargas[__${itemStat.index}__].diaDaSemana}" /></td>
+							<td><input type="time" th:field="*{cargas[__${itemStat.index}__].inicio}" /></td>
+							<td><input type="time" th:field="*{cargas[__${itemStat.index}__].fim}" /></td>
+							
+						</tr>
+					</tbody>
+				</table>
+				<input type="submit" id="submitButton" th:value="Salvar"> 
+		</form>
 	</section>
 
 	<script th:src="@{/js/veterinario.js(v=${version})}" th:fragment="js"></script>

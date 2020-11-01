@@ -1,12 +1,16 @@
 package com.sponton.vetsystem.service;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sponton.vetsystem.domain.CargaHoraria;
 import com.sponton.vetsystem.domain.Veterinario;
+import com.sponton.vetsystem.repository.CargaHorariaRepository;
 import com.sponton.vetsystem.repository.VeterinarioRepository;
 
 @Service
@@ -14,6 +18,9 @@ public class VeterinarioService {
 	
 	@Autowired 
 	private VeterinarioRepository repository;
+	
+	@Autowired
+	private CargaHorariaRepository cargaRepository;
 
 	@Transactional(readOnly = true)
 	public Veterinario buscarPorEmail(String email) {
@@ -42,5 +49,7 @@ public class VeterinarioService {
 	public Veterinario buscarPorId(Long id) {
 		return repository.findById(id).get();
 	}
+
+	
 
 }

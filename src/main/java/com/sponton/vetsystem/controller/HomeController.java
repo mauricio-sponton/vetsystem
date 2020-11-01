@@ -1,7 +1,9 @@
 package com.sponton.vetsystem.controller;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,11 +22,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.PerfilTipo;
+import com.sponton.vetsystem.domain.Raca;
 import com.sponton.vetsystem.domain.Secretaria;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.ClienteService;
 import com.sponton.vetsystem.service.EspecieService;
+import com.sponton.vetsystem.service.RacaService;
 import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.VeterinarioService;
 
@@ -45,6 +49,9 @@ public class HomeController {
 	
 	@Autowired
 	private SecretariaService secretariaService;
+	
+	@Autowired
+	private RacaService racaService;
 	
 	@GetMapping({"/home" })
 	public String home(ModelMap model,@AuthenticationPrincipal User user, RedirectAttributes attr) {
@@ -95,11 +102,25 @@ public class HomeController {
 	@RequestMapping("piechart")
 	public ResponseEntity<?> getPieChart(){
 		List<Especie> animais = especieService.buscarTodasEspecies();
+		List<Raca> racas = racaService.buscarTodasRacas();
 		return new ResponseEntity<>(animais, HttpStatus.OK);
- 	}
+ 	}*/
+	/*
 	@RequestMapping("piechart")
 	public ResponseEntity<?> getPieChart(){
 		List<Animal> animais = animalService.buscarTodosAnimais();
-		return new ResponseEntity<>(animais, HttpStatus.OK);
-	} */
+		List<Raca> racas = racaService.buscarTodasRacas();
+		int t =0;
+		for(Raca r : racas) {
+			Map<String, Object> racaTamanho = new LinkedHashMap<>();
+			for(Animal a : animais) {
+				if(a.getRaca().getNome() == r.getNome()) {
+					t += +1;
+					System.out.println("teste" + t);
+				}
+			}
+		}
+		return new ResponseEntity<>(racas, HttpStatus.OK);
+	} 
+	*/
 }

@@ -94,7 +94,13 @@
   			    	$("#visualizar-start").text("Início: " + inicio);
   			    	$("#visualizar-end").text("Término: " + termino);
   			    	$("#visualizar-title").text("Tipo do agendamento: " + data.event.title);
-  			        $("#visualizar-description").text("Anotações: " + data.event.extendedProps.description);
+  			    	if(data.event.extendedProps.description != ""){
+  			    		$("#visualizar-description").show();
+  			    		 $("#visualizar-description").text("Anotações: " + data.event.extendedProps.description).append('<br>');
+  			    		
+  			    	}else{
+  			    		$("#visualizar-description").hide();
+  			    	}
   			    	$("#visualizar-secretaria").text("Agendamento realizado por: " + data.event.extendedProps.secretaria);
   			    	if(data.event.extendedProps.paciente != null){
   			    		$("#visualizar-paciente").text("Paciente: " + data.event.extendedProps.paciente);

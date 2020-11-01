@@ -10,11 +10,19 @@
 			<div th:switch="${currentRole}" sec:authorize="isAuthenticated()">
 				<div sec:authorize="hasAuthority('VETERINARIO')"
 					th:if="${veterinario.nome != null}">
-					<span style="color: white; font-size: 20px; float: left">Bem
-						vindo(a), <span class="" th:text="${veterinario.nome}"> </span>
-					</span>
+					<div th:if="${veterinario.sexo == 'Feminino'}">
+						<span style="color: white; font-size: 20px; float: left">Bem
+							vinda, <span class="" th:text="${veterinario.nome}"> </span>
+						</span>
+					</div>
+					<div th:if="${veterinario.sexo == 'Masculino'}">
+						<span style="color: white; font-size: 20px; float: left">Bem
+							vindo, <span class="" th:text="${veterinario.nome}"> </span>
+						</span>
+					</div>
+
 				</div>
-					<div sec:authorize="hasAuthority('VETERINARIO')"
+				<div sec:authorize="hasAuthority('VETERINARIO')"
 					th:if="${veterinario.nome == null}">
 					<span style="color: white; font-size: 20px; float: left">Bem
 						vindo(a), <span class="" sec:authentication="name"> </span>
@@ -22,9 +30,17 @@
 				</div>
 				<div sec:authorize="hasAuthority('SECRETARIA')"
 					th:if="${secretaria.nome != null}">
-					<span style="color: white; font-size: 20px; float: left">Bem
-						vindo(a), <span class="" th:text="${secretaria.nome}"> </span>
-					</span>
+					<div th:if="${secretaria.sexo == 'Feminino'}">
+						<span style="color: white; font-size: 20px; float: left">Bem
+							vinda, <span class="" th:text="${secretaria.nome}"> </span>
+						</span>
+					</div>
+					<div th:if="${secretaria.sexo == 'Masculino'}">
+						<span style="color: white; font-size: 20px; float: left">Bem
+							vindo, <span class="" th:text="${secretaria.nome}"> </span>
+						</span>
+					</div>
+
 				</div>
 				<div sec:authorize="hasAuthority('SECRETARIA')"
 					th:if="${secretaria.nome == null}">
@@ -32,7 +48,7 @@
 						vindo(a), <span class="" sec:authentication="name"> </span>
 					</span>
 				</div>
-				
+
 				<div th:if="${veterinario == null && secretaria == null}">
 					<span style="color: white; font-size: 20px; float: left">Bem
 						vindo(a), <span class="" sec:authentication="name"> </span>
