@@ -1,6 +1,9 @@
 package com.sponton.vetsystem.controller;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,68 +41,93 @@ import com.sponton.vetsystem.service.VeterinarioService;
 @Controller
 @RequestMapping("veterinarios")
 public class VeterinarioController {
-	
+
 	@Autowired
 	private VeterinarioService service;
-	
+
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private FotoService fotoService;
-	
+
 	@Autowired
 	private CargaHorariaService cargaHorariaService;
-	
+
 	@GetMapping("/dados")
 	public String abrirPorVeterinario(Veterinario veterinario, ModelMap model, @AuthenticationPrincipal User user) {
-		
+
 		veterinario = service.buscarPorEmail(user.getUsername());
-		if(veterinario.hasNotId()) {
+		if (veterinario.hasNotId()) {
 			model.addAttribute("veterinario", veterinario);
 			return "veterinario/visualizar";
 		}
-		if(veterinario.hasId()) {
+		if (veterinario.hasId()) {
 			List<CargaHoraria> cargasVet = cargaHorariaService.buscarHorarioPorVeterinario(veterinario.getId());
-			if(cargasVet.isEmpty()) {
+			if (cargasVet.isEmpty()) {
 				CargaHorariaDTO cargasForm = new CargaHorariaDTO();
-				for(int i = 1; i<=3;i++) {
+				for (int i = 1; i <= 7; i++) {
 					cargasForm.addCarga(new CargaHoraria());
-					
+
 				}
 				model.addAttribute("form", cargasForm);
 			}
-			
-			if(cargasVet.size() > 0) {
+
+			if (cargasVet.size() > 0) {
 				List<CargaHoraria> listaEdicao = new ArrayList<>();
-				cargaHorariaService.buscarHorarioPorVeterinario(veterinario.getId()).iterator().forEachRemaining(listaEdicao::add);
+				cargaHorariaService.buscarHorarioPorVeterinario(veterinario.getId()).iterator()
+						.forEachRemaining(listaEdicao::add);
 				model.addAttribute("formEdit", new CargaHorariaDTO(listaEdicao));
 			}
-			
+
 			model.addAttribute("veterinario", veterinario);
-			return "veterinario/visualizar";	
+			return "veterinario/visualizar";
 		}
-	
+
 		return "veterinario/visualizar";
 	}
-	
+
 	@PostMapping("/salvar/horarios")
-	public String salvarHorarios(@ModelAttribute CargaHorariaDTO form, Model model, Veterinario veterinario) {
-		int t = 0;
-		for(CargaHoraria c : form.getCargas()) {
+	public String salvarHorarios(@ModelAttribute CargaHorariaDTO form, Model model, Veterinario veterinario, RedirectAttributes attr) {
+		int t = 1;
+		for (CargaHoraria c : form.getCargas()) {
 			c.setVeterinario(veterinario);
-			t = t +1;
-			c.setDiaDaSemana(t);
-			if(c.isAtivo() == true) {
+			switch (t) {
+			case 1:
+				c.setDiaDaSemana(Calendar.SUNDAY);
+				break;
+			case 2:
+				c.setDiaDaSemana(Calendar.MONDAY);
+				break;
+			case 3:
+				c.setDiaDaSemana(Calendar.TUESDAY);
+				break;
+			case 4:
+				c.setDiaDaSemana(Calendar.WEDNESDAY);
+				break;
+			case 5:
+				c.setDiaDaSemana(Calendar.THURSDAY);
+				break;
+			case 6:
+				c.setDiaDaSemana(Calendar.FRIDAY);
+				break;
+			case 7:
+				c.setDiaDaSemana(Calendar.SATURDAY);
+				break;
+
+			}
+			t = t + 1;
+			if (c.isAtivo() == true) {
 				c.setFim(null);
 				c.setInicio(null);
 			}
 		}
-		
+
 		cargaHorariaService.salvarTodos(form.getCargas());
-		return "redirect:/home";
+		attr.addFlashAttribute("sucesso", "Dados cadastrados com sucesso");
+		return "redirect:/veterinarios/dados";
 	}
-	
+
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("veterinario", service.buscarPorId(id));
@@ -107,19 +135,19 @@ public class VeterinarioController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Valid Veterinario veterinario, BindingResult result, RedirectAttributes attr, 
-			@AuthenticationPrincipal User user,@RequestParam("file") MultipartFile file, ModelMap model) {
-		if(result.hasErrors()) {
+	public String salvar(@Valid Veterinario veterinario, BindingResult result, RedirectAttributes attr,
+			@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file, ModelMap model) {
+		if (result.hasErrors()) {
 			model.addAttribute("erro", "Por favor preencha seus dados");
 			return "veterinario/visualizar";
 		}
 		try {
-			if(veterinario.hasNotId() && veterinario.getUsuario().hasNotId()) {
+			if (veterinario.hasNotId() && veterinario.getUsuario().hasNotId()) {
 				Usuario usuario = usuarioService.buscarPorEmail(user.getUsername());
 				veterinario.setUsuario(usuario);
 			}
 			if (!file.isEmpty()) {
-				if(veterinario.getFoto().hasNotId()) {
+				if (veterinario.getFoto().hasNotId()) {
 					Foto foto = new Foto();
 					foto.setFileName(file.getOriginalFilename());
 					foto.setPath("/uploads/");
@@ -130,7 +158,7 @@ public class VeterinarioController {
 						attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 					}
 				}
-				if(veterinario.getFoto().hasId()) {
+				if (veterinario.getFoto().hasId()) {
 					Foto foto = fotoService.buscarFotoId(veterinario.getFoto().getId());
 					foto.setFileName(file.getOriginalFilename());
 					foto.setPath("/uploads/");
@@ -141,9 +169,9 @@ public class VeterinarioController {
 						attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 					}
 				}
-					
+
 			}
-			if(file.isEmpty() && veterinario.hasId()) {
+			if (file.isEmpty() && veterinario.hasId()) {
 				Foto foto = fotoService.buscarFotoId(veterinario.getFoto().getId());
 				veterinario.setFoto(foto);
 				try {
@@ -155,13 +183,12 @@ public class VeterinarioController {
 			service.salvar(veterinario);
 			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 			attr.addFlashAttribute("veterinario", veterinario);
-		}catch(DataIntegrityViolationException ex) {
+		} catch (DataIntegrityViolationException ex) {
 			attr.addFlashAttribute("falha", "CRMV já cadastrado no sistema");
 		}
-		
+
 		return "redirect:/veterinarios/dados";
-		
+
 	}
-	
-	
+
 }

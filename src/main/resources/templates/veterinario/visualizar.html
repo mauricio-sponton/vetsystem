@@ -20,12 +20,16 @@
 form {
 	width: 47.2%
 }
-.class
+.adiciona-tr{
+	background: gray;
+	opacity: 0.5
+}
 </style>
 </head>
 
 <body>
 	<section class="layout-content" layout:fragment="corpo">
+	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<div class=teste>
 			<!--  
 			<form class="form-inline" method="get"
@@ -195,13 +199,24 @@ form {
 		}
 
 		
-		$(".teste").on("change", function(){
-			if($('#ativo').is(":checked")){
-				$("#ativo").closest('tr').find('.inicio, .fim').attr("readonly", "readonly");
-				$("#ativo").closest('tr').css('background-color', "yellow")
-			}else{
-				$('.inicio, .fim').removeAttr("readonly");
-			}
+		$(function(){
+			 $('.teste').each(function() {
+				if($(this).is(":checked")){
+					$(this).closest('tr').find('.inicio, .fim').attr("readonly", "readonly");
+					$(this).closest('tr').addClass("adiciona-tr")
+				}
+			 $('.teste').on('change', function(){
+				if($(this).is(":checked")){
+					$(this).closest('tr').find('.inicio, .fim').attr("readonly", "readonly");
+					$(this).closest('tr').addClass("adiciona-tr")
+				}else{
+					if($(this).not(":checked")){
+						$(this).closest('tr').removeClass("adiciona-tr");
+						$(this).closest('tr').find('.inicio, .fim').removeAttr("readonly");
+					}
+				}
+			 })
+			 })
 			
 			
 			
