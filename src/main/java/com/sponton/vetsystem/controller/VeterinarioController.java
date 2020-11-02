@@ -60,23 +60,42 @@ public class VeterinarioController {
 			return "veterinario/visualizar";
 		}
 		if(veterinario.hasId()) {
-			CargaHorariaDTO cargasForm = new CargaHorariaDTO();
-			for(int i = 1; i<=7;i++) {
-				cargasForm.addCarga(new CargaHoraria());
-				
+			List<CargaHoraria> cargasVet = cargaHorariaService.buscarHorarioPorVeterinario(veterinario.getId());
+			if(cargasVet.isEmpty()) {
+				CargaHorariaDTO cargasForm = new CargaHorariaDTO();
+				for(int i = 1; i<=3;i++) {
+					cargasForm.addCarga(new CargaHoraria());
+					
+				}
+				model.addAttribute("form", cargasForm);
 			}
 			
-			model.addAttribute("form", cargasForm);
-			model.addAttribute("veterinario", veterinario);
-			return "veterinario/visualizar";
+			if(cargasVet.size() > 0) {
+				List<CargaHoraria> listaEdicao = new ArrayList<>();
+				cargaHorariaService.buscarHorarioPorVeterinario(veterinario.getId()).iterator().forEachRemaining(listaEdicao::add);
+				model.addAttribute("formEdit", new CargaHorariaDTO(listaEdicao));
+			}
 			
+			model.addAttribute("veterinario", veterinario);
+			return "veterinario/visualizar";	
 		}
 	
 		return "veterinario/visualizar";
 	}
 	
 	@PostMapping("/salvar/horarios")
-	public String salvarHorarios(@ModelAttribute CargaHorariaDTO form, Model model) {
+	public String salvarHorarios(@ModelAttribute CargaHorariaDTO form, Model model, Veterinario veterinario) {
+		int t = 0;
+		for(CargaHoraria c : form.getCargas()) {
+			c.setVeterinario(veterinario);
+			t = t +1;
+			c.setDiaDaSemana(t);
+			if(c.isAtivo() == true) {
+				c.setFim(null);
+				c.setInicio(null);
+			}
+		}
+		
 		cargaHorariaService.salvarTodos(form.getCargas());
 		return "redirect:/home";
 	}

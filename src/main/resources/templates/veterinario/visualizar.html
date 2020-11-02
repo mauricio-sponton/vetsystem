@@ -6,6 +6,21 @@
 .teste span {
 	color: blue
 }
+
+.mostrar {
+	background-color: indigo
+}
+
+.dias {
+	background-color: black;
+	!
+	important
+}
+
+form {
+	width: 47.2%
+}
+.class
 </style>
 </head>
 
@@ -34,28 +49,121 @@
 			<img alt="" th:src="@{${'/uploads/' + veterinario.foto.fileName}}"
 				style="width: auto; height: auto">
 		</div>
-		<form th:action="@{/veterinarios/salvar/horarios}"
-			th:object="${form}" method="post">
-				<table>
-					<thead>
-						<tr>
-							<th>Dia</th>
-							<th>De</th>
-							<th>Ate</th>
-							
-						</tr>
-					</thead>
-					<tbody>
-						<tr  class="row item" th:each="cargaHoraria, itemStat : *{cargas}">
-						
-							<td><input type ="number" th:field="*{cargas[__${itemStat.index}__].diaDaSemana}" /></td>
-							<td><input type="time" th:field="*{cargas[__${itemStat.index}__].inicio}" /></td>
-							<td><input type="time" th:field="*{cargas[__${itemStat.index}__].fim}" /></td>
-							
-						</tr>
-					</tbody>
-				</table>
-				<input type="submit" id="submitButton" th:value="Salvar"> 
+		<form th:if="${form != null}"
+			th:action="@{/veterinarios/salvar/horarios}" th:object="${form}"
+			method="post">
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Dia</th>
+						<th scope="col">Entrada</th>
+						<th scope="col">Saída</th>
+						<th scope="col">Folga</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cargaHoraria, itemStat : *{cargas}">
+
+						<td scope="row" th:switch="${itemStat.index}">
+							<div class="dias" th:case="0">
+								<span>Domingo</span>
+							</div>
+							<div class="dias" th:case="1">
+								<span>Segunda</span>
+							</div>
+							<div class="dias" th:case="2">
+								<span>Terça</span>
+							</div>
+							<div class="dias" th:case="3">
+								<span>Quarta</span>
+							</div>
+							<div class="dias" th:case="4">
+								<span>Quinta</span>
+							</div>
+							<div class="dias" th:case="5">
+								<span>Sexta</span>
+							</div>
+							<div class="dias" th:case="6">
+								<span>Sábado</span>
+							</div>
+
+						</td>
+
+						<td><input class="form-control" type="time"
+							th:field="*{cargas[__${itemStat.index}__].inicio}" /></td>
+						<td><input class="form-control" type="time"
+							th:field="*{cargas[__${itemStat.index}__].fim}" /></td>
+						<td style="display: none"><input type="hidden"
+							th:field="*{cargas[__${itemStat.index}__].veterinario.id}" /></td>
+						<td><input type="checkbox" id="ativo"
+							th:field="*{cargas[__${itemStat.index}__].ativo}"
+							th:if="${ativo == true ? 'checked=checked' : ''} " /></td>
+
+					</tr>
+				</tbody>
+			</table>
+			<input type="submit" id="submitButton" th:value="Salvar">
+		</form>
+		<form th:if="${formEdit != null}"
+			th:action="@{/veterinarios/salvar/horarios}" th:object="${formEdit}"
+			method="post">
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Dia</th>
+						<th scope="col">Entrada</th>
+						<th scope="col">Saída</th>
+						<th scope="col">Folga</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cargaHoraria, itemStat : *{cargas}">
+
+						<td scope="row" th:switch="${itemStat.index}">
+							<div class="dias" th:case="0">
+								<span>Domingo</span>
+							</div>
+							<div class="dias" th:case="1">
+								<span>Segunda</span>
+							</div>
+							<div class="dias" th:case="2">
+								<span>Terça</span>
+							</div>
+							<div class="dias" th:case="3">
+								<span>Quarta</span>
+							</div>
+							<div class="dias" th:case="4">
+								<span>Quinta</span>
+							</div>
+							<div class="dias" th:case="5">
+								<span>Sexta</span>
+							</div>
+							<div class="dias" th:case="6">
+								<span>Sábado</span>
+							</div>
+
+						</td>
+
+						<td><input type="time" class="inicio"
+							th:name="|cargas[${itemStat.index}].inicio|"
+							th:value="${cargaHoraria.getInicio()}" /></td>
+						<td><input type="time" class="fim"
+							th:name="|cargas[${itemStat.index}].fim|"
+							th:value="${cargaHoraria.getFim()}" /></td>
+						<td style="display: none"><input type="hidden"
+							th:name="|cargas[${itemStat.index}].veterinario.id|"
+							th:value="${cargaHoraria.getVeterinario().getId()}" /></td>
+						<td style="display: none"><input type="hidden"
+							th:name="|cargas[${itemStat.index}].id|"
+							th:value="${cargaHoraria.getId()}" /></td>
+						<td><input type="checkbox"
+							th:field="*{cargas[__${itemStat.index}__].ativo}" class="teste" id="ativo"
+							th:if="${cargaHoraria.isAtivo() == true ? 'checked=checked' : ''} " /></td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="submit" id="submitButton" th:value="Salvar">
 		</form>
 	</section>
 
@@ -86,12 +194,24 @@
 			$(".modal-title").text("Cadastramento de dados");
 		}
 
-	
 		
+		$(".teste").on("change", function(){
+			if($('#ativo').is(":checked")){
+				$("#ativo").closest('tr').find('.inicio, .fim').attr("readonly", "readonly");
+				$("#ativo").closest('tr').css('background-color', "yellow")
+			}else{
+				$('.inicio, .fim').removeAttr("readonly");
+			}
+			
+			
+			
+		});
 		
+			  
 		
 	
 	});
+	
 	
 	
 		

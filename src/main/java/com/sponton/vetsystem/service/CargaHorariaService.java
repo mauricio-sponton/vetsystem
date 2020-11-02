@@ -27,5 +27,9 @@ public class CargaHorariaService {
 		return repository.saveAll(cargas);
 		
 	}
+	@Transactional(readOnly = true)
+	public List<CargaHoraria> buscarHorarioPorVeterinario(Long id) {
+		return repository.findHorarioByVeterinario(id);
+	}
 
 }

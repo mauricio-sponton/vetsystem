@@ -31,8 +31,19 @@ public class CargaHoraria extends AbstractEntity{
 	@Column(name = "fim")
 	private LocalTime fim;
 	
-	//@ManyToOne
-	//private Veterinario veterinario;
+	@ManyToOne
+	private Veterinario veterinario;
+
+	@Column(name = "ativo", columnDefinition = "TINYINT(1)")
+	private boolean ativo;
+	
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
 
 	public int getDiaDaSemana() {
 		return diaDaSemana;
@@ -57,7 +68,7 @@ public class CargaHoraria extends AbstractEntity{
 	public void setFim(LocalTime fim) {
 		this.fim = fim;
 	}
-/*
+
 	public Veterinario getVeterinario() {
 		return veterinario;
 	}
@@ -65,6 +76,6 @@ public class CargaHoraria extends AbstractEntity{
 	public void setVeterinario(Veterinario veterinario) {
 		this.veterinario = veterinario;
 	}
-	*/
+	
 	
 }
