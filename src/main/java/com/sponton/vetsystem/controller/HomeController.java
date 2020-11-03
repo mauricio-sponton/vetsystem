@@ -58,7 +58,7 @@ public class HomeController {
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
 			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
 			if (veterinario.hasNotId()) {
-				attr.addFlashAttribute("falha",
+				attr.addFlashAttribute("aviso",
 						"Por favor preencha seus dados pessoais para continuar usando o sistema");
 				return "redirect:/veterinarios/dados";
 			}
@@ -66,7 +66,7 @@ public class HomeController {
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
 			Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
 			if (secretaria.hasNotId()) {
-				attr.addFlashAttribute("falha",
+				attr.addFlashAttribute("aviso",
 						"Por favor preencha seus dados pessoais para continuar usando o sistema");
 				return "redirect:/secretarias/dados";
 			}

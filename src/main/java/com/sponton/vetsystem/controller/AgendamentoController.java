@@ -78,7 +78,7 @@ public class AgendamentoController {
 			return "/agendamento/agenda";
 		}
 		if(agendamento.getInicio().isAfter(agendamento.getFim()) || agendamento.getInicio().isEqual(agendamento.getFim())) {
-			model.addAttribute("erro", "A data de ínicio não pode ser igual ou ultapassar a data de término");
+			model.addAttribute("erro", "A data de ínicio não pode ser igual ou ultrapassar a data de término");
 			return "/agendamento/agenda";
 		}
 		

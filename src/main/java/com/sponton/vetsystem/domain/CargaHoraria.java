@@ -23,6 +23,7 @@ public class CargaHoraria extends AbstractEntity{
 	@Column(name = "dia")
 	private int diaDaSemana;
 	
+	
 	@DateTimeFormat(iso = ISO.TIME)
 	@Column(name = "inicio")
 	private LocalTime inicio;

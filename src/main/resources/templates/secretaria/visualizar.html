@@ -55,7 +55,11 @@
 			
 		});
 		if(sec == null){
-			$("#modal-secretaria").modal('show');
+			$("#modal-secretaria").modal({
+				 backdrop: 'static',
+				 keyboard: false
+				 
+			});
 			$(".modal-title").text("Cadastramento de dados");
 		}
 	});

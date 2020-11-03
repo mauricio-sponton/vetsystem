@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,12 +87,26 @@ public class VeterinarioController {
 
 		return "veterinario/visualizar";
 	}
-
 	@PostMapping("/salvar/horarios")
-	public String salvarHorarios(@ModelAttribute CargaHorariaDTO form, Model model, Veterinario veterinario, RedirectAttributes attr) {
+	public String salvarHorarios(@Valid @ModelAttribute CargaHorariaDTO form, BindingResult result, Model model,
+			Veterinario veterinario, RedirectAttributes attr) {
 		int t = 1;
 		for (CargaHoraria c : form.getCargas()) {
+			
 			c.setVeterinario(veterinario);
+			if(c.getInicio() == null && c.getFim() != null || c.getInicio()!= null && c.getFim() == null) {
+				attr.addFlashAttribute("falha", "Os horários dos dias trabalhados devem ser preenchidos.");
+				return "redirect:/veterinarios/dados";
+			}
+			if(c.getInicio() != null && c.getFim() != null) {
+				
+				if(c.getInicio().isAfter(c.getFim()) || c.getInicio().equals(c.getFim())){
+					attr.addFlashAttribute("falha", "O horário de entrada não pode ser maior que o horário de saída.");
+					return "redirect:/veterinarios/dados";
+				}
+				
+			}
+			
 			switch (t) {
 			case 1:
 				c.setDiaDaSemana(Calendar.SUNDAY);
@@ -121,6 +136,9 @@ public class VeterinarioController {
 				c.setFim(null);
 				c.setInicio(null);
 			}
+			
+			
+			
 		}
 
 		cargaHorariaService.salvarTodos(form.getCargas());

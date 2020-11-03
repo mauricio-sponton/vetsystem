@@ -22,14 +22,27 @@
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLongTitle">Editar
 						Cliente</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					<div th:if="${aviso == null}">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
 				</div>
 				<div class="modal-body">
 					<span th:text="${erro}" id="msg-erro"></span>
-					<div th:replace="fragments/alert :: alerta-sucesso"></div>
+					<div th:if="${aviso != null}">
+						<div class="alert alert-warning alert-dismissible fade show"
+							role="alert">
+							<i class="oi oi-check"></i> <span> <strong
+								th:text="${aviso}"></strong>
+							</span>
+							<button type="button" class="close" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</div>
 					<form th:action="@{/veterinarios/salvar}"
 						th:object="${veterinario}" method="POST"
 						enctype="multipart/form-data">
