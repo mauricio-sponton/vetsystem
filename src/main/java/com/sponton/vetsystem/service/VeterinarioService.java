@@ -1,10 +1,15 @@
 package com.sponton.vetsystem.service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +55,17 @@ public class VeterinarioService {
 		return repository.findById(id).get();
 	}
 
+	@Transactional(readOnly = true)
+	public List<String> buscarVeterinariosByTermo(String termo, LocalTime start, LocalTime end, int diaInicial, int diaFinal) {
+		return repository.findVeterinariosByTermo(termo, start, end, diaInicial, diaFinal);
+	}
+
+	@Transactional(readOnly = true)
+	public Set<Veterinario> buscarPorTitulos(String[] strings) {
+		return repository.findByTitulos(strings);
+	}
+
+	
 	
 
 }

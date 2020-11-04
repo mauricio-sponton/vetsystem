@@ -93,6 +93,7 @@
   			    	//visualizacao
   			    	$("#visualizar-start").text("Início: " + inicio);
   			    	$("#visualizar-end").text("Término: " + termino);
+  			    	$("#visualizar-veterinario").text("Veterinário: " +  data.event.extendedProps.veterinario);
   			    	$("#visualizar-title").text("Tipo do agendamento: " + data.event.title);
   			    	if(data.event.extendedProps.description != ""){
   			    		$("#visualizar-description").show();
@@ -114,6 +115,7 @@
   			    	$("#fim-edicao").val(fim_edt);
   			    	$("#color-edicao").val(data.event.backgroundColor);
   			    	$("#descricao-edicao").val(data.event.extendedProps.description);
+  			    	$("#veterinario-edicao").val(data.event.extendedProps.veterinario);
   			    	$(".modal-title").text("Informações do Agendamento");
   			    	if(data.event.extendedProps.paciente != null){
   			    		$("#paciente-cadastrado-edicao").show();
@@ -221,7 +223,32 @@
 				$(".form-control").val("");
 				$(".modal-title").text("Novo Agendamento");
 			});
-	 		
+			function mudar() {
+				var fim = $("#fim").val();
+				
+				var inicio = $("#inicio").val();
+				var diaInicial = moment( $("#inicio").val()).weekday() + 1;
+				var diaFinal = moment( $("#fim").val()).weekday() + 1;
+				$("#veterinario").autocomplete({
+					source : function(request, response) {
+						$.ajax({
+							method : "GET",
+							url : "/veterinarios/titulo",
+							data : {
+								inicio : inicio,
+								fim : fim,
+								diaInicial : diaInicial,
+								diaFinal : diaFinal,
+								termo : request.term
+							},
+							success : function(data) {
+								response(data);
+							}
+						})
+					}
+				})
+			}
+			
  
   	
 	</script>

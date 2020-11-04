@@ -28,9 +28,10 @@
 						<div class="modal-body">
 							<span id="visualizar-title"></span><br> <span
 								id="visualizar-start"></span><br> <span id="visualizar-end"></span><br>
-							<span id="visualizar-description"></span> <span
-								id="visualizar-secretaria"></span><br> <span
-								id="visualizar-paciente"></span><br>
+							<span id="visualizar-secretaria"></span><br> <span
+								id="visualizar-veterinario"></span><br>
+							<span id="visualizar-paciente"></span><br> <span
+								id="visualizar-description"></span>
 						</div>
 
 						<div class="modal-footer">
@@ -91,7 +92,18 @@
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-4">
-									<label for="color">Selecione a cor que você deseja:</label> <input
+									<label for="veterinario-edicao">Veterinário</label> <input type="text"
+										class="form-control" id="veterinario-edicao" placeholder="João..."
+										onfocus="mudarEdit();"
+										th:classappend="${#fields.hasErrors('veterinario.nome')} ? 'is-invalid'"
+										th:field="*{veterinario.nome}" />
+									<div class="invalid-feedback">
+										<span th:errors="*{veterinario.nome}"></span>
+									</div>
+
+								</div>
+								<div class="form-group col-md-4">
+									<label for="color-edicao">Selecione a cor que você deseja:</label> <input
 										th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
 										type="color" id="color-edicao" th:field=*{color}
 										class="form-control" name="color" value="#36299e">

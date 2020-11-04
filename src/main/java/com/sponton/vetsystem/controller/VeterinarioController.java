@@ -2,6 +2,8 @@ package com.sponton.vetsystem.controller;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,6 +13,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -87,26 +92,27 @@ public class VeterinarioController {
 
 		return "veterinario/visualizar";
 	}
+
 	@PostMapping("/salvar/horarios")
 	public String salvarHorarios(@Valid @ModelAttribute CargaHorariaDTO form, BindingResult result, Model model,
 			Veterinario veterinario, RedirectAttributes attr) {
 		int t = 1;
 		for (CargaHoraria c : form.getCargas()) {
-			
+
 			c.setVeterinario(veterinario);
-			if(c.getInicio() == null && c.getFim() != null || c.getInicio()!= null && c.getFim() == null) {
+			if (c.getInicio() == null && c.getFim() != null || c.getInicio() != null && c.getFim() == null) {
 				attr.addFlashAttribute("falha", "Os horários dos dias trabalhados devem ser preenchidos.");
 				return "redirect:/veterinarios/dados";
 			}
-			if(c.getInicio() != null && c.getFim() != null) {
-				
-				if(c.getInicio().isAfter(c.getFim()) || c.getInicio().equals(c.getFim())){
+			if (c.getInicio() != null && c.getFim() != null) {
+
+				if (c.getInicio().isAfter(c.getFim()) || c.getInicio().equals(c.getFim())) {
 					attr.addFlashAttribute("falha", "O horário de entrada não pode ser maior que o horário de saída.");
 					return "redirect:/veterinarios/dados";
 				}
-				
+
 			}
-			
+
 			switch (t) {
 			case 1:
 				c.setDiaDaSemana(Calendar.SUNDAY);
@@ -136,9 +142,7 @@ public class VeterinarioController {
 				c.setFim(null);
 				c.setInicio(null);
 			}
-			
-			
-			
+
 		}
 
 		cargaHorariaService.salvarTodos(form.getCargas());
@@ -207,6 +211,18 @@ public class VeterinarioController {
 
 		return "redirect:/veterinarios/dados";
 
+	}
+
+	@GetMapping("/titulo")
+	public ResponseEntity<?> getVeterinariosPorTermo(@RequestParam("termo") String termo,
+			@RequestParam("inicio") @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime inicio,
+			@RequestParam("fim") @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime fim,
+			@RequestParam("diaInicial") int diaInicial,
+			@RequestParam("diaFinal") int diaFinal) {
+		LocalTime start = inicio.toLocalTime();
+		LocalTime end = fim.toLocalTime();
+		List<String> vets = service.buscarVeterinariosByTermo(termo, start, end, diaInicial, diaFinal);
+		return ResponseEntity.ok(vets);
 	}
 
 }
