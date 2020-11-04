@@ -223,9 +223,11 @@
 				$(".form-control").val("");
 				$(".modal-title").text("Novo Agendamento");
 			});
+			$("#inicio, #fim, #inicio-edicao, #fim-edicao").on('change',function(){
+				$("#veterinario, #veterinario-edicao").val("");
+			})
 			function mudar() {
-				var fim = $("#fim").val();
-				
+				var fim = $("#fim").val();			
 				var inicio = $("#inicio").val();
 				var diaInicial = moment( $("#inicio").val()).weekday() + 1;
 				var diaFinal = moment( $("#fim").val()).weekday() + 1;
@@ -248,7 +250,31 @@
 					}
 				})
 			}
-			
+			function mudarEdit() {
+				var fim = $("#fim-edicao").val();
+				
+				var inicio = $("#inicio-edicao").val();
+				var diaInicial = moment( $("#inicio-edicao").val()).weekday() + 1;
+				var diaFinal = moment( $("#fim-edicao").val()).weekday() + 1;
+				$("#veterinario-edicao").autocomplete({
+					source : function(request, response) {
+						$.ajax({
+							method : "GET",
+							url : "/veterinarios/titulo",
+							data : {
+								inicio : inicio,
+								fim : fim,
+								diaInicial : diaInicial,
+								diaFinal : diaFinal,
+								termo : request.term
+							},
+							success : function(data) {
+								response(data);
+							}
+						})
+					}
+				})
+			}
  
   	
 	</script>
