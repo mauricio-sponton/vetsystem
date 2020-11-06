@@ -35,4 +35,9 @@ public class AgendamentoService {
 	public void remover(Long id) {
 		repository.deleteById(id);	
 	}
+
+	@Transactional(readOnly = true)
+	public List<Agendamento> buscarVeterinarioPorId(Long id) {
+		return repository.findVeterinarioById(id);
+	}
 }

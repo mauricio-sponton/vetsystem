@@ -59,19 +59,19 @@ public class AgendamentoController {
 
 	@Autowired
 	private AgendamentoService service;
-	
+
 	@Autowired
 	private SecretariaService secretariaService;
-	
+
 	@Autowired
 	private AnimalService animalService;
-	
+
 	@Autowired
 	private VeterinarioService veterinarioService;
 
 	@GetMapping("/abrir")
-	public String abrirAgenda(Agendamento agendamento, ModelMap model) {
-		// model.addAttribute("agendamentos", service.buscarTodos());
+	public String abrirAgenda(Agendamento agendamento, ModelMap model, @AuthenticationPrincipal User user,
+			Veterinario veterinario, Secretaria secretaria) {
 		return "agendamento/agenda";
 	}
 
@@ -82,23 +82,24 @@ public class AgendamentoController {
 			model.addAttribute("erro", "por favor preencha os campos");
 			return "/agendamento/agenda";
 		}
-		if(agendamento.getInicio().isAfter(agendamento.getFim()) || agendamento.getInicio().isEqual(agendamento.getFim())) {
+		if (agendamento.getInicio().isAfter(agendamento.getFim())
+				|| agendamento.getInicio().isEqual(agendamento.getFim())) {
 			model.addAttribute("erro", "A data de ínicio não pode ser igual ou ultrapassar a data de término");
 			return "/agendamento/agenda";
 		}
-		
-		
+
 		try {
 			if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
 				Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
 				String vet = agendamento.getVeterinario().getNome();
-				Veterinario veterinario = veterinarioService.buscarPorTitulos(new String[] {vet}).stream().findFirst().get();
-				if(!agendamento.getAnimal().getNome().isEmpty()) {
+				Veterinario veterinario = veterinarioService.buscarPorTitulos(new String[] { vet }).stream().findFirst()
+						.get();
+				if (!agendamento.getAnimal().getNome().isEmpty()) {
 					String titulo = agendamento.getAnimal().getNome();
 					Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
 					agendamento.setSem_cadastro("");
 					agendamento.setAnimal(animal);
-				}else {
+				} else {
 					agendamento.setAnimal(null);
 				}
 				if (agendamento.hasNotId()) {
@@ -113,7 +114,7 @@ public class AgendamentoController {
 					attr.addFlashAttribute("sucesso", "Dados alterados com sucesso");
 				}
 			}
-			
+
 		} catch (DataIntegrityViolationException ex) {
 			attr.addFlashAttribute("falha", "Cadastro não realizado");
 		}
@@ -122,8 +123,15 @@ public class AgendamentoController {
 	}
 
 	@GetMapping("/todos")
-	public @ResponseBody ArrayList<Map<String, Object>> getAgendamentos() {
-		List<Agendamento> events = service.buscarTodos();
+	public @ResponseBody ArrayList<Map<String, Object>> getAgendamentos(Secretaria secretaria, Veterinario veterinario) {
+		List<Agendamento> events = null;
+		if(veterinario.hasId()) {
+			events = service.buscarVeterinarioPorId(veterinario.getId());
+		}
+		if(secretaria.hasId()) {
+			events  = service.buscarTodos(); 
+		}
+		
 		ArrayList<Map<String, Object>> allEvents = new ArrayList<Map<String, Object>>();
 
 		for (Agendamento agendamento : events) {
@@ -136,26 +144,29 @@ public class AgendamentoController {
 			tudo.put("description", agendamento.getDescricao() != null ? agendamento.getDescricao() : "");
 			tudo.put("backgroundColor", agendamento.getColor());
 			extend.put("veterinario", agendamento.getVeterinario().getNome());
-			extend.put("secretaria", agendamento.getSecretaria().getNome()!= null ? agendamento.getSecretaria().getNome(): "");
-			if(agendamento.getAnimal() !=null) {
-				extend.put("paciente", agendamento.getAnimal().getNome()!= null ? agendamento.getAnimal().getNome(): "");
-			}else {
-				extend.put("pacienteNaoCadastrado", agendamento.getSem_cadastro()!= null ? agendamento.getSem_cadastro(): "");
+			extend.put("secretaria",
+					agendamento.getSecretaria().getNome() != null ? agendamento.getSecretaria().getNome() : "");
+			if (agendamento.getAnimal() != null) {
+				extend.put("paciente",
+						agendamento.getAnimal().getNome() != null ? agendamento.getAnimal().getNome() : "");
+			} else {
+				extend.put("pacienteNaoCadastrado",
+						agendamento.getSem_cadastro() != null ? agendamento.getSem_cadastro() : "");
 			}
-			
+
 			tudo.put("extendedProps", extend != null ? extend : "");
 			// tudo.putAll(remapear);
 
-			 //System.out.println(tudo);
+			// System.out.println(tudo);
 			allEvents.add(tudo);
-			
 
 		}
-		
+
 		// String json = new Gson().toJson(acumulador);
 
 		return allEvents;
 	}
+
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		service.remover(id);

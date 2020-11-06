@@ -36,7 +36,7 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 	<div th:replace="fragments/alert :: alerta-sucesso"></div>
-	<a class="btn-cadastrar-usuario" href="#" role="button"
+	<a class="btn-cadastrar-usuario" sec:authorize="hasAuthority('SECRETARIA')" href="#" role="button"
 					data-toggle="modal" data-target="#modal-agendamento">Novo Evento</a> <span
 					th:replace="agendamento/modal :: modal-form"></span>
 					<span
@@ -47,10 +47,9 @@
 	<script th:src="@{/js/agendamento.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
       $(document).ready(function(){
-    	
-    		
-    	  
-    	
+    	  var veterinario = [[${veterinario.id}]];
+    	  var secretaria = [[${secretaria.id}]];
+
     		  $("#animal, #animal-edicao").autocomplete({
     	  			source : function(request, response) {
     	  				$.ajax({
@@ -84,10 +83,10 @@
   			      selectable: true,
   			      
   			    eventClick: function(data) {
-  			    	var inicio = moment(data.event.start).locale('pt-br').format('dddd, DD[/]MM[/]YYYY, [às] h:mm');
-  			    	var termino = moment(data.event.end).locale('pt-br').format('dddd, DD [de] MMMM [de] YYYY, [às] h:mm');
-  			    	var inicio_edt = moment(data.event.start).format('YYYY-MM-DDThh:mm:ss.SSS');
-  			    	var fim_edt = moment(data.event.end).format('YYYY-MM-DDThh:mm:ss.SSS');
+  			    	var inicio = moment(data.event.start).locale('pt-br').format('dddd, DD[/]MM[/]YYYY, [às] HH:mm');
+  			    	var termino = moment(data.event.end).locale('pt-br').format('dddd, DD [de] MMMM [de] YYYY, [às] HH:mm');
+  			    	var inicio_edt = moment(data.event.start).format('YYYY-MM-DDTHH:mm:ss.SSS');
+  			    	var fim_edt = moment(data.event.end).format('YYYY-MM-DDTHH:mm:ss.SSS');
   			   		//apagar
   			   		$("#apagar_evento").attr("href", "/agenda/excluir/" + data.event.id);
   			    	//visualizacao
@@ -109,24 +108,27 @@
   			    		$("#visualizar-paciente").text("Paciente: " + data.event.extendedProps.pacienteNaoCadastrado);
   			    	}
   			    	//edicao
-  			    	$("#id-edicao").val(data.event.id);
-  			    	$("#tipo-edicao").val(data.event.title);
-  			    	$("#inicio-edicao").val(inicio_edt);
-  			    	$("#fim-edicao").val(fim_edt);
-  			    	$("#color-edicao").val(data.event.backgroundColor);
-  			    	$("#descricao-edicao").val(data.event.extendedProps.description);
-  			    	$("#veterinario-edicao").val(data.event.extendedProps.veterinario);
-  			    	$(".modal-title").text("Informações do Agendamento");
-  			    	if(data.event.extendedProps.paciente != null){
-  			    		$("#paciente-cadastrado-edicao").show();
-  			    		$("#paciente-nao-cadastrado-edicao").hide();
-  			    		$("#animal-edicao").val(data.event.extendedProps.paciente);
-  			    	}else{
-  			    		$("#paciente-cadastrado-edicao").hide();
-  			    		$("#paciente-nao-cadastrado-edicao").show();
-  			    		 $("#cadastrado-edicao").prop("checked", true);
-  			    		$("#sem_cadastro-edicao").val(data.event.extendedProps.pacienteNaoCadastrado);
-  			    	}
+  			    	
+  			    		$("#id-edicao").val(data.event.id);
+  	  			    	$("#tipo-edicao").val(data.event.title);
+  	  			    	$("#inicio-edicao").val(inicio_edt);
+  	  			    	$("#fim-edicao").val(fim_edt);
+  	  			    	$("#color-edicao").val(data.event.backgroundColor);
+  	  			    	$("#descricao-edicao").val(data.event.extendedProps.description);
+  	  			    	$("#veterinario-edicao").val(data.event.extendedProps.veterinario);
+  	  			    	$(".modal-title").text("Informações do Agendamento");
+  	  			    	if(data.event.extendedProps.paciente != null){
+  	  			    		$("#paciente-cadastrado-edicao").show();
+  	  			    		$("#paciente-nao-cadastrado-edicao").hide();
+  	  			    		$("#animal-edicao").val(data.event.extendedProps.paciente);
+  	  			    	}else{
+  	  			    		$("#paciente-cadastrado-edicao").hide();
+  	  			    		$("#paciente-nao-cadastrado-edicao").show();
+  	  			    		 $("#cadastrado-edicao").prop("checked", true);
+  	  			    		$("#sem_cadastro-edicao").val(data.event.extendedProps.pacienteNaoCadastrado);
+  	  			    	}
+  			    	
+  			    	
   			    	$("#modal-agendamento-visualizar").modal('show');
   			      
   			     

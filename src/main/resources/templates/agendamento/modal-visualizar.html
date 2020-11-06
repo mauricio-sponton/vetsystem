@@ -35,7 +35,9 @@
 						</div>
 
 						<div class="modal-footer">
-							<button id="edit-agendamento" class="btn btn-warning">Editar</button>
+							
+								<button sec:authorize="hasAuthority('SECRETARIA')" id="edit-agendamento" class="btn btn-warning">Editar</button>
+							
 							<button id="edit-excluir" class="btn btn-danger">Excluir</button>
 						</div>
 
