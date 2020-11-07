@@ -23,11 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sponton.vetsystem.domain.CargaHoraria;
 import com.sponton.vetsystem.domain.Perfil;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Secretaria;
 import com.sponton.vetsystem.domain.Usuario;
 import com.sponton.vetsystem.domain.Veterinario;
+import com.sponton.vetsystem.service.CargaHorariaService;
 import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.UsuarioService;
 import com.sponton.vetsystem.service.VeterinarioService;
@@ -44,6 +46,9 @@ public class UsuarioController {
 
 	@Autowired
 	private SecretariaService secretariaService;
+	
+	@Autowired
+	private CargaHorariaService cargaHorariaService;
 
 	// abrir cadastro de usuarios (vet/admin/secretaria)
 	@GetMapping("/novo/cadastro/usuario")
@@ -116,16 +121,18 @@ public class UsuarioController {
 
 	@GetMapping("/visualizar/dados/usuario/{id}/perfis/{perfis}")
 	public ModelAndView visualizarDadosPessoais(@PathVariable("id") Long usuarioId,
-			@PathVariable("perfis") Long[] perfisId) {
+			@PathVariable("perfis") Long[] perfisId, ModelMap modelmap) {
 		Usuario us = service.buscarPorIdEPerfis(usuarioId, perfisId);
 
 		if (us.getPerfis().contains(new Perfil(PerfilTipo.ADMIN.getCod()))
 				&& !us.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))
 				&& !us.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
 
-			return new ModelAndView("usuario/visualizar", "usuario", us);
+			return new ModelAndView("usuario/lista", "usuario", service.buscarPorId(usuarioId));
+			
 		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
 			Veterinario veterinario = veterinarioService.buscarPorUsuarioId(usuarioId);
+			
 			if (veterinario.hasNotId()) {
 				ModelAndView model = new ModelAndView("error");
 				model.addObject("status", 403);
@@ -133,7 +140,10 @@ public class UsuarioController {
 				model.addObject("message", "Os dados do veterinário ainda não foram cadastrados");
 				return model;
 			} else {
-				return new ModelAndView("veterinario/visualizar", "veterinario", veterinario);
+				List<CargaHoraria> cargasVet = cargaHorariaService.buscarHorarioPorVeterinario(veterinario.getId());
+				modelmap.addAttribute("cargasVet", cargasVet);
+				modelmap.addAttribute("veterinario", veterinario);
+				return new ModelAndView("veterinario/visualizar");
 			}
 
 		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
