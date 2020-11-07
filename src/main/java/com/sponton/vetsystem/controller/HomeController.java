@@ -34,27 +34,27 @@ import com.sponton.vetsystem.service.VeterinarioService;
 
 @Controller
 public class HomeController {
-	
+
 	@Autowired
 	private AnimalService animalService;
-	
+
 	@Autowired
 	private EspecieService especieService;
-	
+
 	@Autowired
 	private VeterinarioService veterinarioService;
-	
+
 	@Autowired
 	private ClienteService clienteService;
-	
+
 	@Autowired
 	private SecretariaService secretariaService;
-	
+
 	@Autowired
 	private RacaService racaService;
-	
-	@GetMapping({"/home" })
-	public String home(ModelMap model,@AuthenticationPrincipal User user, RedirectAttributes attr) {
+
+	@GetMapping({ "/home" })
+	public String home(ModelMap model, @AuthenticationPrincipal User user, RedirectAttributes attr) {
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
 			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
 			if (veterinario.hasNotId()) {
@@ -71,18 +71,35 @@ public class HomeController {
 				return "redirect:/secretarias/dados";
 			}
 		}
+		List<Raca> racas = racaService.buscarTodasRacas();
+		if (racas.size() > 0) {
+			int t = 0;
+			Map<String, Integer> surveyMap = new LinkedHashMap<>();
+			for (Raca r : racas) {
+
+				List<Animal> separado = animalService.buscarAnimalPorRaca(r.getId());
+				for (Animal a : separado) {
+					t = (int) separado.stream().count();
+				}
+				surveyMap.put(r.getNome(), t);
+			}
+			model.addAttribute("surveyMap", surveyMap);
+		}
+
 		model.addAttribute("animal", animalService.buscarTodosAnimais());
 		model.addAttribute("cliente", clienteService.buscarTodosClientes());
+
 		return "home";
 	}
 
 	// abrir pagina login
 	@GetMapping({ "/", "/login" })
 	public String login() {
-		
+
 		return "login";
 	}
-	@GetMapping({"/login-error"})
+
+	@GetMapping({ "/login-error" })
 	public String loginError(ModelMap model) {
 		model.addAttribute("alerta", "erro");
 		model.addAttribute("titulo", "Credenciais inválidas!");
@@ -90,37 +107,29 @@ public class HomeController {
 		model.addAttribute("subtexto", "Acesso permitido apenas para cadastros já ativados");
 		return "login";
 	}
+
 	// acesso negado
-	@GetMapping({"/acesso-negado"})
+	@GetMapping({ "/acesso-negado" })
 	public String acessoNegado(ModelMap model, HttpServletResponse resp) {
 		model.addAttribute("status", resp.getStatus());
 		model.addAttribute("error", "Acesso negado");
-		model.addAttribute("message", "Você não tem permissão para acesso a esta área ou ação");					
+		model.addAttribute("message", "Você não tem permissão para acesso a esta área ou ação");
 		return "error";
-	}	
+	}
 	/*
-	@RequestMapping("piechart")
-	public ResponseEntity<?> getPieChart(){
-		List<Especie> animais = especieService.buscarTodasEspecies();
-		List<Raca> racas = racaService.buscarTodasRacas();
-		return new ResponseEntity<>(animais, HttpStatus.OK);
- 	}*/
+	 * @RequestMapping("piechart") public ResponseEntity<?> getPieChart(){
+	 * List<Especie> animais = especieService.buscarTodasEspecies(); List<Raca>
+	 * racas = racaService.buscarTodasRacas(); return new ResponseEntity<>(animais,
+	 * HttpStatus.OK); }
+	 */
 	/*
-	@RequestMapping("piechart")
-	public ResponseEntity<?> getPieChart(){
-		List<Animal> animais = animalService.buscarTodosAnimais();
-		List<Raca> racas = racaService.buscarTodasRacas();
-		int t =0;
-		for(Raca r : racas) {
-			Map<String, Object> racaTamanho = new LinkedHashMap<>();
-			for(Animal a : animais) {
-				if(a.getRaca().getNome() == r.getNome()) {
-					t += +1;
-					System.out.println("teste" + t);
-				}
-			}
-		}
-		return new ResponseEntity<>(racas, HttpStatus.OK);
-	} 
-	*/
+	 * @RequestMapping("piechart") public ResponseEntity<?> getPieChart(){
+	 * List<Raca> racas = racaService.buscarTodasRacas(); int t =0; for(Raca r :
+	 * racas) { List<Animal> separado =
+	 * animalService.buscarAnimalPorRaca(r.getId()); for(Animal a : separado) { t =
+	 * (int)separado.stream().count(); } System.out.println(t); }
+	 * 
+	 * return ResponseEntity.ok(racas); }
+	 */
+
 }

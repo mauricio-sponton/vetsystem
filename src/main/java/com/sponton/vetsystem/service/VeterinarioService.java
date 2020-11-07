@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -63,6 +64,16 @@ public class VeterinarioService {
 	@Transactional(readOnly = true)
 	public Set<Veterinario> buscarPorTitulos(String[] strings) {
 		return repository.findByTitulos(strings);
+	}
+
+	@Transactional(readOnly = true)
+	public List<String> buscarVeterinariosPeloNome(String termo) {
+		return repository.findVeterinariosByNome(termo);
+	}
+
+	@Transactional(readOnly = true)
+	public Optional<Veterinario> buscarVeterinarioPeloNome(String titulo) {
+		return repository.findVeterinarioByNome(titulo);
 	}
 
 	

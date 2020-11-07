@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -217,12 +218,28 @@ public class VeterinarioController {
 	public ResponseEntity<?> getVeterinariosPorTermo(@RequestParam("termo") String termo,
 			@RequestParam("inicio") @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime inicio,
 			@RequestParam("fim") @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime fim,
-			@RequestParam("diaInicial") int diaInicial,
-			@RequestParam("diaFinal") int diaFinal) {
+			@RequestParam("diaInicial") int diaInicial, @RequestParam("diaFinal") int diaFinal) {
 		LocalTime start = inicio.toLocalTime();
 		LocalTime end = fim.toLocalTime();
 		List<String> vets = service.buscarVeterinariosByTermo(termo, start, end, diaInicial, diaFinal);
 		return ResponseEntity.ok(vets);
 	}
 
+	@GetMapping("/nome")
+	public ResponseEntity<?> getVeterinariosPeloNome(@RequestParam("termo") String termo) {
+		List<String> vets = service.buscarVeterinariosPeloNome(termo);
+		return ResponseEntity.ok(vets);
+	}
+/*
+	@GetMapping("/nome/{titulo}")
+	public ResponseEntity<?> getVeterinarioPeloNome(@PathVariable("titulo") String titulo) {
+		Optional<Veterinario> vet = service.buscarVeterinarioPeloNome(titulo);
+		return ResponseEntity.ok(vet);
+	}
+	@GetMapping("/horarios/{id}")
+	public ResponseEntity<?> getHorariosPeloVeterinarioId(@PathVariable("id") Long id, ModelMap model){
+		List<CargaHoraria> cargasVet = cargaHorariaService.buscarHorarioPorVeterinario(id);
+		return ResponseEntity.ok(cargasVet);
+	}
+*/
 }

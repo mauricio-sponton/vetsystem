@@ -28,6 +28,9 @@ public interface AnimalRepository extends JpaRepository<Animal, Long>{
 	@Query("select distinct a.alergias from Animal a where a.nome like :termo")
 	List<String> findAnimaisByAlergias(String termo);
 
+	@Query("select a from Animal a where a.raca.id = :id")
+	List<Animal> findAnimalByRaca(Long id);
+
 	
 	
 }

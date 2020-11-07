@@ -95,6 +95,12 @@ public class AnimalService {
 		return repository.findAnimaisByAlergias(termo);
 	}
 
+	@Transactional(readOnly = true)
+	public List<Animal> buscarAnimalPorRaca(Long id) {
+		
+		return repository.findAnimalByRaca(id);
+	}
+
 	
 	
 

@@ -26,5 +26,11 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> 
 	@Query("select v from Veterinario v where v.nome IN :strings")
 	Set<Veterinario> findByTitulos(String[] strings);
 
+	@Query("select v.nome from Veterinario v where v.nome like :termo%")
+	List<String> findVeterinariosByNome(String termo);
+
+	@Query("select v from Veterinario v where v.nome = :titulo")
+	Optional<Veterinario> findVeterinarioByNome(String titulo);
+
 
 }
