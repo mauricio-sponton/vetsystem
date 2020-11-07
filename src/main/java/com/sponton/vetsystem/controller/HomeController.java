@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Especie;
+import com.sponton.vetsystem.domain.Notificacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Raca;
 import com.sponton.vetsystem.domain.Secretaria;
@@ -28,6 +29,7 @@ import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.ClienteService;
 import com.sponton.vetsystem.service.EspecieService;
+import com.sponton.vetsystem.service.NotificacaoService;
 import com.sponton.vetsystem.service.RacaService;
 import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.VeterinarioService;
@@ -52,6 +54,9 @@ public class HomeController {
 
 	@Autowired
 	private RacaService racaService;
+	
+	@Autowired 
+	private NotificacaoService notificacaoService;
 
 	@GetMapping({ "/home" })
 	public String home(ModelMap model, @AuthenticationPrincipal User user, RedirectAttributes attr) {
@@ -69,6 +74,10 @@ public class HomeController {
 				attr.addFlashAttribute("aviso",
 						"Por favor preencha seus dados pessoais para continuar usando o sistema");
 				return "redirect:/secretarias/dados";
+			}
+			if(secretaria.hasId()) {
+				List<Notificacao> notificacoes = notificacaoService.buscarNotificacaoPorSecretariaId(secretaria.getId());
+				model.addAttribute("notificacoes", notificacoes);
 			}
 		}
 		List<Raca> racas = racaService.buscarTodasRacas();

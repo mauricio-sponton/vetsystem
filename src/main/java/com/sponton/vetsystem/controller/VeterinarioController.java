@@ -230,7 +230,7 @@ public class VeterinarioController {
 		List<String> vets = service.buscarVeterinariosPeloNome(termo);
 		return ResponseEntity.ok(vets);
 	}
-/*
+
 	@GetMapping("/nome/{titulo}")
 	public ResponseEntity<?> getVeterinarioPeloNome(@PathVariable("titulo") String titulo) {
 		Optional<Veterinario> vet = service.buscarVeterinarioPeloNome(titulo);
@@ -239,7 +239,14 @@ public class VeterinarioController {
 	@GetMapping("/horarios/{id}")
 	public ResponseEntity<?> getHorariosPeloVeterinarioId(@PathVariable("id") Long id, ModelMap model){
 		List<CargaHoraria> cargasVet = cargaHorariaService.buscarHorarioPorVeterinario(id);
+		/*if (cargasVet.size() > 0) {
+			List<CargaHoraria> listaEdicao = new ArrayList<>();
+			cargaHorariaService.buscarHorarioPorVeterinario(id).iterator()
+					.forEachRemaining(listaEdicao::add);
+			ModelMap t = model.addAttribute("formEdit", new CargaHorariaDTO(listaEdicao));
+			return ResponseEntity.ok(t);
+		}*/
 		return ResponseEntity.ok(cargasVet);
 	}
-*/
+
 }

@@ -7,39 +7,55 @@
 
 
 <style>
-.testando span{
+.testando span {
 	color: purple
 }
-
-
 </style>
 </head>
 <body>
 	<h1>Teste</h1>
 	<section class="layout-content" layout:fragment="corpo">
-	<div class="testando">
-		<p>
-			<span th:text="'Há um total de ' + ${#lists.size(animal)} + ' animais cadastrados'"></span>
-				
-		</p><p>
-			<span th:text="'Há um total de ' + ${#lists.size(cliente)} + ' animais cadastrados'"></span>	
-		</p>
-		<div th:each="c: ${cliente}">
-		<span th:text="${c.nome}"></span>
-		
+		<div class="testando">
+			<p>
+				<span
+					th:text="'Há um total de ' + ${#lists.size(animal)} + ' animais cadastrados'"></span>
+			</p>
+			<p>
+				<span
+					th:text="'Há um total de ' + ${#lists.size(cliente)} + ' animais cadastrados'"></span>
+			</p>
+			<div th:each="c: ${cliente}">
+				<span th:text="${c.nome}"></span>
+			</div>
 		</div>
+		<div th:if="${notificacoes!=null}">
+			<div id="accordion" >
+				<div class="card" th:each="n: ${notificacoes}">
+					<div class="card-header" id="headingOne">
+						<h5 class="mb-0 titulo">
+							<button id="btn-titulo" class="btn btn-link" data-toggle="collapse"
+								 th:attr="data-target='#colapsar' + ${n.id}" aria-expanded="true"
+								aria-controls="collapseOne"><span style="color:black" th:text="${n.titulo}"></span></button>
+						</h5>
+					</div>
+
+					<div  th:id ="'colapsar' + ${n.id}" class="collapse"
+						aria-labelledby="headingOne" data-parent="#accordion">
+						<div class="card-body">
+						<span style="color:black" th:utext="${#strings.replace(n.descricao, ';' , '<br>')}"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
-  
-		
-	<div id="container" >
-	
-	
-	</div>
+
+		<div id="container"></div>
 	</section>
 	<script th:src="@{/js/home.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
-	  $(function(){
+	$(function(){
 		    Highcharts.chart('container', {
 		        chart: {
 		            type: 'column'
@@ -80,7 +96,7 @@
 		    });
 		    });
 	</script>
-	
-	
+
+
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.sponton.vetsystem.service;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,12 @@ public class SecretariaService {
 	@Transactional(readOnly = true)
 	public Secretaria buscarPorId(Long id) {
 		return repository.findById(id).get();
+	}
+
+	@Transactional(readOnly = true)
+	public List<Secretaria> buscarTodos() {
+
+		return repository.findAll();
 	}
 
 }

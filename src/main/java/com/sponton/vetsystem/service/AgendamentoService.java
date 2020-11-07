@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponton.vetsystem.domain.Agendamento;
+import com.sponton.vetsystem.domain.Notificacao;
+import com.sponton.vetsystem.domain.Secretaria;
 import com.sponton.vetsystem.repository.AgendamentoRepository;
 
 @Service
@@ -40,4 +42,11 @@ public class AgendamentoService {
 	public List<Agendamento> buscarVeterinarioPorId(Long id) {
 		return repository.findVeterinarioById(id);
 	}
+
+	@Transactional(readOnly = true)
+	public Agendamento buscarPorId(Long id) {
+		return repository.findById(id).get();
+	}
+
+	
 }

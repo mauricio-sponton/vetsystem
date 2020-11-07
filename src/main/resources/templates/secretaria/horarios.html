@@ -38,7 +38,7 @@ form {
 				</div>
 			</div>
 		</form>
-		<form method="post" th:action="@{/secretarias/salvar/horarios}" th:object="${formEdit}">
+		<!--  <form method="post" th:action="@{/secretarias/salvar/horarios}" th:object="${formEdit}">
 			<table class="table">
 				<thead class="thead-dark">
 					<tr>
@@ -49,11 +49,11 @@ form {
 					</tr>
 				</thead>
 				<tbody>
-					<tr id="tr-teste" th:each="cargaHoraria, itemStat : *{cargas}"></tr>
+					<tr id="tr-teste"></tr>
 				</tbody>
 			</table>
 			<input type="submit" id="submitButton" th:value="Salvar">	
-		</form>
+		</form>-->
 		<form th:if="${form != null}"
 			th:action="@{/veterinarios/salvar/horarios}" th:object="${form}"
 			method="post">
@@ -109,7 +109,12 @@ form {
 			</table>
 			<input type="submit" id="submitButton" th:value="Salvar">
 		</form>
-		<form th:if="${formEdit != null}"
+		<div id="edit">
+		
+		
+		
+		</div>
+	<!--  	<form th:if="${formEdit != null}"
 			th:action="@{/veterinarios/salvar/horarios}" th:object="${formEdit}"
 			method="post">
 			<table class="table">
@@ -179,7 +184,7 @@ form {
 			</table>
 			<input type="submit" id="submitButton" th:value="Salvar">
 		</form>
-		
+		-->
 	</section>
 
 	<script th:src="@{/js/secretaria.js(v=${version})}" th:fragment="js"></script>
@@ -228,11 +233,12 @@ form {
 
 		})
 		$('#veterinario').on('blur', function() {
+			/*<![CDATA[*/
 			var titulo = $('#veterinario').val();
 			if ( titulo != '' ) {
 				$.get( "/veterinarios/nome/" + titulo , function( result ) {
 					$.get("/veterinarios/horarios/" + result.id, function(horarios){
-						$.each(horarios, function (k, v){
+						/*$.each(horarios, function (k, v){
 							$("#tr-teste").append(
 								'<td scope="row"><span class="dias">' +v.diaDaSemana+'</span></td>' +
 								'<td><input type="time" value="'+ v.inicio +'"></td>' +
@@ -241,12 +247,36 @@ form {
 								'<td><input type="hidden" value="'+ v.id +'"></td>'
 								
 							)			
-						})
+						})*/
+						$("#edit").append(
+								'<form th:if="${formEdit != null}" th:action="@{/veterinarios/salvar/horarios}" th:object="${formEdit}" method="post">'+
+									'<table class="table">'+
+										'<thead class="thead-dark">' +
+											'<tr>' +
+												'<th scope="col">Dia</th>' +
+												'<th scope="col">Entrada</th>' +
+												'<th scope="col">Saída</th>' +
+												'<th scope="col">Folga</th>' +
+
+											'</tr>' +
+										'</thead>' +
+										'<tbody>' +	
+											'<tr th:each="cargaHoraria, itemStat : *{cargas}">' +
+											'<td><input type="time" class="inicio"'+
+												'th:name="|cargas[${itemStat.index}].inicio|"'+
+												'th:value="${cargaHoraria.getInicio()}"'+
+												'th:classappend="${#fields.hasErrors(' +'cargas[__${itemStat.index}__].inicio'+')} ? ' +'is-invalid' +'" />'+
+											'</tr>'+
+										'</tbody>'+
+									'</table>'
+						
+						);
+						
 					})
 					
 				})
 			}
-			 
+			/*]]>*/ 
 		})
 	});
 	

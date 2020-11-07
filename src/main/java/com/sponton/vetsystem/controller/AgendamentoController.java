@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
@@ -45,11 +46,13 @@ import com.google.gson.Gson;
 import com.sponton.vetsystem.domain.Agendamento;
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Cliente;
+import com.sponton.vetsystem.domain.Notificacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Secretaria;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AgendamentoService;
 import com.sponton.vetsystem.service.AnimalService;
+import com.sponton.vetsystem.service.NotificacaoService;
 import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.VeterinarioService;
 
@@ -68,6 +71,9 @@ public class AgendamentoController {
 
 	@Autowired
 	private VeterinarioService veterinarioService;
+	
+	@Autowired
+	private NotificacaoService notificacaoService;
 
 	@GetMapping("/abrir")
 	public String abrirAgenda(Agendamento agendamento, ModelMap model, @AuthenticationPrincipal User user,
@@ -168,41 +174,45 @@ public class AgendamentoController {
 	}
 
 	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr, @AuthenticationPrincipal User user) {
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
+			Agendamento agendamento = service.buscarPorId(id);
+			List<Secretaria> secretarias = secretariaService.buscarTodos();
+			Notificacao notificacao = new Notificacao();
+			//List<Notificacao> notificacoes = new ArrayList<>();
+			notificacao.setTitulo("Cancelamento de consulta");
+			LocalTime horas = agendamento.getInicio().toLocalTime();
+			String paciente = null;
+			if(agendamento.getAnimal() != null) {
+				paciente = "Paciente: " + agendamento.getAnimal().getNome();
+			}else {
+				paciente = "Paciente: " + agendamento.getSem_cadastro();
+			}
+			notificacao.setDescricao("Consulta agendada para o dia " + agendamento.getInicio().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)) + " às " + horas  + ";" + 
+									 paciente + ";" + 
+									 "Agendada por: " + agendamento.getSecretaria().getNome() + ";" + 
+									 "Cancelada por: " + agendamento.getVeterinario().getNome());
+			
+			//notificacoes.add(notificacao);
+			
+			//notificacao.setSecretarias(secretarias);
+			for(Secretaria s : secretarias) {
+				s.getNotificacoes().add(notificacao);
+				//s.setNotificacoes(notificacoes);
+			}
+			//for(Notificacao n : notificacoes) {
+			//	n.setSecretarias(secretarias);
+			//}
+			
+			
+			service.remover(id);
+			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
+			return "redirect:/agenda/abrir";
+		}
 		service.remover(id);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
 		return "redirect:/agenda/abrir";
 	}
-	/*
-	 * @RequestMapping(value = "/todos.json", method = RequestMethod.GET,
-	 * produces="application/json") public @ResponseBody Map<String,Object>
-	 * getTudo() { //String jsonMsg = null; // try { List<Agendamento> events =
-	 * service.buscarTodos(); Map<String,Object> tudo = new LinkedHashMap<>();
-	 * for(Agendamento agendamento : events) { Map<String, Object> remapear = new
-	 * HashMap<String, Object>(); tudo.put("id", agendamento.getId());
-	 * tudo.put("title", agendamento.getTipo()); tudo.put("start",
-	 * agendamento.getInicio()); tudo.put("end", agendamento.getFim());
-	 * //tudo.add(remapear); // }
-	 * 
-	 * // ObjectMapper mapper = new ObjectMapper(); // jsonMsg =
-	 * mapper.writerWithDefaultPrettyPrinter().writeValueAsString(tudo);
-	 * 
-	 * // }catch(IOException ioex) { // System.out.println(ioex.getMessage()); }
-	 * return tudo; //return tudo; }
-	 */
-	/*
-	 * @RequestMapping(value = "/todos", method = RequestMethod.GET)
-	 * public @ResponseBody String getTudo(HttpServletResponse resp) {
-	 * List<Agendamento> events = service.buscarTodos(); Map<String,Object> tudo =
-	 * new HashMap<String, Object>(); for(Agendamento agendamento : events) {
-	 * tudo.put("id", agendamento.getId()); tudo.put("title",
-	 * agendamento.getTipo()); tudo.put("start", agendamento.getInicio());
-	 * tudo.put("end", agendamento.getFim());
-	 * 
-	 * } String json = new Gson().toJson(tudo);
-	 * resp.setContentType("application/json"); resp.setCharacterEncoding("UTF-8");
-	 * 
-	 * return json; }
-	 */
-
+	
+	
 }

@@ -1,9 +1,14 @@
 package com.sponton.vetsystem.domain;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -36,7 +41,24 @@ public class Secretaria extends AbstractEntity{
 	@Column(name = "telefone", nullable = false)
 	private String telefone;
 	
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(
+			name = "secretarias_tem_notificacoes",
+			joinColumns = @JoinColumn(name = "id_secretaria", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "id_notificacao", referencedColumnName = "id")
+    )
+	private List<Notificacao> notificacoes;
+
 	
+	public List<Notificacao> getNotificacoes() {
+		return notificacoes;
+	}
+
+
+	public void setNotificacoes(List<Notificacao> notificacoes) {
+		this.notificacoes = notificacoes;
+	}
+
 
 	public String getSexo() {
 		return sexo;

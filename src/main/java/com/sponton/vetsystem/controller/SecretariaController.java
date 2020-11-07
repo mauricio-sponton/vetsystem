@@ -119,5 +119,9 @@ public class SecretariaController {
 		return "redirect:/secretarias/dados";
 
 	}
+	@GetMapping("/editar/horarios")
+	public String editarHorarios() {
+		return "secretaria/horarios";
+	}
 
 }
