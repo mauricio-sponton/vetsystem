@@ -52,4 +52,11 @@ public class SecretariaService {
 		return repository.findAll();
 	}
 
+	@Transactional(readOnly = false)
+	public void removerNotificacaoPorSecretariaId(Long id, Long idNotificacao) {
+		Secretaria secretaria = repository.findById(id).get();
+		secretaria.getNotificacoes().removeIf(e -> e.getId().equals(idNotificacao));
+		
+	}
+
 }

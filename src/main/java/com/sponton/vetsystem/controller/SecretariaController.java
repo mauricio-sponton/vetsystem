@@ -40,10 +40,10 @@ public class SecretariaController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private FotoService fotoService;
-	
+
 	@Autowired
 	private CargaHorariaService cargaHorariaService;
 
@@ -54,7 +54,7 @@ public class SecretariaController {
 			model.addAttribute("secretaria", secretaria);
 			return "secretaria/visualizar";
 		}
-		if(secretaria.hasId()) {
+		if (secretaria.hasId()) {
 			model.addAttribute("secretaria", secretaria);
 			return "secretaria/visualizar";
 		}
@@ -66,6 +66,7 @@ public class SecretariaController {
 		model.addAttribute("secretaria", service.buscarPorId(id));
 		return "secretaria/cadastro";
 	}
+
 	@PostMapping("/salvar")
 	public String salvar(@Valid Secretaria secretaria, BindingResult result, RedirectAttributes attr,
 			@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file, ModelMap model) {
@@ -79,7 +80,7 @@ public class SecretariaController {
 			secretaria.setUsuario(usuario);
 		}
 		if (!file.isEmpty()) {
-			if(secretaria.getFoto().hasNotId()) {
+			if (secretaria.getFoto().hasNotId()) {
 				Foto foto = new Foto();
 				foto.setFileName(file.getOriginalFilename());
 				foto.setPath("/uploads/");
@@ -90,7 +91,7 @@ public class SecretariaController {
 					attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 				}
 			}
-			if(secretaria.getFoto().hasId()) {
+			if (secretaria.getFoto().hasId()) {
 				Foto foto = fotoService.buscarFotoId(secretaria.getFoto().getId());
 				foto.setFileName(file.getOriginalFilename());
 				foto.setPath("/uploads/");
@@ -101,9 +102,9 @@ public class SecretariaController {
 					attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 				}
 			}
-				
+
 		}
-		if(file.isEmpty() && secretaria.hasId()) {
+		if (file.isEmpty() && secretaria.hasId()) {
 			Foto foto = fotoService.buscarFotoId(secretaria.getFoto().getId());
 			secretaria.setFoto(foto);
 			try {
@@ -119,9 +120,19 @@ public class SecretariaController {
 		return "redirect:/secretarias/dados";
 
 	}
+
 	@GetMapping("/editar/horarios")
 	public String editarHorarios() {
 		return "secretaria/horarios";
+	}
+
+	@GetMapping("/excluir/{id}/notificacao/{idNotificacao}")
+	public String deletarNotificacaoPorSecretariaId(@PathVariable("id") Long id,
+			@PathVariable("idNotificacao") Long idNotificacao, RedirectAttributes attr) {
+
+		service.removerNotificacaoPorSecretariaId(id, idNotificacao);
+		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
+		return "redirect:/home";
 	}
 
 }
