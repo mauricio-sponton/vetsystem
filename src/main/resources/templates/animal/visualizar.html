@@ -84,6 +84,27 @@ h2 {
 	!
 	important
 }
+.caracteristicas{
+	padding: 10px;
+	margin-left: 2%;
+	width: 10%;
+	display: inline
+}
+.caracteristicas:first-child {
+	background-color: orange;
+	
+}
+.caracteristicas:first-child span, .caracteristicas:nth-child(2) span{
+	color: white
+}
+.caracteristicas:nth-child(2){
+	background-color: blue;
+}
+#wrapper-caracteristicas{
+	display: block;
+	margin-top:2%;
+	margin-bottom:2%
+}
 </style>
 </head>
 <body>
@@ -108,6 +129,12 @@ h2 {
 
 		<span th:text="${animal.cliente.nome}"></span> <span
 			th:text="${animal.cliente.email}"></span>
+			<div id="wrapper-caracteristicas">
+				<div class="caracteristicas" th:each="c: ${animal.caracteristicas}">
+					<span th:text="${c}"></span>
+			</div>
+			</div>
+			
 		<section>
 			<div class="tabs tabs-style-flip">
 				<nav>

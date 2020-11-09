@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponton.vetsystem.domain.CargaHoraria;
+import com.sponton.vetsystem.domain.Notificacao;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.repository.CargaHorariaRepository;
 import com.sponton.vetsystem.repository.VeterinarioRepository;
@@ -75,8 +76,14 @@ public class VeterinarioService {
 	public Optional<Veterinario> buscarVeterinarioPeloNome(String titulo) {
 		return repository.findVeterinarioByNome(titulo);
 	}
+	/*
+	@Transactional(readOnly = false)
+	public void removerNotificacao(Long id, Long id2) {
+		Veterinario veterinario = repository.findById(id2).get();
+		veterinario.getNotificacoes().removeIf(e -> e.getId().equals(id));
+		
+	}
+	*/
 
-	
-	
 
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,8 +33,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Aplicacao;
+import com.sponton.vetsystem.domain.Caracteristicas;
 import com.sponton.vetsystem.domain.Cliente;
 import com.sponton.vetsystem.domain.Consulta;
 import com.sponton.vetsystem.domain.Especie;
@@ -390,6 +393,13 @@ public class AnimalController {
 	public ResponseEntity<?> getAnimaisPorAlergias(@PathVariable("termo") String termo) {
 		List<String> animais = service.buscarAnimaisByAlergias(termo);
 		return ResponseEntity.ok(animais);
+	}
+	@ModelAttribute("caracteristicas")
+	public List<String> getCaracteristicas() {
+		List<String> lista = new ArrayList<>();
+		lista.add("Castrado");
+		lista.add("Bravo");
+		return lista;
 	}
 
 	/*

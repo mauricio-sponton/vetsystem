@@ -31,6 +31,9 @@ public interface AnimalRepository extends JpaRepository<Animal, Long>{
 	@Query("select a from Animal a where a.raca.id = :id")
 	List<Animal> findAnimalByRaca(Long id);
 
+	@Query("select a from Animal a where a.especie.id = :id")
+	List<Animal> findAnimalByEspecie(Long id);
+
 	
 	
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -56,6 +58,10 @@ public class Animal extends AbstractEntity {
 	@Column(name = "sexo", nullable = false)
 	@NotBlank(message = "Informe o sexo")
 	private String sexo;
+	
+	@Column(name="caracteristicas")
+	//@Enumerated(EnumType.STRING)
+	private String[] caracteristicas;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
@@ -73,6 +79,14 @@ public class Animal extends AbstractEntity {
 	@OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
 	private List<Aplicacao> aplicacoes;
 	
+	public String[] getCaracteristicas() {
+		return caracteristicas;
+	}
+
+	public void setCaracteristicas(String[] caracteristicas) {
+		this.caracteristicas = caracteristicas;
+	}
+
 	public List<Aplicacao> getAplicacoes() {
 		return aplicacoes;
 	}

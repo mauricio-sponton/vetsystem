@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -98,8 +99,7 @@ public class AgendamentoController {
 			if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
 				Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
 				String vet = agendamento.getVeterinario().getNome();
-				Veterinario veterinario = veterinarioService.buscarPorTitulos(new String[] { vet }).stream().findFirst()
-						.get();
+				Veterinario veterinario = veterinarioService.buscarPorTitulos(new String[] { vet }).stream().findFirst().get();
 				if (!agendamento.getAnimal().getNome().isEmpty()) {
 					String titulo = agendamento.getAnimal().getNome();
 					Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
@@ -108,12 +108,71 @@ public class AgendamentoController {
 				} else {
 					agendamento.setAnimal(null);
 				}
+				/*
+				String paciente = null;
+				LocalDate data = agendamento.getInicio().toLocalDate();
+				LocalTime horas = agendamento.getInicio().toLocalTime();
+				Notificacao n = notificacaoService.buscar(agendamento.getId(), veterinario.getId());
+				if(agendamento.hasId()) {
+					Agendamento a = service.buscarPorId(agendamento.getId());
+					if(agendamento.getVeterinario() != a.getVeterinario()) {
+						veterinarioService.removerNotificacao(n.getId(), a.getVeterinario().getId());
+						n.getVeterinarios().add(veterinario);
+						n.setData(data);
+						if (agendamento.getAnimal() != null) {
+							n.setTitulo("Consulta com o paciente: " + agendamento.getAnimal().getNome());
+							paciente = "Consulta com o paciente: " + agendamento.getAnimal().getNome();
+
+						} else {
+							n.setTitulo("Consulta com o paciente: " + agendamento.getSem_cadastro());
+							paciente = "Consulta com o paciente: " + agendamento.getSem_cadastro();
+						}
+						n.setDescricao(
+								"Consulta marcada às: " + horas.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+										+ ";" + paciente + ";" + "Agendada por: " + secretaria.getNome() + ";");
+						notificacaoService.salvar(n);
+					}
+				}
+				if(n != null) {
+					n.setData(data);
+					if (agendamento.getAnimal() != null) {
+						n.setTitulo("Consulta com o paciente: " + agendamento.getAnimal().getNome());
+						paciente = "Consulta com o paciente: " + agendamento.getAnimal().getNome();
+
+					} else {
+						n.setTitulo("Consulta com o paciente: " + agendamento.getSem_cadastro());
+						paciente = "Consulta com o paciente: " + agendamento.getSem_cadastro();
+					}
+					n.setDescricao(
+							"Consulta marcada às: " + horas.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+									+ ";" + paciente + ";" + "Agendada por: " + secretaria.getNome() + ";");
+					notificacaoService.salvar(n);
+				}*/
+			
 				if (agendamento.hasNotId()) {
+					/*
+					Notificacao notificacao = new Notificacao();
+					notificacao.setData(data);
+					if (agendamento.getAnimal() != null) {
+						notificacao.setTitulo("Consulta com o paciente: " + agendamento.getAnimal().getNome());
+						paciente = "Consulta com o paciente: " + agendamento.getAnimal().getNome();
+
+					} else {
+						notificacao.setTitulo("Consulta com o paciente: " + agendamento.getSem_cadastro());
+						paciente = "Consulta com o paciente: " + agendamento.getSem_cadastro();
+					}
+					notificacao.setDescricao(
+							"Consulta marcada às: " + horas.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+									+ ";" + paciente + ";" + "Agendada por: " + secretaria.getNome() + ";");
+					notificacao.setAgendamento(agendamento);
+					veterinario.getNotificacoes().add(notificacao);
+					*/
 					agendamento.setVeterinario(veterinario);
 					agendamento.setSecretaria(secretaria);
 					service.salvar(agendamento);
 					attr.addFlashAttribute("sucesso", "Agendamento cadastrado com sucesso");
 				} else {
+					
 					agendamento.setVeterinario(veterinario);
 					agendamento.setSecretaria(secretaria);
 					service.salvar(agendamento);
@@ -180,7 +239,8 @@ public class AgendamentoController {
 			Agendamento agendamento = service.buscarPorId(id);
 			List<Secretaria> secretarias = secretariaService.buscarTodos();
 			Notificacao notificacao = new Notificacao();
-			// List<Notificacao> notificacoes = new ArrayList<>();
+			LocalDate data = LocalDate.now();
+			notificacao.setData(data);
 			notificacao.setTitulo("Cancelamento de consulta");
 			LocalTime horas = agendamento.getInicio().toLocalTime();
 			String paciente = null;
@@ -194,17 +254,9 @@ public class AgendamentoController {
 					+ horas + ";" + paciente + ";" + "Agendada por: " + agendamento.getSecretaria().getNome() + ";"
 					+ "Cancelada por: " + agendamento.getVeterinario().getNome());
 
-			// notificacoes.add(notificacao);
-
-			// notificacao.setSecretarias(secretarias);
 			for (Secretaria s : secretarias) {
 				s.getNotificacoes().add(notificacao);
-				// s.setNotificacoes(notificacoes);
 			}
-			// for(Notificacao n : notificacoes) {
-			// n.setSecretarias(secretarias);
-			// }
-
 			service.remover(id);
 			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
 			return "redirect:/agenda/abrir";

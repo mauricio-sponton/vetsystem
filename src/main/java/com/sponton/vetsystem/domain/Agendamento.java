@@ -3,11 +3,13 @@ package com.sponton.vetsystem.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -50,7 +52,7 @@ public class Agendamento extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "id_animal_fk")
 	private Animal animal;
-	
+		
 	@Column(name = "cor")
 	private String color;
 	

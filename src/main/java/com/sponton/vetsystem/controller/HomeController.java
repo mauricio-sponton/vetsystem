@@ -1,5 +1,9 @@
 package com.sponton.vetsystem.controller;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sponton.vetsystem.domain.Agendamento;
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Notificacao;
@@ -26,6 +31,7 @@ import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Raca;
 import com.sponton.vetsystem.domain.Secretaria;
 import com.sponton.vetsystem.domain.Veterinario;
+import com.sponton.vetsystem.service.AgendamentoService;
 import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.ClienteService;
 import com.sponton.vetsystem.service.EspecieService;
@@ -57,6 +63,9 @@ public class HomeController {
 	
 	@Autowired 
 	private NotificacaoService notificacaoService;
+	
+	@Autowired
+	private AgendamentoService agendamentoService;
 
 	@GetMapping({ "/home" })
 	public String home(ModelMap model, @AuthenticationPrincipal User user, RedirectAttributes attr) {
@@ -67,6 +76,13 @@ public class HomeController {
 						"Por favor preencha seus dados pessoais para continuar usando o sistema");
 				return "redirect:/veterinarios/dados";
 			}
+			/*
+			if(veterinario.hasId()) {
+				LocalDate hoje = LocalDate.now();	
+				List<Notificacao> notificacoes = notificacaoService.buscarNotificacaoPorVeterinarioIdEData(veterinario.getId(), hoje);
+				model.addAttribute("notificacoes", notificacoes);
+			}
+			*/
 		}
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
 			Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
@@ -93,6 +109,20 @@ public class HomeController {
 				surveyMap.put(r.getNome(), t);
 			}
 			model.addAttribute("surveyMap", surveyMap);
+		}
+		List<Especie> especies = especieService.buscarTodasEspecies();
+		if (especies.size() > 0) {
+			int t = 0;
+			Map<String, Integer> surveyMap = new LinkedHashMap<>();
+			for (Especie e : especies) {
+
+				List<Animal> separado = animalService.buscarAnimalPorEspecie(e.getId());
+				for (Animal a : separado) {
+					t = (int) separado.stream().count();
+				}
+				surveyMap.put(e.getNome(), t);
+			}
+			model.addAttribute("especies", surveyMap);
 		}
 
 		model.addAttribute("animal", animalService.buscarTodosAnimais());

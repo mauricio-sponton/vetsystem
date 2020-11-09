@@ -97,8 +97,12 @@ public class AnimalService {
 
 	@Transactional(readOnly = true)
 	public List<Animal> buscarAnimalPorRaca(Long id) {
-		
 		return repository.findAnimalByRaca(id);
+	}
+
+	@Transactional(readOnly = true)
+	public List<Animal> buscarAnimalPorEspecie(Long id) {
+		return repository.findAnimalByEspecie(id);
 	}
 
 	

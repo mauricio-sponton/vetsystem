@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -59,7 +61,22 @@ public class Veterinario extends AbstractEntity{
 	@Column(name = "telefone", nullable = false)
 	private String telefone;
 	
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(
+			name = "veterinarios_tem_notificacoes",
+			joinColumns = @JoinColumn(name = "id_veterinario", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "id_notificacao", referencedColumnName = "id")
+    )
+	private List<Notificacao> notificacoes;
 	
+	public List<Notificacao> getNotificacoes() {
+		return notificacoes;
+	}
+
+	public void setNotificacoes(List<Notificacao> notificacoes) {
+		this.notificacoes = notificacoes;
+	}
+
 	public Foto getFoto() {
 		return foto;
 	}

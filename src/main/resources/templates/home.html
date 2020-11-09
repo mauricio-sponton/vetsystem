@@ -10,20 +10,26 @@
 .testando span {
 	color: purple
 }
-.deletar{
+
+.deletar {
 	width: 10%;
 	float: right;
 }
-h5{
+
+h5 {
 	width: 40%;
 	float: left
+}
+
+#container, #especies {
+	display: none
 }
 </style>
 </head>
 <body>
 	<h1>Teste</h1>
 	<section class="layout-content" layout:fragment="corpo">
-	<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<div class="testando">
 			<p>
 				<span
@@ -49,7 +55,15 @@ h5{
 								<span style="color: black" th:text="${n.titulo}"></span>
 							</button>
 						</h5>
-						<a class="btn btn-danger btn-sm btn-block deletar" th:href="@{'/secretarias/excluir/'+ ${secretaria.id} + '/notificacao/' + ${n.id}}" role="button"><i class="fas fa-times-circle"></i></a>
+						<a th:if="${secretaria !=null}"
+							class="btn btn-danger btn-sm btn-block deletar"
+							th:href="@{'/secretarias/excluir/'+ ${secretaria.id} + '/notificacao/' + ${n.id}}"
+							role="button"><i class="fas fa-times-circle"></i></a>
+						<!--  <a
+							th:if="${veterinario !=null}"
+							class="btn btn-danger btn-sm btn-block deletar"
+							th:href="@{'/veterinarios/excluir/'+ ${veterinario.id} + '/notificacao/' + ${n.id}}"
+							role="button"><i class="fas fa-times-circle"></i></a> -->
 					</div>
 
 					<div th:id="'colapsar' + ${n.id}" class="collapse"
@@ -63,12 +77,48 @@ h5{
 			</div>
 
 		</div>
+		<fieldset>
+			<form>
 
+				<legend>
+					Filtros </legend>
+					<div>
+						<input type="checkbox" id="ck-racas" nome="interesse"
+							> <label for="ck-racas">
+							Raças </label>
+					</div>
+					<div>
+						<input type="checkbox" id="ck-especies" name="interesse">
+						<label for="ck-especies"> Espécies </label>
+					</div>
+			</form>
+		</fieldset>
 
 		<div id="container"></div>
+		<div id="especies"></div>
 	</section>
 	<script th:src="@{/js/home.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
+	$(document).ready(function(){
+		$("#ck-racas").on('change', function(){
+			if($(this).is(':checked')){
+				$("#container").slideToggle();
+			}else{
+				$("#container").slideToggle();
+			}
+			
+		})
+		$("#ck-especies").on('change', function(){
+			if($(this).is(':checked')){
+				$("#especies").slideToggle();
+			}else{
+				$("#especies").slideToggle();
+			}
+			
+		})
+			
+		
+	});
 	$(function(){
 		    Highcharts.chart('container', {
 		        chart: {
@@ -109,6 +159,46 @@ h5{
 		        }]
 		    });
 		    });
+	$(function(){
+	    Highcharts.chart('especies', {
+	        chart: {
+	            type: 'column'
+	        },
+	        title: {
+	            text: 'Pacientes por espécie'
+	        },
+	    
+	        xAxis: {
+	            categories: [[${especies.keySet()}]],
+	            crosshair: true
+	        },
+	        yAxis: {
+	            min: 0,
+	            max:50,
+	            title: {
+	                text: 'Quantidade de pacientes'
+	            }
+	        },
+	        tooltip: {
+	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	            '<td style="padding:0"><b>{point.y:1f}</b></td></tr>',
+	            footerFormat: '</table>',
+	            shared: true,
+	            useHTML: true
+	        },
+	        plotOptions: {
+	            column: {
+	                pointPadding: 0.2,
+	                borderWidth: 0
+	            }
+	        },
+	        series: [{
+	            name: 'Pacientes ',
+	            data: [[${especies.values()}]]
+	        }]
+	    });
+	    });
 	</script>
 
 
