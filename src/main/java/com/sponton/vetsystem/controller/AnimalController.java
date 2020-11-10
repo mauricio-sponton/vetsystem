@@ -1,5 +1,12 @@
 package com.sponton.vetsystem.controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -7,15 +14,22 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.html.HTML;
 import javax.validation.Valid;
 
+import org.apache.commons.compress.utils.IOUtils;
+//import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,13 +44,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Aplicacao;
-import com.sponton.vetsystem.domain.Caracteristicas;
 import com.sponton.vetsystem.domain.Cliente;
 import com.sponton.vetsystem.domain.Consulta;
 import com.sponton.vetsystem.domain.Especie;
@@ -64,6 +78,8 @@ import com.sponton.vetsystem.service.VeterinarioService;
 @Controller
 @RequestMapping("pacientes")
 public class AnimalController {
+
+	private final String file = "src/main/resources/static/uploads/";
 
 	@Autowired
 	private AnimalService service;
@@ -401,11 +417,43 @@ public class AnimalController {
 		lista.add("Bravo");
 		return lista;
 	}
-
-	/*
-	@ModelAttribute("vacinas")
-	public List<Vacina> listaDeEspecies() {
-		return vacinaService.buscarTodasVacinas();
+	@GetMapping(value ="/download/historico/paciente/{id}")
+	public String criar(@PathVariable("id") Long id, RedirectAttributes attr) throws IOException{
+		Animal animal = service.buscarPorId(id);
+		List<HistoricoAnimal> historico = historicoAnimalService.buscarHistoricoPorAnimal(id);
+		System.out.println(historico);
+	
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file + "teste.txt"));
+		StringBuilder paciente = new StringBuilder();
+		paciente.append(String.format("%10s%n%n","Paciente: " + animal.getNome()));
+		writer.write(paciente.toString());
+		for(HistoricoAnimal h : historico) {
+			StringBuilder build = new StringBuilder();
+			build.append("Dia: " + h.getData().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+			build.append(String.format("%10s%n%n", "às: " + h.getHora().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))));
+			build.append(String.format("%10s%n%n","Ocorrência: " + h.getDescricao()));
+			writer.write(build.toString());
+		}
+		
+		writer.close();
+		attr.addFlashAttribute("sucesso", "historico criado");
+		return "redirect:/pacientes/listar";
 	}
-	*/
+
+	@GetMapping(value ="/download/historico", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void downloadHistorico(HttpServletRequest request, HttpServletResponse response) throws IOException{	
+		File files = new File(file + "teste.txt");
+		FileInputStream in = new FileInputStream(files);
+		byte[] content = new byte[(int) files.length()];
+		in.read(content);
+		ServletContext sc = request.getSession().getServletContext();
+		String mimetype = sc.getMimeType(files.getName());
+		response.reset();
+		response.setContentType(mimetype);
+		response.setContentLength(content.length);
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + files.getName() + "\"");
+		org.springframework.util.FileCopyUtils.copy(content, response.getOutputStream());
+		
+	}
+
 }

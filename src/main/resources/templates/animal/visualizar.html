@@ -40,12 +40,15 @@ h2 {
 .edit-internacao {
 	background-color: brown;
 }
+
 .edit-aplicacao {
 	background-color: tomato;
 }
+
 .nova-aplicacao {
 	background-color: beige;
 }
+
 .consulta {
 	width: 100%;
 	background-color: green;
@@ -84,26 +87,40 @@ h2 {
 	!
 	important
 }
-.caracteristicas{
-	padding: 10px;
-	margin-left: 2%;
+
+.caracteristicas {
+	display: inline	
 	width: 10%;
-	display: inline
-}
-.caracteristicas:first-child {
-	background-color: orange;
 	
 }
-.caracteristicas:first-child span, .caracteristicas:nth-child(2) span{
+
+.castrado, .bravo {
+	
+	padding: 10px;
+	margin-left: 2%;
+	display: inline;
+	float: left;
+	
+}
+.castrado{
+	background-color: orange;
 	color: white
 }
-.caracteristicas:nth-child(2){
+.bravo{
 	background-color: blue;
 }
-#wrapper-caracteristicas{
+
+#wrapper-caracteristicas {
 	display: block;
-	margin-top:2%;
-	margin-bottom:2%
+	margin-top: 2%;
+	margin-bottom: 2%;
+	float: left
+}
+#wrapper-caracteristicas:first-child{
+	margin-left: 2%
+}
+#wrapper-caracteristicas span{
+	color: white;
 }
 </style>
 </head>
@@ -129,12 +146,22 @@ h2 {
 
 		<span th:text="${animal.cliente.nome}"></span> <span
 			th:text="${animal.cliente.email}"></span>
-			<div id="wrapper-caracteristicas">
-				<div class="caracteristicas" th:each="c: ${animal.caracteristicas}">
-					<span th:text="${c}"></span>
-			</div>
-			</div>
 			
+		<div th:if="${animal.caracteristicas != null}">
+			<div id="wrapper-caracteristicas">
+				<div th:each="c: ${animal.caracteristicas}">
+					<div th:switch="${c}" >
+						<div th:case="'Castrado'" >
+							<span th:class='castrado' th:text="${c}"></span>
+						</div> 
+						<div th:case="'Bravo'"  class="caracteristicas">
+							<span th:class='bravo' th:text="${c}"></span>
+						</div> 
+					</div>
+					
+				</div>
+			</div>
+		</div>
 		<section>
 			<div class="tabs tabs-style-flip">
 				<nav>
@@ -201,6 +228,10 @@ h2 {
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<a class="btn btn-danger btn-sm btn-block" th:href="@{/pacientes/download/historico/paciente/{id} (id=${animal.id})}" role="button"><i class="fas fa-times-circle"></i></a>
+							<a class="btn btn-danger btn-sm btn-block" th:href="@{/pacientes/download/historico}" role="button"></a>
+						</div>
 						<div class="historico-wraper" id="scrollbar">
 							<div id="listagem-historico" th:each="h: ${historico}">
 								<div id="generico"
@@ -238,7 +269,7 @@ h2 {
 							<div class="row">
 								<div class="col-md-12">
 
-									
+
 									<h2>Consultas Cadastradas</h2>
 
 									<table id="table-consultas"

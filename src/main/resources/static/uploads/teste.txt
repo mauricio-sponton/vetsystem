@@ -1,0 +1,18 @@
+Paciente: Taz
+
+Dia: 10/11/2020  às: 00:50
+
+Ocorrência: O paciente foi imunizado
+
+Dia: 10/11/2020  às: 00:49
+
+Ocorrência: O paciente Taz foi internado.
+
+Dia: 10/11/2020  às: 00:34
+
+Ocorrência: O paciente foi imunizado
+
+Dia: 09/11/2020  às: 16:18
+
+Ocorrência: O paciente foi criado com sucesso
+
