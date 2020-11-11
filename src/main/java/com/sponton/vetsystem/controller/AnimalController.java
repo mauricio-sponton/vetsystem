@@ -1,8 +1,12 @@
 package com.sponton.vetsystem.controller;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,9 +24,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.html.HTML;
 import javax.validation.Valid;
 
+import org.apache.pdfbox.cos.COSDocument;
+import org.apache.pdfbox.io.RandomAccessFile;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.commons.compress.utils.IOUtils;
 //import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +58,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Aplicacao;
 import com.sponton.vetsystem.domain.Cliente;
@@ -80,6 +97,7 @@ import com.sponton.vetsystem.service.VeterinarioService;
 public class AnimalController {
 
 	private final String file = "src/main/resources/static/uploads/";
+	private final String imagem = "src/main/resources/static/image/";
 
 	@Autowired
 	private AnimalService service;
@@ -417,32 +435,141 @@ public class AnimalController {
 		lista.add("Bravo");
 		return lista;
 	}
-	@GetMapping(value ="/download/historico/paciente/{id}")
-	public String criar(@PathVariable("id") Long id, RedirectAttributes attr) throws IOException{
+	@GetMapping(value ="/download/historico/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void criarArquivoHistorico(@PathVariable("id") Long id, RedirectAttributes attr, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		Animal animal = service.buscarPorId(id);
 		List<HistoricoAnimal> historico = historicoAnimalService.buscarHistoricoPorAnimal(id);
-		System.out.println(historico);
-	
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file + "teste.txt"));
+		String arquivo = "historico";
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
+		
 		StringBuilder paciente = new StringBuilder();
+		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append("<h2 style=\"color:green;font-weight:bold;\">");
 		paciente.append(String.format("%10s%n%n","Paciente: " + animal.getNome()));
+		paciente.append("</h2>");
 		writer.write(paciente.toString());
 		for(HistoricoAnimal h : historico) {
 			StringBuilder build = new StringBuilder();
+			build.append("<span style=\"color:gray;font-weight:bold;\">");
 			build.append("Dia: " + h.getData().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+			build.append("</span>");
+			build.append("<span style=\"color:gray;font-weight:bold;display:inline\">");
 			build.append(String.format("%10s%n%n", "às: " + h.getHora().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))));
+			build.append("</span><p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
 			build.append(String.format("%10s%n%n","Ocorrência: " + h.getDescricao()));
+			build.append("</p>");
 			writer.write(build.toString());
 		}
-		
 		writer.close();
+		conveterHTMLparaPDF(arquivo, request, response);
+		
+	}
+	@GetMapping(value ="/download/consultas/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void criarArquivoConsultas(@PathVariable("id") Long id, RedirectAttributes attr, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		Animal animal = service.buscarPorId(id);
+		List<Consulta> consultas = consultaService.buscarConsultaPorAnimal(id);
+		String arquivo = "consulta";
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
+		
+		StringBuilder paciente = new StringBuilder();
+		paciente.append("<hr/>");
+		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append("<h2 style=\"color:green;font-weight:bold;\">");
+		paciente.append(String.format("%10s%n%n","Paciente: " + animal.getNome()));
+		paciente.append("</h2>");
+		paciente.append("<hr/>");
+		writer.write(paciente.toString());
+		for(Consulta c : consultas) {
+			StringBuilder build = new StringBuilder();
+			build.append("<span style=\"color:gray;font-weight:bold;\">");
+			build.append("Consulta realizada no dia: " + c.getData().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+			build.append("</span>");
+			build.append("<span style=\"color:gray;font-weight:bold;display:inline\">");
+			build.append("às: " + c.getHora().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
+			build.append("</span>");
+			build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+			build.append("Peso: " + c.getPeso() + "Kg ");
+			build.append("Temperatura: " + c.getTemperatura() + "ºC");
+			build.append("</p>");
+			if(c.getTermino() !=null) {
+				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+				build.append("Consulta encerrada às: " + c.getTermino().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
+				build.append("</p>");
+			}
+			if(!c.getDescricao().isEmpty()) {
+				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+				build.append("Anotações: " + c.getDescricao());
+				build.append("</p>");
+			}
+			if(!c.getPrescricao().isEmpty()) {
+				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+				build.append("Prescrição: " + c.getPrescricao());
+				build.append("</p>");
+			}
+			build.append("<div style=\"width: 100%; height: 2px; background-color: gray\" />");
+			writer.write(build.toString());
+		}
+		writer.close();
+		conveterHTMLparaPDF(arquivo, request, response);
+		
+	}
+	private void conveterHTMLparaPDF(String arquivo, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
+		Document document = new Document();
+		PdfWriter writerPdf = PdfWriter.getInstance(document, new FileOutputStream(file + arquivo + ".pdf"));
+		document.open();
+		XMLWorkerHelper.getInstance().parseXHtml(writerPdf, document, new FileInputStream(file + arquivo + ".html"));
+		document.close();
+		
+		File files = new File(file + arquivo + ".pdf");
+		FileInputStream in = new FileInputStream(files);
+		byte[] content = new byte[(int) files.length()];
+		in.read(content);
+		ServletContext sc = request.getSession().getServletContext();
+		String mimetype = sc.getMimeType(files.getName());
+		response.reset();
+		response.setContentType(mimetype);
+		response.setContentLength(content.length);
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + files.getName() + "\"");
+		org.springframework.util.FileCopyUtils.copy(content, response.getOutputStream());
+		
+		
+	}
+
+	/*
+	@GetMapping(value ="/download/historico/pdf")
+	public String downloadEmPdf(RedirectAttributes attr) throws DocumentException, IOException {
+		
+		Document pdfDoc = new Document(PageSize.A4);
+		PdfWriter.getInstance(pdfDoc, new FileOutputStream(file + "teste.pdf")).setPdfVersion(PdfWriter.PDF_VERSION_1_7);
+		pdfDoc.open();
+		
+		Font myFont = new Font();
+		myFont.setStyle(Font.NORMAL);
+		myFont.setSize(12);
+		pdfDoc.add(new Paragraph("\n"));
+		
+		BufferedReader br = new BufferedReader(new FileReader(file + "teste.html"));
+		String strLine;
+		while((strLine = br.readLine()) != null) {
+			Paragraph para = new Paragraph(strLine + "\n", myFont);
+			para.setAlignment(Element.ALIGN_JUSTIFIED);
+			pdfDoc.add(para);
+		}
+		pdfDoc.close();
+		br.close();
+		
+		Document document = new Document();
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file + "teste.pdf"));
+		document.open();
+		XMLWorkerHelper.getInstance().parseXHtml(writer, document, new FileInputStream(file + "teste.html"));
+		document.close();
 		attr.addFlashAttribute("sucesso", "historico criado");
 		return "redirect:/pacientes/listar";
 	}
-
+	
 	@GetMapping(value ="/download/historico", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public @ResponseBody void downloadHistorico(HttpServletRequest request, HttpServletResponse response) throws IOException{	
-		File files = new File(file + "teste.txt");
+		File files = new File(file + "teste.pdf");
 		FileInputStream in = new FileInputStream(files);
 		byte[] content = new byte[(int) files.length()];
 		in.read(content);
@@ -455,5 +582,7 @@ public class AnimalController {
 		org.springframework.util.FileCopyUtils.copy(content, response.getOutputStream());
 		
 	}
+	*/
 
+	
 }

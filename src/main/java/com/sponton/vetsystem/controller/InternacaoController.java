@@ -244,6 +244,7 @@ public class InternacaoController {
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		Internacao internacao = service.buscarPorId(id);
 		Animal animal = animalService.buscarPorId(internacao.getAnimal().getId());
+		
 		if(animal.getStatus().contains("Internado")) {
 			animal.setStatus("Normal");
 		}

@@ -24,6 +24,9 @@ $(document).ready(function () {
             url: '/pacientes/datatables/server',
             data: 'data'
         },
+        "columnDefs": [
+            { "width": "10%", "targets": [5, 7] }
+          ],
         columns: [
         	{data: 'id'},
             {data: 'nome'},

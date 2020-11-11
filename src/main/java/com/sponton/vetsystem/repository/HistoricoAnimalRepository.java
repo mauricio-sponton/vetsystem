@@ -19,4 +19,7 @@ public interface HistoricoAnimalRepository extends JpaRepository<HistoricoAnimal
 	@Query("select h from HistoricoAnimal h where h.data =:data and h.animal.id =:id order by h.id DESC")
 	List<HistoricoAnimal> findHistoricoPorData(LocalDate data, Long id);
 
+	@Query("select h from HistoricoAnimal h where h.animal.id =:id and h.tipo = 'Nova internação' order by h.id DESC")
+	List<HistoricoAnimal> findHistoricoByAnimalAndStatus(Long id);
+
 }

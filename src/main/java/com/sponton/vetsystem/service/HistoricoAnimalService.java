@@ -41,5 +41,16 @@ public class HistoricoAnimalService {
 		return repository.findHistoricoPorData(data, id);
 	}
 
+	@Transactional(readOnly = true)
+	public List<HistoricoAnimal> buscarHistoricoPorAnimalEStatus(Long id) {
+		return repository.findHistoricoByAnimalAndStatus(id);
+	}
+
+	@Transactional(readOnly = false)
+	public void remover(Long id) {
+		repository.deleteById(id);
+		
+	}
+
 
 }

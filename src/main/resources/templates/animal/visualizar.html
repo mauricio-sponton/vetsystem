@@ -89,24 +89,22 @@ h2 {
 }
 
 .caracteristicas {
-	display: inline	
-	width: 10%;
-	
+	display: inline width: 10%;
 }
 
 .castrado, .bravo {
-	
 	padding: 10px;
 	margin-left: 2%;
 	display: inline;
 	float: left;
-	
 }
-.castrado{
+
+.castrado {
 	background-color: orange;
 	color: white
 }
-.bravo{
+
+.bravo {
 	background-color: blue;
 }
 
@@ -116,11 +114,17 @@ h2 {
 	margin-bottom: 2%;
 	float: left
 }
-#wrapper-caracteristicas:first-child{
+
+#wrapper-caracteristicas:first-child {
 	margin-left: 2%
 }
-#wrapper-caracteristicas span{
+
+#wrapper-caracteristicas span {
 	color: white;
+}
+
+.maneira {
+	background-color: indigo
 }
 </style>
 </head>
@@ -146,19 +150,19 @@ h2 {
 
 		<span th:text="${animal.cliente.nome}"></span> <span
 			th:text="${animal.cliente.email}"></span>
-			
+
 		<div th:if="${animal.caracteristicas != null}">
 			<div id="wrapper-caracteristicas">
 				<div th:each="c: ${animal.caracteristicas}">
-					<div th:switch="${c}" >
-						<div th:case="'Castrado'" >
+					<div th:switch="${c}">
+						<div th:case="'Castrado'">
 							<span th:class='castrado' th:text="${c}"></span>
-						</div> 
-						<div th:case="'Bravo'"  class="caracteristicas">
+						</div>
+						<div th:case="'Bravo'" class="caracteristicas">
 							<span th:class='bravo' th:text="${c}"></span>
-						</div> 
+						</div>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
@@ -187,6 +191,10 @@ h2 {
 							<button class="btn btn-primary" type="button"
 								data-toggle="collapse" data-target="#collapseData"
 								aria-controls="collapseData">Datas</button>
+							<a class="btn btn-danger"
+								th:href="@{/pacientes/download/historico/paciente/{id} (id=${animal.id})}"
+								role="button"><i class="fas fa-download"></i></a>
+
 
 
 						</p>
@@ -228,10 +236,7 @@ h2 {
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<a class="btn btn-danger btn-sm btn-block" th:href="@{/pacientes/download/historico/paciente/{id} (id=${animal.id})}" role="button"><i class="fas fa-times-circle"></i></a>
-							<a class="btn btn-danger btn-sm btn-block" th:href="@{/pacientes/download/historico}" role="button"></a>
-						</div>
+
 						<div class="historico-wraper" id="scrollbar">
 							<div id="listagem-historico" th:each="h: ${historico}">
 								<div id="generico"
@@ -292,6 +297,9 @@ h2 {
 						<a class="btn-cadastrar-usuario" id="cadastrar-consulta"
 							data-toggle="modal" data-target="#modal-consulta-paciente"
 							href="#" role="button">Nova Consulta</a>
+							<a class="btn btn-danger"
+								th:href="@{/pacientes/download/consultas/paciente/{id} (id=${animal.id})}"
+								role="button"><i class="fas fa-download"></i></a>
 
 
 					</section>
