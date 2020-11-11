@@ -61,6 +61,11 @@ public class AplicacaoService {
 		return repository.findByDesc(descricao, id);
 	}
 
+	@Transactional(readOnly = true)
+	public List<Aplicacao> buscarAplicacaoPorIdAnimal(Long id) {
+		return repository.findAplicacaoByAnimalId(id);
+	}
+
 	/*
 	@Transactional(readOnly = false)
 	public void editar(Aplicacao aplicacao) {

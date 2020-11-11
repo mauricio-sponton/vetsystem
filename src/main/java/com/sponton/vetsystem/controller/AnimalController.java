@@ -513,6 +513,50 @@ public class AnimalController {
 		conveterHTMLparaPDF(arquivo, request, response);
 		
 	}
+	@GetMapping(value ="/download/imunizacoes/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void criarArquivoAplicacao(@PathVariable("id") Long id, RedirectAttributes attr, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		Animal animal = service.buscarPorId(id);
+		List<Aplicacao> aplicacoes = aplicacaoService.buscarAplicacaoPorIdAnimal(id);
+		String arquivo = "imunizacoes";
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
+		
+		StringBuilder paciente = new StringBuilder();
+		paciente.append("<hr/>");
+		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append("<h2 style=\"color:green;font-weight:bold;\">");
+		paciente.append(String.format("%10s%n%n","Paciente: " + animal.getNome()));
+		paciente.append("</h2>");
+		paciente.append("<hr/>");
+		writer.write(paciente.toString());
+		for(Aplicacao a : aplicacoes) {
+			StringBuilder build = new StringBuilder();
+			build.append("<p style=\"color:gray;font-weight:bold;\">");
+			build.append("Imunização aplicada no dia: " + a.getDataAplicacao().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+			build.append("</p>");
+			
+			if(a.getDoses() == 0) {
+				build.append("<p style=\"color:gray;font-weight:bold;\">");
+				build.append("Dose anual");
+				build.append("</p>");
+			}else {
+				build.append("<p style=\"color:gray;font-weight:bold\">");
+				build.append(a.getDoses() + "ª dose de " + a.getVacina().getDoses());
+				build.append("</p>");
+			}
+			
+			
+			build.append("<p style=\"color:gray;font-weight:bold;\">");
+			build.append("Próxima aplicação estimada: " + a.getProximaAplicacao().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+			build.append("</p><br/>");
+			build.append("<div style=\"width: 100%; height: 2px; background-color: gray;\">");
+			build.append("</div>");
+			
+			writer.write(build.toString());
+		}
+		writer.close();
+		conveterHTMLparaPDF(arquivo, request, response);
+		
+	}
 	private void conveterHTMLparaPDF(String arquivo, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
 		Document document = new Document();
 		PdfWriter writerPdf = PdfWriter.getInstance(document, new FileOutputStream(file + arquivo + ".pdf"));

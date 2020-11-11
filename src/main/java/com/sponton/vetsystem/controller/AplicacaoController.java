@@ -106,31 +106,23 @@ public class AplicacaoController {
 			aplicacao.setDoses(1);
 
 			if (aplicacao.getDoses() >= 1) {
-
 				List<Aplicacao> aplic = service.buscarPorDesc(aplicacao.getVacina().getDescricao(), idAnimal);
-
 				if (aplic.size() < aplicacao.getVacina().getDoses()) {
 					if (aplicacao.hasId()) {
 						Aplicacao app = service.buscarPorId(aplicacao.getId());
-
 						if (aplicacao.getVacina().getDescricao() != app.getVacina().getDescricao()) {
 							List<Aplicacao> ultimoValor = service.buscarPorDesc(aplicacao.getVacina().getDescricao(),
 									idAnimal);
 							if (ultimoValor.size() > 1) {
 								int count = ultimoValor.size();
-								// Stream<Aplicacao> stream = ultimoValor.stream();
-								// Aplicacao valor = stream.skip(count - 1).findFirst().get();
 								aplicacao.setDoses(count + 1);
 							} else if (ultimoValor.size() == 1) {
 								aplicacao.setDoses(1);
 							}
-
 						}
 						if (aplicacao.getVacina().getDescricao() == app.getVacina().getDescricao()) {
 							aplicacao.setDoses(app.getDoses());
-
 						}
-
 					}
 					if (aplicacao.hasNotId()) {
 						aplicacao.setDoses(aplic.size() + 1);
