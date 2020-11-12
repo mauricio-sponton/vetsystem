@@ -210,9 +210,11 @@ public class AgendamentoController {
 			tudo.put("description", agendamento.getDescricao() != null ? agendamento.getDescricao() : "");
 			tudo.put("backgroundColor", agendamento.getColor());
 			extend.put("veterinario", agendamento.getVeterinario().getNome());
+			
 			extend.put("secretaria",
 					agendamento.getSecretaria().getNome() != null ? agendamento.getSecretaria().getNome() : "");
 			if (agendamento.getAnimal() != null) {
+				extend.put("cliente", agendamento.getAnimal().getCliente().getNome());
 				extend.put("paciente",
 						agendamento.getAnimal().getNome() != null ? agendamento.getAnimal().getNome() : "");
 			} else {

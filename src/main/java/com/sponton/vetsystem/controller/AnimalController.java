@@ -419,7 +419,7 @@ public class AnimalController {
 
 	@GetMapping("/titulo")
 	public ResponseEntity<?> getAnimaisPorTermo(@RequestParam("termo") String termo) {
-		List<String> animais = service.buscarAnimaisByTermo(termo);
+		List<Animal> animais = service.buscarAnimaisByTermo(termo);
 		return ResponseEntity.ok(animais);
 	}
 

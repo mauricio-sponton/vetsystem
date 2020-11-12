@@ -138,8 +138,23 @@
 						termo : request.term
 					},
 					success : function(data) {
-						response(data);
-					}
+			               var newArray = new Array();
+			               console.log(data)
+			               var i = 0;
+			                $.each(data, function (k,v) {
+			                    var newObject = {
+			                        label: v.nome + " (" + v.cliente.nome +")",
+			                    	value: v.nome
+			                    };
+			                    console.log(newObject)
+			                    newArray[i] = newObject;
+			                    i++;
+			                });
+
+			                response(newArray);
+							
+							
+						}
 				})
 			}
 		});

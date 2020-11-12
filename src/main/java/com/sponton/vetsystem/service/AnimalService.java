@@ -77,7 +77,7 @@ public class AnimalService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<String> buscarAnimaisByTermo(String termo) {
+	public List<Animal> buscarAnimaisByTermo(String termo) {
 		return repository.findAnimaisByTermo(termo);
 		/*
 		 * 

@@ -13,7 +13,7 @@
     margin: 0 auto;
     color: black
   }
-  #modal-agendamento-visualizar span{
+  #modal-agendamento-visualizar span, #modal-agendamento-visualizar div{
 	color: indigo
   } 
  .visualizacao{
@@ -59,7 +59,22 @@
     	  						termo : request.term
     	  					},
     	  					success : function(data) {
-    	  						response(data);
+    	  		               var newArray = new Array();
+    	  		               console.log(data)
+    	  		               var i = 0;
+    	  		                $.each(data, function (k,v) {
+    	  		                    var newObject = {
+    	  		                        label: v.nome + " (" + v.cliente.nome +")",
+    	  		                    	value: v.nome
+    	  		                    };
+    	  		                    console.log(newObject)
+    	  		                    newArray[i] = newObject;
+    	  		                    i++;
+    	  		                });
+
+    	  		                response(newArray);
+    	  						
+    	  						
     	  					}
     	  				})
     	  			}
@@ -102,9 +117,13 @@
   			    		$("#visualizar-description").hide();
   			    	}
   			    	$("#visualizar-secretaria").text("Agendamento realizado por: " + data.event.extendedProps.secretaria);
+  			    
   			    	if(data.event.extendedProps.paciente != null){
+  			    		$("#visualizar-cliente").show();
+  			    		$("#visualizar-cliente").text("Cliente: " +  data.event.extendedProps.cliente);
   			    		$("#visualizar-paciente").text("Paciente: " + data.event.extendedProps.paciente);
   			    	}else{
+  			    		$("#visualizar-cliente").hide();
   			    		$("#visualizar-paciente").text("Paciente: " + data.event.extendedProps.pacienteNaoCadastrado);
   			    	}
   			    	//edicao
