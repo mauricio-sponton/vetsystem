@@ -400,12 +400,10 @@ public class AnimalController {
 		return "animal/visualizar";
 	}
 
-	@PostMapping("/buscar/tipo/paciente/{id}")
-	public String getPorTipo(@RequestParam("tipo") String tipo, ModelMap model, @PathVariable("id") Long id) {
-		model.addAttribute("animal", service.buscarPorId(id));
-		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorTipo(tipo, id));
-		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
-		return "animal/visualizar";
+	@GetMapping("/buscar/tipo/{tipo}/paciente/{id}")
+	public ResponseEntity<?> getPorTipo(@PathVariable("tipo") String tipo, ModelMap model, @PathVariable("id") Long id) {
+		List<HistoricoAnimal> historico = historicoAnimalService.buscarHistoricoPorTipo(tipo, id);
+		return ResponseEntity.ok(historico);
 	}
 
 	@PostMapping("/buscar/data/paciente/{id}")

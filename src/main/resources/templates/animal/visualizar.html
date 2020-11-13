@@ -12,11 +12,13 @@ h2 {
 	color: indigo
 }
 
-#generico {
-	width: 70%;
-	margin-top: 20px
-}
 
+.generico {
+	margin-top: 15px
+}
+.separador{
+	margin: 15px 0
+}
 .historico-novo {
 	background-color: #3ffc7e;
 }
@@ -55,12 +57,23 @@ h2 {
 	color: white;
 	margin-top: 20px
 }
-
+#mensagem{
+	display: none;
+	width: 100%;
+	
+	background-color: indigo;
+	padding: 20px;
+	
+	margin-top: 2%
+}
+#mensagem span{
+color: white;
+font-weight: bold;
+}
 .historico-wraper {
 	height: 600px;
 	background-color: pink;
 	overflow: auto;
-	background-color: pink;
 }
 /* width */
 #scrollbar::-webkit-scrollbar {
@@ -202,7 +215,7 @@ h2 {
 							<div class="col">
 								<div class="collapse" id="collapseData">
 									<nav class="navbar navbar-light bg-light">
-										<form class="form-inline" method="post"
+										<form class="form-inline" method="get"
 											th:action="@{/pacientes/buscar/data/paciente/{id} (id=${animal.id})}">
 											<input class="form-control mr-sm-2" type="date"
 												aria-label="Search" th:name="teste" />
@@ -218,18 +231,20 @@ h2 {
 								<div class="collapse" id="collapseTipo">
 
 									<nav class="navbar navbar-light bg-light">
-										<form class="form-inline" method="post"
-											th:action="@{/pacientes/buscar/tipo/paciente/{id} (id=${animal.id})}">
+										<form>
 											<select class="form-control mr-sm-2" th:name="tipo"
-												aria-label="Search">
-												<option value="">Tipo</option>
-												<option value="Dados">Dados</option>
-												<option value="Mudar dados">Mudar dados</option>
-												<option value="Nova consulta">Nova consulta</option>
-												<option value="Alteração de consulta">Alteração de
-													consulta</option>
+												aria-label="Search" id="tipo">
+												<option value="">Mostrar Todos</option>
+												<option value="Dados">Cadastro do Paciente</option>
+												<option value="Mudar dados">Edição dos dados do paciente</option>
+												<option value="Nova consulta">Cadastro de novas consultas</option>
+												<option value="Alteração de consulta">Edição dos dados de
+													consultas</option>
+												<option value="Nova internação">Cadastro de novas internações</option>
+												<option value="Alteração de internação">Edição dos dados de internações</option>
+												<option value="Nova aplicacao">Cadastro de novas imunizações</option>
+												<option value="Edicao de aplicacao">Edição de dados de imunizações</option>	
 											</select>
-											<button class="btn btn-outline-success my-2 my-sm-0">Search</button>
 										</form>
 									</nav>
 
@@ -238,8 +253,12 @@ h2 {
 						</div>
 
 						<div class="historico-wraper" id="scrollbar">
-							<div id="listagem-historico" th:each="h: ${historico}">
-								<div id="generico"
+						<div id="mensagem"><span >Nenhum registro encontrado =/</span></div>
+						<div id="busca-estilo">
+							
+						</div>
+							<div class="listagem-historico" th:each="h: ${historico}">
+								<div
 									th:class="${(h.tipo == 'Nova consulta' ? 'historico-nova-consulta ' : '') + 
 							(h.tipo == 'Nova consulta' ? 'historico-nova-consulta ' : '') + 
 							(h.tipo == 'Dados' ? 'historico-novo' : '') +
@@ -249,20 +268,23 @@ h2 {
 							(h.tipo == 'Alteração de internação' ? 'edit-internacao' : '') +
 							(h.tipo == 'Nova aplicacao' ? 'nova-aplicacao' : '') + 
 							(h.tipo == 'Edicao de aplicacao' ? 'edit-aplicacao' : '')}">
-									<p>
-										<span id="quebra"
-											th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
-									</p>
-									<p>
-										<span th:text="'Tipo: ' + ${h.tipo}"></span>
-									</p>
-									<p>
-										<span th:text="'Usuario: ' + ${h.usuario}"></span>
-									</p>
-									<p>
-										<span
-											th:text="'No dia : ' + ${#temporals.format(h.data, 'dd/MM/yyyy')} + ' às: ' + ${#temporals.format(h.hora, 'HH:mm')}"></span>
-									</p>
+									<div class="generico">
+										<p>
+											<span id="quebra"
+												th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
+										</p>
+										<p>
+											<span th:text="'Tipo: ' + ${h.tipo}"></span>
+										</p>
+										<p>
+											<span th:text="'Usuario: ' + ${h.usuario}"></span>
+										</p>
+										<p>
+											<span
+												th:text="'No dia : ' + ${#temporals.format(h.data, 'dd/MM/yyyy')} + ' às: ' + ${#temporals.format(h.hora, 'HH:mm')}"></span>
+										</p>
+									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -296,10 +318,10 @@ h2 {
 						</div>
 						<a class="btn-cadastrar-usuario" id="cadastrar-consulta"
 							data-toggle="modal" data-target="#modal-consulta-paciente"
-							href="#" role="button">Nova Consulta</a>
-							<a class="btn btn-danger"
-								th:href="@{/pacientes/download/consultas/paciente/{id} (id=${animal.id})}"
-								role="button"><i class="fas fa-download"></i></a>
+							href="#" role="button">Nova Consulta</a> <a
+							class="btn btn-danger"
+							th:href="@{/pacientes/download/consultas/paciente/{id} (id=${animal.id})}"
+							role="button"><i class="fas fa-download"></i></a>
 
 
 					</section>
@@ -360,8 +382,7 @@ h2 {
 							</div>
 							<a class="btn-cadastrar-usuario" id="cadastrar-aplicacao"
 								data-toggle="modal" data-target="#modal-aplicacao" href="#"
-								role="button">Nova Aplicação</a>
-								<a class="btn btn-danger"
+								role="button">Nova Aplicação</a> <a class="btn btn-danger"
 								th:href="@{/pacientes/download/imunizacoes/paciente/{id} (id=${animal.id})}"
 								role="button"><i class="fas fa-download"></i></a>
 						</div>
@@ -385,6 +406,7 @@ h2 {
 	<script th:inline="javascript" th:fragment="inlinescript">
 			$('#quebra').val().replace(/\n\r?/g, '<br />');
 			var idAnimal = [[${animal.id != null ? animal.id : 0}]];
+			var id= [[${animal.id}]];
 			var nome = [[${animal.nome}]];
 			var aplicacao = [[${aplicacao.id}]];
 			var internacao = [[${internacao.id}]];
@@ -679,7 +701,7 @@ h2 {
 			            		if(row.termino == null){
 			            			return "Não cadastrado";
 			            		}
-			                    return  data;
+			                    return  moment(data, 'HH:mm:ss').format('HH:mm');
 			                }
 			            },
 			           
@@ -707,7 +729,67 @@ h2 {
 			        ]
 			    });
 			});  
-			
+			$(document).ready(function(){
+				
+				$('#tipo').on('change', function(){
+					$("#busca-estilo").text("");
+					$('div #busca-estilo').removeAttr('class');
+					var tipo = $("#tipo option:selected").val();
+					if(tipo !=""){
+						$(".generico").hide();
+						$("#mensagem").show();
+						$("#busca-estilo").show();
+						$.get( "/pacientes/buscar/tipo/" + tipo + "/paciente/" + id , function( result ) {
+							
+							$.each(result, function(k,v){
+								$("#mensagem").hide();
+								$("#busca-estilo").append('<div class="separador">' +
+								 '<p><span>'+ v.descricao +'</span></p>' +
+								 '<p><span>'+ v.tipo +'</span></p>'      +
+								 '<p><span>'+ v.usuario +'</span></p>'   +
+								 '<p><span>'+ moment(v.data).format('DD/MM/YYYY') +' às ' +  moment(v.hora, 'HH:mm:ss').format('HH:mm') + '</span></p></div>'
+								);
+								switch(v.tipo){
+								case 'Dados':
+									$('.separador').addClass('historico-novo');
+									
+								break;
+								case 'Mudar dados':
+									$('.separador').addClass('historico-editado');
+								break;
+								case 'Nova consulta':
+									$('.separador').addClass('historico-nova-consulta');
+								break;
+								case 'Alteração de consulta':
+									$('.separador').addClass('historico-editado-consulta');
+									
+								break;
+								case 'Nova internação':
+									$('.separador').addClass('nova-internacao');
+								break;
+								case 'Alteração de internação':
+									$('.separador').addClass('edit-internacao');
+								break;
+								case 'Nova aplicacao':
+									$('.separador').addClass('nova-aplicacao');
+								break;
+								case 'Edicao de aplicacao':
+									$('.separador').addClass('edit-aplicacao');
+								break;
+							
+									
+								}
+							})
+						})
+					}else{
+						$(".generico").show();
+						$("#busca-estilo").hide();
+						$("#mensagem").hide();
+					}
+				
+				})
+				
+			})
 		
 	</script>
 </body>

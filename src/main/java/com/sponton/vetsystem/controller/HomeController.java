@@ -105,8 +105,10 @@ public class HomeController {
 				List<Animal> separado = animalService.buscarAnimalPorRaca(r.getId());
 				for (Animal a : separado) {
 					t = (int) separado.stream().count();
+					surveyMap.put(r.getNome(), t);
 				}
-				surveyMap.put(r.getNome(), t);
+				
+				
 			}
 			model.addAttribute("surveyMap", surveyMap);
 		}
@@ -119,8 +121,9 @@ public class HomeController {
 				List<Animal> separado = animalService.buscarAnimalPorEspecie(e.getId());
 				for (Animal a : separado) {
 					t = (int) separado.stream().count();
+					surveyMap.put(e.getNome(), t);
 				}
-				surveyMap.put(e.getNome(), t);
+				
 			}
 			model.addAttribute("especies", surveyMap);
 		}
