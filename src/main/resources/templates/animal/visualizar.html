@@ -12,13 +12,14 @@ h2 {
 	color: indigo
 }
 
-
 .generico {
 	margin-top: 15px
 }
-.separador{
+
+.separador {
 	margin: 15px 0
 }
+
 .historico-novo {
 	background-color: #3ffc7e;
 }
@@ -57,19 +58,20 @@ h2 {
 	color: white;
 	margin-top: 20px
 }
-#mensagem{
+
+#mensagem {
 	display: none;
 	width: 100%;
-	
 	background-color: indigo;
 	padding: 20px;
-	
 	margin-top: 2%
 }
-#mensagem span{
-color: white;
-font-weight: bold;
+
+#mensagem span {
+	color: white;
+	font-weight: bold;
 }
+
 .historico-wraper {
 	height: 600px;
 	background-color: pink;
@@ -215,12 +217,12 @@ font-weight: bold;
 							<div class="col">
 								<div class="collapse" id="collapseData">
 									<nav class="navbar navbar-light bg-light">
-										<form class="form-inline" method="get"
-											th:action="@{/pacientes/buscar/data/paciente/{id} (id=${animal.id})}">
+										<form class="form-inline">
 											<input class="form-control mr-sm-2" type="date"
-												aria-label="Search" th:name="teste" />
-											<button class="btn btn-outline-success my-2 my-sm-0">Search</button>
+												aria-label="Search" th:name="teste" id="data-busca" />
 										</form>
+										<button id="reset"
+											class="btn btn-outline-success my-2 my-sm-0">Resetar</button>
 									</nav>
 
 								</div>
@@ -236,14 +238,20 @@ font-weight: bold;
 												aria-label="Search" id="tipo">
 												<option value="">Mostrar Todos</option>
 												<option value="Dados">Cadastro do Paciente</option>
-												<option value="Mudar dados">Edição dos dados do paciente</option>
-												<option value="Nova consulta">Cadastro de novas consultas</option>
-												<option value="Alteração de consulta">Edição dos dados de
+												<option value="Mudar dados">Edição dos dados do
+													paciente</option>
+												<option value="Nova consulta">Cadastro de novas
 													consultas</option>
-												<option value="Nova internação">Cadastro de novas internações</option>
-												<option value="Alteração de internação">Edição dos dados de internações</option>
-												<option value="Nova aplicacao">Cadastro de novas imunizações</option>
-												<option value="Edicao de aplicacao">Edição de dados de imunizações</option>	
+												<option value="Alteração de consulta">Edição dos
+													dados de consultas</option>
+												<option value="Nova internação">Cadastro de novas
+													internações</option>
+												<option value="Alteração de internação">Edição dos
+													dados de internações</option>
+												<option value="Nova aplicacao">Cadastro de novas
+													imunizações</option>
+												<option value="Edicao de aplicacao">Edição de dados
+													de imunizações</option>
 											</select>
 										</form>
 									</nav>
@@ -253,10 +261,10 @@ font-weight: bold;
 						</div>
 
 						<div class="historico-wraper" id="scrollbar">
-						<div id="mensagem"><span >Nenhum registro encontrado =/</span></div>
-						<div id="busca-estilo">
-							
-						</div>
+							<div id="mensagem">
+								<span>Nenhum registro encontrado =/</span>
+							</div>
+							<div id="busca-estilo"></div>
 							<div class="listagem-historico" th:each="h: ${historico}">
 								<div
 									th:class="${(h.tipo == 'Nova consulta' ? 'historico-nova-consulta ' : '') + 
@@ -284,7 +292,7 @@ font-weight: bold;
 												th:text="'No dia : ' + ${#temporals.format(h.data, 'dd/MM/yyyy')} + ' às: ' + ${#temporals.format(h.hora, 'HH:mm')}"></span>
 										</p>
 									</div>
-									
+
 								</div>
 							</div>
 						</div>
@@ -730,7 +738,6 @@ font-weight: bold;
 			    });
 			});  
 			$(document).ready(function(){
-				
 				$('#tipo').on('change', function(){
 					$("#busca-estilo").text("");
 					$('div #busca-estilo').removeAttr('class');
@@ -740,46 +747,7 @@ font-weight: bold;
 						$("#mensagem").show();
 						$("#busca-estilo").show();
 						$.get( "/pacientes/buscar/tipo/" + tipo + "/paciente/" + id , function( result ) {
-							
-							$.each(result, function(k,v){
-								$("#mensagem").hide();
-								$("#busca-estilo").append('<div class="separador">' +
-								 '<p><span>'+ v.descricao +'</span></p>' +
-								 '<p><span>'+ v.tipo +'</span></p>'      +
-								 '<p><span>'+ v.usuario +'</span></p>'   +
-								 '<p><span>'+ moment(v.data).format('DD/MM/YYYY') +' às ' +  moment(v.hora, 'HH:mm:ss').format('HH:mm') + '</span></p></div>'
-								);
-								switch(v.tipo){
-								case 'Dados':
-									$('.separador').addClass('historico-novo');
-									
-								break;
-								case 'Mudar dados':
-									$('.separador').addClass('historico-editado');
-								break;
-								case 'Nova consulta':
-									$('.separador').addClass('historico-nova-consulta');
-								break;
-								case 'Alteração de consulta':
-									$('.separador').addClass('historico-editado-consulta');
-									
-								break;
-								case 'Nova internação':
-									$('.separador').addClass('nova-internacao');
-								break;
-								case 'Alteração de internação':
-									$('.separador').addClass('edit-internacao');
-								break;
-								case 'Nova aplicacao':
-									$('.separador').addClass('nova-aplicacao');
-								break;
-								case 'Edicao de aplicacao':
-									$('.separador').addClass('edit-aplicacao');
-								break;
-							
-									
-								}
-							})
+							corpo(result);
 						})
 					}else{
 						$(".generico").show();
@@ -788,8 +756,73 @@ font-weight: bold;
 					}
 				
 				})
+				$('#data-busca').on('change', function(){
+					$("#busca-estilo").text("");
+					$('div #busca-estilo').removeAttr('class');
+					var data = $("#data-busca").val();
+					if(data !=""){
+						$(".generico").hide();
+						$("#mensagem").show();
+						$("#busca-estilo").show();
+						$.get( "/pacientes/buscar/data/" + data + "/paciente/" + id , function( result ) {
+							corpo(result);
+						})
+					}else{
+						$(".generico").show();
+						$("#busca-estilo").hide();
+						$("#mensagem").hide();
+					}
 				
+				})
+				$("#reset").on('click', function(){
+					$('#data-busca').val("");
+					$(".generico").show();
+					$("#busca-estilo").hide();
+					$("#mensagem").hide();
+				})
 			})
+			function corpo(result){
+				
+				$.each(result, function(k,v){
+					$("#mensagem").hide();
+					$("#busca-estilo").append('<div class="separador">' +
+					 '<p><span>'+ v.descricao +'</span></p>' +
+					 '<p><span>'+ v.tipo +'</span></p>'      +
+					 '<p><span>'+ v.usuario +'</span></p>'   +
+					 '<p><span>'+ moment(v.data).format('DD/MM/YYYY') +' às ' +  moment(v.hora, 'HH:mm:ss').format('HH:mm') + '</span></p></div>'
+					);
+					switch(v.tipo){
+					case 'Dados':
+						$('.separador').addClass('historico-novo');
+						
+					break;
+					case 'Mudar dados':
+						$('.separador').addClass('historico-editado');
+					break;
+					case 'Nova consulta':
+						$('.separador').addClass('historico-nova-consulta');
+					break;
+					case 'Alteração de consulta':
+						$('.separador').addClass('historico-editado-consulta');
+						
+					break;
+					case 'Nova internação':
+						$('.separador').addClass('nova-internacao');
+					break;
+					case 'Alteração de internação':
+						$('.separador').addClass('edit-internacao');
+					break;
+					case 'Nova aplicacao':
+						$('.separador').addClass('nova-aplicacao');
+					break;
+					case 'Edicao de aplicacao':
+						$('.separador').addClass('edit-aplicacao');
+					break;
+				
+						
+					}
+				})
+			}
 		
 	</script>
 </body>

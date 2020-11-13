@@ -406,13 +406,11 @@ public class AnimalController {
 		return ResponseEntity.ok(historico);
 	}
 
-	@PostMapping("/buscar/data/paciente/{id}")
-	public String getPorData(@RequestParam("teste") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
+	@GetMapping("/buscar/data/{data}/paciente/{id}")
+	public ResponseEntity<?> getPorData(@PathVariable("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
 			ModelMap model, @PathVariable("id") Long id) {
-		model.addAttribute("animal", service.buscarPorId(id));
-		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorData(data, id));
-		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
-		return "animal/visualizar";
+		List<HistoricoAnimal> historico = historicoAnimalService.buscarHistoricoPorData(data, id);
+		return ResponseEntity.ok(historico);
 	}
 
 	@GetMapping("/titulo")
