@@ -48,18 +48,15 @@
 									th:name="cadastrado"
 									th:classappend="${#fields.hasErrors('animal.nome')} ? 'is-invalid'"
 									th:field="*{animal.nome}" />
-								<div class="invalid-feedback">
-									<span th:errors="*{animal.nome}"></span>
-								</div>
+									<span class="erro-animal" style="display:none"></span>
+								
 							</div>
 							<div class="form-group col-md-4" id="paciente-nao-cadastrado">
 								<label for="sem_cadastro">Paciente</label> <input type="text"
 									class="form-control" id="sem_cadastro" placeholder="Taz..."
 									th:classappend="${#fields.hasErrors('sem_cadastro')} ? 'is-invalid'"
 									th:field="*{sem_cadastro}" />
-								<div class="invalid-feedback">
-									<span th:errors="*{sem_cadastro}"></span>
-								</div>
+								
 							</div>
 							<div class="form-group col-md-2">
 								<input type="checkbox" id="cadastrado" value="1"
@@ -75,6 +72,7 @@
 									onfocus="mudar();"
 									th:classappend="${#fields.hasErrors('veterinario.nome')} ? 'is-invalid'"
 									th:field="*{veterinario.nome}" />
+									<span class="erro-vet" style="display:none"></span>
 								<div class="invalid-feedback">
 									<span th:errors="*{veterinario.nome}"></span>
 								</div>

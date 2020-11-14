@@ -23,13 +23,7 @@ public class NotificacaoService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Notificacao> buscarNotificacaoPorVeterinarioId(Long id) {
-		return repository.findNotificacaoPorVeterinarioId(id);
-	}
-
-	@Transactional(readOnly = true)
 	public List<Notificacao> buscarTodas() {
-		// TODO Auto-generated method stub
 		return repository.findAll();
 	}
 
@@ -38,24 +32,11 @@ public class NotificacaoService {
 		repository.save(notificacao);
 		
 	}
-	/*
-	@Transactional(readOnly = false)
-	public void salvarTodos(List<Notificacao> lista) {
-		repository.saveAll(lista);
-		
-	}
-
+	
 	@Transactional(readOnly = true)
-	public Notificacao buscar(Long idAgendamento, Long idVet) {
-		
-		return repository.buscar(idAgendamento, idVet);
+	public Notificacao buscarPorAgendamentoId(Long id) {
+		return repository.findById(id).get();
 	}
-
-	@Transactional(readOnly = true)
-	public List<Notificacao> buscarNotificacaoPorVeterinarioIdEData(Long id, LocalDate hoje) {
-		return repository.findNotificacaoByVeterinarioIdAndData(id, hoje);
-	}
-    */
 
 
 }

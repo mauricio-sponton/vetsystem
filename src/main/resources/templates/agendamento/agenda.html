@@ -47,9 +47,6 @@
 	<script th:src="@{/js/agendamento.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
       $(document).ready(function(){
-    	  var veterinario = [[${veterinario.id}]];
-    	  var secretaria = [[${secretaria.id}]];
-
     		  $("#animal, #animal-edicao").autocomplete({
     	  			source : function(request, response) {
     	  				$.ajax({
@@ -163,6 +160,7 @@
 	   
 	   
     	  })
+    	  
     	   $("#cadastrado").on('change', function(){
     		  if($(this).is(':checked')){
     			  $('#paciente-cadastrado').hide(); 
@@ -212,23 +210,43 @@
 			  $('.exclusao').hide();
 		  });
 		  if($("#modal-agendamento .msg-erro").html() != "") {
+			 
 				$("#modal-agendamento").modal('show');
-				$("#modal-agendamento .msg-erro, #modal-agendamento .invalid-feedback span").css("color", "red");
+				$("#modal-agendamento .msg-erro, #modal-agendamento .invalid-feedback span, .erro-animal, .erro-vet").css("color", "red");
 				$("#modal-agendamento .is-invalid").css("border", "1px solid red");
 				$(".modal-title").text("Novo Agendamento");
+				if($("#animal").val() == ""){
+					$("#animal").addClass('is-invalid');
+					$(".erro-animal").show().text("Por favor o nome do paciente").css("font-size", "12px");
+				}
+				if($("#veterinario").val() == ""){
+					$("#veterinario").addClass('is-invalid');
+					$(".erro-vet").show().text("Por favor informe o nome do veterinário").css("font-size", "12px");
+				}
+				$(".is-invalid").css("border", "1px solid red");
 		  }
 		  if($("#modal-agendamento-visualizar .msg-erro").html() != "") {
 			 
-				$("#modal-agendamento-visualizar .msg-erro, #modal-agendamento .invalid-feedback span").css("color", "red");
+				$("#modal-agendamento-visualizar .msg-erro, #modal-agendamento .invalid-feedback span, .erro-animal, .erro-vet").css("color", "red");
 				$("#modal-agendamento-visualizar .is-invalid").css("border", "1px solid red");
 				$(".modal-title").text("Informações do Agendamento");
+				if($("#animal-edicao").val() == ""){
+					$("#animal-edicao").addClass('is-invalid');
+					$(".erro-animal").show().text("Por favor o nome do paciente").css("font-size", "12px");
+				}
+				if($("#veterinario-edicao").val() == ""){
+					$("#veterinario-edicao").addClass('is-invalid');
+					$(".erro-vet").show().text("Por favor informe o nome do veterinário").css("font-size", "12px");
+				}
+				$(".is-invalid").css("border", "1px solid red");
 		  }
 
 			$("#modal-agendamento, #modal-agendamento-visualizar").on("hidden.bs.modal", function() {
 				 $("#cadastrado-edicao, #cadastrado").prop("checked", false);
 				$(".is-invalid").removeClass("is-invalid").removeAttr('style');
 				$("#modal-agendamento .msg-erro, #modal-agendamento-visualizar .msg-erro").hide();
-				
+				$(".erro-animal").hide();
+				$(".erro-vet").hide();
 				
 			});
 			

@@ -11,6 +11,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -45,10 +46,12 @@ public class Agendamento extends AbstractEntity {
 	@JoinColumn(name = "id_secretaria_fk")
 	private Secretaria secretaria;
 	
+	
 	@ManyToOne
 	@JoinColumn(name = "id_veterinario_fk")
 	private Veterinario veterinario;
 
+	
 	@ManyToOne
 	@JoinColumn(name = "id_animal_fk")
 	private Animal animal;

@@ -85,7 +85,8 @@ public class AgendamentoController {
 	@PostMapping("/salvar")
 	public String salvar(@Valid Agendamento agendamento, BindingResult result, RedirectAttributes attr, ModelMap model,
 			@AuthenticationPrincipal User user) {
-		if (result.hasErrors()) {
+		
+		if (result.hasErrors() || agendamento.getVeterinario().getNome().isEmpty() || (agendamento.getAnimal().getNome().isEmpty() && agendamento.getSem_cadastro().isEmpty())) {
 			model.addAttribute("erro", "por favor preencha os campos");
 			return "/agendamento/agenda";
 		}
@@ -97,7 +98,7 @@ public class AgendamentoController {
 
 		try {
 			if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
-				Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
+			   Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
 				String vet = agendamento.getVeterinario().getNome();
 				Veterinario veterinario = veterinarioService.buscarPorTitulos(new String[] { vet }).stream().findFirst().get();
 				if (!agendamento.getAnimal().getNome().isEmpty()) {
@@ -108,65 +109,10 @@ public class AgendamentoController {
 				} else {
 					agendamento.setAnimal(null);
 				}
-				/*
-				String paciente = null;
-				LocalDate data = agendamento.getInicio().toLocalDate();
-				LocalTime horas = agendamento.getInicio().toLocalTime();
-				Notificacao n = notificacaoService.buscar(agendamento.getId(), veterinario.getId());
-				if(agendamento.hasId()) {
-					Agendamento a = service.buscarPorId(agendamento.getId());
-					if(agendamento.getVeterinario() != a.getVeterinario()) {
-						veterinarioService.removerNotificacao(n.getId(), a.getVeterinario().getId());
-						n.getVeterinarios().add(veterinario);
-						n.setData(data);
-						if (agendamento.getAnimal() != null) {
-							n.setTitulo("Consulta com o paciente: " + agendamento.getAnimal().getNome());
-							paciente = "Consulta com o paciente: " + agendamento.getAnimal().getNome();
-
-						} else {
-							n.setTitulo("Consulta com o paciente: " + agendamento.getSem_cadastro());
-							paciente = "Consulta com o paciente: " + agendamento.getSem_cadastro();
-						}
-						n.setDescricao(
-								"Consulta marcada às: " + horas.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
-										+ ";" + paciente + ";" + "Agendada por: " + secretaria.getNome() + ";");
-						notificacaoService.salvar(n);
-					}
-				}
-				if(n != null) {
-					n.setData(data);
-					if (agendamento.getAnimal() != null) {
-						n.setTitulo("Consulta com o paciente: " + agendamento.getAnimal().getNome());
-						paciente = "Consulta com o paciente: " + agendamento.getAnimal().getNome();
-
-					} else {
-						n.setTitulo("Consulta com o paciente: " + agendamento.getSem_cadastro());
-						paciente = "Consulta com o paciente: " + agendamento.getSem_cadastro();
-					}
-					n.setDescricao(
-							"Consulta marcada às: " + horas.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
-									+ ";" + paciente + ";" + "Agendada por: " + secretaria.getNome() + ";");
-					notificacaoService.salvar(n);
-				}*/
+			
 			
 				if (agendamento.hasNotId()) {
-					/*
-					Notificacao notificacao = new Notificacao();
-					notificacao.setData(data);
-					if (agendamento.getAnimal() != null) {
-						notificacao.setTitulo("Consulta com o paciente: " + agendamento.getAnimal().getNome());
-						paciente = "Consulta com o paciente: " + agendamento.getAnimal().getNome();
-
-					} else {
-						notificacao.setTitulo("Consulta com o paciente: " + agendamento.getSem_cadastro());
-						paciente = "Consulta com o paciente: " + agendamento.getSem_cadastro();
-					}
-					notificacao.setDescricao(
-							"Consulta marcada às: " + horas.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
-									+ ";" + paciente + ";" + "Agendada por: " + secretaria.getNome() + ";");
-					notificacao.setAgendamento(agendamento);
-					veterinario.getNotificacoes().add(notificacao);
-					*/
+					
 					agendamento.setVeterinario(veterinario);
 					agendamento.setSecretaria(secretaria);
 					service.salvar(agendamento);

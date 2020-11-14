@@ -60,22 +60,7 @@ public class Veterinario extends AbstractEntity{
 	@Size(min=11, max=14, message="Informe um telefone válido")
 	@Column(name = "telefone", nullable = false)
 	private String telefone;
-	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(
-			name = "veterinarios_tem_notificacoes",
-			joinColumns = @JoinColumn(name = "id_veterinario", referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn(name = "id_notificacao", referencedColumnName = "id")
-    )
-	private List<Notificacao> notificacoes;
-	
-	public List<Notificacao> getNotificacoes() {
-		return notificacoes;
-	}
 
-	public void setNotificacoes(List<Notificacao> notificacoes) {
-		this.notificacoes = notificacoes;
-	}
 
 	public Foto getFoto() {
 		return foto;

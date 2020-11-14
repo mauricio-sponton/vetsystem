@@ -72,6 +72,7 @@
 										th:name="cadastrado"
 										th:classappend="${#fields.hasErrors('animal.nome')} ? 'is-invalid'"
 										th:field="*{animal.nome}" />
+										<span class="erro-animal" style="display:none"></span>
 									<div class="invalid-feedback">
 										<span th:errors="*{animal.nome}"></span>
 									</div>
@@ -100,6 +101,7 @@
 										onfocus="mudarEdit();"
 										th:classappend="${#fields.hasErrors('veterinario.nome')} ? 'is-invalid'"
 										th:field="*{veterinario.nome}" />
+										<span class="erro-vet" style="display:none"></span>
 									<div class="invalid-feedback">
 										<span th:errors="*{veterinario.nome}"></span>
 									</div>
