@@ -25,7 +25,6 @@ $(document).ready(function () {
             data: 'data'
         },
         columns: [
-        	{data: 'id'},
             {data: 'descricao'},
             {data: 'doses'},
             {data: 'intervalo'},

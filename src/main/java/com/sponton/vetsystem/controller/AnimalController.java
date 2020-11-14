@@ -429,6 +429,7 @@ public class AnimalController {
 		List<String> lista = new ArrayList<>();
 		lista.add("Castrado");
 		lista.add("Bravo");
+		lista.add("Venenoso");
 		return lista;
 	}
 	@GetMapping(value ="/download/historico/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

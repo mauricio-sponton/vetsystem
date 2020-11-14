@@ -58,8 +58,8 @@ public class VeterinarioService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<String> buscarVeterinariosByTermo(String termo, LocalTime start, LocalTime end, int diaInicial, int diaFinal) {
-		return repository.findVeterinariosByTermo(termo, start, end, diaInicial, diaFinal);
+	public List<String> buscarVeterinariosByTermo(String termo, LocalTime start, LocalTime end, int diaInicial, int diaFinal, LocalDateTime inicio, LocalDateTime fim) {
+		return repository.findVeterinariosByTermo(termo, start, end, diaInicial, diaFinal, inicio, fim);
 	}
 
 	@Transactional(readOnly = true)

@@ -25,10 +25,9 @@ $(document).ready(function () {
             data: 'data'
         },
         "columnDefs": [
-            { "width": "10%", "targets": [5, 7] }
+            { "width": "10%", "targets": [5,6] }
           ],
         columns: [
-        	{data: 'id'},
             {data: 'nome'},
             {data: 'cliente.nome'},
             {data: 'especie.nome'},

@@ -38,6 +38,25 @@ h5 {
 			<p>
 				<span
 					th:text="'Há um total de ' + ${#lists.size(cliente)} + ' animais cadastrados'"></span>
+
+			</p>
+			
+				<p th:if="${consultasHoje !=null}">
+					<span th:if="${consultasHoje == 0}">
+						Você não possui consultas agendadas para hoje.
+					</span>
+					<span th:if="${consultasHoje > 0}"
+						th:text="'Você possui um total de ' + ${consultasHoje} + ' consultas agendadas para hoje.'"></span>
+				</p>
+				<p th:if="${consultasHojeSec !=null}">
+					<span 
+						th:text="${consultasHojeSec} + ' consultas estão agendadas para hoje.'"></span>
+				</p>
+			
+
+			<p>
+				<span th:if="${consultasSemana !=null}"
+					th:text="'Essa semana possui um total de ' + ${consultasSemana} + ' consultas agendadas.'"></span>
 			</p>
 			<div th:each="c: ${cliente}">
 				<span th:text="${c.nome}"></span>
@@ -80,17 +99,15 @@ h5 {
 		<fieldset>
 			<form>
 
-				<legend>
-					Filtros </legend>
-					<div>
-						<input type="checkbox" id="ck-racas" nome="interesse"
-							> <label for="ck-racas">
-							Raças </label>
-					</div>
-					<div>
-						<input type="checkbox" id="ck-especies" name="interesse">
-						<label for="ck-especies"> Espécies </label>
-					</div>
+				<legend> Filtros </legend>
+				<div>
+					<input type="checkbox" id="ck-racas" nome="interesse">
+					<label for="ck-racas"> Raças </label>
+				</div>
+				<div>
+					<input type="checkbox" id="ck-especies" name="interesse"> <label
+						for="ck-especies"> Espécies </label>
+				</div>
 			</form>
 		</fieldset>
 

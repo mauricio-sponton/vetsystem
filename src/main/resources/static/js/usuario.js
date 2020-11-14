@@ -52,6 +52,7 @@ $(document).ready(function() {
 		                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
 		                }               
 		            }
+		            
 			
 		]
 	});

@@ -221,7 +221,7 @@ public class VeterinarioController {
 			@RequestParam("diaInicial") int diaInicial, @RequestParam("diaFinal") int diaFinal) {
 		LocalTime start = inicio.toLocalTime();
 		LocalTime end = fim.toLocalTime();
-		List<String> vets = service.buscarVeterinariosByTermo(termo, start, end, diaInicial, diaFinal);
+		List<String> vets = service.buscarVeterinariosByTermo(termo, start, end, diaInicial, diaFinal, inicio, fim);
 		return ResponseEntity.ok(vets);
 	}
 

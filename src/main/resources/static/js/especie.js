@@ -25,7 +25,6 @@ $(document).ready(function () {
             data: 'data'
         },
         columns: [
-        	{data: 'id'},
             {data: 'nome'},
             {orderable: false, 
              data: 'id',

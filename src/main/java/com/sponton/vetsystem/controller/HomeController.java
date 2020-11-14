@@ -4,9 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.temporal.ChronoField;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -76,6 +80,20 @@ public class HomeController {
 						"Por favor preencha seus dados pessoais para continuar usando o sistema");
 				return "redirect:/veterinarios/dados";
 			}
+			if(veterinario.hasId()) {
+				List<Agendamento> agendamentos = agendamentoService.buscarVeterinarioPorId(veterinario.getId());
+				LocalDate hoje = LocalDate.now();
+				int contador = 0;
+				for(Agendamento a : agendamentos) {
+					LocalDate l = a.getInicio().toLocalDate();
+					if(l.equals(hoje)) {
+						contador += 1;
+					}
+					
+				}
+				model.addAttribute("consultasHoje",contador);
+				model.addAttribute("veterinario", veterinario);
+			}
 			/*
 			if(veterinario.hasId()) {
 				LocalDate hoje = LocalDate.now();	
@@ -94,7 +112,28 @@ public class HomeController {
 			if(secretaria.hasId()) {
 				List<Notificacao> notificacoes = notificacaoService.buscarNotificacaoPorSecretariaId(secretaria.getId());
 				model.addAttribute("notificacoes", notificacoes);
+				model.addAttribute("secretaria", secretaria);
+				List<Agendamento> agendamentos = agendamentoService.buscarTodos();
+				LocalDate hoje = LocalDate.now();
+				int semana = hoje.get(ChronoField.ALIGNED_WEEK_OF_MONTH);
+				int contadorDia = 0;
+				int contadorSemana = 0;
+				for(Agendamento a : agendamentos) {
+					LocalDate agendamentoHoje = a.getInicio().toLocalDate();
+					int week = agendamentoHoje.get(ChronoField.ALIGNED_WEEK_OF_MONTH);
+					System.out.println(week);
+					if(week == semana) {
+						contadorSemana += 1;
+					}
+					if(agendamentoHoje.equals(hoje)) {
+						contadorDia += 1;
+					}
+					
+				}
+				model.addAttribute("consultasHojeSec",contadorDia);
+				model.addAttribute("consultasSemana", contadorSemana);
 			}
+			
 		}
 		List<Raca> racas = racaService.buscarTodasRacas();
 		if (racas.size() > 0) {
