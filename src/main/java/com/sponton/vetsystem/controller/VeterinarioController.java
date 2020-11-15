@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -248,5 +249,8 @@ public class VeterinarioController {
 		}*/
 		return ResponseEntity.ok(cargasVet);
 	}
-
+	@GetMapping("/datatables/server")
+	public ResponseEntity<?> listarUsuariosDatatables(HttpServletRequest request) {
+		return ResponseEntity.ok(service.buscarTodos(request));
+	}
 }

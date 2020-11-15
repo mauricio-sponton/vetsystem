@@ -4,17 +4,23 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sponton.vetsystem.datatables.Datatables;
+import com.sponton.vetsystem.datatables.DatatablesColunas;
 import com.sponton.vetsystem.domain.CargaHoraria;
+import com.sponton.vetsystem.domain.Cliente;
 import com.sponton.vetsystem.domain.Notificacao;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.repository.CargaHorariaRepository;
@@ -28,6 +34,9 @@ public class VeterinarioService {
 	
 	@Autowired
 	private CargaHorariaRepository cargaRepository;
+	
+	@Autowired
+	private Datatables datatables;
 
 	@Transactional(readOnly = true)
 	public Veterinario buscarPorEmail(String email) {
@@ -76,14 +85,15 @@ public class VeterinarioService {
 	public Optional<Veterinario> buscarVeterinarioPeloNome(String titulo) {
 		return repository.findVeterinarioByNome(titulo);
 	}
-	/*
-	@Transactional(readOnly = false)
-	public void removerNotificacao(Long id, Long id2) {
-		Veterinario veterinario = repository.findById(id2).get();
-		veterinario.getNotificacoes().removeIf(e -> e.getId().equals(id));
-		
+
+	@Transactional(readOnly = true)
+	public Map<String, Object> buscarTodos(HttpServletRequest request) {
+		datatables.setRequest(request);
+		datatables.setColunas(DatatablesColunas.CLIENTES);
+		Page<Veterinario> page = datatables.getSearch().isEmpty() ? repository.findAll(datatables.getPageable())
+				: repository.findByName(datatables.getSearch(), datatables.getPageable());
+		return datatables.getResponse(page);
 	}
-	*/
 
 
 }

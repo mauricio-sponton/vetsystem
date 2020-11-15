@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -31,6 +33,9 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> 
 
 	@Query("select v from Veterinario v where v.nome = :titulo")
 	Optional<Veterinario> findVeterinarioByNome(String titulo);
+
+	@Query("select v.nome from Veterinario v where v.nome like :search%")
+	Page<Veterinario> findByName(String search, Pageable pageable);
 
 
 }
