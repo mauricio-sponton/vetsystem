@@ -790,7 +790,7 @@ h2 {
 					 '<p><span>'+ v.tipo +'</span></p>'      +
 					 '<p><span>'+ v.usuario +'</span></p>'   +
 					 '<p><span>'+ moment(v.data).format('DD/MM/YYYY') +' às ' +  moment(v.hora, 'HH:mm:ss').format('HH:mm') + '</span></p></div>'
-					);
+					).hide().fadeIn('slow');
 					switch(v.tipo){
 					case 'Dados':
 						$('.separador').addClass('historico-novo');

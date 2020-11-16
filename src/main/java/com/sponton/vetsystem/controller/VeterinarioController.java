@@ -175,9 +175,10 @@ public class VeterinarioController {
 					Foto foto = new Foto();
 					foto.setFileName(file.getOriginalFilename());
 					foto.setPath("/uploads/");
-					veterinario.setFoto(foto);
+					
 					try {
 						fotoService.salvarFoto(file, foto);
+						veterinario.setFoto(foto);
 					} catch (Exception e) {
 						attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 					}
@@ -186,9 +187,10 @@ public class VeterinarioController {
 					Foto foto = fotoService.buscarFotoId(veterinario.getFoto().getId());
 					foto.setFileName(file.getOriginalFilename());
 					foto.setPath("/uploads/");
-					veterinario.setFoto(foto);
+					
 					try {
 						fotoService.salvarFoto(file, foto);
+						veterinario.setFoto(foto);
 					} catch (Exception e) {
 						attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 					}

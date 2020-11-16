@@ -29,18 +29,22 @@ $(document).ready(function () {
         var row = table.row( tr );
         if ( row.child.isShown() ) {
             // This row is already open - close it
-        	
-                 row.child.hide();
-                 tr.removeClass('shown');
-          
+        	 $('div.slider', row.child()).slideUp( function () {
+        	        row.child.hide();
+                    tr.removeClass('shown');
+             
+        	 })
+         
         }
         else {
             // Open this row
         	if ( table.row( '.shown' ).length ) {
                 $('.details-control', table.row( '.shown').node()).click();
+               // $('div.slider', row.child()).slideUp();
         	}
             row.child( format(row.data()), 'no-padding').show();
             tr.addClass('shown');
+            $('div.slider', row.child()).slideDown();
            
         }
     } );
@@ -74,29 +78,31 @@ function format ( d ) {
 			break;
 			}
 			if(v.inicio == null){
-				$("#dentro").append(
+				$(".dentro").append(
 						'<tr><td scope="row"><span class="dias">' +v.diaDaSemana+'</span></td>' +
 						'<td><span class="inicio">Folga</span></td>' +
 						'<td><span>Folga</span></td></tr>'
 						
-					)	
+					).hide().fadeIn('slow')		
 			}else{
-				$("#dentro").append(
+				$(".dentro").append(
 						'<tr><td scope="row"><span class="dias">' +v.diaDaSemana+'</span></td>' +
 						'<td><span class="inicio">'+ moment(v.inicio, 'HH:mm:ss').format('HH:mm') +'</span></td>' +
 						'<td><span>'+ moment(v.fim, 'HH:mm:ss').format('HH:mm') +'</span></td></tr>'
 						
-					)	
+					).hide().fadeIn('slow')	
 			}
 					
 		})
 	});
 		
 	
-    return '<table id="dentro" style="margin:0;padding-left:50px; width:100%" cellspacing="0" border="0">'+
+    return '<div class="slider">'+
+    '<table class="table table-dark dentro" style="margin:0;padding-left:50px; width:100%" cellspacing="0" border="0">'+
         '<tr id="tr-dentro">'+
             '<td>Telefone:</td>'+
             '<td>'+ d.telefone +'</td>'+
         '</tr>'+
-    '</table>';
+    '</table>' +
+    '</div>';
 }

@@ -27,7 +27,7 @@ public class FotoService {
 		Path absolutePath = currentPath.toAbsolutePath();
 		foto.setPath(absolutePath + "/src/main/resources/static/uploads/");
 		byte[] bytes = file.getBytes();
-		Path path = Paths.get(foto.getPath() + file.getOriginalFilename() + file.getContentType());
+		Path path = Paths.get(foto.getPath() + file.getOriginalFilename());
 		Files.write(path, bytes);
 		fotoRepository.save(foto);
 	}

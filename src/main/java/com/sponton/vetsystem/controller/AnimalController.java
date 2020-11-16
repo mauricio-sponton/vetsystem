@@ -165,38 +165,28 @@ public class AnimalController {
 				Foto foto = new Foto();
 				foto.setFileName(file.getOriginalFilename());
 				foto.setPath("/uploads/");
-				animal.setFoto(foto);
+				
 				try {
 					fotoService.salvarFoto(file, foto);
+					animal.setFoto(foto);
 				} catch (Exception e) {
 					attr.addFlashAttribute("falha", "Foto n possui id!");
 				}
 			}
-			/*
-			if (animal.getFoto().hasId()) {
-				Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
-				foto.setFileName(file.getOriginalFilename());
-					foto.setPath("/uploads/");
-					animal.setFoto(foto);
-				try {
-					fotoService.salvarFoto(file, foto);
-				} catch (Exception e) {
-					attr.addFlashAttribute("falha", "Foto já cadastrada!");
-				}
-			}
-*/
 		}
 		if (!file.isEmpty() && animal.hasId()) {
 			Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
 			foto.setFileName(file.getOriginalFilename());
 			foto.setPath("/uploads/");
-			animal.setFoto(foto);
+			
 			
 			try {
-				fotoService.salvar(foto);
+				fotoService.salvarFoto(file,foto);
+				animal.setFoto(foto);
 			} catch (Exception e) {
 				attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 			}
+			
 		}
 		if (file.isEmpty() && animal.hasId()) {
 			Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
@@ -339,6 +329,7 @@ public class AnimalController {
 		}
 		
 		try {
+			
 			animal.setEspecie(especie);
 			animal.setRaca(raca);
 			service.salvarAnimal(animal);
