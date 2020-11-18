@@ -32,13 +32,7 @@ form {
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<div class=teste>
-			<!--  
-			<form class="form-inline" method="get"
-				th:action="@{/veterinarios/editar/{id} (id=${veterinario.id})}">
-				<button class="btn btn-outline-success my-2 my-sm-0" id="edt-vet">Editar</button>
-				
-			</form>
-		-->
+		
 			<a class="btn-cadastrar-usuario" href="#" role="button"
 				data-toggle="modal" data-target="#modal-veterinario">Editar
 				Dados</a> <span th:replace="veterinario/modal :: modal-form"></span> <span
@@ -52,7 +46,7 @@ form {
 		<div
 			th:if="${veterinario.foto!= null && veterinario.foto.fileName != null}">
 			<img alt="" th:src="@{${'/uploads/' + veterinario.foto.fileName}}"
-				style="width: auto; height: auto">
+				style="width: 300px; height: auto">
 		</div>
 		<form th:if="${form != null}"
 			th:action="@{/veterinarios/salvar/horarios}" th:object="${form}"

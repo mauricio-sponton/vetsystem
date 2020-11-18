@@ -56,9 +56,10 @@ public class FotoService {
 		}
 
 	}
-
+/*
 	@Transactional(readOnly = true)
 	public List<Foto> buscarFotosPorId(Long id) {
 		return fotoRepository.findByFotosId(id);
 	}
+	*/
 }

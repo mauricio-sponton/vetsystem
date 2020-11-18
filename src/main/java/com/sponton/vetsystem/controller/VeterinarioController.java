@@ -91,7 +91,7 @@ public class VeterinarioController {
 			model.addAttribute("veterinario", veterinario);
 			return "veterinario/visualizar";
 		}
-
+		
 		return "veterinario/visualizar";
 	}
 
@@ -242,13 +242,6 @@ public class VeterinarioController {
 	@GetMapping("/horarios/{id}")
 	public ResponseEntity<?> getHorariosPeloVeterinarioId(@PathVariable("id") Long id, ModelMap model){
 		List<CargaHoraria> cargasVet = cargaHorariaService.buscarHorarioPorVeterinario(id);
-		/*if (cargasVet.size() > 0) {
-			List<CargaHoraria> listaEdicao = new ArrayList<>();
-			cargaHorariaService.buscarHorarioPorVeterinario(id).iterator()
-					.forEachRemaining(listaEdicao::add);
-			ModelMap t = model.addAttribute("formEdit", new CargaHorariaDTO(listaEdicao));
-			return ResponseEntity.ok(t);
-		}*/
 		return ResponseEntity.ok(cargasVet);
 	}
 	@GetMapping("/datatables/server")

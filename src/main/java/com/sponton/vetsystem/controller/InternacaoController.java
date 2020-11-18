@@ -30,6 +30,7 @@ import com.sponton.vetsystem.domain.Aplicacao;
 import com.sponton.vetsystem.domain.Consulta;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Foto;
+import com.sponton.vetsystem.domain.FotoInternacao;
 import com.sponton.vetsystem.domain.HistoricoAnimal;
 import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
@@ -38,6 +39,7 @@ import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.AplicacaoService;
 import com.sponton.vetsystem.service.ConsultaService;
 import com.sponton.vetsystem.service.EspecieService;
+import com.sponton.vetsystem.service.FotoInternacaoService;
 import com.sponton.vetsystem.service.FotoService;
 import com.sponton.vetsystem.service.HistoricoAnimalService;
 import com.sponton.vetsystem.service.InternacaoService;
@@ -62,18 +64,21 @@ public class InternacaoController {
 
 	@Autowired
 	private FotoService fotoService;
-	
+
 	@Autowired
 	private ConsultaService consultaService;
-	
+
 	@Autowired
 	private AplicacaoService aplicacaoService;
-	
+
 	@Autowired
 	private EspecieService especieService;
-	
+
 	@Autowired
 	private VacinaService vacinaService;
+	
+	@Autowired 
+	private FotoInternacaoService fotoInternacaoService;
 
 	@GetMapping("/cadastrar")
 	public String novaInternacao(Internacao internacao) {
@@ -90,14 +95,13 @@ public class InternacaoController {
 			model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
 			return "internacao/lista";
 		}
-		if(internacao.hasId()) {
+		if (internacao.hasId()) {
 			Internacao int2 = service.buscarPorId(internacao.getId());
-			if(int2.getStatus().equals("Encerrada") && status.equals("Ativa")) {
-				attr.addFlashAttribute("falha",
-						"Essa internação já foi encerrada, por favor cadastre uma nova");
+			if (int2.getStatus().equals("Encerrada") && status.equals("Ativa")) {
+				attr.addFlashAttribute("falha", "Essa internação já foi encerrada, por favor cadastre uma nova");
 				return "redirect:/internacoes/listar";
 			}
-			
+
 		}
 		String titulo = internacao.getAnimal().getNome();
 		Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
@@ -113,19 +117,6 @@ public class InternacaoController {
 			animal.setStatus("Normal");
 		}
 
-		if (files.length > 0) {
-			for (int i = 0; i < files.length; i++) {
-				Foto foto = new Foto();
-				foto.setFileName(files[i].getOriginalFilename());
-				foto.setPath("/uploads/");
-				foto.setInternacao(internacao);
-				try {
-					fotoService.salvarFotos(files, foto);
-				} catch (Exception e) {
-
-				}
-			}
-		}
 		HistoricoAnimal historico = new HistoricoAnimal();
 		LocalDate data = LocalDate.now();
 		LocalTime hora = LocalTime.now();
@@ -171,10 +162,9 @@ public class InternacaoController {
 							+ " para " + internacao.getHoraEntrada() + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				
 
 				if (historico.getDescricao() != null) {
-					
+
 					historico.setTipo("Alteração de internação");
 					historico.setUsuario(veterinario.getNome() + " (veterinario)");
 					historico.setData(data);
@@ -183,7 +173,7 @@ public class InternacaoController {
 				}
 
 			}
-			if(internacao.hasId() && status.equals("Encerrada")) {
+			if (internacao.hasId() && status.equals("Encerrada")) {
 				internacao.setDataSaida(data);
 				internacao.setHoraSaida(hora);
 				historico.setDescricao("O paciente " + internacao.getAnimal().getNome() + " saiu da internação.");
@@ -197,8 +187,23 @@ public class InternacaoController {
 		}
 
 		internacao.setAnimal(animal);
-		
+
 		service.salvarInternacao(internacao);
+		if (files.length > 0) {
+			for (int i = 0; i < files.length; i++) {
+				FotoInternacao foto = new FotoInternacao();
+				foto.setFileName(files[i].getOriginalFilename());
+				// foto.setPath("/uploads/");
+
+				try {
+					foto.setInternacao(internacao);
+					fotoInternacaoService.salvarFotos(files, foto);
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+			}
+
+		}
 		if (historico.getDescricao() != null) {
 			historico.setAnimal(animal);
 			historicoAnimalService.salvar(historico);
@@ -209,54 +214,69 @@ public class InternacaoController {
 
 	@GetMapping("/listar")
 	public String listarInternacoes(ModelMap model, Internacao internacao) {
-		//model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
-		//model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
+		// model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
+		// model.addAttribute("internacaoEncerrada",
+		// service.buscarInternacaoEncerrada());
 		return "internacao/lista";
 	}
+
 	@GetMapping("/datatables/server")
 	public ResponseEntity<?> listarInternacoesDatatables(HttpServletRequest request) {
 		return ResponseEntity.ok(service.buscarTodos(request));
 	}
+
+	@GetMapping("/datatables/fotos/server/{idInternacao}")
+	public ResponseEntity<?> listarFotosDatatables(HttpServletRequest request, @PathVariable("idInternacao") Long id) {
+		return ResponseEntity.ok(fotoInternacaoService.buscarTodos(request, id));
+	}
 	@GetMapping("/datatables/server/{idAnimal}")
-	public ResponseEntity<?> listarInternacoesByAnimalDatatables(HttpServletRequest request, @PathVariable("idAnimal") Long idAnimal) {
+	public ResponseEntity<?> listarInternacoesByAnimalDatatables(HttpServletRequest request,
+			@PathVariable("idAnimal") Long idAnimal) {
 		return ResponseEntity.ok(service.buscarInternacaoPorAnimal(request, idAnimal));
 	}
 
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("internacao", service.buscarPorId(id));
-		//model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
-		//model.addAttribute("internacaoEncerrada", service.buscarInternacaoEncerrada());
+		// model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
+		// model.addAttribute("internacaoEncerrada",
+		// service.buscarInternacaoEncerrada());
 		return "internacao/lista";
 	}
+
 	@GetMapping("/editar/{id}/paciente/{idAnimal}")
-	public String preEditarInternacaoPorAnimal(@PathVariable("id") Long id, ModelMap model,@PathVariable("idAnimal") Long idAnimal, Aplicacao aplicacao, Consulta consulta) {
+	public String preEditarInternacaoPorAnimal(@PathVariable("id") Long id, ModelMap model,
+			@PathVariable("idAnimal") Long idAnimal, Aplicacao aplicacao, Consulta consulta) {
 		Animal animal = animalService.buscarPorId(idAnimal);
 		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("internacao", service.buscarPorId(id));
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
-		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
+		// model.addAttribute("consulta",
+		// consultaService.buscarConsultaPorAnimal(idAnimal));
 		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 		return "animal/visualizar";
 	}
+
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		Internacao internacao = service.buscarPorId(id);
 		Animal animal = animalService.buscarPorId(internacao.getAnimal().getId());
-		
-		if(animal.getStatus().contains("Internado")) {
+
+		if (animal.getStatus().contains("Internado")) {
 			animal.setStatus("Normal");
 		}
 		service.remover(id);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
 		return "redirect:/internacoes/listar";
 	}
+
 	@GetMapping("/excluir/{id}/paciente/{idAnimal}")
-	public String excluirPorAnimal(@PathVariable("id") Long id, @PathVariable("idAnimal") Long idAnimal, RedirectAttributes attr) {
+	public String excluirPorAnimal(@PathVariable("id") Long id, @PathVariable("idAnimal") Long idAnimal,
+			RedirectAttributes attr) {
 		Internacao internacao = service.buscarPorId(id);
 		Animal animal = animalService.buscarPorId(internacao.getAnimal().getId());
-		if(animal.getStatus().contains("Internado")) {
+		if (animal.getStatus().contains("Internado")) {
 			animal.setStatus("Normal");
 		}
 		service.remover(id);
@@ -267,14 +287,16 @@ public class InternacaoController {
 	@GetMapping("/visualizar/{id}")
 	public String visualizar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("internacao", service.buscarPorId(id));
-		model.addAttribute("fotos", fotoService.buscarFotosPorId(id));
+		//model.addAttribute("fotos", fotoService.buscarFotosPorId(id));
 		return "internacao/visualizar";
 	}
+
 	@PostMapping("/salvar/paciente/{idAnimal}")
-	public String salvarInternacaoPorPaciente(@Valid Internacao internacao, BindingResult result, RedirectAttributes attr,
-			@AuthenticationPrincipal User user, @RequestParam("status") String status,
-			@RequestParam("files") MultipartFile[] files, ModelMap model, @PathVariable("idAnimal") Long idAnimal, Aplicacao aplicacao, Consulta consulta) {
-		
+	public String salvarInternacaoPorPaciente(@Valid Internacao internacao, BindingResult result,
+			RedirectAttributes attr, @AuthenticationPrincipal User user, @RequestParam("status") String status,
+			@RequestParam("files") MultipartFile[] files, ModelMap model, @PathVariable("idAnimal") Long idAnimal,
+			Aplicacao aplicacao, Consulta consulta) {
+
 		if (result.hasErrors() || internacao.getAnimal().getNome().isEmpty()) {
 			Animal animal = animalService.buscarPorId(idAnimal);
 			Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
@@ -282,18 +304,18 @@ public class InternacaoController {
 			model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 			model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
 			model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
-			//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(idAnimal));
-			
+			// model.addAttribute("consulta",
+			// consultaService.buscarConsultaPorAnimal(idAnimal));
+
 			return "animal/visualizar";
 		}
-		if(internacao.hasId()) {
+		if (internacao.hasId()) {
 			Internacao int2 = service.buscarPorId(internacao.getId());
-			if(int2.getStatus().equals("Encerrada") && status.equals("Ativa")) {
-				attr.addFlashAttribute("falha",
-						"Essa internação já foi encerrada, por favor cadastre uma nova");
+			if (int2.getStatus().equals("Encerrada") && status.equals("Ativa")) {
+				attr.addFlashAttribute("falha", "Essa internação já foi encerrada, por favor cadastre uma nova");
 				return "redirect:/pacientes/visualizar/{idAnimal}";
 			}
-			
+
 		}
 		String titulo = internacao.getAnimal().getNome();
 		Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
@@ -311,12 +333,12 @@ public class InternacaoController {
 
 		if (files.length > 0) {
 			for (int i = 0; i < files.length; i++) {
-				Foto foto = new Foto();
-				foto.setFileName(files[i].getOriginalFilename());
-				foto.setPath("/uploads/");
+				FotoInternacao foto = new FotoInternacao();
+				//foto.setFileName(files[i].getOriginalFilename());
+				//foto.setPath("/uploads/");
 				foto.setInternacao(internacao);
 				try {
-					fotoService.salvarFotos(files, foto);
+					fotoInternacaoService.salvarFotos(files, foto);
 				} catch (Exception e) {
 
 				}
@@ -367,10 +389,9 @@ public class InternacaoController {
 							+ " para " + internacao.getHoraEntrada() + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				
 
 				if (historico.getDescricao() != null) {
-					
+
 					historico.setTipo("Alteração de internação");
 					historico.setUsuario(veterinario.getNome() + " (veterinario)");
 					historico.setData(data);
@@ -379,7 +400,7 @@ public class InternacaoController {
 				}
 
 			}
-			if(internacao.hasId() && status.equals("Encerrada")) {
+			if (internacao.hasId() && status.equals("Encerrada")) {
 				internacao.setDataSaida(data);
 				internacao.setHoraSaida(hora);
 				historico.setDescricao("O paciente " + internacao.getAnimal().getNome() + " saiu da internação.");
@@ -393,7 +414,7 @@ public class InternacaoController {
 		}
 
 		internacao.setAnimal(animal);
-		
+
 		service.salvarInternacao(internacao);
 		if (historico.getDescricao() != null) {
 			historico.setAnimal(animal);
@@ -403,5 +424,4 @@ public class InternacaoController {
 		return "redirect:/pacientes/visualizar/{idAnimal}";
 	}
 
-	
 }

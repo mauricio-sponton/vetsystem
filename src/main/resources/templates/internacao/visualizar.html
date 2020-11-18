@@ -3,31 +3,153 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
+<style>
+
+#table-fotos td {
+      text-align: center;
+      vertical-align: middle;
+  }
+#wrapper {
+	width: 100%;
+}
+.pop{
+  width: 250px;
+  height: auto	
+}
+ .popover-body{
+ 	 width: 300px;
+ }
+
+</style>
 </head>
 <body>
 	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 	<section class="layout-content" layout:fragment="corpo">
-		<span style="color:indigo" th:text="${internacao.status}"></span>
-		<span style="color:indigo" th:text="${internacao.dataSaida}"></span>
-		<div id="imagem" style="display:none">
-			<img alt="" th:src="@{/image/animal_default.jpg}"
-				style="width: 20%; height: auto">
+		<span style="color: indigo" th:text="${internacao.status}"></span> <span
+			style="color: indigo" th:text="${internacao.dataSaida}"></span>
+		<div id="imagem" style="display: none">
+			<img alt="" th:src="@{/image/animal_default.jpg}">
 		</div>
-		<div th:if="${fotos != null}">
-		<div th:each="f: ${fotos}">
-			<img alt="" th:src="@{${'/uploads/' + f.fileName}}"
-				style="width: 30%; height: auto">
+		<!--  <div id="wrapper" th:if="${fotos != null}">
+		<div class="container-foto" th:each="f: ${fotos}">
+			<img alt="" th:src="@{${'/uploads/' + f.fileName}}">
+			<a><i class="fa fa-times" aria-hidden="true"></i></a>
+			<div>
+					<input type="checkbox" class="ck-fotos">
+				</div>
 		</div>
+		<button id="btn-deletar">Deletar</button>
+		</div> -->
+		<div class="container">
+
+			<div class="row">
+				<div class="col-md-12">
+
+
+					<h2>Fotos</h2>
+
+					<table id="table-fotos"
+						class="table table-sm table-striped table-bordered nowrap"
+						style="width: 100%">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Foto</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Descricao</th>
+								<th scope="col">Editar</th>
+								<th scope="col">Excluir</th>
+								<th scope="col">Visualizar</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
 		</div>
+		
 	</section>
 	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
 		var fotos = [[${fotos}]];
+		var idInternacao = [[${internacao.id}]];
+		var del = $('.ck-fotos').length
 		$(document).ready(function(){
 			if(fotos == ""){
 				$("#imagem").show();
+		
 			}
+		
 		})
+		$(document).ready(function () {
+	moment.locale('pt-BR');
+    var table = $('#table-fotos').DataTable({
+    	  drawCallback: function () {
+    		  $('[data-toggle="popover-hover"]').popover({
+			      html: true,
+			      trigger: 'hover',
+			      placement: 'right',
+			      container: 'body',
+			      content: function () { return '<img class="pop" src="' + $(this).data('img') + '" />'; }
+			    });
+    	  },
+    	searching: true,
+    	lengthMenu: [5, 10],
+        processing: true,
+        serverSide: true,
+        responsive: true,
+        ajax: {
+            url: '/internacoes/datatables/fotos/server/' + idInternacao + '',
+            data: 'data'
+        },
+        "columnDefs": [
+            { "width": "10%", "targets": [1] }
+          ],
+        columns: [
+            {orderable: false, data: 'fileName',
+            	"render": function(data){
+            		return '<a href="#" data-toggle="popover-hover"  data-img="/uploads/'+data+'" title="'+data+'"><img src ="/uploads/thumb/'+data+'"/></a>';
+            	},
+            	
+            },
+            {data: 'fileName',
+            	"render": function(data){
+            		return data.length > 10 ?  data.substr( 0, 10 ) +'… ' + data.slice(-3): data;
+            	}
+            },
+            {data: 'descricao',
+            	"render": function(data){
+            		if(data == null){
+            			return 'Informação não cadastrada';
+            		}else{
+            			return data.length > 20 ?  data.substr( 0, 20 ) +'… ': data;
+            		}
+            		
+            	}
+            },
+            {orderable: false, 
+             data: 'id',
+                "render": function(id) {
+                    return '<a class="btn btn-success  btn-sm btn-block" href="/internacoes/editar/foto/'+ 
+                    	id +'" role="button"><i class="fas fa-edit"></i></a>';
+                }
+            },
+            {orderable: false,
+             data: 'id',
+                "render": function(id) {
+                    return '<a class="btn btn-danger btn-sm btn-block" href="/internacoes/excluir/foto/'+ 
+                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+                }               
+            },
+            {orderable: false,
+                data: 'id',
+                   "render": function(id) {
+                	   return '<a class="btn btn-success btn-sm btn-block" href="/internacoes/visualizar/foto/'+ 
+                   	id +'" role="button"><i class="fas fa-eye"></i></a>';
+                   }               
+               }
+        ]
+    });
+});    
+		
 	</script>
 </body>
 </html>

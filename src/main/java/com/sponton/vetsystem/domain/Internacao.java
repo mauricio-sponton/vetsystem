@@ -59,15 +59,15 @@ public class Internacao extends AbstractEntity {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "internacao", cascade = CascadeType.REMOVE)
-	private List<Foto> fotos;
+	private List<FotoInternacao> fotos;
 	
 	
 	
-	public List<Foto> getFotos() {
+	public List<FotoInternacao> getFotos() {
 		return fotos;
 	}
 
-	public void setFotos(List<Foto> fotos) {
+	public void setFotos(List<FotoInternacao> fotos) {
 		this.fotos = fotos;
 	}
 

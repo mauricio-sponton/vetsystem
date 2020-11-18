@@ -11,8 +11,7 @@ import com.sponton.vetsystem.domain.Foto;
 
 public interface FotoRepository extends JpaRepository<Foto, Long>{
 
-	@Query("select f from Foto f where f.internacao.id = :id")
-	List<Foto> findByFotosId(Long id);
+	
 
 
 }

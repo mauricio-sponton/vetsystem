@@ -60,6 +60,7 @@ $(document).ready(function () {
         ]
     });
 });    
+
 /*$(document).ready(function(){
 	//
 	var status = $('#status').val();
