@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -75,4 +76,44 @@ public class FotoInternacaoService {
 	        ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
 	        return ImageIO.read(inputStream);
 	    }
+
+	@Transactional(readOnly = false)
+	public void remover(Long id) {
+		repository.deleteById(id);
+		
+	}
+
+	@Transactional(readOnly = true)
+	public FotoInternacao buscarPorId(Long id) {
+		return repository.findById(id).get();
+	}
+
+	@Transactional(readOnly = false)
+	public void salvarFoto(MultipartFile file, FotoInternacao foto) throws IOException{
+		Path currentPath = Paths.get(".");
+		Path absolutePath = currentPath.toAbsolutePath();
+		foto.setPath(absolutePath + "/src/main/resources/static/uploads/");
+		foto.setThumb(absolutePath + "/src/main/resources/static/uploads/thumb/");
+		foto.setTipo(file.getContentType());
+		if(foto.getNome()!=null) {
+			foto.setNome(foto.getNome());
+		}
+		foto.setFileName(file.getOriginalFilename());
+		byte[] bytes = file.getBytes();
+		Path path = Paths.get(foto.getPath() + file.getOriginalFilename());
+		Files.write(path, bytes);
+		BufferedImage original = ImageIO.read(new File(foto.getPath() +  file.getOriginalFilename()));
+		BufferedImage outputImage = resizeImage(original, 100, 100);
+		ImageIO.write(outputImage, "jpg", new File(foto.getThumb() +  file.getOriginalFilename()));
+		repository.save(foto);
+		
+	}
+	@Transactional(readOnly = false)
+	public void salvar(@Valid FotoInternacao foto) {
+	
+		repository.save(foto);
+		
+	}
+
+	
 }

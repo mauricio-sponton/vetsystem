@@ -1,0 +1,38 @@
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+<style type="text/css">
+.teste span {
+	color: blue
+}
+</style>
+</head>
+
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class=teste>
+		
+			<img width="200" height="auto" alt="" th:src="@{${'/uploads/' + foto.fileName}}">
+			
+			<div th:if="${foto.nome != ''}">
+				<span  th:text="${foto.nome}"></span> 
+			</div>
+			<div th:if="${foto.nome == ''}">
+				<span  th:text="${foto.fileName}"></span> 
+			</div>
+			<div th:if="${foto.data != null}">
+				<span th:text="${#temporals.format(foto.data, 'dd/MM/yyyy')}"></span> 
+			</div>	
+			<div th:if="${foto.descricao != ''}">
+				<span th:text="${foto.descricao}"></span> 
+			</div>
+	
+		</div>
+
+	</section>
+
+	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript"></script>
+</body>
+</html>

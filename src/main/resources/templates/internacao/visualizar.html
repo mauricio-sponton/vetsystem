@@ -8,7 +8,13 @@
 #table-fotos td {
       text-align: center;
       vertical-align: middle;
+      border-bottom: none; !important
   }
+  #table-fotos td:first-child{
+        display: none
+            
+    
+   }
 #wrapper {
 	width: 100%;
 }
@@ -19,12 +25,51 @@
  .popover-body{
  	 width: 300px;
  }
+@media screen and (max-width: 700px) {   
+   #table-fotos, #table-fotos tr, #table-fotos td { display: block; border:none}
+   #table-fotos{
+   	width: 70%;
+   	margin-left: 10%
+   }
+ 	#table-fotos th{
+      display: none
+	}	
+	#table-fotos td:first-child{
+        
+            
+    
+   }
+   #table-fotos tr{
+	   
+   }
+   #table-fotos td{
+   	 clear: both;
+   text-align: left;
+   
+    padding: 4px 150px 4px 90px;
+    width: 100%;
+         
+   }
+   #table-fotos td:before{
+            content: '';
+            display: block;
+  
+            
+   }
+   #table-fotos td:nth-child(2):before { content: 'Nome:'; }
+   #table-fotos td:nth-child(3):before { content: 'Descrição:'; }
+         
+            
+   
+}
+
+
 
 </style>
 </head>
 <body>
-	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 	<section class="layout-content" layout:fragment="corpo">
+	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<span style="color: indigo" th:text="${internacao.status}"></span> <span
 			style="color: indigo" th:text="${internacao.dataSaida}"></span>
 		<div id="imagem" style="display: none">
@@ -49,10 +94,11 @@
 					<h2>Fotos</h2>
 
 					<table id="table-fotos"
-						class="table table-sm table-striped table-bordered nowrap"
+						class="table table-sm table-bordered table-striped nowrap"
 						style="width: 100%">
 						<thead class="thead-dark">
 							<tr>
+							    <th style="display:none" scope="col">Id</th>
 								<th scope="col">Foto</th>
 								<th scope="col">Nome</th>
 								<th scope="col">Descricao</th>
@@ -64,24 +110,49 @@
 					</table>
 				</div>
 			</div>
+			<a class="btn-cadastrar-usuario" href="#" role="button"
+					data-toggle="modal" data-target="#modal-foto">Nova foto</a> <span
+					th:replace="foto/modal :: modal-form"></span>
 		</div>
 		
 	</section>
 	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
-		var fotos = [[${fotos}]];
+		var foto = [[${fotoInternacao.id}]];
+		
 		var idInternacao = [[${internacao.id}]];
 		var del = $('.ck-fotos').length
 		$(document).ready(function(){
-			if(fotos == ""){
-				$("#imagem").show();
-		
+			
+			if(foto != null){
+				$("#modal-foto").modal('show');
+				$(".modal-title").text("Editar Foto");
 			}
-		
+			if(foto == null){
+				$(".modal-title").text("Nova Foto");
+			}
+			if ($("#msg-erro").html() != "") {
+				$("#modal-foto").modal('show');
+				$("#msg-erro").css("color", "red");
+				$("#file").addClass('is-invalid');
+				$(".is-invalid").css("border", "1px solid red");
+			}
+
+			$("#modal-foto").on("hidden.bs.modal", function() {
+				$(".is-invalid").removeClass("is-invalid").removeAttr('style');
+				$("#msg-erro").hide();
+				$("#modal-foto").modal('hide');
+				
+			});
+			
+			$(".btn-cadastrar-usuario").on("click", function(){
+				$(".form-control").val("");
+				$(".modal-title").text("Nova Foto");
+			});
 		})
 		$(document).ready(function () {
-	moment.locale('pt-BR');
-    var table = $('#table-fotos').DataTable({
+			moment.locale('pt-BR');
+   			var table = $('#table-fotos').DataTable({
     	  drawCallback: function () {
     		  $('[data-toggle="popover-hover"]').popover({
 			      html: true,
@@ -93,31 +164,48 @@
     	  },
     	searching: true,
     	lengthMenu: [5, 10],
+    	order: [ 
+    		[ 0, "desc" ]
+    		],
         processing: true,
         serverSide: true,
-        responsive: true,
+      // responsive:true,
         ajax: {
             url: '/internacoes/datatables/fotos/server/' + idInternacao + '',
             data: 'data'
         },
         "columnDefs": [
-            { "width": "10%", "targets": [1] }
+            { "width": "10%", "targets": [1],
+             "width": "70px", "targets": [4]},
+            
+           
           ],
         columns: [
-            {orderable: false, data: 'fileName',
-            	"render": function(data){
-            		return '<a href="#" data-toggle="popover-hover"  data-img="/uploads/'+data+'" title="'+data+'"><img src ="/uploads/thumb/'+data+'"/></a>';
+        	{data: "id"},
+            {orderable: false,
+            	data: 'fileName',
+            	"render": function(data, type, row){
+            		if(row.nome != ""){
+                	  return '<a href="#" data-toggle="popover-hover"  data-img="/uploads/'+data+'" title="'+row.nome+'"><img src ="/uploads/thumb/'+data+'"/></a>';
+            		}else{
+                	  return '<a href="#" data-toggle="popover-hover"  data-img="/uploads/'+data+'" title="'+data+'"><img src ="/uploads/thumb/'+data+'"/></a>';
+            		}
             	},
             	
             },
             {data: 'fileName',
-            	"render": function(data){
-            		return data.length > 10 ?  data.substr( 0, 10 ) +'… ' + data.slice(-3): data;
+            	"render": function(data, type, row){
+            		if(row.nome != ""){
+            			return row.nome + row.tipo > 10 ?  row.nome.substr( 0, 10 ) + ' .' + row.tipo.slice(-3) : row.nome + ' .' + row.tipo.slice(-4);
+            		}else{
+            			return data.length > 10 ?  data.substr( 0, 10 ) +'… ' + data.slice(-3): data;
+            		}
+            		
             	}
             },
             {data: 'descricao',
             	"render": function(data){
-            		if(data == null){
+            		if(data == null || data ==""){
             			return 'Informação não cadastrada';
             		}else{
             			return data.length > 20 ?  data.substr( 0, 20 ) +'… ': data;
@@ -128,15 +216,15 @@
             {orderable: false, 
              data: 'id',
                 "render": function(id) {
-                    return '<a class="btn btn-success  btn-sm btn-block" href="/internacoes/editar/foto/'+ 
-                    	id +'" role="button"><i class="fas fa-edit"></i></a>';
+                    return '<a class="btn btn-success btn-sm btn-block" href="/internacoes/editar/foto/'+ 
+                    	id +'/internacao/'+ idInternacao +'" role="button"><i class="fas fa-edit"></i></a>';
                 }
             },
             {orderable: false,
              data: 'id',
                 "render": function(id) {
                     return '<a class="btn btn-danger btn-sm btn-block" href="/internacoes/excluir/foto/'+ 
-                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+                    	id +'/internacao/'+ idInternacao +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
                 }               
             },
             {orderable: false,

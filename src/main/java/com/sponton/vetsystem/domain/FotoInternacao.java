@@ -27,6 +27,12 @@ public class FotoInternacao extends AbstractEntity {
 	@Column(name="titulo")
 	private String fileName;
 	
+	@Column(name="nome")
+	private String nome;
+	
+	@Column(name="tipo")
+	private String tipo;
+
 	@Lob
 	@Column(name="descricao")
 	private String descricao;
@@ -38,6 +44,14 @@ public class FotoInternacao extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "id_internacao_fk")
 	private Internacao internacao;
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
 	public String getThumb() {
 		return thumb;
@@ -87,6 +101,14 @@ public class FotoInternacao extends AbstractEntity {
 		this.internacao = internacao;
 	}
 	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
 	
 	
 }

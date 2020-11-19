@@ -285,9 +285,9 @@ public class InternacaoController {
 	}
 
 	@GetMapping("/visualizar/{id}")
-	public String visualizar(@PathVariable("id") Long id, ModelMap model) {
+	public String visualizar(@PathVariable("id") Long id, ModelMap model, FotoInternacao fotoInternacao) {
 		model.addAttribute("internacao", service.buscarPorId(id));
-		//model.addAttribute("fotos", fotoService.buscarFotosPorId(id));
+		model.addAttribute("fotoInternacao", new FotoInternacao());
 		return "internacao/visualizar";
 	}
 
@@ -423,5 +423,61 @@ public class InternacaoController {
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 		return "redirect:/pacientes/visualizar/{idAnimal}";
 	}
+	@GetMapping("/editar/foto/{id}/internacao/{idInternacao}")
+	public String preEditarFotos(@PathVariable("id") Long id,  @PathVariable("idInternacao") Long idInternacao, ModelMap model) {
+		model.addAttribute("internacao", service.buscarPorId(idInternacao));
+		model.addAttribute("fotoInternacao", fotoInternacaoService.buscarPorId(id));
+		return "internacao/visualizar";
+	}
 
+	@GetMapping("/excluir/foto/{id}/internacao/{idInternacao}")
+	public String excluirFotos(@PathVariable("id") Long id, @PathVariable("idInternacao") Long idInternacao, RedirectAttributes attr) {
+		fotoInternacaoService.remover(id);
+		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
+		return "redirect:/internacoes/visualizar/{idInternacao}";
+	}
+
+	@GetMapping("/visualizar/foto/{id}")
+	public String visualizarFotos(@PathVariable("id") Long id, ModelMap model) {
+		model.addAttribute("foto", fotoInternacaoService.buscarPorId(id));
+		return "/foto/visualizar";
+	}
+	@PostMapping("/salvar/foto/internacao/{id}")
+	public String salvarFoto(@Valid FotoInternacao foto, @PathVariable("id") Long id, BindingResult result, RedirectAttributes attr,
+			@AuthenticationPrincipal User user,
+			@RequestParam("file") MultipartFile file, ModelMap model) {
+		Internacao internacao = service.buscarPorId(id);
+		if (result.hasErrors() || (file.isEmpty() && foto.hasNotId())) {
+			model.addAttribute("erro", "Por favor preencha os dados");
+			model.addAttribute("internacao", internacao);
+			return "internacao/visualizar";
+		}
+		if (!file.isEmpty()) {
+			
+			try {
+				
+				foto.setInternacao(internacao);
+				fotoInternacaoService.salvarFoto(file, foto);
+				if(foto.hasId()) {
+					attr.addFlashAttribute("sucesso", "Foto cadastrada com sucesso");
+				}else {
+					attr.addFlashAttribute("sucesso", "Foto alterada com sucesso");
+				}
+
+			} catch (Exception e) {
+				attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
+			}
+		}
+		if(file.isEmpty() && foto.hasId()) {
+			FotoInternacao f2 = fotoInternacaoService.buscarPorId(foto.getId());
+			foto.setFileName(f2.getFileName());
+			foto.setThumb(f2.getThumb());
+			foto.setPath(f2.getPath());
+			foto.setTipo(f2.getTipo());
+			foto.setInternacao(internacao);
+			fotoInternacaoService.salvar(foto);
+		}
+		
+		return"redirect:/internacoes/visualizar/{id}";
+	}
 }
