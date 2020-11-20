@@ -86,7 +86,8 @@ public class AgendamentoController {
 	public String salvar(@Valid Agendamento agendamento, BindingResult result, RedirectAttributes attr, ModelMap model,
 			@AuthenticationPrincipal User user) {
 		
-		if (result.hasErrors() || agendamento.getVeterinario().getNome().isEmpty() || (agendamento.getAnimal().getNome().isEmpty() && agendamento.getSem_cadastro().isEmpty())) {
+		if (result.hasErrors() || (agendamento.getAnimal().getNome().isEmpty() && agendamento.getSem_cadastro().isEmpty())) {
+			//|| agendamento.getVeterinario().getNome().isEmpty() 
 			model.addAttribute("erro", "por favor preencha os campos");
 			return "/agendamento/agenda";
 		}
@@ -99,8 +100,8 @@ public class AgendamentoController {
 		try {
 			if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
 			   Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
-				String vet = agendamento.getVeterinario().getNome();
-				Veterinario veterinario = veterinarioService.buscarPorTitulos(new String[] { vet }).stream().findFirst().get();
+			   Veterinario veterinario= agendamento.getVeterinario();
+				//Veterinario veterinario = veterinarioService.buscarPorTitulos(new String[] { vet }).stream().findFirst().get();
 				if (!agendamento.getAnimal().getNome().isEmpty()) {
 					String titulo = agendamento.getAnimal().getNome();
 					Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
@@ -155,7 +156,7 @@ public class AgendamentoController {
 			tudo.put("end", agendamento.getFim());
 			tudo.put("description", agendamento.getDescricao() != null ? agendamento.getDescricao() : "");
 			tudo.put("backgroundColor", agendamento.getColor());
-			extend.put("veterinario", agendamento.getVeterinario().getNome());
+			extend.put("veterinario", agendamento.getVeterinario());
 			
 			extend.put("secretaria",
 					agendamento.getSecretaria().getNome() != null ? agendamento.getSecretaria().getNome() : "");

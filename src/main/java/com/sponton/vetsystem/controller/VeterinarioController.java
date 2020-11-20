@@ -173,9 +173,6 @@ public class VeterinarioController {
 			if (!file.isEmpty()) {
 				if (veterinario.getFoto().hasNotId()) {
 					Foto foto = new Foto();
-					foto.setFileName(file.getOriginalFilename());
-					foto.setPath("/uploads/");
-					
 					try {
 						fotoService.salvarFoto(file, foto);
 						veterinario.setFoto(foto);
@@ -216,7 +213,7 @@ public class VeterinarioController {
 		return "redirect:/veterinarios/dados";
 
 	}
-
+	/*
 	@GetMapping("/titulo")
 	public ResponseEntity<?> getVeterinariosPorTermo(@RequestParam("termo") String termo,
 			@RequestParam("inicio") @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime inicio,
@@ -225,6 +222,17 @@ public class VeterinarioController {
 		LocalTime start = inicio.toLocalTime();
 		LocalTime end = fim.toLocalTime();
 		List<String> vets = service.buscarVeterinariosByTermo(termo, start, end, diaInicial, diaFinal, inicio, fim);
+		return ResponseEntity.ok(vets);
+	}
+	*/
+	@GetMapping("/disponiveis")
+	public ResponseEntity<?> getVeterinariosDisponiveis(
+			@RequestParam("inicio") @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime inicio,
+			@RequestParam("fim") @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime fim,
+			@RequestParam("diaInicial") int diaInicial, @RequestParam("diaFinal") int diaFinal) {
+		LocalTime start = inicio.toLocalTime();
+		LocalTime end = fim.toLocalTime();
+		List<Veterinario> vets = service.buscarVeterinariosDisponiveis(start, end, diaInicial, diaFinal, inicio, fim);
 		return ResponseEntity.ok(vets);
 	}
 

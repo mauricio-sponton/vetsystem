@@ -96,18 +96,6 @@
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-4">
-									<label for="veterinario-edicao">Veterinário</label> <input type="text"
-										class="form-control" id="veterinario-edicao" placeholder="João..."
-										onfocus="mudarEdit();"
-										th:classappend="${#fields.hasErrors('veterinario.nome')} ? 'is-invalid'"
-										th:field="*{veterinario.nome}" />
-										<span class="erro-vet" style="display:none"></span>
-									<div class="invalid-feedback">
-										<span th:errors="*{veterinario.nome}"></span>
-									</div>
-
-								</div>
-								<div class="form-group col-md-4">
 									<label for="color-edicao">Selecione a cor que você deseja:</label> <input
 										th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
 										type="color" id="color-edicao" th:field=*{color}
@@ -135,6 +123,18 @@
 										th:field="*{fim}" />
 									<div class="invalid-feedback">
 										<span th:errors="*{fim}"></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-12">
+									<div class="card">
+									  <div class="card-header">
+									    Indique o veterinário desejado
+									  </div>
+									  <div class="card-body" id="vets-edicao">										  									    
+											<!-- options by jQuery -->
+									  </div>									  							  
 									</div>
 								</div>
 							</div>

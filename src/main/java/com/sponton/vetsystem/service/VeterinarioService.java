@@ -65,12 +65,12 @@ public class VeterinarioService {
 	public Veterinario buscarPorId(Long id) {
 		return repository.findById(id).get();
 	}
-
+	/*
 	@Transactional(readOnly = true)
 	public List<String> buscarVeterinariosByTermo(String termo, LocalTime start, LocalTime end, int diaInicial, int diaFinal, LocalDateTime inicio, LocalDateTime fim) {
 		return repository.findVeterinariosByTermo(termo, start, end, diaInicial, diaFinal, inicio, fim);
 	}
-
+*/
 	@Transactional(readOnly = true)
 	public Set<Veterinario> buscarPorTitulos(String[] strings) {
 		return repository.findByTitulos(strings);
@@ -93,6 +93,12 @@ public class VeterinarioService {
 		Page<Veterinario> page = datatables.getSearch().isEmpty() ? repository.findAll(datatables.getPageable())
 				: repository.findByName(datatables.getSearch(), datatables.getPageable());
 		return datatables.getResponse(page);
+	}
+
+	@Transactional(readOnly = true)
+	public List<Veterinario> buscarVeterinariosDisponiveis(LocalTime start, LocalTime end, int diaInicial,
+			int diaFinal, LocalDateTime inicio, LocalDateTime fim) {
+		return repository.findVeterinariosDisponiveis(start, end, diaInicial, diaFinal, inicio, fim);
 	}
 
 

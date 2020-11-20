@@ -104,7 +104,7 @@
   			    	//visualizacao
   			    	$("#visualizar-start").text("Início: " + inicio);
   			    	$("#visualizar-end").text("Término: " + termino);
-  			    	$("#visualizar-veterinario").text("Veterinário: " +  data.event.extendedProps.veterinario);
+  			    	$("#visualizar-veterinario").text("Veterinário: " +  data.event.extendedProps.veterinario.nome);
   			    	$("#visualizar-title").text("Tipo do agendamento: " + data.event.title);
   			    	if(data.event.extendedProps.description != ""){
   			    		$("#visualizar-description").show();
@@ -131,7 +131,13 @@
   	  			    	$("#fim-edicao").val(fim_edt);
   	  			    	$("#color-edicao").val(data.event.backgroundColor);
   	  			    	$("#descricao-edicao").val(data.event.extendedProps.description);
-  	  			    	$("#veterinario-edicao").val(data.event.extendedProps.veterinario);
+  	  			    	$("#vets-edicao").append( 
+			    				 '<div class="custom-control custom-radio">'	
+			    				+  '<input class="custom-control-input" type="radio" id="customRadio" name="veterinario.id" value="'+ data.event.extendedProps.veterinario.id +'" required checked="checked">'
+								+  '<label class="custom-control-label" for="customRadio">'+ data.event.extendedProps.veterinario.nome +'</label>'
+								+  '<div class="invalid-feedback">Médico é obrigatório</div>'
+								+'</div>'
+			    		);
   	  			    	$(".modal-title").text("Informações do Agendamento");
   	  			    	if(data.event.extendedProps.paciente != null){
   	  			    		$("#paciente-cadastrado-edicao").show();
@@ -247,6 +253,8 @@
 				$("#modal-agendamento .msg-erro, #modal-agendamento-visualizar .msg-erro").hide();
 				$(".erro-animal").hide();
 				$(".erro-vet").hide();
+				$("#vets, #vets-edicao").val("");
+				 $('div').remove(".custom-radio");
 				
 			});
 			
@@ -255,58 +263,94 @@
 				$(".modal-title").text("Novo Agendamento");
 			});
 			$("#inicio, #fim, #inicio-edicao, #fim-edicao").on('change',function(){
-				$("#veterinario, #veterinario-edicao").val("");
+				$("#vets, #vets-edicao").val("");
 			})
-			function mudar() {
-				var fim = $("#fim").val();			
+ 			$('#inicio, #fim').on('change', function(){
+ 				 $('div').remove(".custom-radio");
+ 				var fim = $("#fim").val();			
 				var inicio = $("#inicio").val();
 				var diaInicial = moment( $("#inicio").val()).weekday() + 1;
 				var diaFinal = moment( $("#fim").val()).weekday() + 1;
-				$("#veterinario").autocomplete({
-					source : function(request, response) {
 						$.ajax({
 							method : "GET",
-							url : "/veterinarios/titulo",
+							url : "/veterinarios/disponiveis",
 							data : {
 								inicio : inicio,
 								fim : fim,
 								diaInicial : diaInicial,
-								diaFinal : diaFinal,
-								termo : request.term
+								diaFinal : diaFinal
+		
 							},
 							success : function(data) {
-								response(data);
+								var ultimo = data.length - 1; 
+								
+								$.each(data, function (k, v) {
+									
+									if ( k == ultimo ) {
+						    			$("#vets").append( 
+						    				 '<div class="custom-control custom-radio">'	
+						    				+  '<input class="custom-control-input" type="radio" id="customRadio'+ k +'" name="veterinario.id" value="'+ v.id +'" required>'
+											+  '<label class="custom-control-label" for="customRadio'+ k +'">'+ v.nome +'</label>'
+											+  '<div class="invalid-feedback">Médico é obrigatório</div>'
+											+'</div>'
+						    			);
+									} else {
+						    			$("#vets").append( 
+						    				 '<div class="custom-control custom-radio">'	
+						    				+  '<input class="custom-control-input" type="radio" id="customRadio'+ k +'" name="veterinario.id" value="'+ v.id +'" required>'
+											+  '<label class="custom-control-label" for="customRadio'+ k +'">'+ v.nome +'</label>'
+											+'</div>'
+						        		);	            				
+									}
+							    });
 							}
 						})
-					}
-				})
-			}
-			function mudarEdit() {
-				var fim = $("#fim-edicao").val();
+					
 				
+ 			})
+ 			$('#inicio-edicao, #fim-edicao').on('change', function(){
+ 				 $('div').remove(".custom-radio");
+ 				var fim = $("#fim-edicao").val();			
 				var inicio = $("#inicio-edicao").val();
 				var diaInicial = moment( $("#inicio-edicao").val()).weekday() + 1;
 				var diaFinal = moment( $("#fim-edicao").val()).weekday() + 1;
-				$("#veterinario-edicao").autocomplete({
-					source : function(request, response) {
 						$.ajax({
 							method : "GET",
-							url : "/veterinarios/titulo",
+							url : "/veterinarios/disponiveis",
 							data : {
 								inicio : inicio,
 								fim : fim,
 								diaInicial : diaInicial,
-								diaFinal : diaFinal,
-								termo : request.term
+								diaFinal : diaFinal
+		
 							},
 							success : function(data) {
-								response(data);
+								var ultimo = data.length - 1; 
+								
+								$.each(data, function (k, v) {
+									
+									if ( k == ultimo ) {
+						    			$("#vets-edicao").append( 
+						    				 '<div class="custom-control custom-radio">'	
+						    				+  '<input class="custom-control-input" type="radio" id="customRadio'+ k +'" name="veterinario.id" value="'+ v.id +'" required>'
+											+  '<label class="custom-control-label" for="customRadio'+ k +'">'+ v.nome +'</label>'
+											+  '<div class="invalid-feedback">Médico é obrigatório</div>'
+											+'</div>'
+						    			);
+									} else {
+						    			$("#vets-edicao").append( 
+						    				 '<div class="custom-control custom-radio">'	
+						    				+  '<input class="custom-control-input" type="radio" id="customRadio'+ k +'" name="veterinario.id" value="'+ v.id +'" required>'
+											+  '<label class="custom-control-label" for="customRadio'+ k +'">'+ v.nome +'</label>'
+											+'</div>'
+						        		);	            				
+									}
+							    });
 							}
 						})
-					}
-				})
-			}
- 
+					
+				
+ 			})
   	
 	</script>
 	
