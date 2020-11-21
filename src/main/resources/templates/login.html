@@ -38,12 +38,11 @@
 				name="remember-me"> Remember me
 			</label>
 		</div>
-			<div id="ex1" class="modal">
-  				<p>Thanks for clicking. That felt good.</p>
-  				<a href="#" rel="modal:close">Close</a>
-			</div>
-			<p><a href="#ex1" rel="modal:open">Open Modal</a></p>
 		<button class="btn-login" type="submit">Entrar</button>
+		<nav class="nav nav-pills flex-column flex-sm-row">
+			<a class="flex-sm-fill text-sm-left nav-link text-decoration-none" th:href="@{/u/novo/cadastro}"><i class="far fa-arrow-alt-circle-right"></i>&nbsp;Novo cadastro</a>
+			<a class="flex-sm-fill text-sm-left nav-link text-decoration-none" th:href="@{/u/p/redefinir/senha}"><i class="fas fa-key"></i>&nbsp;Recuperar senha</a>
+		</nav>
 		<div th:if="${alerta != null}"
 			th:class="${alerta == 'erro'} ? 'alert alert-danger' : 'alert alert-success'"
 			role="alert">

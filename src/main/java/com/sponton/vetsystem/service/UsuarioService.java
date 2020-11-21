@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -31,6 +33,9 @@ public class UsuarioService implements UserDetailsService{
 	
 	@Autowired 
 	private Datatables datatables;
+	
+	@Autowired 
+	private EmailService emailService;
 	
 	@Transactional(readOnly = true)
 	public Usuario buscarPorEmail(String email) {
@@ -104,6 +109,16 @@ public class UsuarioService implements UserDetailsService{
 	@Transactional(readOnly = false)
 	public void remover(Long id) {
 		repository.deleteById(id);
+		
+	}
+
+	@Transactional(readOnly = false)
+	public void pedidoRedefinicaoDeSenha(String email) throws MessagingException {
+		Usuario usuario = buscarPorEmailEAtivo(email)
+				.orElseThrow(()-> new UsernameNotFoundException("Usuário " + email + " não encontrado!"));
+		String verificador = RandomStringUtils.randomAlphanumeric(6);
+		usuario.setCodigoVerificador(verificador);
+		emailService.enviarPedidoRededinicaoSenha(email, verificador);
 		
 	}
 }

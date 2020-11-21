@@ -138,6 +138,7 @@
 								+  '<div class="invalid-feedback">Médico é obrigatório</div>'
 								+'</div>'
 			    		);
+			    		
   	  			    	$(".modal-title").text("Informações do Agendamento");
   	  			    	if(data.event.extendedProps.paciente != null){
   	  			    		$("#paciente-cadastrado-edicao").show();
@@ -308,7 +309,9 @@
 					
 				
  			})
- 			$('#inicio-edicao, #fim-edicao').on('change', function(){
+ 			
+				
+ 			$('#inicio-edicao, #fim-edicao').on('ready change', function(){
  				 $('div').remove(".custom-radio");
  				var fim = $("#fim-edicao").val();			
 				var inicio = $("#inicio-edicao").val();

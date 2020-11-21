@@ -3,6 +3,7 @@ package com.sponton.vetsystem.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -171,5 +172,33 @@ public class UsuarioController {
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
 		return "redirect:/u/listar";
 	}
+	//abre pagina de pedido de redefinicao de senha
+		@GetMapping("/p/redefinir/senha")
+		public String pedidoRedefinirSenha() {
+			return "usuario/pedido-recuperar-senha";
+		}
+		//form de pedido de recuperar senha
+		@GetMapping("/p/recuperar/senha")
+		public String redefinirSenha(String email, ModelMap model) throws MessagingException {
+			service.pedidoRedefinicaoDeSenha(email);
+			model.addAttribute("sucesso","Em instantes você receberá um email para prosseguir com a redefinição de sua senha.");
+			model.addAttribute("usuario", new Usuario(email));
+			return "usuario/recuperar-senha";
+		}
+		//salvar nova senha via recuperacao de senha
+		@PostMapping("/p/nova/senha")
+		public String confirmacaoRedefinicaoSenha(Usuario usuario, ModelMap model) {
+			Usuario u = service.buscarPorEmail(usuario.getEmail());
+			if(!usuario.getCodigoVerificador().equals(u.getCodigoVerificador())) {
+				model.addAttribute("falha", "Código verificador não confere.");
+				return "usuario/recuperar-senha"; 
+			}
+			u.setCodigoVerificador(null);
+			service.alterarSenha(u, usuario.getSenha());
+			model.addAttribute("alerta", "sucesso");
+			model.addAttribute("titulo", "Senha redefinida!");
+			model.addAttribute("texto", "Você já pode logar no sistema.");
+			return"login";
+		}
 	
 }
