@@ -3,40 +3,46 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
+<title>Usuários Cadastrados</title>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<main role="main">
-			<div class="album py-5 bg-light">
-				<div class="container">
+			<ul class="breadcrumb">
+				<li><a th:href="@{/home}">Dashboard </a></li>
+				<li class="active">Usuários</li>
 
-					<div class="row">
-						<div class="col-md-12">
+			</ul>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
 
-							<div th:replace="fragments/alert :: alerta-sucesso"></div>
-							<h2>Usuários Cadastrados</h2>
 
-							<table id="table-usuarios"
-								class="table table-sm table-striped table-bordered nowrap"
-								style="width: 100%">
-								<thead class="thead-dark">
-									<tr>
-										<th scope="col">Nome de Usuário (email)</th>
-										<th scope="col">Cadastro Ativo</th>
-										<th scope="col">Perfis</th>
-										<th scope="col">Credenciais</th>
-										<th scope="col">Dados Pessoais</th>
-										<th scope="col">Excluir</th>
-									</tr>
-								</thead>
-							</table>
-						</div>
+
+						<div th:replace="fragments/alert :: alerta-sucesso"></div>
+						<h2>Usuários Cadastrados</h2>
+
+						<table id="table-usuarios"
+							class="table table-sm table-striped table-bordered nowrap"
+							style="width: 100%">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col">Nome de Usuário (email)</th>
+									<th scope="col">Cadastro Ativo</th>
+									<th scope="col">Perfis</th>
+									<th scope="col">Credenciais</th>
+									<th scope="col">Dados Pessoais</th>
+									<th scope="col">Excluir</th>
+								</tr>
+							</thead>
+						</table>
 					</div>
 				</div>
-				<a class="btn-cadastrar-usuario" href="#" role="button"
-					data-toggle="modal" data-target="#modal-usuario">Novo usuário</a> <span
-					th:replace="usuario/modal :: modal-form"></span>
 			</div>
+			<a class="btn-cadastrar-usuario" href="#" role="button"
+				data-toggle="modal" data-target="#modal-usuario">Novo usuário</a> <span
+				th:replace="usuario/modal :: modal-form"></span>
+
 		</main>
 	</section>
 	<script th:src="@{/js/usuario.js(v=${version})}" th:fragment="js"></script>

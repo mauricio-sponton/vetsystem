@@ -5,9 +5,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
-	.is-invalid{
-		border : 1px solid red !important;
-	}
+.is-invalid {
+	border: 1px solid red !important;
+}
 </style>
 </head>
 <body>
@@ -27,8 +27,8 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body">	
-				<span th:text="${erro}" id="msg-erro"></span>
+				<div class="modal-body">
+					<span th:text="${erro}" id="msg-erro"></span>
 					<form th:action="@{/clientes/salvar}" method="POST"
 						th:object="${cliente}">
 						<div class="form-row">
@@ -148,11 +148,11 @@
 							</div>
 						</div>
 						<input type="hidden" id="id" th:field="*{id}" />
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
-							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal" id="cancelar-modal">Cancelar</button>
-						</div>
+						<button type="button" class="btn btn-danger btn-cancelar"
+							data-dismiss="modal" id="cancelar-modal">Cancelar</button>
+						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+
+
 					</form>
 				</div>
 

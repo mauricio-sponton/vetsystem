@@ -10,6 +10,9 @@ $(document).ready(function() {
 			url : '/u/datatables/server/usuarios',
 			data : 'data'
 		},
+		"columnDefs":[
+        	{"width":"5%", "targets": [3,4,5]}
+        ],
 		columns : [
 				{data : 'email'},
 				{	data : 'ativo', 
@@ -38,10 +41,10 @@ $(document).ready(function() {
 				},
 				{	data : 'id',	
 					render : function(id) {
-						return ''.concat('<a class="btn btn-info btn-sm btn-block"', ' ') 
+						return ''.concat('<a class="btn btn-info btn-sm btn-block btn-view"', ' ') 
 								 .concat('id="dp_').concat(id).concat('"', ' ') 
 								 .concat('role="button" title="Visualizar" data-toggle="tooltip" data-placement="right">', ' ')
-								 .concat('<i class="fas fa-eye"></i></a>');
+								 .concat('<i class="fas fa-glasses"></i></a>');
 					},
 					orderable : false
 				},
@@ -49,7 +52,7 @@ $(document).ready(function() {
 		             data: 'id',
 		                "render": function(id) {
 		                    return '<a class="btn btn-danger btn-sm btn-block" href="/u/excluir/'+ 
-		                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+		                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
 		                }               
 		            }
 		            

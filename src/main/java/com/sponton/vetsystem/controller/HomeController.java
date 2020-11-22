@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sponton.vetsystem.domain.Agendamento;
 import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Especie;
+import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.Notificacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Raca;
@@ -39,6 +40,7 @@ import com.sponton.vetsystem.service.AgendamentoService;
 import com.sponton.vetsystem.service.AnimalService;
 import com.sponton.vetsystem.service.ClienteService;
 import com.sponton.vetsystem.service.EspecieService;
+import com.sponton.vetsystem.service.InternacaoService;
 import com.sponton.vetsystem.service.NotificacaoService;
 import com.sponton.vetsystem.service.RacaService;
 import com.sponton.vetsystem.service.SecretariaService;
@@ -70,6 +72,9 @@ public class HomeController {
 	
 	@Autowired
 	private AgendamentoService agendamentoService;
+	
+	@Autowired
+	private InternacaoService internacaoService;
 
 	@GetMapping({ "/home" })
 	public String home(ModelMap model, @AuthenticationPrincipal User user, RedirectAttributes attr) {
@@ -135,6 +140,9 @@ public class HomeController {
 			}
 			
 		}
+		
+		List<Internacao> internacoes = internacaoService.buscarTodasInternacoesAtiva();
+		
 		List<Raca> racas = racaService.buscarTodasRacas();
 		if (racas.size() > 0) {
 			int t = 0;
@@ -169,7 +177,7 @@ public class HomeController {
 
 		model.addAttribute("animal", animalService.buscarTodosAnimais());
 		model.addAttribute("cliente", clienteService.buscarTodosClientes());
-
+		model.addAttribute("internacao",internacoes);
 		return "home";
 	}
 

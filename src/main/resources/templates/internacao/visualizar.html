@@ -185,8 +185,8 @@
             {orderable: false,
             	data: 'fileName',
             	"render": function(data, type, row){
-            		if(row.nome != ""){
-                	  return '<a href="#" data-toggle="popover-hover"  data-img="/uploads/'+data+'" title="'+row.nome+'"><img src ="/uploads/thumb/'+data+'"/></a>';
+            		if(row.nome != null){
+                	  return '<a href="#" data-toggle="popover-hover"  data-img="/uploads/'+data+'" title="'+row.nome + '.' + row.tipo + '"><img src ="/uploads/thumb/'+data+'"/></a>';
             		}else{
                 	  return '<a href="#" data-toggle="popover-hover"  data-img="/uploads/'+data+'" title="'+data+'"><img src ="/uploads/thumb/'+data+'"/></a>';
             		}
@@ -195,10 +195,10 @@
             },
             {data: 'fileName',
             	"render": function(data, type, row){
-            		if(row.nome != ""){
-            			return row.nome + row.tipo > 10 ?  row.nome.substr( 0, 10 ) + ' .' + row.tipo.slice(-3) : row.nome + ' .' + row.tipo.slice(-4);
+            		if(row.nome != null){
+            			return row.nome.length> 10 ?  row.nome.substr( 0, 10 ) + '..' + ' .' + row.tipo: row.nome + ' .' + row.tipo;
             		}else{
-            			return data.length > 10 ?  data.substr( 0, 10 ) +'… ' + data.slice(-3): data;
+            			return data.length > 10 ?  data.substr( 0, 10 ) + '.. ' + '.' + row.tipo: data;
             		}
             		
             	}

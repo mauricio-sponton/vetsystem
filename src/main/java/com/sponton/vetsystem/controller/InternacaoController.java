@@ -193,7 +193,21 @@ public class InternacaoController {
 			for (int i = 0; i < files.length; i++) {
 				FotoInternacao foto = new FotoInternacao();
 				foto.setFileName(files[i].getOriginalFilename());
-				// foto.setPath("/uploads/");
+				switch(files[i].getContentType()) {
+				case "image/jpeg":
+					foto.setTipo("jpg");
+					break;
+				case "image/jpg":
+					foto.setTipo("jpg");
+					break;
+				case "image/png":
+					foto.setTipo("png");
+					break;
+				default:
+					model.addAttribute("falha", "Tipos suportados de foto são: Jpg, Jpeg ou PNG");
+					break;
+				}
+
 
 				try {
 					foto.setInternacao(internacao);
@@ -334,15 +348,31 @@ public class InternacaoController {
 		if (files.length > 0) {
 			for (int i = 0; i < files.length; i++) {
 				FotoInternacao foto = new FotoInternacao();
-				//foto.setFileName(files[i].getOriginalFilename());
-				//foto.setPath("/uploads/");
-				foto.setInternacao(internacao);
+				foto.setFileName(files[i].getOriginalFilename());
+				switch(files[i].getContentType()) {
+				case "image/jpeg":
+					foto.setTipo("jpg");
+					break;
+				case "image/jpg":
+					foto.setTipo("jpg");
+					break;
+				case "image/png":
+					foto.setTipo("png");
+					break;
+				default:
+					model.addAttribute("falha", "Tipos suportados de foto são: Jpg, Jpeg ou PNG");
+					break;
+				}
+
+
 				try {
+					foto.setInternacao(internacao);
 					fotoInternacaoService.salvarFotos(files, foto);
 				} catch (Exception e) {
-
+					System.out.println(e);
 				}
 			}
+
 		}
 		HistoricoAnimal historico = new HistoricoAnimal();
 		LocalDate data = LocalDate.now();
@@ -453,7 +483,20 @@ public class InternacaoController {
 			return "internacao/visualizar";
 		}
 		if (!file.isEmpty()) {
-			
+			switch(file.getContentType()) {
+			case "image/jpeg":
+				foto.setTipo("jpg");
+				break;
+			case "image/jpg":
+				foto.setTipo("jpg");
+				break;
+			case "image/png":
+				foto.setTipo("png");
+				break;
+			default:
+				model.addAttribute("falha", "Tipos suportados de foto são: Jpg, Jpeg ou PNG");
+				break;
+			}
 			try {
 				
 				foto.setInternacao(internacao);

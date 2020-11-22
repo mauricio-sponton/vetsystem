@@ -59,8 +59,10 @@
 						</div>
 
 						<div class="mb-3">
-							<label for="perfis">Perfil</label> <select id="perfis"
-								class="custom-select" size="4" th:field="*{perfis}"
+							<label for="perfis">Perfil</label>
+							<p>(Pressione CTRL para selecionar mais de um perfil).</p>
+							<select id="perfis" class="custom-select" size="4"
+								th:field="*{perfis}"
 								th:classappend="${#fields.hasErrors('perfis')} ? 'is-invalid'"
 								multiple>
 								<option value="1">Administrador</option>
@@ -84,10 +86,12 @@
 						<input type="hidden" th:field="*{id}">
 						<div class="form-group row">
 							<div class="col-sm-10">
+								<button type="button" class="btn btn-danger btn-cancelar"
+									data-dismiss="modal" aria-label="Close" data-toggle="tooltip"
+									data-placement="right" title="Cancelar">Cancelar</button>
 								<button type="submit" class="btn btn-primary"
 									data-toggle="tooltip" data-placement="right" title="Salvar">
-									<i class="fas fa-save"></i>
-								</button>
+									Salvar</button>
 							</div>
 						</div>
 					</form>

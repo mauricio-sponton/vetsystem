@@ -3,7 +3,7 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Dashboard</title>
 
 
 <style>
@@ -27,40 +27,96 @@ h5 {
 </style>
 </head>
 <body>
-	<h1>Teste</h1>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<div class="testando">
-			<p>
-				<span
-					th:text="'Há um total de ' + ${#lists.size(animal)} + ' animais cadastrados'"></span>
-			</p>
-			<p>
-				<span
-					th:text="'Há um total de ' + ${#lists.size(cliente)} + ' animais cadastrados'"></span>
+			<h1>Dashboard</h1>
+		<div class="dashboard-content">
 
+			
+			<div class="cards">
+				<img th:src="@{/image/admin-icon.svg}" />
+				<p>
+					Total de <strong>Admins</strong> cadastrados:<br> <span
+						th:text="${#lists.size(animal)}"> </span>
+
+				</p>
+			</div>
+
+			<div class="cards">
+				<img th:src="@{/image/vet-icon.svg}" />
+				<p>
+					Total de <strong> Veterinários</strong> cadastrados:<br> <span
+						th:text="${#lists.size(animal)}"> </span>
+
+				</p>
+			</div>
+
+
+			<div class="cards">
+				<img th:src="@{/image/secretary-icon.svg}" />
+				<p>
+					Total de <strong>Secretárias</strong> cadastradas:<br> <span
+						th:text="${#lists.size(animal)}"> </span>
+
+				</p>
+			</div>
+
+		</div>
+
+		<div class="dashboard-content">
+			<div class="cards">
+				<img th:src="@{/image/paw.svg}" />
+				<p>
+					Total de <strong>Animais</strong> cadastrados:<br> <span
+						th:text="${#lists.size(animal)}"> </span>
+
+				</p>
+			</div>
+
+
+			<div class="cards">
+				<img th:src="@{/image/hands-client.svg}" />
+				<p>
+					Total de <strong>Clientes</strong> cadastrados:<br> <span
+						th:text=" ${#lists.size(cliente)}"> </span>
+				</p>
+			</div>
+
+			<div class="cards">
+				<img th:src="@{/image/heartbeat.svg}" />
+				<p>
+					Total de <strong>Internações</strong> ativas:<br> <span
+						th:text=" ${#lists.size(internacao)}"> </span>
+				</p>
+			</div>
+
+
+			<!-- <div th:each="c: ${cliente}">
+				<span th:text="${c.nome}"></span>
+
+			</div>-->
+		</div>
+
+
+		<div class="testando">
+
+
+			<p th:if="${consultasHoje !=null}">
+				<span th:if="${consultasHoje == 0}"> Você não possui
+					consultas agendadas para hoje. </span> <span th:if="${consultasHoje > 0}"
+					th:text="'Você possui um total de ' + ${consultasHoje} + ' consultas agendadas para hoje.'"></span>
 			</p>
-			
-				<p th:if="${consultasHoje !=null}">
-					<span th:if="${consultasHoje == 0}">
-						Você não possui consultas agendadas para hoje.
-					</span>
-					<span th:if="${consultasHoje > 0}"
-						th:text="'Você possui um total de ' + ${consultasHoje} + ' consultas agendadas para hoje.'"></span>
-				</p>
-				<p th:if="${consultasHojeSec !=null}">
-					<span 
-						th:text="${consultasHojeSec} + ' consultas estão agendadas para hoje.'"></span>
-				</p>
-			
+			<p th:if="${consultasHojeSec !=null}">
+				<span
+					th:text="${consultasHojeSec} + ' consultas estão agendadas para hoje.'"></span>
+			</p>
+
 
 			<p>
 				<span th:if="${consultasSemana !=null}"
 					th:text="'Essa semana possui um total de ' + ${consultasSemana} + ' consultas agendadas.'"></span>
 			</p>
-			<div th:each="c: ${cliente}">
-				<span th:text="${c.nome}"></span>
-			</div>
+
 		</div>
 		<div th:if="${notificacoes!=null}">
 			<div id="accordion">
@@ -101,8 +157,8 @@ h5 {
 
 				<legend> Filtros </legend>
 				<div>
-					<input type="checkbox" id="ck-racas" nome="interesse">
-					<label for="ck-racas"> Raças </label>
+					<input type="checkbox" id="ck-racas" nome="interesse"> <label
+						for="ck-racas"> Raças </label>
 				</div>
 				<div>
 					<input type="checkbox" id="ck-especies" name="interesse"> <label

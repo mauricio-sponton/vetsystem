@@ -16,32 +16,43 @@
 <link th:href="@{/css/style-login.css(v=${version})}" rel="stylesheet" />
 </head>
 <body>
-	<img th:src="@{/image/veterinaria.jpg}" class="img_login" />
+	<img th:src="@{/image/vet-1.jpg}" class="img_login" />
 
 	<form th:action="@{/login}" method="post" class="form_login">
-		
+
 		<h1>Login</h1>
+		<img th:src="@{/image/logo.png}" class="logo"
+			alt="Logo do Vet System." />
 
-		<label for="inputEmail" class="label-login">Email</label> <input
-			type="text" id="inputEmail" class="input-login"
-			placeholder="Email address" name="username" required autofocus>
-		<div class="invalid-feedback">Use seu email cadastrado como
-			login.</div>
-
-		<label for="inputPassword" class="label-login">Senha</label> <input
-			type="password" id="inputPassword" class="input-login"
-			placeholder="Password" name="password" required>
-		<div class="invalid-feedback">Digite sua senha.</div>
-
-		<div class="remember-me">
-			<label> <input type="checkbox" id="remember-me"
-				name="remember-me"> Remember me
-			</label>
+		<div class="login">
+			<label for="inputEmail" class="label-login">E-mail</label> <input
+				type="text" id="inputEmail" class="input-login"
+				placeholder="Email address" name="username" required autofocus>
+			<i class="fas fa-envelope"></i>
+			<div class="invalid-feedback">Use seu email cadastrado como
+				login.</div>
 		</div>
-		<button class="btn-login" type="submit">Entrar</button>
+
+		<div class="login">
+			<label for="inputPassword" class="label-login">Senha</label> <input
+				type="password" id="inputPassword" class="input-login"
+				placeholder="Password" name="password" required>
+			<div class="invalid-feedback">Digite sua senha.</div>
+			<i class="fas fa-lock"></i>
+			<div class="remember-me">
+				<label> <input type="checkbox" id="remember-me"
+					name="remember-me"> Remember me
+				</label>
+			</div>
+		</div>
+		<button class="btn-login btn-2 btn-2a" type="submit">Entrar</button>
 		<nav class="nav nav-pills flex-column flex-sm-row">
-			<a class="flex-sm-fill text-sm-left nav-link text-decoration-none" th:href="@{/u/novo/cadastro}"><i class="far fa-arrow-alt-circle-right"></i>&nbsp;Novo cadastro</a>
-			<a class="flex-sm-fill text-sm-left nav-link text-decoration-none" th:href="@{/u/p/redefinir/senha}"><i class="fas fa-key"></i>&nbsp;Recuperar senha</a>
+			<a class="flex-sm-fill text-sm-left nav-link text-decoration-none"
+				th:href="@{/u/novo/cadastro}"><i
+				class="far fa-arrow-alt-circle-right"></i>&nbsp;Novo cadastro</a> <a
+				class="flex-sm-fill text-sm-left nav-link text-decoration-none"
+				th:href="@{/u/p/redefinir/senha}"><i class="fas fa-key"></i>&nbsp;Recuperar
+				senha</a>
 		</nav>
 		<div th:if="${alerta != null}"
 			th:class="${alerta == 'erro'} ? 'alert alert-danger' : 'alert alert-success'"

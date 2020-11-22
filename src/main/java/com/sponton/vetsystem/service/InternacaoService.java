@@ -71,6 +71,12 @@ public class InternacaoService {
 		return datatables.getResponse(page);
 	}
 
+	@Transactional(readOnly = true)
+	public List<Internacao> buscarTodasInternacoesAtiva() {
+		
+		return repository.findInternacaoByAtiva();
+	}
+
 	
 
 	

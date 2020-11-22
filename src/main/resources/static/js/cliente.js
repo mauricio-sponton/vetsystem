@@ -11,6 +11,9 @@ $(document).ready(function () {
             url: '/clientes/datatables/server',
             data: 'data'
         },
+        "columnDefs":[
+        	{"width":"5%", "targets": [3,4,5]}
+        ],
         columns: [
             {data: 'nome'},
             {data: 'email'},
@@ -26,14 +29,14 @@ $(document).ready(function () {
              data: 'id',
                 "render": function(id) {
                     return '<a class="btn btn-danger btn-sm btn-block" href="/clientes/excluir/'+ 
-                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
                 }               
             },
             {orderable: false,
                 data: 'id',
                    "render": function(id) {
-                	   return '<a class="btn btn-success btn-sm btn-block" href="/clientes/visualizar/'+ 
-                   	id +'" role="button"><i class="fas fa-eye"></i></a>';
+                	   return '<a class="btn btn-success btn-sm btn-block btn-view" href="/clientes/visualizar/'+ 
+                   	id +'" role="button"><i class="fas fa-glasses"></i></a>';
                    }               
                }
         ]

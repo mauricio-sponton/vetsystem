@@ -45,6 +45,7 @@ public class FotoInternacaoService {
 			Path absolutePath = currentPath.toAbsolutePath();
 			foto.setPath(absolutePath + "/src/main/resources/static/uploads/");
 			foto.setThumb(absolutePath + "/src/main/resources/static/uploads/thumb/");
+			
 			byte[] bytes = files[i].getBytes();
 			Path path = Paths.get(foto.getPath() + files[i].getOriginalFilename());
 			Files.write(path, bytes);
@@ -94,7 +95,7 @@ public class FotoInternacaoService {
 		Path absolutePath = currentPath.toAbsolutePath();
 		foto.setPath(absolutePath + "/src/main/resources/static/uploads/");
 		foto.setThumb(absolutePath + "/src/main/resources/static/uploads/thumb/");
-		foto.setTipo(file.getContentType());
+		//foto.setTipo(file.getContentType());
 		if(foto.getNome()!=null) {
 			foto.setNome(foto.getNome());
 		}

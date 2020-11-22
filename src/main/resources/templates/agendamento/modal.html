@@ -65,31 +65,7 @@
 							</div>
 						</div>
 
-						<div class="form-row">
-						<!--  
-							<div class="form-group col-md-4">
-								<label for="veterinario">Veterinário</label> <input type="text"
-									class="form-control" id="veterinario" placeholder="João..."
-									onfocus="mudar();"
-									th:classappend="${#fields.hasErrors('veterinario.nome')} ? 'is-invalid'"
-									th:field="*{veterinario.nome}" />
-									<span class="erro-vet" style="display:none"></span>
-								<div class="invalid-feedback">
-									<span th:errors="*{veterinario.nome}"></span>
-								</div>
-
-							</div>
-							-->
-							<div class="form-group col-md-4">
-								<label for="color">Selecione a cor que você deseja:</label> <input
-									th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
-									type="color" id="color" th:field=*{color} class="form-control"
-									name="color" value="#36299e">
-								<div class="invalid-feedback">
-									<span th:errors="*{color}"></span>
-								</div>
-							</div>
-						</div>
+				
 						<div class="form-row">
 							<div class="form-group col-md-4">
 								<label for="inicio">Selecione a data de início</label> <input
@@ -110,6 +86,15 @@
 									<span th:errors="*{fim}"></span>
 								</div>
 							</div>
+							<div class="form-group col-md-4">
+								<label for="color">Selecione a cor que você deseja:</label> <input
+									th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
+									type="color" id="color" th:field=*{color} class="form-control"
+									name="color" value="#36299e">
+								<div class="invalid-feedback">
+									<span th:errors="*{color}"></span>
+								</div>
+							</div>
 						</div>
 						<div class="form-row">
 								<div class="form-group col-md-12">
@@ -124,7 +109,7 @@
 								</div>
 							</div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label for="descricao">Anotações</label>
 								<textarea class="form-control" id="descricao"
 									placeholder="Taz..." autofocus="autofocus"
@@ -137,6 +122,7 @@
 
 						</div>
 						<input type="hidden" id="id" th:field="*{id}" />
+						<button type="button" class="btn btn-danger btn-cancelar" data-dismiss="modal" aria-label="Close">Cancelar</button>
 						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 					</form>
 				</div>

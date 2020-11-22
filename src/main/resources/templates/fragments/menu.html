@@ -1,12 +1,179 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<div th:fragment="menu" class="menu-lateral">
-		<ul>
+
+
+	<nav th:fragment="menu"
+		class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+
+
+		<a class="navbar-brand" href="#"> <img
+			th:src="@{/image/logo-vet-system.png}" class="img_login"
+			alt="Veterinária consultando cachorro." />
+		</a>
+
+		<div class="bem-vindo-user">
+
+			<div th:switch="${currentRole}" sec:authorize="isAuthenticated()">
+				<div sec:authorize="hasAuthority('VETERINARIO')"
+					th:if="${veterinario.nome != null}">
+					<div th:if="${veterinario.sexo == 'Feminino'}">
+						<span style="color: white; font-size: 20px; float: left">Bem
+							vinda, <span class="" th:text="${veterinario.nome}"> </span>
+						</span>
+					</div>
+					<div th:if="${veterinario.sexo == 'Masculino'}">
+						<span style="color: white; font-size: 20px; float: left">Bem
+							vindo, <span class="" th:text="${veterinario.nome}"> </span>
+						</span>
+					</div>
+
+				</div>
+				<!--<div sec:authorize="hasAuthority('VETERINARIO')"
+					th:if="${veterinario.nome == null}">
+					<span style="color: white; font-size: 20px; float: left">Bem
+						vindo(a), <span class="" sec:authentication="name"> </span>
+					</span>
+				</div>-->
+				<div sec:authorize="hasAuthority('SECRETARIA')"
+					th:if="${secretaria.nome != null}">
+					<div th:if="${secretaria.sexo == 'Feminino'}">
+						<span style="color: white; font-size: 20px; float: left">Bem
+							vinda, <span class="" th:text="${secretaria.nome}"> </span>
+						</span>
+					</div>
+					<div th:if="${secretaria.sexo == 'Masculino'}">
+						<span style="color: white; font-size: 20px; float: left">Bem
+							vindo, <span class="" th:text="${secretaria.nome}"> </span>
+						</span>
+					</div>
+
+				</div>
+				<!-- <div sec:authorize="hasAuthority('SECRETARIA')"
+					th:if="${secretaria.nome == null}">
+					<span style="color: white; font-size: 20px; float: left">Bem
+						vindo(a), <span class="" sec:authentication="name"> </span>
+					</span>
+				</div>
+
+				<div th:if="${veterinario == null && secretaria == null}">
+					<span style="color: white; font-size: 20px; float: left">Bem
+						vindo(a), <span class="" sec:authentication="name"> </span>
+					</span>
+				</div>-->
+			</div>
+		</div>
+
+
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarCollapse" aria-controls="navbarCollapse"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav mr-auto sidenav" id="navAccordion">
+
+				<li><a th:href="@{/home}" class="nav-link one" href="#">
+						<i class="fas fa-clinic-medical"></i> Dashboard
+				</a></li>
+
+				<li><a th:href="@{/agenda/abrir}" class="nav-link"> <i
+						class="fas fa-clock"></i> Agenda
+				</a></li>
+
+				<li><a th:href="@{/u/listar}" class="nav-link"> <i
+						class="fas fa-user-md"></i> Usuários
+				</a></li>
+
+
+				<li><a th:href="@{/clientes/listar}" class="nav-link"> <i
+						class="fas fa-handshake"></i>Clientes
+				</a></li>
+
+
+				<li><a class="nav-link nav-link-collapse" href="#"
+					id="hasSubItems" data-toggle="collapse"
+					data-target="#collapseSubItems2" aria-controls="collapseSubItems2"
+					aria-expanded="false"><i class="fas fa-paw"></i> Pets</a>
+					<ul class="nav-second-level collapse" id="collapseSubItems2"
+						data-parent="#navAccordion">
+
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/pacientes/listar}"> <span class="nav-link-text">Listar
+									Pacientes</span></a></li>
+
+
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/especies/listar}"> <span class="nav-link-text">Listar
+									Espécies</span></a></li>
+
+
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/racas/listar}"> <span class="nav-link-text">Listar
+									Raças</span></a></li>
+
+
+					</ul></li>
+				<li><a th:href="@{/consultas/listar}" class="nav-link"> <i
+						class="fas fa-file-medical-alt"></i> Consultas
+				</a></li>
+				<li><a th:href="@{/internacoes/listar}" class="nav-link"><i
+						class="fas fa-heartbeat"></i> Internações</a></li>
+
+				<li><a th:href="@{/vacinas/listar}" class="nav-link"> <i
+						class="fas fa-syringe"></i> Vacinas
+				</a></li>
+
+
+
+
+				<form th:action="@{/logout}" sec:authorize="isAuthenticated()"
+					method="post" class="form-inline">
+
+					<button type="submit" class="dropdown-item nav-link">Sair</button>
+
+				</form>
+
+			</ul>
+
+			<div class="user-menu ml-auto">
+				<form th:action="@{/logout}" sec:authorize="isAuthenticated()"
+					method="post" class="form-inline ">
+					<div class="btn-group mb-2 mr-sm-2">
+
+						<img th:src="@{/image/profile-pic.jpg}"
+							alt="Foto de perfil do usuário." />
+						<div class="dropdown-toggle dropdown-toggle-split"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+						</div>
+
+						<div class="dropdown-menu dropdown-menu-right">
+
+							<a sec:authorize="hasAuthority('VETERINARIO')" class="dropdown-item" th:href="@{/veterinarios/dados}">Dados
+								Cadastrais</a> 
+								<a sec:authorize="hasAuthority('SECRETARIA')" class="dropdown-item" th:href="@{/secretarias/dados}">Dados
+								Cadastrais</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">Editar
+								senha</a>
+							<button type="submit" class="dropdown-item">Sair</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+
+
+	</nav>
+
+		
+		<!-- <ul>
 
 			<li><a th:href="@{/home}"><i class="fas fa-clinic-medical"></i>Dashboard</a></li>
 			<li><a th:href="@{/agenda/abrir}"><i class="fas fa-clock"></i>Agenda</a></li>
@@ -46,7 +213,7 @@
 						senha</a>
 				</div></li>
 				<li><a th:href="@{/consultas/listar}"><i class="fas fa-clock"></i>Consultas</a></li>
-		</ul>
+		</ul>-->
 
 	</div>
 </body>
