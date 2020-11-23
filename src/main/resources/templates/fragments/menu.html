@@ -79,8 +79,8 @@
 		<div class="collapse navbar-collapse" id="navbarCollapse">
 			<ul class="navbar-nav mr-auto sidenav" id="navAccordion">
 
-				<li><a th:href="@{/home}" class="nav-link one" href="#">
-						<i class="fas fa-clinic-medical"></i> Dashboard
+				<li><a th:href="@{/home}" class="nav-link one" href="#"> <i
+						class="fas fa-clinic-medical"></i> Dashboard
 				</a></li>
 
 				<li><a th:href="@{/agenda/abrir}" class="nav-link"> <i
@@ -101,7 +101,7 @@
 					id="hasSubItems" data-toggle="collapse"
 					data-target="#collapseSubItems2" aria-controls="collapseSubItems2"
 					aria-expanded="false"><i class="fas fa-paw"></i> Pets</a>
-					<ul class="nav-second-level collapse" id="collapseSubItems2"
+					<ul class="nav-second-level collapse " id="collapseSubItems2"
 						data-parent="#navAccordion">
 
 						<li class="nav-item"><a class="nav-link"
@@ -147,8 +147,29 @@
 					method="post" class="form-inline ">
 					<div class="btn-group mb-2 mr-sm-2">
 
-						<img th:src="@{/image/profile-pic.jpg}"
+						<img sec:authorize="hasAuthority('SECRETARIA')"
+							th:if="${secretaria.foto ==null}"
+							th:src="@{/image/profile-pic.jpg}"
+							alt="Foto de perfil do usuário." /> <img
+							sec:authorize="hasAuthority('VETERINARIO')"
+							th:if="${veterinario.foto ==null}"
+							th:src="@{/image/profile-pic.jpg}"
 							alt="Foto de perfil do usuário." />
+
+						<div class="wrapper-foto" sec:authorize="hasAuthority('VETERINARIO')">
+							<img alt=""
+								th:if="${veterinario.foto!= null && veterinario.foto.fileName != null}"
+								th:src="@{${'/uploads/thumb/' + veterinario.foto.fileName}}">
+
+						</div>
+						<div class="wrapper-foto" sec:authorize="hasAuthority('SECRETARIA')"
+							th:if="${secretaria != null}">
+							<img alt=""
+								th:if="${secretaria.foto!= null && secretaria.foto.fileName != null}"
+								th:src="@{${'/uploads/thumb/' + secretaria.foto.fileName}}">
+
+						</div>
+
 						<div class="dropdown-toggle dropdown-toggle-split"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
@@ -156,9 +177,10 @@
 
 						<div class="dropdown-menu dropdown-menu-right">
 
-							<a sec:authorize="hasAuthority('VETERINARIO')" class="dropdown-item" th:href="@{/veterinarios/dados}">Dados
-								Cadastrais</a> 
-								<a sec:authorize="hasAuthority('SECRETARIA')" class="dropdown-item" th:href="@{/secretarias/dados}">Dados
+							<a sec:authorize="hasAuthority('VETERINARIO')"
+								class="dropdown-item" th:href="@{/veterinarios/dados}">Dados
+								Cadastrais</a> <a sec:authorize="hasAuthority('SECRETARIA')"
+								class="dropdown-item" th:href="@{/secretarias/dados}">Dados
 								Cadastrais</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">Editar
 								senha</a>
 							<button type="submit" class="dropdown-item">Sair</button>
@@ -172,8 +194,8 @@
 
 	</nav>
 
-		
-		<!-- <ul>
+
+	<!-- <ul>
 
 			<li><a th:href="@{/home}"><i class="fas fa-clinic-medical"></i>Dashboard</a></li>
 			<li><a th:href="@{/agenda/abrir}"><i class="fas fa-clock"></i>Agenda</a></li>
@@ -213,8 +235,8 @@
 						senha</a>
 				</div></li>
 				<li><a th:href="@{/consultas/listar}"><i class="fas fa-clock"></i>Consultas</a></li>
-		</ul>-->
+		</ul>
 
-	</div>
+	</div>-->
 </body>
 </html>

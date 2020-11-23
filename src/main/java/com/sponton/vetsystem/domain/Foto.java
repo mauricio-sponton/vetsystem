@@ -1,5 +1,6 @@
 package com.sponton.vetsystem.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -12,7 +13,18 @@ public class Foto extends AbstractEntity {
 	private String path;
 	
 	private String fileName;
+	
+	@Column(name="thumb")
+	private String thumb;
+	
+	public String getThumb() {
+		return thumb;
+	}
 
+	public void setThumb(String thumb) {
+		this.thumb = thumb;
+	}
+	
 	public String getPath() {
 		return path;
 	}

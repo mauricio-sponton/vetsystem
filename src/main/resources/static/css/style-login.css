@@ -43,13 +43,17 @@ h1{
     height:100vh;
     float:left;
     width:69%;
+    position: fixed;
+    
 }
 .form_login{
-    float:left;
+     float:right;
     width: 30%;
     height:100vh;
     background-image: linear-gradient(#fff, #fff, #f2f2f2, #f2f2f2);
-    display:inline-block
+    display:inline-block;
+    margin-left: 70%
+    
 }
 .logo{
 	
@@ -151,4 +155,29 @@ h1{
 	margin-left: 28px;
 	margin-top: 5px
 }
-
+.p-login{
+	 color:#535355;
+	 font-weight: bold;
+	  font-size:1.1em;
+  
+    padding-bottom: 5px;
+    margin-top: 20px
+}
+#mensagem{
+	position: absolute;
+	top: 10%;
+	left: 6%;
+	
+}
+#mensagem-login{
+	display:none;
+}
+.chave a i, .chave a{
+	color: #0CDB8C
+}
+.chave a{
+	margin-left: 3%
+}
+.invalid-feedback span{
+	margin-left: 7%
+}

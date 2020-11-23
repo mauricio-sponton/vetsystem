@@ -1,44 +1,128 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
+<meta charset="UTF-8" />
+<link
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css(v=${version}) }"
+	rel="stylesheet" />
+<style type="text/css">
+.corpo {
+	width: 30%;
+	height: 80vh;
+	background: #f0ede6;
+	display: inline-block;
+	margin-left: 35%;
+	margin-top: 5%;
+	border: 2px solid gray;
+	-webkit-box-shadow: 6px 6px 9px -1px rgba(0, 0, 0, 0.81);
+	box-shadow: 6px 6px 9px -1px rgba(0, 0, 0, 0.81);
+}
+
+.corpo img {
+	margin: auto;
+	margin-top: 5%;
+	display: block
+}
+
+.container {
+	margin-top: 10%
+}
+
+.btn-login {
+	border: none;
+	font-family: inherit;
+	font-size: 13px;
+	color: #fff;
+	cursor: pointer;
+	padding: 12px 80px;
+	width: 85%;
+	display: inline-block;
+	margin: 0px 30px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 700;
+	outline: none;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+	margin-bottom: 25px
+}
+
+.btn-2 {
+	background: #0cdb8c;
+	color: #fff;
+	box-shadow: 0 6px #17b679;
+	-webkit-transition: none;
+	-moz-transition: none;
+	transition: none
+}
+
+.btn-login:focus {
+	outline: none !important
+}
+
+.btn-2a {
+	border-radius: 0 0 3px 3px;
+}
+
+.btn-2a:hover {
+	box-shadow: 0 4px #17b679;
+	text-decoration: none;
+	color: gray
+}
+
+.btn-2a:active {
+	box-shadow: 0 4px #17b679;
+}
+
+.p-login {
+	color: #535355;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.numero {
+	font-weight: bold;
+	font-size: 1.1em;
+	color: #535355;
+}
+
+.final {
+	margin: 5% 0 10% 0
+}
+</style>
 </head>
 <body>
-<section>
-<section class="layout-content" layout:fragment="corpo">
-		<main role="main">
-		
-			<section class="jumbotron text-center">			
-				<img class="d-block mx-auto mb-4" src="/image/spring-security.png"
-					width="72" height="72">
-				<div class="container">
-					<h1 class="jumbotron-heading">VetSystem</h1>
-					<p class="lead text-muted">Médicos e Especialistas</p>
-				</div>
-			</section>
+	<section class="main">
+		<div class="corpo">
+			<img th:src="@{/image/logo.png}" class="logo"
+				alt="Logo do Vet System." />
 
-			<div class="album py-5 bg-light">
-			    <div class="container">
-			        <div class="text-center">
-			            <h1 class="h3 mb-3 font-weight-normal">
-			                <i class="oi oi-warning"></i>
-			                <span th:text="${status}"></span>
-			            </h1>
-			
-			            <i class="fas fa-user-lock"></i>
-			            <h5 class="text-danger" th:text="${error}"></h5>
-			
-			            <div>
-			                <span th:text="${message}"></span><br/><br/>
-			                <a class="btn btn-primary" type="button" href="javascript:history.back()">Voltar a página anterior</a>
-			            </div>
-			        </div>
-			    </div>
+			<div class="container">
+				<div class="text-center">
+					<h1 class="h3 mb-3 font-weight-normal">
+						<i class="oi oi-warning"></i> <span class="numero"
+							th:text="${status}"></span>
+					</h1>
+
+					<i class="fas fa-user-lock"></i>
+					<h5 class="text-danger" th:text="${error}"></h5>
+
+					<div class="final">
+						<span class="p-login" th:text="${message}"></span>
+					</div>
+					<a class="btn-login btn-2 btn-2a" type="button"
+						href="javascript:history.back()">Voltar a página anterior</a>
+
+				</div>
 			</div>
-		</main>
-		</section>
-	    <script	th:src="~{}" th:fragment="js"></script>
+
+		</div>
+
+
+		<script th:src="~{}" th:fragment="js"></script>
 		<script th:inline="javascript" th:fragment="inlinescript"></script>
-</section>
+	</section>
 </body>
-</html>	
+</html>

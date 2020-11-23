@@ -251,11 +251,10 @@ button.close {
 	content: '\25BE';
 }
 
-.nav-link-show:after {
+.nav-link-collapse[aria-expanded="true"]:after{
 	float: right;
-	content: '\25BA';
+	content: '\25B4';
 }
-
 .nav-item ul.nav-second-level {
 	padding-left: 0;
 }
@@ -328,9 +327,16 @@ i{
 }
 
 .user-menu img {
+margin-top: 2px
+
+}
+.wrapper-foto{
+	
 	width: 55px;
-	height: auto;
-	border-radius: 30px;
+	height: 55px;
+	border-radius: 50%;
+	overflow: hidden;
+	background: white
 }
 
 .user-menu .dropdown-toggle {
