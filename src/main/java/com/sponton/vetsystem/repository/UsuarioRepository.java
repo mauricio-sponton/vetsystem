@@ -23,4 +23,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	@Query("select u from Usuario u " + "join u.perfis p " + "where u.id = :usuarioId AND p.id IN :perfisId")
 	Optional<Usuario> findByIdAndPerfis(Long usuarioId, Long[] perfisId);
+
+	@Query("select distinct u from Usuario u " + "join u.perfis p " + "where p.desc ='SECRETARIA' or p.desc ='VETERINARIO'")
+	Page<Usuario> findVeterinarioAndSecretaria(Pageable pageable);
+
+	@Query("select distinct u from Usuario u " + "join u.perfis p " + "where not(p.desc ='ADMIN') and u.email like :search% or not(p.desc ='ADMIN') and p.desc like :search%")
+	Page<Usuario> findByEmailOrPerfilFuncionario(String search, Pageable pageable);
 }

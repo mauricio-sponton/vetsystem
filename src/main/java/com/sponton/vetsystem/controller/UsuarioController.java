@@ -47,7 +47,7 @@ public class UsuarioController {
 
 	@Autowired
 	private SecretariaService secretariaService;
-	
+
 	@Autowired
 	private CargaHorariaService cargaHorariaService;
 
@@ -59,8 +59,17 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/listar")
-	public String listarUsuarios(Usuario usuario) {
-		return "usuario/lista";
+	public String listarUsuarios(Usuario usuario, @AuthenticationPrincipal User user) {
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.ADMIN.getDesc())) || (user
+				.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.ADMIN.getDesc()))
+				&& user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))
+				|| (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.ADMIN.getDesc())) && user
+						.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))))) {
+			return "usuario/lista";
+		}else{
+			return "usuario/funcionarios";
+		}
+		
 	}
 
 	// listar na datatable
@@ -68,10 +77,15 @@ public class UsuarioController {
 	public ResponseEntity<?> listarUsuariosDatatables(HttpServletRequest request) {
 		return ResponseEntity.ok(service.buscarTodos(request));
 	}
+	@GetMapping("/datatables/server/funcionarios")
+	public ResponseEntity<?> listarFuncionariosDatatables(HttpServletRequest request) {
+		return ResponseEntity.ok(service.buscarTodosFuncionarios(request));
+	}
 
 	// salvar cadastro de usuario por administrador
 	@PostMapping("/cadastro/salvar")
-	public String salvarUsuarios(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr, ModelMap model) {
+	public String salvarUsuarios(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr,
+			ModelMap model) {
 		if (result.hasErrors()) {
 			model.addAttribute("erro", "Por favor preencha os campos");
 			return "usuario/lista";
@@ -130,10 +144,10 @@ public class UsuarioController {
 				&& !us.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
 
 			return new ModelAndView("usuario/lista", "usuario", service.buscarPorId(usuarioId));
-			
+
 		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
 			Veterinario veterinario = veterinarioService.buscarPorUsuarioId(usuarioId);
-			
+
 			if (veterinario.hasNotId()) {
 				ModelAndView model = new ModelAndView("error");
 				model.addObject("status", 403);
@@ -161,10 +175,12 @@ public class UsuarioController {
 
 		return new ModelAndView("redirect:/u/lista");
 	}
+
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr, @AuthenticationPrincipal User user) {
-		Usuario usuario = service.buscarPorEmail(user.getUsername());;
-		if(usuario.getId() == id) {
+		Usuario usuario = service.buscarPorEmail(user.getUsername());
+		;
+		if (usuario.getId() == id) {
 			attr.addFlashAttribute("falha", "Você não pode deletar esse usuário");
 			return "redirect:/u/listar";
 		}
@@ -172,33 +188,37 @@ public class UsuarioController {
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
 		return "redirect:/u/listar";
 	}
-	//abre pagina de pedido de redefinicao de senha
-		@GetMapping("/p/redefinir/senha")
-		public String pedidoRedefinirSenha() {
-			return "usuario/pedido-recuperar-senha";
-		}
-		//form de pedido de recuperar senha
-		@GetMapping("/p/recuperar/senha")
-		public String redefinirSenha(String email, ModelMap model) throws MessagingException {
-			service.pedidoRedefinicaoDeSenha(email);
-			model.addAttribute("sucesso","Em instantes você receberá um email para prosseguir com a redefinição de sua senha.");
-			model.addAttribute("usuario", new Usuario(email));
+
+	// abre pagina de pedido de redefinicao de senha
+	@GetMapping("/p/redefinir/senha")
+	public String pedidoRedefinirSenha() {
+		return "usuario/pedido-recuperar-senha";
+	}
+
+	// form de pedido de recuperar senha
+	@GetMapping("/p/recuperar/senha")
+	public String redefinirSenha(String email, ModelMap model) throws MessagingException {
+		service.pedidoRedefinicaoDeSenha(email);
+		model.addAttribute("sucesso",
+				"Em instantes você receberá um email para prosseguir com a redefinição de sua senha.");
+		model.addAttribute("usuario", new Usuario(email));
+		return "usuario/recuperar-senha";
+	}
+
+	// salvar nova senha via recuperacao de senha
+	@PostMapping("/p/nova/senha")
+	public String confirmacaoRedefinicaoSenha(Usuario usuario, ModelMap model) {
+		Usuario u = service.buscarPorEmail(usuario.getEmail());
+		if (!usuario.getCodigoVerificador().equals(u.getCodigoVerificador())) {
+			model.addAttribute("falha", "Código verificador não confere.");
 			return "usuario/recuperar-senha";
 		}
-		//salvar nova senha via recuperacao de senha
-		@PostMapping("/p/nova/senha")
-		public String confirmacaoRedefinicaoSenha(Usuario usuario, ModelMap model) {
-			Usuario u = service.buscarPorEmail(usuario.getEmail());
-			if(!usuario.getCodigoVerificador().equals(u.getCodigoVerificador())) {
-				model.addAttribute("falha", "Código verificador não confere.");
-				return "usuario/recuperar-senha"; 
-			}
-			u.setCodigoVerificador(null);
-			service.alterarSenha(u, usuario.getSenha());
-			model.addAttribute("alerta", "sucesso");
-			model.addAttribute("titulo", "Senha redefinida!");
-			model.addAttribute("texto", "Você já pode logar no sistema.");
-			return"login";
-		}
-	
+		u.setCodigoVerificador(null);
+		service.alterarSenha(u, usuario.getSenha());
+		model.addAttribute("alerta", "sucesso");
+		model.addAttribute("titulo", "Senha redefinida!");
+		model.addAttribute("texto", "Você já pode logar no sistema.");
+		return "login";
+	}
+
 }

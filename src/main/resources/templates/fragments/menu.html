@@ -147,26 +147,25 @@
 					method="post" class="form-inline ">
 					<div class="btn-group mb-2 mr-sm-2">
 
-						<img sec:authorize="hasAuthority('SECRETARIA')"
-							th:if="${secretaria.foto ==null}"
-							th:src="@{/image/profile-pic.jpg}"
-							alt="Foto de perfil do usuário." /> <img
-							sec:authorize="hasAuthority('VETERINARIO')"
-							th:if="${veterinario.foto ==null}"
-							th:src="@{/image/profile-pic.jpg}"
-							alt="Foto de perfil do usuário." />
-
-						<div class="wrapper-foto" sec:authorize="hasAuthority('VETERINARIO')">
+		
+						
+						<div class="wrapper-foto"
+							sec:authorize="hasAuthority('VETERINARIO')">
 							<img alt=""
 								th:if="${veterinario.foto!= null && veterinario.foto.fileName != null}"
 								th:src="@{${'/uploads/thumb/' + veterinario.foto.fileName}}">
+							<img th:if="${veterinario.foto ==null}" th:src="@{/image/profile-pic.jpg}"
+								alt="Foto de perfil do usuário." />
 
 						</div>
-						<div class="wrapper-foto" sec:authorize="hasAuthority('SECRETARIA')"
+						<div class="wrapper-foto"
+							sec:authorize="hasAuthority('SECRETARIA')"
 							th:if="${secretaria != null}">
 							<img alt=""
 								th:if="${secretaria.foto!= null && secretaria.foto.fileName != null}"
 								th:src="@{${'/uploads/thumb/' + secretaria.foto.fileName}}">
+								<img th:if="${secretaria.foto ==null}" th:src="@{/image/profile-pic.jpg}"
+								alt="Foto de perfil do usuário." />
 
 						</div>
 

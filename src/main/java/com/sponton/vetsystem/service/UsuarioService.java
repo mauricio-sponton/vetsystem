@@ -121,4 +121,14 @@ public class UsuarioService implements UserDetailsService{
 		emailService.enviarPedidoRededinicaoSenha(email, verificador);
 		
 	}
+
+	@Transactional(readOnly = true)
+	public Map<String, Object> buscarTodosFuncionarios(HttpServletRequest request) {
+		datatables.setRequest(request);
+		datatables.setColunas(DatatablesColunas.USUARIOS);
+		Page<Usuario> page = datatables.getSearch().isEmpty() 
+				? repository.findVeterinarioAndSecretaria(datatables.getPageable())
+				: repository.findByEmailOrPerfilFuncionario(datatables.getSearch(), datatables.getPageable());
+		return datatables.getResponse(page);
+	}
 }
