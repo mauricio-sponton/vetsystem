@@ -13,21 +13,30 @@ CSS referente a pagina error e modal-confirm
 */
 
 
-h1, h2 {
+h1, h2{
 	font-size: 2em;
 	margin: 1% 1% 0.5% 1%;
 	text-transform: Uppercase;
 	font-weight: 600;
-	color: #50B969
+	color: #50B969; 
 }
 
 h1{
 	margin-left:20px;
 	margin-bottom:10px
 }
+
 h2 {
 	margin-left: 0%;
 	margin-bottom: 2%
+}
+.h2-textarea{
+	font-size: 2em;
+	margin: 2% 1% 0.5% 2%;
+	float:left;
+	text-transform: Uppercase;
+	font-weight: 600;
+	color: #50B969; 
 }
 h5.modal-title {
 	color: #04D284;
@@ -158,7 +167,8 @@ BREADCRUMB
 */
 .breadcrumb {
 	font-size: 1.1em;
-	border-radius: 0
+	border-radius: 0;
+	
 }
 
 ul.breadcrumb li+li:before {
@@ -441,4 +451,150 @@ table .btn-danger{
 	width:140px;
 	text-align:center;
 
+}
+/*CLIENTES ALINHA ITENS*/
+.inf-content {
+	width: 85%;
+	display: flex;
+	margin-left: 1%;
+	float: left
+}
+
+.global-color {
+	background: #FAFAFA;
+	float: left;
+	width: 95%;
+	margin-top:1%;
+	
+		
+	margin-left: 1%;
+	border-radius: 4px;
+	box-shadow: 2px 3px 7px #50B969;
+}
+
+#img-infs {
+	width: 10%;
+	float: left;
+	margin: 2% 1%;
+	color:
+}
+
+.inf-h4 {
+	margin: 1.5% 0% 1.5% 1%;
+	font-weight: 600;
+	font-size: 1.4em;
+	color: #5B5A5A;
+	float: left;
+}
+
+.alinha-dados strong {
+	color: #50B969 !important;
+	font-size: 1.1em
+}
+
+.alinha-dados p>span, .alinha-dados div>span, .alinha-dados strong+p {
+	color: black !important;
+	font-size: 1.1em
+}
+
+.alinha-dados {
+	width: 20%;
+	margin-left: 1%;
+	margin-right: 3%;
+	margin-top: 1.2%;
+	float: left;
+}
+.area{
+	width: 100%;
+}
+
+.user-btn {
+	width: 400px;
+	float: left;
+	font-size: 1.1em
+}
+
+.user-btn i {
+	margin-left: 10px;
+	color: #fff;
+	font-size: 1em;
+}
+
+.user-btn a {
+	background-color: #04D284;
+	border-radius: 5px;
+	color: white;
+	border: none;
+	width: 100px;
+	padding: 5px;
+	margin-right: 10px;
+	transition: 2s;
+	cursor: pointer;
+	margin-top: 15px;
+	margin-left: 3%;
+	font-size: 1.1em
+}
+
+.user-btn a:hover {
+	background-color: #50B969;
+	text-decoration: none
+}
+
+.accordion {
+	background-color: #FAFAFA;
+	cursor: pointer;
+	padding: 18px;
+	width: 95%;
+	border: none;
+	text-align: left;
+	outline: none;
+	box-shadow: 2px 2px 7px #50B969; font-size : 15px;
+	transition: 0.4s;
+	transition: 0.4s;
+	margin-left: 1%;
+	font-size: 15px;
+}
+
+.accordion .active, .accordion:hover {
+	background-color: #ccc;
+}
+
+.accordion:after {
+	content: '\002B';
+	color: #777;
+	font-weight: bold;
+	float: right;
+	margin-left: 5px;
+}
+
+.accordion .active:after {
+	content: "\2212";
+}
+
+.accordion span {
+	color: black;
+	font-size: 1.2em;
+}
+
+button:focus {
+	background: #ccc;
+	outline: none !important;
+	
+}
+
+.panel {
+	padding: 0 18px;
+	background-color: white;
+	max-height: 0;
+
+	overflow: hidden;
+	transition: max-height 0.2s ease-out;
+}
+
+.clientes-cadastrados::before {
+	font-family: "Font Awesome 5 Free";
+	content: "\f2b5";
+	font-weight: 600;
+	display: inline-block;
+	margin-right: 1%
 }

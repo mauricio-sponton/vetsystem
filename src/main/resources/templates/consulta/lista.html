@@ -4,13 +4,15 @@
 <head>
 <meta charset="UTF-8" />
 <style type="text/css">
-
 </style>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<main role="main">
-			<div class="album py-5 bg-light">
+			<ul class="breadcrumb">
+				<li><a th:href="@{/home}">Dashboard </a></li>
+				<li class='active'>Consultas</li>
+			</ul>
 				<div class="container">
 
 					<div class="row">
@@ -26,7 +28,7 @@
 									<tr>
 										<th scope="col">Paciente</th>
 										<th scope="col">Data</th>
-										<th scope="col">Término</th>	
+										<th scope="col">Término</th>
 										<th scope="col">Editar</th>
 										<th scope="col">Excluir</th>
 										<th scope="col">Visualizar</th>
@@ -39,7 +41,7 @@
 				<a class="btn-cadastrar-usuario" href="#" role="button"
 					data-toggle="modal" data-target="#modal-consulta">Nova Consulta</a>
 				<span th:replace="consulta/modal :: modal-form"></span>
-			</div>
+			
 		</main>
 
 	</section>

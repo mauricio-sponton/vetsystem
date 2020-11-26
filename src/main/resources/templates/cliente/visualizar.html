@@ -11,26 +11,126 @@
 
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-	<ul class="breadcrumb">
+
+		<ul class="breadcrumb">
 			<li><a th:href="@{/home}">Dashboard </a></li>
 			<li><a th:href="@{/clientes/listar}">Clientes</a></li>
-			<li><a th:href="@{/clientes/visualizar/{id} (id=${cliente.id})}"><span th:text="${cliente.nome}"></span></a></li>
+			<li class ="active"><span 
+					th:text="${cliente.nome}"></span></li>
 
 		</ul>
-		<div class=teste>
-			<span th:text="${cliente.nome}"></span> <span
-				th:text="${cliente.endereco.cidade}"></span> <span
-				th:text="${cliente.endereco.uf}"></span>
-
-			<div th:each="a : ${animais}">
-				<span th:text="${a.nome}"></span>
-
+		<h1>Perfil do Cliente</h1>
+		<div class="global-color">
+			<div id="img-infs">
+				<img th:src="@{/image/crm.svg}"
+					style="width: 120px; height: auto; float: left" />
 			</div>
+
+			<section class="inf-content">
+
+
+				<div class="alinha-dados">
+
+					<strong>Nome Completo: </strong>
+					<p th:text="${cliente.nome}"></p>
+				</div>
+
+				<div class="alinha-dados">
+					<strong>Cpf: </strong>
+					<p th:text="${cliente.cpf}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Telefone: </strong>
+					<p th:text="${cliente.telefone}"></p>
+				</div>
+
+
+				<div class="alinha-dados">
+
+					<strong>E-mail: </strong>
+					<p th:text="${cliente.email}"></p>
+				</div>
+
+			</section>
+			<section class="inf-content">
+
+				<div class="alinha-dados">
+
+					<strong>Logradouro: </strong>
+					<p th:text="${cliente.endereco.logradouro}"></p>
+				</div>
+
+				<div class="alinha-dados">
+					<strong>Bairro:</strong>
+					<p th:text="${cliente.endereco.bairro}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Complemento</strong>
+					<p th:text="${cliente.endereco.complemento}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Cidade: </strong>
+					<p>
+						<span th:text="${cliente.endereco.cidade}"></span> - <span
+							th:text="${cliente.endereco.uf}"></span>
+					</p>
+				</div>
+			</section>
+		</div>
+
+		<h4 class="inf-h4">Lista de Animais de Estimação</h4>
+
+
+		<div th:each="a : ${animais}">
+			<button class="accordion">
+				<span th:text="${a.nome}"></span>
+			</button>
+			<div class="panel">
+
+
+				<div th:if="${a.foto == null}">
+					<img alt="" th:src="@{/image/animal_default.jpg}"
+						style="width: 200px; height: auto">
+				</div>
+				<div th:if="${a.foto!= null && a.foto.fileName != null}">
+					<img alt="" th:src="@{${'/uploads/' + a.foto.fileName}}"
+						style="width: 200px; height: auto">
+				</div>
+				<p th:text="${#temporals.format(a.dataNascimento, 'dd/MM/yyyy')}"></p>
+				<p th:text="${a.especie.nome}"></p>
+				<p th:text="${a.raca.nome}"></p>
+			</div>
+		</div>
+
+		<div class="user-btn">
+
+			<!-- <button><i class="fas fa-edit"></i> Editar</button>-->
+			<a type="button" href="javascript:history.back()"><i
+				class="fas fa-arrow-left"></i>Voltar</a>
+
 		</div>
 
 	</section>
 
+
 	<script th:src="@{/js/cliente.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		var acc = document.getElementsByClassName("accordion");
+		var i;
+
+		for (i = 0; i < acc.length; i++) {
+			acc[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				var panel = this.nextElementSibling;
+				if (panel.style.maxHeight) {
+					panel.style.maxHeight = null;
+				} else {
+					panel.style.maxHeight = panel.scrollHeight + "px";
+				}
+			});
+		}
+	</script>
+
+
 </body>
 </html>

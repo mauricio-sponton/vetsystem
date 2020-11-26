@@ -142,15 +142,13 @@ public class UsuarioController {
 		if (us.getPerfis().contains(new Perfil(PerfilTipo.ADMIN.getCod()))
 				&& !us.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))
 				&& !us.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
-
 			return new ModelAndView("usuario/lista", "usuario", service.buscarPorId(usuarioId));
 
 		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
 			Veterinario veterinario = veterinarioService.buscarPorUsuarioId(usuarioId);
-
 			if (veterinario.hasNotId()) {
 				ModelAndView model = new ModelAndView("error");
-				model.addObject("status", 403);
+				model.addObject("status", 404);
 				model.addObject("error", "Página não encontrada");
 				model.addObject("message", "Os dados do veterinário ainda não foram cadastrados");
 				return model;
@@ -172,7 +170,6 @@ public class UsuarioController {
 				return new ModelAndView("secretaria/visualizar", "secretaria", secretaria);
 			}
 		}
-
 		return new ModelAndView("redirect:/u/lista");
 	}
 

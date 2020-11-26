@@ -14,8 +14,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Secretaria;
+import com.sponton.vetsystem.domain.Usuario;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.SecretariaService;
+import com.sponton.vetsystem.service.UsuarioService;
 import com.sponton.vetsystem.service.VeterinarioService;
 
 @ControllerAdvice(annotations = Controller.class)
@@ -26,6 +28,9 @@ public class InicialController {
 	
 	@Autowired
 	private SecretariaService secretariaService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	@ModelAttribute("currentRole")
 	public void consultarNome(@AuthenticationPrincipal User user, ModelMap model) {

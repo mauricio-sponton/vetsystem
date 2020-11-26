@@ -25,7 +25,39 @@
 				<div class="modal-body">
 					<span th:text="${erro}" id="msg-erro"></span>
 					<form id="form-consulta" th:action="@{/consultas/salvar}"
-						method="POST" th:object="${consulta}">
+						method="POST" th:object="${consulta}">		
+						
+						<div class="form-row">
+							<div class="form-group col-md-4">
+								<label for="animal">Paciente</label> <input type="text"
+									class="form-control" id="animal" placeholder="Taz..."
+									th:classappend="${#fields.hasErrors('animal.nome')} ? 'is-invalid'"
+									th:field="*{animal.nome}" />
+									<span id="erro-animal" style="display:none"></span>
+								<div class="invalid-feedback">
+									<span th:errors="*{animal.nome}"></span>
+								</div>
+							</div>
+
+							<div class="form-group col-md-4">
+								<label for="peso">Peso</label> <input type="text"
+									class="form-control" id="peso" data-mask="##,#"
+									 th:field="*{peso}"
+									th:classappend="${#fields.hasErrors('peso')} ? 'is-invalid'" />
+								<div class="invalid-feedback">
+									<span th:errors="*{peso}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="temperatura">Temperatura</label> <input type="text"
+									class="form-control" id="temperatura" data-mask="##,#"
+									data-mask-reverse="true" th:field="*{temperatura}"
+									th:classappend="${#fields.hasErrors('temperatura')} ? 'is-invalid'" />
+								<div class="invalid-feedback">
+									<span th:errors="*{temperatura}"></span>
+								</div>
+							</div>
+						</div>
 						<div class="form-row">
 
 							<div class="form-group col-md-4">
@@ -46,9 +78,6 @@
 									<span th:errors="*{termino}"></span>
 								</div>
 							</div>
-
-						</div>
-						<div class="form-row">
 							<div class="form-group col-md-4">
 								<label for="datePickerId">Selecione a data da consulta</label> <input
 									class="form-control" type="date" id="datePickerId"
@@ -57,19 +86,10 @@
 								<div class="invalid-feedback">
 									<span th:errors="*{data}"></span>
 								</div>
-							</div>
-							<div class="form-group col-md-6">
-								<label for="descricao">Anotações</label>
-								<textarea class="form-control" id="descricao"
-									autofocus="autofocus" th:field="*{descricao}"
-									th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
-								<div class="invalid-feedback">
-									<span th:errors="*{descricao}"></span>
-								</div>
-							</div>
+							</div>	
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label for="prescricao">Prescrição</label>
 								<textarea class="form-control" id="prescricao"
 									autofocus="autofocus" th:field="*{prescricao}"
@@ -80,34 +100,13 @@
 							</div>
 						</div>
 						<div class="form-row">
-
-							<div class="form-group col-md-4">
-								<label for="animal">Paciente</label> <input type="text"
-									class="form-control" id="animal" placeholder="Taz..."
-									th:classappend="${#fields.hasErrors('animal.nome')} ? 'is-invalid'"
-									th:field="*{animal.nome}" />
-									<span id="erro-animal" style="display:none"></span>
+							<div class="form-group col-md-12">
+								<label for="descricao">Anotações</label>
+								<textarea class="form-control" id="descricao"
+									autofocus="autofocus" th:field="*{descricao}"
+									th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
 								<div class="invalid-feedback">
-									<span th:errors="*{animal.nome}"></span>
-								</div>
-							</div>
-
-							<div class="form-group col-md-3">
-								<label for="peso">Peso</label> <input type="text"
-									class="form-control" id="peso" data-mask="##,#"
-									 th:field="*{peso}"
-									th:classappend="${#fields.hasErrors('peso')} ? 'is-invalid'" />
-								<div class="invalid-feedback">
-									<span th:errors="*{peso}"></span>
-								</div>
-							</div>
-							<div class="form-group col-md-3">
-								<label for="temperatura">Temperatura</label> <input type="text"
-									class="form-control" id="temperatura" data-mask="##,#"
-									data-mask-reverse="true" th:field="*{temperatura}"
-									th:classappend="${#fields.hasErrors('temperatura')} ? 'is-invalid'" />
-								<div class="invalid-feedback">
-									<span th:errors="*{temperatura}"></span>
+									<span th:errors="*{descricao}"></span>
 								</div>
 							</div>
 						</div>

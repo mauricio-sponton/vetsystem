@@ -11,17 +11,109 @@ h2 {
 .layout-content span {
 	color: purple
 }
+.por-consulta, .por-paciente{
+	display:none
+}
 </style>
 </head>
 <body>
 	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 	<section class="layout-content" layout:fragment="corpo">
+	
 
-		<span th:text="${consulta.data}"></span>
-		<span th:text="${consulta.animal.nome}"></span>
+	<ul id="por-consulta" class="breadcrumb por-consulta">
+			<li><a th:href="@{/home}">Dashboard </a></li>
+			<li><a th:href="@{/consultas/listar}">Consultas</a></li>
+			<li class="active"><span th:text="'Consulta do ' + ${consulta.animal.nome}"></span></li>
+	</ul>
+	<ul id="por-paciente" class="breadcrumb por-paciente">
+			<li><a th:href="@{/home}">Dashboard </a></li>
+			<li><a th:href="@{/pacientes/listar}">Pacientes</a></li>
+			<li><a th:href="@{/pacientes/visualizar/{id} (id=${consulta.animal.id})}"><span th:text="${consulta.animal.nome}"></span></a></li>
+			<li class="active"><span th:text="'Consulta do ' + ${consulta.animal.nome}"></span></li>
+	</ul>
+	
+	<h1>Consulta do Paciente</h1>
+		<div class="global-color">
+			<div id="img-infs">
+				<img th:src="@{/image/ultrasound.svg}"
+					style="width: 120px; height: auto; float: left" />
+			</div>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Tutor: </strong>
+					<p th:text="${consulta.animal.cliente.nome}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Paciente: </strong>
+					<p th:text="${consulta.animal.nome}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Peso: </strong>
+					<p th:text="${consulta.peso}  + ' ' + Kg"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Temperatura: </strong>
+					<p th:text="${consulta.temperatura} + ' ' + 'º'+C"></p>
+					
+				</div>
+			</section>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Data da consulta: </strong>
+					<p th:text="${#temporals.format(consulta.data, 'dd/MM/yyyy')}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Início: </strong>
+					<p th:text="${consulta.hora}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Término: </strong>
+					<p th:text="${consulta.termino}"></p>
+				</div>
+			
+			</section>
+		</div>
+		<h2 class="h2-textarea">Prescrição</h2>
+		<div class="global-color">
+			<section class="inf-content">
+				<div class="alinha-dados area">
+					<p style='white-space:pre-wrap' th:text="${consulta.prescricao}"></p>
+				</div>
+			
+			</section>
+		</div>
+		<h2 class="h2-textarea">Anotações</h2>
+		<div class="global-color">
+			<section class="inf-content">
+				<div class="alinha-dados area">
+					<p style='white-space:pre-wrap' th:text="${consulta.descricao}"></p>
+				</div>
+			
+			</section>
+		</div>
+		<div class="user-btn">
+			<a type="button" href="javascript:history.back()"><i
+				class="fas fa-arrow-left"></i>Voltar</a>
+		</div>
 
 	</section>
 	<script th:src="@{/js/consulta.js(v=${version})}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		
+		//var a = window.history.length
+		$(document).ready(function(){
+			var referrer =  document.referrer;
+			if(referrer.startsWith("http://localhost:8080/pacientes/visualizar")){
+				$("#por-paciente").removeClass('por-paciente')
+				$("#por-consulta").addClass('por-consulta');
+			}else{
+				$("#por-paciente").addClass('por-paciente');
+				$("#por-consulta").removeClass('por-consulta')
+			}
+			
+		})
+	
+	</script>
 </body>
 </html>

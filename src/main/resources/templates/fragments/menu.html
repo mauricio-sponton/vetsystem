@@ -16,7 +16,7 @@
 			alt="Veterinária consultando cachorro." />
 		</a>
 
-		<div class="bem-vindo-user">
+		<div class="bem-vindo-user" >
 
 			<div th:switch="${currentRole}" sec:authorize="isAuthenticated()">
 				<div sec:authorize="hasAuthority('VETERINARIO')"
@@ -39,7 +39,7 @@
 						vindo(a), <span class="" sec:authentication="name"> </span>
 					</span>
 				</div>-->
-				<div sec:authorize="hasAuthority('SECRETARIA')"
+				<div sec:authorize="hasAuthority('SECRETARIA')" 
 					th:if="${secretaria.nome != null}">
 					<div th:if="${secretaria.sexo == 'Feminino'}">
 						<span style="color: white; font-size: 20px; float: left">Bem
