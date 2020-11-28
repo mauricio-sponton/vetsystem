@@ -1,6 +1,19 @@
 $(document).ready(function () {
 	moment.locale('pt-BR');
     var table = $('#table-clientes').DataTable({
+    	"language":{
+	    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
+	    		"zeroRecords": "Nenhum registro encontrado",
+	            "info": "Mostrando página _PAGE_ de _PAGES_",
+	            "infoEmpty": " ",
+	            "search": "Pesquise: ",
+	            "paginate": {
+	                "first":      "Primeiro",
+	                "last":       "Ultimo",
+	                "next":       "Próximo",
+	                "previous":   "Anterior"
+	            } 
+	    	},
     	searching: true,
     	order: [[ 0, "asc" ]],
     	lengthMenu: [5, 10],

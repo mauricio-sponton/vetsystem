@@ -378,9 +378,12 @@ public class AnimalController {
 	@GetMapping("/visualizar/{id}")
 	public String visualizar(@PathVariable("id") Long id, Internacao internacao, Aplicacao aplicacao, Consulta consulta, ModelMap model) {
 		Animal animal = service.buscarPorId(id);
-		aplicacao.setId(null);
-		internacao.setId(null);
-		consulta.setId(null);
+		//aplicacao.setId(null);
+		//internacao.setId(null);
+		//consulta.setId(null);
+		model.addAttribute("aplicacao", new Aplicacao());
+		model.addAttribute("internacao", new Internacao());
+		model.addAttribute("consulta", new Consulta());
 		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));

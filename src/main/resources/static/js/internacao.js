@@ -2,6 +2,19 @@
 $(document).ready(function () {
 	moment.locale('pt-BR');
     var table = $('#table-internacoes').DataTable({
+    	"language":{
+	    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
+	    		"zeroRecords": "Nenhum registro encontrado",
+	            "info": "Mostrando página _PAGE_ de _PAGES_",
+	            "infoEmpty": " ",
+	            "search": "Pesquise: ",
+	            "paginate": {
+	                "first":      "Primeiro",
+	                "last":       "Ultimo",
+	                "next":       "Próximo",
+	                "previous":   "Anterior"
+	            } 
+	    	},
     	searching: true,
     	order: [[ 0, "asc" ]],
     	lengthMenu: [5, 10],
@@ -47,14 +60,14 @@ $(document).ready(function () {
              data: 'id',
                 "render": function(id) {
                     return '<a class="btn btn-danger btn-sm btn-block" href="/internacoes/excluir/'+ 
-                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
                 }               
             },
             {orderable: false,
                 data: 'id',
                    "render": function(id) {
-                	   return '<a class="btn btn-success btn-sm btn-block" href="/internacoes/visualizar/'+ 
-                   	id +'" role="button"><i class="fas fa-eye"></i></a>';
+                	   return '<a class="btn btn-success btn-sm btn-block btn-view" href="/internacoes/visualizar/'+ 
+                   	id +'" role="button"><i class="fas fa-glasses"></i></a>';
                    }               
                }
         ]

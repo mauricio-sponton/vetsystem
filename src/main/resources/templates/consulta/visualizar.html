@@ -11,9 +11,7 @@ h2 {
 .layout-content span {
 	color: purple
 }
-.por-consulta, .por-paciente{
-	display:none
-}
+
 </style>
 </head>
 <body>
@@ -36,7 +34,11 @@ h2 {
 	<h1>Consulta do Paciente</h1>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:src="@{/image/ultrasound.svg}"
+				<img th:if="${consulta.animal.foto == null}"
+					th:src="@{/image/report.svg}"
+					style="width: 120px; height: auto; float: left" /> <img
+					th:if="${consulta.animal.foto != null}"
+					th:src="@{${'/uploads/' + consulta.animal.foto.fileName}}"
 					style="width: 120px; height: auto; float: left" />
 			</div>
 			<section class="inf-content">
@@ -78,7 +80,8 @@ h2 {
 		<div class="global-color">
 			<section class="inf-content">
 				<div class="alinha-dados area">
-					<p style='white-space:pre-wrap' th:text="${consulta.prescricao}"></p>
+					<p th:if="${consulta.prescricao != null}" style='white-space:pre-wrap' th:text="${consulta.prescricao}"></p>
+					<p th:if="${consulta.prescricao == null}">Nenhuma informação cadastrada.</p>
 				</div>
 			
 			</section>
@@ -87,7 +90,8 @@ h2 {
 		<div class="global-color">
 			<section class="inf-content">
 				<div class="alinha-dados area">
-					<p style='white-space:pre-wrap' th:text="${consulta.descricao}"></p>
+					<p th:if="${consulta.descricao != ''}" style='white-space:pre-wrap' th:text="${consulta.descricao}"></p>
+					<p th:if="${consulta.descricao == ''}">Nenhuma informação cadastrada.</p>
 				</div>
 			
 			</section>
@@ -102,18 +106,7 @@ h2 {
 	<script th:inline="javascript" th:fragment="inlinescript">
 		
 		//var a = window.history.length
-		$(document).ready(function(){
-			var referrer =  document.referrer;
-			if(referrer.startsWith("http://localhost:8080/pacientes/visualizar")){
-				$("#por-paciente").removeClass('por-paciente')
-				$("#por-consulta").addClass('por-consulta');
-			}else{
-				$("#por-paciente").addClass('por-paciente');
-				$("#por-consulta").removeClass('por-consulta')
-			}
-			
-		})
-	
+		
 	</script>
 </body>
 </html>

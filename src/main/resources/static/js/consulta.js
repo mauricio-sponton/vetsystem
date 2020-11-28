@@ -14,6 +14,9 @@ $(document).ready(function () {
                 "previous":   "Anterior"
             } 
     	},
+    	 "columnDefs":[
+         	{"width":"5%", "targets": [3,4,5]}
+         ],
     	searching: true,
     	order: [[ 0, "asc" ]],
     	lengthMenu: [5, 10],
@@ -51,14 +54,14 @@ $(document).ready(function () {
              data: 'id',
                 "render": function(id) {
                     return '<a class="btn btn-danger btn-sm btn-block" href="/consultas/excluir/'+ 
-                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
                 }               
             },
             {orderable: false,
                 data: 'id',
                    "render": function(id) {
-                       return '<a class="btn btn-danger btn-sm btn-block" href="/consultas/visualizar/'+ 
-                       	id +'" role="button"><i class="fas fa-eye"></i></a>';
+                       return '<a class="btn btn-danger btn-sm btn-block btn-view" href="/consultas/visualizar/'+ 
+                       	id +'" role="button"><i class="fas fa-glasses"></i></a>';
                    }               
                }
         ]

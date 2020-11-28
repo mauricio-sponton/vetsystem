@@ -467,7 +467,7 @@ table .btn-danger{
 	margin-top:1%;
 	
 		
-	margin-left: 1%;
+	margin-left: 2%;
 	border-radius: 4px;
 	box-shadow: 2px 3px 7px #50B969;
 }
@@ -504,14 +504,19 @@ table .btn-danger{
 	margin-top: 1.2%;
 	float: left;
 }
-.area{
+.area {
+	width: 100%;
+
+}
+a{
 	width: 100%;
 }
 
 .user-btn {
 	width: 400px;
 	float: left;
-	font-size: 1.1em
+	font-size: 1.1em;
+	margin-left: .8%
 }
 
 .user-btn i {
@@ -597,4 +602,124 @@ button:focus {
 	font-weight: 600;
 	display: inline-block;
 	margin-right: 1%
+}
+.consultas-cadastradas::before{
+	font-family: "Font Awesome 5 Free";
+	content: "\f481";
+	font-weight: 600;
+	display: inline-block;
+	margin-right: 1%
+}
+.internacoes-cadastradas::before{
+	font-family: "Font Awesome 5 Free";
+	content: "\f0f1";
+	font-weight: 600;
+	display: inline-block;
+	margin-right: 1%
+}
+.vacinas-cadastradas::before{
+	font-family: "Font Awesome 5 Free";
+	content: "\f48e";
+	font-weight: 600;
+	display: inline-block;
+	margin-right: 1%
+}
+/*INPUT FILE*/
+.js .inputfile {
+    width: 0.1px;
+   height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+   
+    z-index: -1;
+}
+
+.inputfile + label {
+    max-width: 80%;
+    font-size: 1.25rem;
+    /* 20px */
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.625rem 1.25rem;
+     margin-left: 5px;
+    /* 10px 20px */
+}
+
+.no-js .inputfile + label {
+    display: none;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+
+
+.inputfile + label svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-top: -0.25em;
+    /* 4px */
+    margin-right: 0.25em;
+    /* 4px */
+} 
+
+.inputfile-6 + label {
+    color: #d3394c;
+}
+
+.inputfile-6 + label {
+    border: 1px solid #04D284;
+    background-color: white;
+    padding: 0;
+    
+}
+
+.inputfile-6:focus + label,
+.inputfile-6.has-focus + label,
+.inputfile-6 + label:hover {
+    border-color: #04D284;
+     
+}
+
+.inputfile-6 + label span,
+.inputfile-6 + label strong {
+    padding: 0.625rem 1.25rem;
+    color: indigo;
+    /* 10px 20px */
+}
+
+.inputfile-6 + label span {
+    width: 200px;
+    min-height: 2em;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.inputfile-6 + label strong {
+    height: 100%;
+    color: #f1e5e6;
+    background-color: #04D284;
+    display: inline-block;
+}
+
+.inputfile-6:focus + label strong,
+.inputfile-6.has-focus + label strong,
+.inputfile-6 + label:hover strong {
+    background-color: #208a15;
+}
+.por-consulta, .por-paciente{
+	display:none
 }

@@ -199,6 +199,8 @@ public class ConsultaController {
 		Animal animal = animalService.buscarPorId(idAnimal);
 		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("consulta", service.buscarPorId(id));
+		model.addAttribute("aplicacao", new Aplicacao());
+		model.addAttribute("internacao", new Internacao());
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
 		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));

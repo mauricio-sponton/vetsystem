@@ -1,5 +1,6 @@
 package com.sponton.vetsystem.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -15,7 +16,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -53,6 +56,15 @@ public class Internacao extends AbstractEntity {
 	@DateTimeFormat(iso = ISO.TIME)
 	private LocalTime horaSaida;
 	
+	@NotNull(message="Insira o pesoa")
+	@NumberFormat(style = Style.NUMBER, pattern = "##,#")
+	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 00.0")
+	private BigDecimal peso;
+	
+	@NotNull(message="Insira a temperatura")
+	@NumberFormat(style = Style.NUMBER, pattern = "##,#")
+	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 00.0")
+	private BigDecimal temperatura; 
 	
 	@ManyToOne
 	private Animal animal;
@@ -61,8 +73,22 @@ public class Internacao extends AbstractEntity {
 	@OneToMany(mappedBy = "internacao", cascade = CascadeType.REMOVE)
 	private List<FotoInternacao> fotos;
 	
-	
-	
+	public BigDecimal getPeso() {
+		return peso;
+	}
+
+	public void setPeso(BigDecimal peso) {
+		this.peso = peso;
+	}
+
+	public BigDecimal getTemperatura() {
+		return temperatura;
+	}
+
+	public void setTemperatura(BigDecimal temperatura) {
+		this.temperatura = temperatura;
+	}
+
 	public List<FotoInternacao> getFotos() {
 		return fotos;
 	}

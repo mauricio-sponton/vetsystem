@@ -264,6 +264,8 @@ public class InternacaoController {
 		Animal animal = animalService.buscarPorId(idAnimal);
 		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("internacao", service.buscarPorId(id));
+		model.addAttribute("aplicacao", new Aplicacao());
+		model.addAttribute("consulta", new Consulta());
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
 		// model.addAttribute("consulta",

@@ -4,101 +4,136 @@
 <head>
 <meta charset="UTF-8" />
 <style>
-
 #table-fotos td {
-      text-align: center;
-      vertical-align: middle;
-      border-bottom: none; !important
-  }
-  #table-fotos td:first-child{
-        display: none
-            
-    
-   }
-#wrapper {
-	width: 100%;
-}
-.pop{
-  width: 250px;
-  height: auto	
-}
- .popover-body{
- 	 width: 300px;
- }
-@media screen and (max-width: 700px) {   
-   #table-fotos, #table-fotos tr, #table-fotos td { display: block; border:none}
-   #table-fotos{
-   	width: 70%;
-   	margin-left: 10%
-   }
- 	#table-fotos th{
-      display: none
-	}	
-	#table-fotos td:first-child{
-        
-            
-    
-   }
-   #table-fotos tr{
-	   
-   }
-   #table-fotos td{
-   	 clear: both;
-   text-align: left;
-   
-    padding: 4px 150px 4px 90px;
-    width: 100%;
-         
-   }
-   #table-fotos td:before{
-            content: '';
-            display: block;
-  
-            
-   }
-   #table-fotos td:nth-child(2):before { content: 'Nome:'; }
-   #table-fotos td:nth-child(3):before { content: 'Descrição:'; }
-         
-            
-   
+	text-align: center;
+	vertical-align: middle;
 }
 
+#table-fotos td:first-child {
+	
+}
 
+.pop {
+	width: 250px;
+	height: auto
+}
 
+.popover-body {
+	width: 300px;
+}
 </style>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-	<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<span style="color: indigo" th:text="${internacao.status}"></span> <span
-			style="color: indigo" th:text="${internacao.dataSaida}"></span>
+		<ul id="por-consulta" class="breadcrumb por-consulta">
+			<li><a th:href="@{/home}">Dashboard </a></li>
+			<li><a th:href="@{/internacoes/listar}">Internações</a></li>
+			<li class="active"><span
+				th:text="'Internação do ' + ${internacao.animal.nome}"></span></li>
+		</ul>
+		<ul id="por-paciente" class="breadcrumb por-paciente">
+			<li><a th:href="@{/home}">Dashboard </a></li>
+			<li><a th:href="@{/pacientes/listar}">Pacientes</a></li>
+			<li><a
+				th:href="@{/pacientes/visualizar/{id} (id=${internacao.animal.id})}"><span
+					th:text="${internacao.animal.nome}"></span></a></li>
+			<li class="active"><span
+				th:text="'Internacao do ' + ${internacao.animal.nome}"></span></li>
+		</ul>
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<div id="imagem" style="display: none">
 			<img alt="" th:src="@{/image/animal_default.jpg}">
 		</div>
-		<!--  <div id="wrapper" th:if="${fotos != null}">
-		<div class="container-foto" th:each="f: ${fotos}">
-			<img alt="" th:src="@{${'/uploads/' + f.fileName}}">
-			<a><i class="fa fa-times" aria-hidden="true"></i></a>
-			<div>
-					<input type="checkbox" class="ck-fotos">
+		<h1>Internação</h1>
+		<div class="global-color">
+			<div id="img-infs">
+				<img th:if="${internacao.animal.foto == null}"
+					th:src="@{/image/ultrasound.svg}"
+					style="width: 120px; height: auto; float: left" /> <img
+					th:if="${internacao.animal.foto != null}"
+					th:src="@{${'/uploads/' + internacao.animal.foto.fileName}}"
+					style="width: 120px; height: auto; float: left" />
+			</div>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Paciente: </strong>
+					<p th:text="${internacao.animal.nome}"></p>
 				</div>
-		</div>
-		<button id="btn-deletar">Deletar</button>
-		</div> -->
-		<div class="container">
+				<div class="alinha-dados">
+					<strong>Peso: </strong>
+					<p th:text="${internacao.peso} + ' Kg'"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Temperatura: </strong>
+					<p th:text="${internacao.temperatura} + ' ºC'"></p>
+				</div>
+			</section>
+			<section class="inf-content">
+				
+				<div class="alinha-dados">
+					<strong>Status da internação: </strong>
+					<p th:text="${internacao.status}"></p>
+				</div>
 
+				<div class="alinha-dados">
+					<strong>Admissão do paciente: </strong>
+					<p
+						th:text="${#temporals.format(internacao.dataEntrada, 'dd/MM/yyyy')} + ' às ' + ${internacao.horaEntrada}"></p>
+				</div>
+				<div class="alinha-dados"
+					th:if="${internacao.dataSaida != null && internacao.horaSaida != null}">
+					<strong>Alta do paciente: </strong>
+					<p
+						th:text="${#temporals.format(internacao.dataSaida, 'dd/MM/yyyy')} + ' às ' + ${internacao.horaSaida}"></p>
+				</div>
+				<div class="alinha-dados"
+					th:if="${internacao.dataSaida == null && internacao.horaSaida == null}">
+					<strong>Alta do paciente: </strong>
+					<p>Internação em andamento</p>
+				</div>
+
+			</section>
+		</div>
+
+		<h2 class="h2-textarea">Prescrição</h2>
+		<div class="global-color">
+			<section class="inf-content">
+				<div class="alinha-dados area">
+					<p th:if="${internacao.prescricao != ''}"
+						style='white-space: pre-wrap' th:text="${internacao.prescricao}"></p>
+					<p th:if="${internacao.prescricao == ''}">Nenhuma informação
+						cadastrada.</p>
+				</div>
+			</section>
+		</div>
+		<h2 class="h2-textarea">Anotações</h2>
+		<div class="global-color">
+			<section class="inf-content">
+				<div class="alinha-dados area">
+					<p th:if="${internacao.descricao != ''}"
+						style='white-space: pre-wrap' th:text="${internacao.descricao}"></p>
+					<p th:if="${internacao.descricao == ''}">Nenhuma informação
+						cadastrada.</p>
+
+				</div>
+
+			</section>
+		</div>
+
+
+		<div class="container">
 			<div class="row">
-				<div class="col-md-12">
+				<div style="margin-left: 1%" class="col-md-10">
 
 
 					<h2>Fotos</h2>
 
 					<table id="table-fotos"
 						class="table table-sm table-bordered table-striped nowrap"
-						style="width: 100%">
+						style="width: 100%;">
 						<thead class="thead-dark">
 							<tr>
-							    <th style="display:none" scope="col">Id</th>
+
 								<th scope="col">Foto</th>
 								<th scope="col">Nome</th>
 								<th scope="col">Descricao</th>
@@ -111,10 +146,10 @@
 				</div>
 			</div>
 			<a class="btn-cadastrar-usuario" href="#" role="button"
-					data-toggle="modal" data-target="#modal-foto">Nova foto</a> <span
-					th:replace="foto/modal :: modal-form"></span>
+				data-toggle="modal" data-target="#modal-foto">Nova foto</a> <span
+				th:replace="foto/modal :: modal-form"></span>
 		</div>
-		
+
 	</section>
 	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
@@ -153,6 +188,19 @@
 		$(document).ready(function () {
 			moment.locale('pt-BR');
    			var table = $('#table-fotos').DataTable({
+   				"language":{
+   		    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
+   		    		"zeroRecords": "Nenhum registro encontrado",
+   		            "info": "Mostrando página _PAGE_ de _PAGES_",
+   		            "infoEmpty": " ",
+   		            "search": "Pesquise: ",
+   		            "paginate": {
+   		                "first":      "Primeiro",
+   		                "last":       "Ultimo",
+   		                "next":       "Próximo",
+   		                "previous":   "Anterior"
+   		            } 
+   		    	},
     	  drawCallback: function () {
     		  $('[data-toggle="popover-hover"]').popover({
 			      html: true,
@@ -169,19 +217,18 @@
     		],
         processing: true,
         serverSide: true,
-      // responsive:true,
+        responsive:true,
         ajax: {
             url: '/internacoes/datatables/fotos/server/' + idInternacao + '',
             data: 'data'
         },
         "columnDefs": [
-            { "width": "10%", "targets": [1],
-             "width": "70px", "targets": [4]},
+            { "width": "10%", "targets": [1, 3, 4, 5]}
             
            
           ],
         columns: [
-        	{data: "id"},
+        	
             {orderable: false,
             	data: 'fileName',
             	"render": function(data, type, row){
@@ -223,15 +270,15 @@
             {orderable: false,
              data: 'id',
                 "render": function(id) {
-                    return '<a class="btn btn-danger btn-sm btn-block" href="/internacoes/excluir/foto/'+ 
-                    	id +'/internacao/'+ idInternacao +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+                    return '<a class="btn btn-danger btn-sm btn-block " href="/internacoes/excluir/foto/'+ 
+                    	id +'/internacao/'+ idInternacao +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
                 }               
             },
             {orderable: false,
                 data: 'id',
                    "render": function(id) {
-                	   return '<a class="btn btn-success btn-sm btn-block" href="/internacoes/visualizar/foto/'+ 
-                   	id +'" role="button"><i class="fas fa-eye"></i></a>';
+                	   return '<a class="btn btn-success btn-sm btn-block btn-view" href="/internacoes/visualizar/foto/'+ 
+                   	id +'" role="button"><i class="fas fa-glasses"></i></a>';
                    }               
                }
         ]

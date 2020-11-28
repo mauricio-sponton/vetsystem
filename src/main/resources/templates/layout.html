@@ -66,6 +66,7 @@
 	<script th:src="@{/js/cbpFWTabs.js(v=${version})}"></script>
 	<!-- js agenda full calendar -->
 	<script th:src="@{/js/calendar.js(v=${version})}"></script>
+	<script th:src="@{/js/custom-file-input.js(v=${version})}"></script>
 	<script th:src="@{/js/locales/pt-br.js(v=${version})}"></script>
 	<script th:replace=":: js"></script>
 	<script th:replace=":: inlinescript" th:inline="javascript"></script> 
@@ -97,7 +98,18 @@
 			});
 
 		})();
-		
+		$(document).ready(function(){
+			var referrer =  document.referrer;
+			if(referrer.startsWith("http://localhost:8080/pacientes/visualizar")){
+				$("#por-paciente").removeClass('por-paciente')
+				$("#por-consulta").addClass('por-consulta');
+			}else{
+				$("#por-paciente").addClass('por-paciente');
+				$("#por-consulta").removeClass('por-consulta')
+			}
+			
+		})
+	
 	</script>
 </body>
 </html>

@@ -420,7 +420,6 @@ h2 {
 			var internacao = [[${internacao.id}]];
 			var consulta = [[${consulta.id}]];
 			$(document).ready(function () {
-				
 				moment.locale('pt-BR');
 			    var table = $('#table-aplicacoes').DataTable({
 			    	"language":{
@@ -524,8 +523,8 @@ h2 {
 			$("#terminoConsulta").val("");
 			$("#descricaoConsulta").val("");
 			$("#prescricaoConsulta").val("");
-			$("#temperatura").val("");
-			$("#peso").val("");
+			$("#temperaturaConsulta").val("");
+			$("#pesoConsulta").val("");
 			$('#idConsulta').val(null);           
 			$(".modal-title").text("Nova Consulta"); 
 			$(".invalid-feedback span").html("");
@@ -535,19 +534,19 @@ h2 {
 			
 			
 		});
-			if((aplicacao !=null && $("#animal").val() == "")&&(aplicacao !=null && $("#animalConsulta").val() == "") ){
+			if(aplicacao !=null ){
 				
 				$("#modal-aplicacao").modal('show');
 	    		$(".modal-title").text("Editar Aplicação");
 			}
-			if((internacao !=null && $("#datePickerId").val() == "")&&(internacao !=null && $("#animalConsulta").val() == "") ){
+			if(internacao !=null){
 				   $(".modal-title").text("Editar Internação");
 			    	$("#modal-internacao-paciente").modal('show');
 			    	$("#animal").attr('readonly', 'readonly');		
 			}
 			 var temperat = [[${consulta.temperatura}]];
 				var pes = [[${consulta.peso}]];
-			if((consulta !=null && $("#animal").val() == "")&&(consulta !=null && $("#datePickerId").val() == "") ){
+			if(consulta !=null){
 			
 				var teste = parseFloat($("#temperatura").val());
 				var peso = parseFloat($("#peso").val());

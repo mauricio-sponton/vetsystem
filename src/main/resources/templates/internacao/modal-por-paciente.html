@@ -53,8 +53,8 @@
 
 						</div>
 						<div class="form-row entrada">
-							<div class="form-group col-md-4">
-								<label for="dataEntrada">Data de admissão do paciente</label> <input
+							<div class="form-group col-md-3">
+								<label for="dataEntrada">Data de admissão</label> <input
 									class="form-control" type="date" id="dataEntrada"
 									th:classappend="${#fields.hasErrors('dataEntrada')} ? 'is-invalid'"
 									th:field="*{dataEntrada}" />
@@ -62,13 +62,31 @@
 									<span th:errors="*{dataEntrada}"></span>
 								</div>
 							</div>
-							<div class="form-group col-md-4">
-								<label for="inicio">Hora de admissão do paciente</label> <input
+							<div class="form-group col-md-3">
+								<label for="inicio">Hora de admissão</label> <input
 									class="form-control" type="time" id="inicio"
 									th:classappend="${#fields.hasErrors('horaEntrada')} ? 'is-invalid'"
 									th:field="*{horaEntrada}" />
 								<div class="invalid-feedback">
 									<span th:errors="*{horaEntrada}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="peso">Peso</label> <input type="text"
+									class="form-control" id="peso" data-mask="##,#"
+									 th:field="*{peso}"
+									th:classappend="${#fields.hasErrors('peso')} ? 'is-invalid'" />
+								<div class="invalid-feedback">
+									<span th:errors="*{peso}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="temperatura">Temperatura</label> <input type="text"
+									class="form-control" id="temperatura" data-mask="##,#"
+									data-mask-reverse="true" th:field="*{temperatura}"
+									th:classappend="${#fields.hasErrors('temperatura')} ? 'is-invalid'" />
+								<div class="invalid-feedback">
+									<span th:errors="*{temperatura}"></span>
 								</div>
 							</div>
 						</div>
