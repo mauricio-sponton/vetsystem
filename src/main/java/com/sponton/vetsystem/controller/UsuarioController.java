@@ -155,8 +155,8 @@ public class UsuarioController {
 			} else {
 				List<CargaHoraria> cargasVet = cargaHorariaService.buscarHorarioPorVeterinario(veterinario.getId());
 				modelmap.addAttribute("cargasVet", cargasVet);
-				modelmap.addAttribute("veterinario", veterinario);
-				return new ModelAndView("veterinario/visualizar");
+				modelmap.addAttribute("vet", veterinario);
+				return new ModelAndView("veterinario/userview");
 			}
 
 		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
@@ -167,7 +167,7 @@ public class UsuarioController {
 				model.addObject("error", "Página não encontrada");
 				model.addObject("message", "Os dados da secretária ainda não foram cadastrados");
 			} else {
-				return new ModelAndView("secretaria/visualizar", "secretaria", secretaria);
+				return new ModelAndView("secretaria/userview", "sec", secretaria);
 			}
 		}
 		return new ModelAndView("redirect:/u/lista");

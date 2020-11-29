@@ -1,0 +1,146 @@
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+<style type="text/css">
+.teste span {
+	color: blue
+}
+
+.mostrar {
+	background-color: indigo
+}
+
+.dias {
+	background-color: black;
+	!
+	important
+}
+
+form {
+	width: 47.2%
+}
+
+.adiciona-tr {
+	background: gray;
+	opacity: 0.5
+}
+
+</style>
+</head>
+
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<h1 th:if="${vet.sexo =='Feminino'}">Usuária:  <strong th:text="${vet.nome}"></strong></h1>
+		<h1 th:if="${vet.sexo =='Masculino'}">Usuário:  <span th:text="${vet.nome}"></span></h1>
+		<div class="global-color">
+			<div id="img-infs">
+				<img th:if="${vet.foto == null}"
+					th:src="@{/image/ultrasound.svg}"
+					style="width: 120px; height: auto; float: left" /> <img
+					th:if="${vet.foto != null}"
+					th:src="@{${'/uploads/' + vet.foto.fileName}}"
+					style="width: 120px; height: auto; float: left" />
+			</div>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Nome: </strong>
+					<p th:text="${vet.nome}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>CRMV: </strong>
+					<p th:text="${vet.crmv}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Telefone: </strong>
+					<p th:text="${vet.telefone}"></p>
+				</div>
+
+				<div class="alinha-dados">
+					<strong>Email: </strong>
+					<p th:text="${vet.usuario.email}"></p>
+				</div>
+			</section>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Sexo: </strong>
+					<p th:text="${vet.sexo}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>CPF: </strong>
+					<p th:text="${vet.sexo}"></p>
+				</div>
+			</section>
+
+		</div>
+		<h2 class="h2-textarea">dias de trabalho</h2>
+
+		<table th:if="${cargasVet != null}" class="table form-vet">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Dia</th>
+					<th scope="col">Entrada</th>
+					<th scope="col">Saída</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="c: ${cargasVet}">
+
+					<td scope="row" th:switch="${c.diaDaSemana}">
+						<div class="dias" th:case="1">
+							<span>Domingo</span>
+						</div>
+						<div class="dias" th:case="2">
+							<span>Segunda</span>
+						</div>
+						<div class="dias" th:case="3">
+							<span>Terça</span>
+						</div>
+						<div class="dias" th:case="4">
+							<span>Quarta</span>
+						</div>
+						<div class="dias" th:case="5">
+							<span>Quinta</span>
+						</div>
+						<div class="dias" th:case="6">
+							<span>Sexta</span>
+						</div>
+						<div class="dias" th:case="7">
+							<span>Sábado</span>
+						</div>
+
+					</td>
+
+					<td>
+						<div th:if="${c.inicio == null}">
+							<span>Folga</span>
+						</div>
+						<div th:if="${c.inicio !=''}">
+							<span th:text="${c.inicio}"></span>
+						</div>
+
+					</td>
+					<td>
+						<div th:if="${c.fim == null}">
+							<span>Folga</span>
+						</div>
+						<div th:if="${c.fim !=''}">
+							<span th:text="${c.fim}"></span>
+						</div>
+
+					</td>
+
+
+				</tr>
+			</tbody>
+		</table>
+
+	</section>
+
+	<script th:src="@{/js/veterinario.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	
+	</script>
+</body>
+</html>

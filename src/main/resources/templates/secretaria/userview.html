@@ -1,0 +1,28 @@
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+<style type="text/css">
+.teste span {
+	color: blue
+}
+</style>
+</head>
+
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="teste">
+			<span th:text="${sec.nome}"></span> <span
+				th:text="${sec.sexo}"></span>
+		</div>
+
+
+
+	</section>
+
+	<script th:src="@{/js/secretaria.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	
+	</script>
+</body>
+</html>

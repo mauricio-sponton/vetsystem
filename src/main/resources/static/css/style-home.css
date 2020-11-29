@@ -22,7 +22,9 @@ h1, h2{
 	font-weight: 600;
 	color: #50B969; 
 }
-
+h1 strong{
+	color: #50B969; 
+}
 h1{
 	margin-left:20px;
 	margin-bottom:10px
