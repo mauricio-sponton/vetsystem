@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}" class="no-js">
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}"
+	class="no-js">
 <head>
 <meta charset="UTF-8" />
 <style>
@@ -11,12 +12,49 @@
 	transition: height 2s;
 	transition: background-color 1s linear;
 }
-.ativa{
+
+.ativa {
 	color: green;
-	
 }
-.encerrada{
+
+.encerrada {
 	color: red
+}
+
+#table-internacoes th {
+	background: #0cad5d;
+}
+
+#table-internacoes tr:nth-child(odd) {
+	background: #adf5a9;
+}
+
+#table-internacoes tr:nth-child(even) {
+	background: #E6F9E5
+}
+
+#table-internacoes td, #table-internacoes tr { //
+	border-collapse: separate; //
+	border-spacing: 2px; //
+	border: 2px solid white
+}
+
+//
+#table-internacoes th { //
+	border-left: 2px solid white; //
+	border-right: 2px solid white; //
+	border-bottom: 2px solid white;
+	//
+}
+
+#table-internacoes {
+	background: white;
+	border: none;
+	box-shadow: 2px 3px 7px gray;
+}
+
+#table-internacoes a { //
+	width: 80px;
 }
 </style>
 </head>
@@ -24,39 +62,40 @@
 
 	<section class="layout-content" layout:fragment="corpo">
 		<main role="main">
-		<ul class="breadcrumb">
+			<ul class="breadcrumb">
 				<li><a th:href="@{/home}">Dashboard </a></li>
 				<li class='active'>Internações</li>
 			</ul>
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-11">
 
-							<div th:replace="fragments/alert :: alerta-sucesso"></div>
-							<h2 class="internacoes-cadastradas">Internações Cadastradas</h2>
+						<div th:replace="fragments/alert :: alerta-sucesso"></div>
+						<h2 class="internacoes-cadastradas">Internações Cadastradas</h2>
 
-							<table id="table-internacoes"
-								class="table table-sm table-striped table-bordered nowrap"
-								style="width: 100%">
-								<thead class="thead-dark">
-									<tr>
-										<th scope="col">Status</th>
-										<th scope="col">Paciente</th>
-										<th scope="col">Data de Entrada</th>
-										<th scope="col">Data de Saída</th>
-										<th scope="col">Editar</th>
-										<th scope="col">Excluir</th>
-										<th scope="col">Visualizar</th>
-									</tr>
-								</thead>
-							</table>
-						</div>
+						<table id="table-internacoes" class="table table-sm nowrap"
+							style="width: 100%">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col">Status</th>
+									<th scope="col">Paciente</th>
+									<th scope="col">Admissão</th>
+									<th scope="col">Alta</th>
+									<th scope="col">Editar</th>
+									<th scope="col">Excluir</th>
+									<th scope="col">Visualizar</th>
+								</tr>
+							</thead>
+						</table>
 					</div>
 				</div>
-				<a class="btn-cadastrar-usuario" href="#" role="button"
-					data-toggle="modal" data-target="#modal-internacao">Nova
-					Internação</a> <span th:replace="internacao/modal :: modal-form"></span>
+			</div>
+			<a class="btn-cadastrar-usuario" href="#" role="button"
+				data-toggle="modal" data-target="#modal-internacao">Nova
+				Internação</a> <span th:replace="internacao/modal :: modal-form"></span>
 			
+
+
 		</main>
 
 	</section>

@@ -8,6 +8,7 @@ $(document).ready(function () {
 	            "info": "Mostrando página _PAGE_ de _PAGES_",
 	            "infoEmpty": " ",
 	            "search": "Pesquise: ",
+	            "searchPlaceholder": "Paciente ou status...",
 	            "paginate": {
 	                "first":      "Primeiro",
 	                "last":       "Ultimo",
@@ -15,6 +16,9 @@ $(document).ready(function () {
 	                "previous":   "Anterior"
 	            } 
 	    	},
+	    	"columnDefs":[
+	        	{"width":"2%", "targets": [4,5, 6]}
+	        ],
     	searching: true,
     	order: [[ 0, "asc" ]],
     	lengthMenu: [5, 10],

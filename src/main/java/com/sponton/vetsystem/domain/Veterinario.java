@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,7 +37,6 @@ public class Veterinario extends AbstractEntity{
 
 	@NotNull(message="Informe o CRMV")
 	@Digits(integer = 5, fraction = 0)
-
 	@Column(name = "crmv", unique = true, nullable = false, length=5)
 	private Integer crmv;
 	

@@ -11,7 +11,9 @@
 /* 
 CSS referente a pagina error e modal-confirm
 */
-
+body{
+	background: #f2f2f2
+}
 
 h1, h2{
 	font-size: 2em;
@@ -605,14 +607,14 @@ button:focus {
 }
 .consultas-cadastradas::before{
 	font-family: "Font Awesome 5 Free";
-	content: "\f481";
+	content: "\f478";
 	font-weight: 600;
 	display: inline-block;
 	margin-right: 1%
 }
 .internacoes-cadastradas::before{
 	font-family: "Font Awesome 5 Free";
-	content: "\f0f1";
+	content: "\f21e";
 	font-weight: 600;
 	display: inline-block;
 	margin-right: 1%
@@ -623,6 +625,13 @@ button:focus {
 	font-weight: 600;
 	display: inline-block;
 	margin-right: 1%
+}
+.usuarios-cadastrados::before{
+	content:"\f0f0";
+	font-weight: 600;
+	display: inline-block;
+	margin-right: 1%;
+	font-family: "Font Awesome 5 Free";
 }
 /*INPUT FILE*/
 .js .inputfile {
@@ -722,4 +731,9 @@ button:focus {
 }
 .por-consulta, .por-paciente{
 	display:none
+}
+/*FORM HORARIOS VETERINARIO */
+.form-vet{
+	margin-left: 2%
+	
 }

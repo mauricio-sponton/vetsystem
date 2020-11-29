@@ -25,30 +25,61 @@ form {
 	background: gray;
 	opacity: 0.5
 }
+
 </style>
 </head>
 
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<div class=teste>
+		<h1>Minha Conta</h1>
+		<a class="btn-cadastrar-usuario" href="#" role="button"
+			data-toggle="modal" data-target="#modal-veterinario">Editar Dados</a>
+		<span th:replace="veterinario/modal :: modal-form"></span>
+		<div class="global-color">
+			<div id="img-infs">
+				<img th:if="${veterinario.foto == null}"
+					th:src="@{/image/ultrasound.svg}"
+					style="width: 120px; height: auto; float: left" /> <img
+					th:if="${veterinario.foto != null}"
+					th:src="@{${'/uploads/' + veterinario.foto.fileName}}"
+					style="width: 120px; height: auto; float: left" />
+			</div>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Nome: </strong>
+					<p th:text="${veterinario.nome}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>CRMV: </strong>
+					<p th:text="${veterinario.crmv}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Telefone: </strong>
+					<p th:text="${veterinario.telefone}"></p>
+				</div>
+
+				<div class="alinha-dados">
+					<strong>Email: </strong>
+					<p th:text="${veterinario.usuario.email}"></p>
+				</div>
+			</section>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Sexo: </strong>
+					<p th:text="${veterinario.sexo}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>CPF: </strong>
+					<p th:text="${veterinario.sexo}"></p>
+				</div>
+			</section>
+
+		</div>
+		<h2 class="h2-textarea">dias de trabalho</h2>
+
 		
-			<a class="btn-cadastrar-usuario" href="#" role="button"
-				data-toggle="modal" data-target="#modal-veterinario">Editar
-				Dados</a> <span th:replace="veterinario/modal :: modal-form"></span> <span
-				th:text="${veterinario.nome}"></span> <span
-				th:text="${veterinario.sexo}"></span>
-		</div>
-		<div th:if="${veterinario.foto.fileName == null}">
-			<img alt="" th:src="@{/image/pessoa.png}"
-				style="width: auto; height: auto">
-		</div>
-		<div
-			th:if="${veterinario.foto!= null && veterinario.foto.fileName != null}">
-			<img alt="" th:src="@{${'/uploads/' + veterinario.foto.fileName}}"
-				style="width: 300px; height: auto">
-		</div>
-		<form th:if="${form != null}"
+		<form class="form-vet" th:if="${form != null}"
 			th:action="@{/veterinarios/salvar/horarios}" th:object="${form}"
 			method="post">
 			<table class="table">
@@ -103,7 +134,7 @@ form {
 			</table>
 			<input type="submit" id="submitButton" th:value="Salvar">
 		</form>
-		<form th:if="${formEdit != null}"
+		<form class="form-vet" th:if="${formEdit != null}"
 			th:action="@{/veterinarios/salvar/horarios}" th:object="${formEdit}"
 			method="post">
 			<table class="table">
@@ -148,7 +179,7 @@ form {
 							th:name="|cargas[${itemStat.index}].inicio|"
 							th:value="${cargaHoraria.getInicio()}"
 							th:classappend="${#fields.hasErrors('cargas[__${itemStat.index}__].inicio')} ? 'is-invalid'" />
-						<div class="invalid-feedback">
+							<div class="invalid-feedback">
 								<span th:errors="*{cargas[__${itemStat.index}__].inicio}"></span>
 							</div></td>
 						<td><input type="time" class="fim"
@@ -173,66 +204,66 @@ form {
 			</table>
 			<input type="submit" id="submitButton" th:value="Salvar">
 		</form>
-		<table th:if="${cargasVet != null}" class="table">
-				<thead class="thead-dark">
-					<tr>
-						<th scope="col">Dia</th>
-						<th scope="col">Entrada</th>
-						<th scope="col">Saída</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="c: ${cargasVet}">
+		<table th:if="${cargasVet != null}" class="table form-vet">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Dia</th>
+					<th scope="col">Entrada</th>
+					<th scope="col">Saída</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="c: ${cargasVet}">
 
-						<td scope="row" th:switch="${c.diaDaSemana}">
-							<div class="dias" th:case="1">
-								<span>Domingo</span>
-							</div>
-							<div class="dias" th:case="2">
-								<span>Segunda</span>
-							</div>
-							<div class="dias" th:case="3">
-								<span>Terça</span>
-							</div>
-							<div class="dias" th:case="4">
-								<span>Quarta</span>
-							</div>
-							<div class="dias" th:case="5">
-								<span>Quinta</span>
-							</div>
-							<div class="dias" th:case="6">
-								<span>Sexta</span>
-							</div>
-							<div class="dias" th:case="7">
-								<span>Sábado</span>
-							</div>
+					<td scope="row" th:switch="${c.diaDaSemana}">
+						<div class="dias" th:case="1">
+							<span>Domingo</span>
+						</div>
+						<div class="dias" th:case="2">
+							<span>Segunda</span>
+						</div>
+						<div class="dias" th:case="3">
+							<span>Terça</span>
+						</div>
+						<div class="dias" th:case="4">
+							<span>Quarta</span>
+						</div>
+						<div class="dias" th:case="5">
+							<span>Quinta</span>
+						</div>
+						<div class="dias" th:case="6">
+							<span>Sexta</span>
+						</div>
+						<div class="dias" th:case="7">
+							<span>Sábado</span>
+						</div>
 
-						</td>
-						
-						<td>
-							<div th:if="${c.inicio == null}">
-								<span>Folga</span>
-							</div>
-							<div th:if="${c.inicio !=''}">
-								<span th:text="${c.inicio}"></span>
-							</div>	
-							
-						</td>
-						<td>
-							<div th:if="${c.fim == null}">
-								<span>Folga</span>
-							</div>
-							<div th:if="${c.fim !=''}">
-								<span th:text="${c.fim}"></span>
-							</div>	
-							
-						</td>
-						
+					</td>
 
-					</tr>
-				</tbody>
-			</table>
-			
+					<td>
+						<div th:if="${c.inicio == null}">
+							<span>Folga</span>
+						</div>
+						<div th:if="${c.inicio !=''}">
+							<span th:text="${c.inicio}"></span>
+						</div>
+
+					</td>
+					<td>
+						<div th:if="${c.fim == null}">
+							<span>Folga</span>
+						</div>
+						<div th:if="${c.fim !=''}">
+							<span th:text="${c.fim}"></span>
+						</div>
+
+					</td>
+
+
+				</tr>
+			</tbody>
+		</table>
+
 	</section>
 
 	<script th:src="@{/js/veterinario.js(v=${version})}" th:fragment="js"></script>
