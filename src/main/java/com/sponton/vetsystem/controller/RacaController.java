@@ -46,11 +46,14 @@ public class RacaController {
 			model.addAttribute("erro", "Por favor preencha os dados");
 			return "raca/lista";
 		}
+		String titulo = raca.getEspecie().getNome();
+		Especie especie = especieService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
 		if(raca.getEspecie() == null) {
 			model.addAttribute("erro", "Por favor preencha os dados");
 			return "raca/lista";
 		}
 		try {
+			raca.setEspecie(especie);
 			service.salvarEspecie(raca);
 			attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 		}catch(DataIntegrityViolationException ex) {

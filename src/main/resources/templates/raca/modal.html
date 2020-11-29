@@ -37,17 +37,12 @@
 								</div>
 							</div>
 							<div class="form-group col-md-4">
-								<label for="especie">Espécie</label> <select
-									th:classappend="${#fields.hasErrors('especie')} ? 'is-invalid'"
-									id="especie" class="form-control" th:field=*{especie}>
-									<option value="">Selecione</option>
-									<option th:each="e : ${especies}" th:value="${e.id}"
-										th:text="${e.nome}">Labrador</option>
-
-								</select>
-								<span id="erro-especie" style="display:none"></span>
+								<label for="especie">Espécie</label> <input type="text"
+									class="form-control" id="especie" placeholder="Canino..."
+									th:classappend="${#fields.hasErrors('especie.nome')} ? 'is-invalid'"
+									th:field="*{especie.nome}" />
 								<div class="invalid-feedback">
-									<span th:errors="*{especie}"></span>
+									<span th:errors="*{especie.nome}"></span>
 								</div>
 							</div>
 						</div>

@@ -83,7 +83,22 @@
 			$("#erro-especie").hide();
 			$(".modal-title").text("Nova Raça");
 		});	
-	});	
+	});
+	$("#especie").autocomplete({
+		
+		source : function(request, response) {
+			$.ajax({
+				method : "GET",
+				url : "/especies/titulo",
+				data : {
+					termo : request.term
+				},
+				success : function(data) {
+					response(data);
+				}
+			})
+		}
+	})
 	</script>
 </body>
 </html>
