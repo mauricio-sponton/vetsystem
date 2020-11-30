@@ -177,10 +177,8 @@
 						<div class="dropdown-menu dropdown-menu-right">
 
 							<a sec:authorize="hasAuthority('VETERINARIO')"
-								class="dropdown-item" th:href="@{/veterinarios/dados}">Dados
-								Cadastrais</a> <a sec:authorize="hasAuthority('SECRETARIA')"
-								class="dropdown-item" th:href="@{/secretarias/dados}">Dados
-								Cadastrais</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">Editar
+								class="dropdown-item" th:href="@{/veterinarios/dados}">Meu Perfil</a> <a sec:authorize="hasAuthority('SECRETARIA')"
+								class="dropdown-item" th:href="@{/secretarias/dados}">Meu Perfil</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">Editar
 								senha</a>
 							<button type="submit" class="dropdown-item">Sair</button>
 						</div>

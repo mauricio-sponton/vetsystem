@@ -109,7 +109,7 @@
   			   		//apagar
   			   		$("#apagar_evento").attr("href", "/agenda/excluir/" + data.event.id);
   			    	//visualizacao
-  			    	$("#visualizar-start").text("Início: " + inicio);
+  			    	$("#visualizar-start").text(inicio);
   			    	$("#visualizar-end").text("Término: " + termino);
   			    	$("#visualizar-veterinario").text("Veterinário: " +  data.event.extendedProps.veterinario.nome);
   			    	$("#visualizar-title").text("Tipo do agendamento: " + data.event.title);
@@ -290,6 +290,15 @@
 		
 							},
 							success : function(data) {
+								console.log(data.length)
+								if(data.length == 0){
+									$("#vets").append( 
+						    				 '<div>'	
+						    				+  '<strong style = "color: red">Não há veterinários trabalhando nesse horário!!</strong>'
+							
+											+'</div>'
+						    			);
+								}
 								var ultimo = data.length - 1; 
 								
 								$.each(data, function (k, v) {

@@ -3,38 +3,24 @@
 <head>
 <meta charset="UTF-8" />
 <style type="text/css">
-.teste span {
-	color: blue
-}
-
-.mostrar {
-	background-color: indigo
-}
-
-.dias {
-	background-color: black;
-	!
-	important
-}
-
-form {
-	width: 47.2%
-}
-
-.adiciona-tr {
-	background: gray;
-	opacity: 0.5
-}
-
 </style>
 </head>
 
 <body>
 	<section class="layout-content" layout:fragment="corpo">
+		<ul class="breadcrumb">
+			<li><a th:href="@{/home}">Dashboard </a></li>
+			<li class="active">Meu Perfil</li>
+
+		</ul>
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<h1>Minha Conta</h1>
-		<a class="btn-cadastrar-usuario" href="#" role="button"
-			data-toggle="modal" data-target="#modal-veterinario">Editar Dados</a>
+		<div class="align-h1">
+			<h1>meu perfil</h1>
+			<a href="#" role="button" data-toggle="modal"
+				data-target="#modal-veterinario"> <img
+				th:src="@{/image/lapis.png}" style="width: 35px; height: auto;" />
+			</a>
+		</div>
 		<span th:replace="veterinario/modal :: modal-form"></span>
 		<div class="global-color">
 			<div id="img-infs">
@@ -71,18 +57,16 @@ form {
 				</div>
 				<div class="alinha-dados">
 					<strong>CPF: </strong>
-					<p th:text="${veterinario.sexo}"></p>
+					<p th:text="${veterinario.cpf}"></p>
 				</div>
 			</section>
 
 		</div>
 		<h2 class="h2-textarea">dias de trabalho</h2>
-
-		
 		<form class="form-vet" th:if="${form != null}"
 			th:action="@{/veterinarios/salvar/horarios}" th:object="${form}"
 			method="post">
-			<table class="table">
+			<table class="table form-vet horarios table-sm nowrap">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col">Dia</th>
@@ -132,12 +116,13 @@ form {
 					</tr>
 				</tbody>
 			</table>
-			<input type="submit" id="submitButton" th:value="Salvar">
+			<button type="submit" class="btn btn-primary btn-sm btn-trabalho">Salvar</button>
+
 		</form>
 		<form class="form-vet" th:if="${formEdit != null}"
 			th:action="@{/veterinarios/salvar/horarios}" th:object="${formEdit}"
 			method="post">
-			<table class="table">
+			<table class="table table-sm nowrap horarios" style="width: 100%">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col">Dia</th>
@@ -175,14 +160,14 @@ form {
 
 						</td>
 
-						<td><input type="time" class="inicio"
+						<td><input type="time" class="inicio form-control"
 							th:name="|cargas[${itemStat.index}].inicio|"
 							th:value="${cargaHoraria.getInicio()}"
 							th:classappend="${#fields.hasErrors('cargas[__${itemStat.index}__].inicio')} ? 'is-invalid'" />
 							<div class="invalid-feedback">
 								<span th:errors="*{cargas[__${itemStat.index}__].inicio}"></span>
 							</div></td>
-						<td><input type="time" class="fim"
+						<td><input type="time" class="fim  form-control"
 							th:name="|cargas[${itemStat.index}].fim|"
 							th:value="${cargaHoraria.getFim()}"
 							th:classappend="${#fields.hasErrors('cargas[__${itemStat.index}__].fim')} ? 'is-invalid'" />
@@ -202,9 +187,10 @@ form {
 					</tr>
 				</tbody>
 			</table>
-			<input type="submit" id="submitButton" th:value="Salvar">
+			<button type="submit" class="btn-trabalho">Salvar</button>
 		</form>
-		<table th:if="${cargasVet != null}" class="table form-vet">
+		<table th:if="${cargasVet != null}"
+			class="table form-vet horarios table-sm nowrap">
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Dia</th>
@@ -310,6 +296,7 @@ form {
 					
 				if($(this).is(":checked")){
 					$(this).closest('tr').find('.inicio, .fim').attr("readonly", "readonly");
+					
 					$(this).closest('tr').addClass("adiciona-tr");
 				}else{
 					if($(this).not(":checked")){

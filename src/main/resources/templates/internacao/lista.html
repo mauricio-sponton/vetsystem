@@ -25,37 +25,12 @@
 	background: #0cad5d;
 }
 
-#table-internacoes tr:nth-child(odd) {
-	background: #adf5a9;
-}
-
-#table-internacoes tr:nth-child(even) {
-	background: #E6F9E5
-}
-
-#table-internacoes td, #table-internacoes tr { //
-	border-collapse: separate; //
-	border-spacing: 2px; //
-	border: 2px solid white
-}
-
-//
-#table-internacoes th { //
-	border-left: 2px solid white; //
-	border-right: 2px solid white; //
-	border-bottom: 2px solid white;
-	//
-}
-
 #table-internacoes {
 	background: white;
 	border: none;
 	box-shadow: 2px 3px 7px gray;
 }
 
-#table-internacoes a { //
-	width: 80px;
-}
 </style>
 </head>
 <body>
@@ -73,7 +48,7 @@
 						<div th:replace="fragments/alert :: alerta-sucesso"></div>
 						<h2 class="internacoes-cadastradas">Internações Cadastradas</h2>
 
-						<table id="table-internacoes" class="table table-sm nowrap"
+						<table id="table-internacoes" class="table table-sm table-striped nowrap"
 							style="width: 100%">
 							<thead class="thead-dark">
 								<tr>

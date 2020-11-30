@@ -11,23 +11,55 @@
 
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-		<div class="teste">
-			<a class="btn-cadastrar-usuario" href="#" role="button"
-					data-toggle="modal" data-target="#modal-secretaria">Editar Dados</a>
-				<span
-					th:replace="secretaria/modal :: modal-form"></span>
-			<span th:text="${secretaria.nome}"></span> <span
-				th:text="${secretaria.sexo}"></span>
-		</div>
+		<ul class="breadcrumb">
+			<li><a th:href="@{/home}">Dashboard </a></li>
+			<li class="active">Meu Perfil</li>
 
-		<div th:if="${secretaria.foto.fileName == null}">
-			<img alt="" th:src="@{/image/pessoa.png}"
-				style="width: 200px; height: auto">
+		</ul>
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<div class="align-h1">
+			<h1>meu perfil</h1>
+			<a href="#" role="button" data-toggle="modal"
+				data-target="#modal-secretaria"> <img
+				th:src="@{/image/lapis.png}" style="width: 35px; height: auto;" />
+			</a>
 		</div>
-		<div
-			th:if="${secretaria.foto!= null && secretaria.foto.fileName != null}">
-			<img alt="" th:src="@{${'/uploads/' + secretaria.foto.fileName}}"
-				style="width: 200px; height: auto">
+		<span th:replace="secretaria/modal :: modal-form"></span>
+		<div class="global-color">
+			<div id="img-infs">
+				<img th:if="${secretaria.foto == null}"
+					th:src="@{/image/ultrasound.svg}"
+					style="width: 120px; height: auto; float: left" /> <img
+					th:if="${secretaria.foto != null}"
+					th:src="@{${'/uploads/' + secretaria.foto.fileName}}"
+					style="width: 120px; height: auto; float: left" />
+			</div>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Nome: </strong>
+					<p th:text="${secretaria.nome}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Telefone: </strong>
+					<p th:text="${secretaria.telefone}"></p>
+				</div>
+
+				<div class="alinha-dados">
+					<strong>Email: </strong>
+					<p th:text="${secretaria.usuario.email}"></p>
+				</div>
+			</section>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Sexo: </strong>
+					<p th:text="${secretaria.sexo}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>CPF: </strong>
+					<p th:text="${secretaria.cpf}"></p>
+				</div>
+			</section>
+
 		</div>
 
 

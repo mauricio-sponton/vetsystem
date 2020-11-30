@@ -62,6 +62,17 @@ public class Veterinario extends AbstractEntity{
 	@Column(name = "telefone", nullable = false)
 	private String telefone;
 
+	@NotBlank(message="Informe seu cpf")
+	@Column(name = "cpf", unique = true, nullable = false)
+	private String cpf;
+	
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
 
 	public Foto getFoto() {
 		return foto;

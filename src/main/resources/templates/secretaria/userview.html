@@ -11,9 +11,48 @@
 
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-		<div class="teste">
-			<span th:text="${sec.nome}"></span> <span
-				th:text="${sec.sexo}"></span>
+		<ul class="breadcrumb">
+			<li><a th:href="@{/home}">Dashboard </a></li>
+			<li><a th:href="@{/u/listar}">Usuários</a></li>
+			<li class="active">Perfil: <span style="color:black" th:text="${sec.nome}"></span></li>
+
+		</ul>
+		<div th:replace="fragments/alert :: alerta-sucesso"></div>
+		<h1>página de perfil</h1>
+		<div class="global-color">
+			<div id="img-infs">
+				<img th:if="${sec.foto == null}" th:src="@{/image/ultrasound.svg}"
+					style="width: 120px; height: auto; float: left" /> <img
+					th:if="${sec.foto != null}"
+					th:src="@{${'/uploads/' + sec.foto.fileName}}"
+					style="width: 120px; height: auto; float: left" />
+			</div>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Nome: </strong>
+					<p th:text="${sec.nome}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>Telefone: </strong>
+					<p th:text="${sec.telefone}"></p>
+				</div>
+
+				<div class="alinha-dados">
+					<strong>Email: </strong>
+					<p th:text="${sec.usuario.email}"></p>
+				</div>
+			</section>
+			<section class="inf-content">
+				<div class="alinha-dados">
+					<strong>Sexo: </strong>
+					<p th:text="${sec.sexo}"></p>
+				</div>
+				<div class="alinha-dados">
+					<strong>CPF: </strong>
+					<p th:text="${secretaria.cpf}"></p>
+				</div>
+			</section>
+
 		</div>
 
 

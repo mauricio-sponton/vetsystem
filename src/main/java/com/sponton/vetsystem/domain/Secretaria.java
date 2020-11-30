@@ -41,6 +41,10 @@ public class Secretaria extends AbstractEntity{
 	@Column(name = "telefone", nullable = false)
 	private String telefone;
 	
+	@NotBlank(message="Informe seu cpf")
+	@Column(name = "cpf", unique = true, nullable = false)
+	private String cpf;
+	
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(
 			name = "secretarias_tem_notificacoes",
@@ -50,6 +54,16 @@ public class Secretaria extends AbstractEntity{
 	private List<Notificacao> notificacoes;
 
 	
+	public String getCpf() {
+		return cpf;
+	}
+
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+
 	public List<Notificacao> getNotificacoes() {
 		return notificacoes;
 	}

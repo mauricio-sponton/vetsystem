@@ -21,7 +21,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLongTitle">Editar
-						Cliente</h5>
+						Perfil</h5>
 					<div th:if="${aviso == null}">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
@@ -57,6 +57,39 @@
 								</div>
 							</div>
 							<div class="form-group col-md-4">
+								<label for="crmv">Inscrição CRMV</label> <input type="text"
+									class="form-control" id="crmv" placeholder="00000"
+									th:field="*{crmv}"
+									th:classappend="${#fields.hasErrors('crmv')} ? 'is-invalid'" />
+								<div class="invalid-feedback">
+									<span th:errors="*{crmv}"></span>
+								</div>
+							</div>
+							
+						</div>
+						<div class="form-row">
+							
+							<div class="form-group col-md-4">
+								<label for="cpf">CPF</label> <input type="text"
+									class="form-control" id="cpf" placeholder="CPF"
+									data-mask="000.000.000-00" autofocus="autofocus"
+									th:field="*{cpf}"
+									th:classappend="${#fields.hasErrors('cpf')} ? 'is-invalid'" />
+								<div class="invalid-feedback">
+									<span th:errors="*{cpf}"></span>
+								</div>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="telefone">Telefone</label> <input type="text"
+									data-mask="(00)0000-00000" class="form-control" id="telefone"
+									th:field="*{telefone}"
+									th:classappend="${#fields.hasErrors('telefone')} ? 'is-invalid'" />
+								<div class="invalid-feedback">
+									<span th:errors="*{telefone}"></span>
+
+								</div>
+							</div>
+							<div class="form-group col-md-4">
 								<label for="sexo">Sexo</label> <select
 									th:classappend="${#fields.hasErrors('sexo')} ? 'is-invalid'"
 									id="sexo" class="form-control" th:field=*{sexo}>
@@ -70,27 +103,6 @@
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
-								<label for="crmv">Inscrição CRMV</label> <input type="text"
-									class="form-control" id="crmv" placeholder="00000"
-									th:field="*{crmv}"
-									th:classappend="${#fields.hasErrors('crmv')} ? 'is-invalid'" />
-								<div class="invalid-feedback">
-									<span th:errors="*{crmv}"></span>
-								</div>
-							</div>
-							<div class="form-group col-md-6">
-								<label for="telefone">Telefone</label> <input type="text"
-									data-mask="(00)0000-00000" class="form-control" id="telefone"
-									th:field="*{telefone}"
-									th:classappend="${#fields.hasErrors('telefone')} ? 'is-invalid'" />
-								<div class="invalid-feedback">
-									<span th:errors="*{telefone}"></span>
-
-								</div>
-							</div>
-						</div>
-						<div class="form-row">
 							<label for="file">Foto</label> <input type="file" id="file"
 								th:name="file">
 						</div>
@@ -99,7 +111,7 @@
 						<input type="hidden" name="id" th:field="*{id}"> <input
 							type="hidden" id="id" th:field="*{foto.id}" />
 
-						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+						<button type="submit" class="btn-trabalho">Salvar</button>
 					</form>
 				</div>
 
