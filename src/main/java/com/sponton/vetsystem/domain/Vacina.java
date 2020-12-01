@@ -1,9 +1,13 @@
 package com.sponton.vetsystem.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
@@ -11,6 +15,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
@@ -38,6 +44,18 @@ public class Vacina extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "id_vacina_fk")
 	private Especie especie;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "vacina", cascade = CascadeType.REMOVE)
+	private List<Aplicacao> aplicacoes;
+
+	public List<Aplicacao> getAplicacoes() {
+		return aplicacoes;
+	}
+
+	public void setAplicacoes(List<Aplicacao> aplicacoes) {
+		this.aplicacoes = aplicacoes;
+	}
 
 	public String getDescricao() {
 		return descricao;

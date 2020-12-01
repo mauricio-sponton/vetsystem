@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -46,8 +47,16 @@ public class Veterinario extends AbstractEntity{
 	private Usuario usuario;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "veterinario")
+	@OneToMany(mappedBy = "veterinario", cascade = CascadeType.REMOVE)
 	private List<Consulta> consultas;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "veterinario", cascade = CascadeType.REMOVE)
+	private List<Agendamento> agendamentos;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "veterinario", cascade = CascadeType.REMOVE)
+	private List<CargaHoraria> horarios;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "foto_id_fk")
@@ -66,6 +75,22 @@ public class Veterinario extends AbstractEntity{
 	@Column(name = "cpf", unique = true, nullable = false)
 	private String cpf;
 	
+	public List<CargaHoraria> getHorarios() {
+		return horarios;
+	}
+
+	public void setHorarios(List<CargaHoraria> horarios) {
+		this.horarios = horarios;
+	}
+
+	public List<Agendamento> getAgendamentos() {
+		return agendamentos;
+	}
+
+	public void setAgendamentos(List<Agendamento> agendamentos) {
+		this.agendamentos = agendamentos;
+	}
+
 	public String getCpf() {
 		return cpf;
 	}

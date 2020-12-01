@@ -9,10 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
@@ -53,7 +56,20 @@ public class Secretaria extends AbstractEntity{
     )
 	private List<Notificacao> notificacoes;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "secretaria", cascade = CascadeType.REMOVE) 
+	private List<Agendamento> agendamentos;
 	
+	public List<Agendamento> getAgendamentos() {
+		return agendamentos;
+	}
+
+
+	public void setAgendamentos(List<Agendamento> agendamentos) {
+		this.agendamentos = agendamentos;
+	}
+
+
 	public String getCpf() {
 		return cpf;
 	}

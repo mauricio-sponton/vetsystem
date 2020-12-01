@@ -79,6 +79,18 @@ public class Animal extends AbstractEntity {
 	@OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
 	private List<Aplicacao> aplicacoes;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
+	private List<Agendamento> agendamentos;
+	
+	public List<Agendamento> getAgendamentos() {
+		return agendamentos;
+	}
+
+	public void setAgendamentos(List<Agendamento> agendamentos) {
+		this.agendamentos = agendamentos;
+	}
+
 	public String[] getCaracteristicas() {
 		return caracteristicas;
 	}

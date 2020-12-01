@@ -24,10 +24,10 @@
 		<span th:replace="veterinario/modal :: modal-form"></span>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${veterinario.foto == null}"
+				<img th:if="${veterinario.foto.fileName == null}"
 					th:src="@{/image/ultrasound.svg}"
 					style="width: 120px; height: auto; float: left" /> <img
-					th:if="${veterinario.foto != null}"
+					th:if="${veterinario.foto.fileName != null}"
 					th:src="@{${'/uploads/' + veterinario.foto.fileName}}"
 					style="width: 120px; height: auto; float: left" />
 			</div>
@@ -66,7 +66,7 @@
 		<form class="form-vet" th:if="${form != null}"
 			th:action="@{/veterinarios/salvar/horarios}" th:object="${form}"
 			method="post">
-			<table class="table form-vet horarios table-sm nowrap">
+			<table class="table table-sm nowrap horarios">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col">Dia</th>

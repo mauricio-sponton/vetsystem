@@ -66,10 +66,10 @@ public class UsuarioController {
 				|| (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.ADMIN.getDesc())) && user
 						.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))))) {
 			return "usuario/lista";
-		}else{
+		} else {
 			return "usuario/funcionarios";
 		}
-		
+
 	}
 
 	// listar na datatable
@@ -77,6 +77,7 @@ public class UsuarioController {
 	public ResponseEntity<?> listarUsuariosDatatables(HttpServletRequest request) {
 		return ResponseEntity.ok(service.buscarTodos(request));
 	}
+
 	@GetMapping("/datatables/server/funcionarios")
 	public ResponseEntity<?> listarFuncionariosDatatables(HttpServletRequest request) {
 		return ResponseEntity.ok(service.buscarTodosFuncionarios(request));
@@ -176,12 +177,29 @@ public class UsuarioController {
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr, @AuthenticationPrincipal User user) {
 		Usuario usuario = service.buscarPorEmail(user.getUsername());
-		;
+		Usuario u2 = service.buscarPorId(id);
+		if (u2.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
+			Veterinario veterinario = veterinarioService.buscarPorUsuarioId(id);
+			veterinarioService.remover(veterinario.getId());
+
+		} else if (u2.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
+			Secretaria secretaria = secretariaService.buscarPorUsuarioId(id);
+			secretariaService.remover(secretaria.getId());
+
+		} else if (u2.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))
+				&& u2.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
+			Veterinario veterinario = veterinarioService.buscarPorUsuarioId(id);
+			Secretaria secretaria = secretariaService.buscarPorUsuarioId(id);
+			veterinarioService.remover(veterinario.getId());
+			secretariaService.remover(secretaria.getId());
+		}else {
+			service.remover(id);
+		}
 		if (usuario.getId() == id) {
 			attr.addFlashAttribute("falha", "Você não pode deletar esse usuário");
 			return "redirect:/u/listar";
 		}
-		service.remover(id);
+
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
 		return "redirect:/u/listar";
 	}

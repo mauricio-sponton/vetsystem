@@ -101,5 +101,11 @@ public class VeterinarioService {
 		return repository.findVeterinariosDisponiveis(start, end, diaInicial, diaFinal, inicio, fim);
 	}
 
+	@Transactional(readOnly = false)
+	public void remover(Long id) {
+		repository.deleteById(id);
+		
+	}
+
 
 }

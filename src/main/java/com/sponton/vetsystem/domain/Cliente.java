@@ -48,7 +48,7 @@ public class Cliente extends AbstractEntity {
 	private Endereco endereco;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.REMOVE)
 	private List<Animal> animais;
 
 	public List<Animal> getAnimais() {

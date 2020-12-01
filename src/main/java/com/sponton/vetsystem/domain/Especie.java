@@ -27,14 +27,26 @@ public class Especie extends AbstractEntity{
 	@JsonIgnore
 	@OneToMany(mappedBy = "especie", cascade = CascadeType.REMOVE)
 	private List<Raca> racas;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "especie", cascade = CascadeType.REMOVE)
+	private List<Vacina> vacinas;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "especie")
+	@OneToMany(mappedBy = "especie", cascade = CascadeType.REMOVE)
 	private List<Animal> animais;
 	
 	
 	public List<Animal> getAnimais() {
 		return animais;
+	}
+
+	public List<Vacina> getVacinas() {
+		return vacinas;
+	}
+
+	public void setVacinas(List<Vacina> vacinas) {
+		this.vacinas = vacinas;
 	}
 
 	public void setAnimais(List<Animal> animais) {

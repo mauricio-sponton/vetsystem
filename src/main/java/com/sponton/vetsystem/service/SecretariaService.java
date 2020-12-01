@@ -59,4 +59,10 @@ public class SecretariaService {
 		
 	}
 
+	@Transactional(readOnly = false)
+	public void remover(Long id) {
+		repository.deleteById(id);
+		
+	}
+
 }

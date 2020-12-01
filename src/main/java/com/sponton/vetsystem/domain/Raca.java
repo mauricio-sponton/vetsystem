@@ -2,6 +2,7 @@ package com.sponton.vetsystem.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -29,7 +30,7 @@ public class Raca extends AbstractEntity{
 	private Especie especie;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "raca")
+	@OneToMany(mappedBy = "raca", cascade = CascadeType.REMOVE)
 	private List<Animal> animais;
 	
 	public List<Animal> getAnimais() {
