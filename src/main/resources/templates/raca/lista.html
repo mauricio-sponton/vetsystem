@@ -27,8 +27,7 @@
 						<h2>Raças Cadastradas</h2>
 
 						<table id="table-racas"
-							class="table table-sm table-striped nowrap"
-							style="width: 100%">
+							class="table table-sm table-striped nowrap" style="width: 100%">
 							<thead class="thead-dark">
 								<tr>
 									<th scope="col">Descrição</th>
@@ -99,6 +98,10 @@
 			})
 		}
 	})
+			$('#confirm-modal').on('show.bs.modal', function(){
+				$(".modal-title").text("Excluir Raça");
+				$('#subtitulo').text('Todos pacientes que possuem está raça serão deletados!');
+			})
 	</script>
 </body>
 </html>

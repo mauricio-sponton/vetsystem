@@ -41,7 +41,7 @@ $(document).ready(function () {
             {orderable: false,
              data: 'id',
                 "render": function(id) {
-                    return '<a class="btn btn-danger btn-sm btn-block" href="/clientes/excluir/'+ 
+                    return '<a id="btn-del-cliente" class="btn btn-danger btn-sm btn-block" href="/clientes/excluir/'+ 
                     	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
                 }               
             },

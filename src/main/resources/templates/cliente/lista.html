@@ -60,8 +60,7 @@
 			}
 			if ($("#msg-erro").html() != "") {
 				$("#modal-cliente").modal('show');
-				$("#msg-erro").css("color", "red");
-				$(".is-invalid").css("border", "1px solid red");
+				$("#msg-erro, .invalid-feedback span").css("color", "red");
 			}
 
 			$("#modal-cliente").on("hidden.bs.modal", function() {
@@ -75,6 +74,10 @@
 				$(".form-control").val("");
 				$(".modal-title").text("Novo Cliente");
 			});
+			$('#confirm-modal').on('show.bs.modal', function(){
+				$(".modal-title").text("Excluir Cliente");
+				$('#subtitulo').text('Todos pacientes que este cliente é dono serão deletados!');
+			})
 		})
 	</script>
 </body>

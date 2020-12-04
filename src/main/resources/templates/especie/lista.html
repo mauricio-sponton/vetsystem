@@ -73,6 +73,10 @@
 			$(".modal-title").text("Nova Espécie");
 		});	
 	});	
+	$('#confirm-modal').on('show.bs.modal', function(){
+		$(".modal-title").text("Excluir Espécie");
+		$('#subtitulo').text('Todos pacientes, raças e imunizações que possuem está espécie serão deletados!');
+	})
 	
 	</script>
 </body>

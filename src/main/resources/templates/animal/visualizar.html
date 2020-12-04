@@ -538,6 +538,7 @@ h2 {
 				
 				$("#modal-aplicacao").modal('show');
 	    		$(".modal-title").text("Editar Aplicação");
+	    		$("#animalConsulta").attr('readonly', 'readonly');		
 			}
 			if(internacao !=null){
 				   $(".modal-title").text("Editar Internação");
@@ -591,8 +592,7 @@ h2 {
         	
         }   	 	
         if ($(".msg-erro").html() != "") {
-			$(".msg-erro, .invalid-feedback span").css("color", "red");
-			$(".is-invalid").css("border", "1px solid red");
+        	$(".invalid-feedback span").css("color", "red");
 		} 	
 			    
 			  			

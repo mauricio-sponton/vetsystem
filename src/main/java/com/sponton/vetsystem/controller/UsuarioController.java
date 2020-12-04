@@ -91,6 +91,7 @@ public class UsuarioController {
 			model.addAttribute("erro", "Por favor preencha os campos");
 			return "usuario/lista";
 		}
+		
 		List<Perfil> perfis = usuario.getPerfis();
 		if (perfis.size() > 2 || perfis.containsAll(Arrays.asList(new Perfil(2L), new Perfil(3L)))) {
 			attr.addFlashAttribute("falha",
@@ -110,6 +111,7 @@ public class UsuarioController {
 
 	@GetMapping("/editar/credenciais/usuario/{id}")
 	public ModelAndView preEditarCredenciais(@PathVariable("id") Long id) {
+		
 		return new ModelAndView("usuario/lista", "usuario", service.buscarPorId(id));
 	}
 
@@ -192,7 +194,7 @@ public class UsuarioController {
 			Secretaria secretaria = secretariaService.buscarPorUsuarioId(id);
 			veterinarioService.remover(veterinario.getId());
 			secretariaService.remover(secretaria.getId());
-		}else {
+		} else {
 			service.remover(id);
 		}
 		if (usuario.getId() == id) {

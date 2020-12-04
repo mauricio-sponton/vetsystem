@@ -66,8 +66,12 @@ h1{
 	margin-bottom:4%;
 	position:relative;
 }
+.form-control{
+	 width:70% !important;
+	 
+}
 .input-login{
-    width:85%;
+    width:85% ; 
     height:45px;
     margin-left:28px;
     border:1px solid #ccc;
@@ -180,4 +184,17 @@ h1{
 }
 .invalid-feedback span{
 	margin-left: 7%
+}
+.field-icon {
+  
+  
+}
+.field-wrapper{
+	background: #0cdb8c;
+	color: #535355;
+  padding: 10px 9px 10px 9px;
+  left: 82.1%;
+  top: 38px;
+  position: absolute;
+  z-index: 2;
 }

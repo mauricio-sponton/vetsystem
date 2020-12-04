@@ -56,12 +56,12 @@ public class Internacao extends AbstractEntity {
 	@DateTimeFormat(iso = ISO.TIME)
 	private LocalTime horaSaida;
 	
-	@NotNull(message="Insira o pesoa")
+	@NotNull(message="Informe o peso")
 	@NumberFormat(style = Style.NUMBER, pattern = "##,#")
 	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 00.0")
 	private BigDecimal peso;
 	
-	@NotNull(message="Insira a temperatura")
+	@NotNull(message="Informe a temperatura")
 	@NumberFormat(style = Style.NUMBER, pattern = "##,#")
 	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 00.0")
 	private BigDecimal temperatura; 

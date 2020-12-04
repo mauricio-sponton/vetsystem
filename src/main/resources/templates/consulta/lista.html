@@ -118,8 +118,8 @@
 				$("#animal").addClass('is-invalid');
 				$("#erro-animal").show().text("Por favor informe a espécie");
 			}
-			$("#msg-erro").css("color", "red");
-			$(".is-invalid").css("border", "1px solid red");
+			
+			$(".invalid-feedback span").css("color", "red");
 		}
 
 		$("#modal-consulta").on("hidden.bs.modal", function() {

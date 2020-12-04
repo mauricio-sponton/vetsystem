@@ -42,7 +42,7 @@ public class Vacina extends AbstractEntity {
 	
 	@Valid
 	@ManyToOne
-	@JoinColumn(name = "id_vacina_fk")
+	@JoinColumn(name = "id_especie_fk")
 	private Especie especie;
 	
 	@JsonIgnore

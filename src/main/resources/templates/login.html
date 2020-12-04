@@ -13,33 +13,49 @@
 	crossorigin="anonymous" rel="stylesheet" />
 
 <!-- Custom styles for this template -->
+<link
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css(v=${version}) }"
+	rel="stylesheet" />
 <link th:href="@{/css/style-login.css(v=${version})}" rel="stylesheet" />
+
 </head>
 <body>
 
 	<img th:src="@{/image/vet-1.jpg}" class="img_login" />
 
 	<form th:action="@{/login}" method="post" class="form_login">
-		
+
 		<h1>Login</h1>
 		<img th:src="@{/image/logo.png}" class="logo"
 			alt="Logo do Vet System." />
-		
+
 		<div class="login">
 			<label for="inputEmail" class="label-login">E-mail</label> <input
 				type="text" id="inputEmail" class="input-login"
 				placeholder="Email address" name="username" autofocus> <i
 				class="fas fa-envelope"></i>
-			<div class="invalid-feedback"><span>Use seu email cadastrado como
-				login.</span></div>
+			<div class="invalid-feedback">
+				<span>Use seu email cadastrado como login.</span>
+			</div>
 		</div>
 
 		<div class="login">
+
 			<label for="inputPassword" class="label-login">Senha</label> <input
 				type="password" id="inputPassword" class="input-login"
 				placeholder="Password" name="password">
-			<div class="invalid-feedback"><span>Digite sua senha.</span></div>
+			<div id="wrap" class="field-wrapper">
+				<span toggle="#inputPassword"
+					class="fa fa-fw fa-eye field-icon toggle-password"></span>
+			</div>
+
+			<div class="invalid-feedback">
+				<span>Digite sua senha.</span>
+			</div>
 			<i class="fas fa-lock"></i>
+
+
+
 			<div class="remember-me">
 				<label> <input type="checkbox" id="remember-me"
 					name="remember-me"> Remember me
@@ -55,32 +71,44 @@
 
 	</form>
 	<div id="mensagem-login" th:if="${alerta != null}"
-			th:class="${alerta == 'erro'} ? 'alert alert-danger alert-dismissible fade show' : 'alert alert-success'"
-			role="alert">
-			<i class="oi oi-check"></i>
-			<h4 th:text="${titulo}" class="alert-heading">Credenciais...</h4>
-			<!--  <p th:text="${texto}">Login ou senha incorretos...</p>
+		th:class="${alerta == 'erro'} ? 'alert alert-danger alert-dismissible fade show' : 'alert alert-success'"
+		role="alert">
+		<i class="oi oi-check"></i>
+		<h4 th:text="${titulo}" class="alert-heading">Credenciais...</h4>
+		<!--  <p th:text="${texto}">Login ou senha incorretos...</p>
 			<hr>
 			<p class="mb-0">
 				<small th:text="${subtexto}">Acesso permitido...</small>
 			</p> -->
-			<a role="button" class="close" th:href="@{/login}"> <span
-				aria-hidden="true">&times;</span></a>
-		</div>
+		<a role="button" class="close" th:href="@{/login}"> <span
+			aria-hidden="true">&times;</span></a>
+	</div>
 	<script th:src="@{/webjars/jquery/jquery.min.js(v=${version}) }"></script>
+	<script
+		th:src="@{/webjars/bootstrap/js/bootstrap.min.js(v=${version}) }"></script>
 	<script type="text/javascript">
-		$(document).ready(function(){
-			if($('#mensagem-login h4').text()!=""){
+		$(document).ready(function() {
+			if ($('#mensagem-login h4').text() != "") {
 				$('#inputEmail, #inputPassword').addClass('is-invalid');
 				$(".invalid-feedback").show();
 				$(".invalid-feedback").css("color", "red");
-				$(".is-invalid").css("border", "1px solid red");
-				$('.input-login').focus(function(){
+				$("#wrap").css("padding", "9px 9px 10px 9px");
+				$(".is-invalid, #wrap").css("border", "1px solid red");
+				$('.input-login').focus(function() {
 					$(this).css("box-shadow", "none")
 				})
 			}
 		})
-		
+		$(".toggle-password").click(function() {
+
+			$(this).toggleClass("fa-eye fa-eye-slash");
+			var input = $($(this).attr("toggle"));
+			if (input.attr("type") == "password") {
+				input.attr("type", "text");
+			} else {
+				input.attr("type", "password");
+			}
+		});
 	</script>
 </body>
 </html>

@@ -52,12 +52,12 @@ public class Consulta extends AbstractEntity {
 	@Column(name="prescricao")
 	private String prescricao;
 	
-	@NotNull(message="Insira o pesoa")
+	@NotNull(message="Informe o peso")
 	@NumberFormat(style = Style.NUMBER, pattern = "##,#")
 	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 00.0")
 	private BigDecimal peso;
 	
-	@NotNull(message="Insira a temperatura")
+	@NotNull(message="Informe a temperatura")
 	@NumberFormat(style = Style.NUMBER, pattern = "##,#")
 	@Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 00.0")
 	private BigDecimal temperatura;

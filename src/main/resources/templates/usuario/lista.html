@@ -23,8 +23,7 @@
 						<h2 class="usuarios-cadastrados">Usuários Cadastrados</h2>
 
 						<table id="table-usuarios"
-							class="table table-sm table-striped nowrap"
-							style="width: 100%">
+							class="table table-sm table-striped nowrap" style="width: 100%">
 							<thead class="thead-dark">
 								<tr>
 									<th scope="col">Nome de Usuário (email)</th>
@@ -36,7 +35,7 @@
 								</tr>
 							</thead>
 						</table>
-					
+
 					</div>
 				</div>
 			</div>
@@ -49,7 +48,6 @@
 	<script th:src="@{/js/usuario.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
 	var usuario = [[${usuario.id}]];
-
 	$(document).ready(function() {
 		
 		if(usuario != null){
@@ -62,18 +60,19 @@
 		if ($("#msg-erro").html() != "") {
 			$("#modal-usuario").modal('show');
 			$("#msg-erro, .invalid-feedback span").css("color", "red");
-			$(".is-invalid").css("border", "1px solid red");
 		}
 
 		$("#modal-usuario").on("hidden.bs.modal", function() {
 			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
 			$("#msg-erro").hide();
+			$('#senhas').hide();
 			$("#modal-usuario").modal('hide');
 			
 		});
 		
 		$(".btn-cadastrar-usuario").on("click", function(){
 			$(".form-control").val("");
+			$('#senhas').hide();
 			$(".modal-title").text("Novo Usuário");
 		});
 	})
@@ -85,6 +84,20 @@
 			$('#perfis option[value="'+ v.id + '"]').attr('selected', 'selected');
 		})
 	});
+	$('.pass').on('keyup',function(){
+		if($('#senha').val() != $('#senha-repetida').val()){
+			$('#senhas').show().text('As senhas não são iguais!');
+			$('.salvar-user').prop('disabled', true);
+		}else{
+			$('#senhas').hide();
+			$('.salvar-user').prop('disabled', false);
+		}
+			
+	})
+			$('#confirm-modal').on('show.bs.modal', function(){
+				$(".modal-title").text("Excluir Usuário");
+				$('#subtitulo').text('Todas as informaçãoes referentes a este usuário serão deletadas do sistema!');
+			})
 	
 	</script>
 </body>

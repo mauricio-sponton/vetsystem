@@ -63,6 +63,17 @@ label {
 .form-control{
 	border:1px solid #c1c1c1 !important
 }
+.is-invalid{
+	border: 1px solid red !important
+}
+#msg-erro{
+	color: red;
+	padding-bottom: 10px;
+	text-transform: uppercase;
+}
+.invalid-feedback span{
+	color: red
+}
 .jumbotron {
   padding-top: 3rem;
   padding-bottom: 3rem;

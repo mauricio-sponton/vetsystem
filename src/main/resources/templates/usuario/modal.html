@@ -35,7 +35,7 @@
 							<label for="email">Email</label>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text"
+									<span style="background: #04D284" class="input-group-text"
 										id="validationTooltipUsernamePrepend">@</span>
 								</div>
 								<input type="email" class="form-control" id="email"
@@ -49,15 +49,21 @@
 						</div>
 
 						<div class="mb-3">
-							<label for="senha">Senha</label> <input type="password"
-								class="form-control" id="senha" maxlength="6"
-								th:field="*{senha}" placeholder="Insira sua senha de acesso"
+							<label for="senha">Nova Senha</label> <input type="password"
+								class="form-control pass" id="senha" maxlength="6" name="senha"
+								th:field="*{senha}" placeholder="Insira a nova senha do usuário"
 								th:classappend="${#fields.hasErrors('senha')} ? 'is-invalid'" />
 							<div class="invalid-feedback">
 								<span th:errors="*{senha}"></span>
 							</div>
 						</div>
-
+						<div class="mb-3">
+							<label for="senha">Repita a Senha</label> <input type="password"
+								class="form-control pass" id="senha-repetida" maxlength="6" name="senha-repetida"
+								placeholder="Repita a senha"
+								/>
+						</div>
+						<span id="senhas" style="color:red;"></span>
 						<div class="mb-3">
 							<label for="perfis">Perfil</label>
 							<p>(Pressione CTRL para selecionar mais de um perfil).</p>
@@ -89,8 +95,8 @@
 								<button type="button" class="btn btn-danger btn-cancelar"
 									data-dismiss="modal" aria-label="Close" data-toggle="tooltip"
 									data-placement="right" title="Cancelar">Cancelar</button>
-								<button type="submit" class="btn btn-primary"
-									data-toggle="tooltip" data-placement="right" title="Salvar">
+								<button type="submit" class="btn btn-primary salvar-user"
+									data-toggle="tooltip" data-placement="right" title="Salvar" disabled>
 									Salvar</button>
 							</div>
 						</div>
