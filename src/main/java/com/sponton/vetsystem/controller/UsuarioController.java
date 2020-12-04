@@ -91,7 +91,19 @@ public class UsuarioController {
 			model.addAttribute("erro", "Por favor preencha os campos");
 			return "usuario/lista";
 		}
-		
+		if (usuario.hasId()) {
+			Usuario u2 = service.buscarPorId(usuario.getId());
+			if (u2.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))
+					&& usuario.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
+				Secretaria secretaria = secretariaService.buscarPorUsuarioId(usuario.getId());
+				secretariaService.remover(secretaria.getId());
+			}
+			if (u2.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))
+					&& usuario.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
+				Veterinario veterinario = veterinarioService.buscarPorUsuarioId(usuario.getId());
+				veterinarioService.remover(veterinario.getId());
+			}
+		}
 		List<Perfil> perfis = usuario.getPerfis();
 		if (perfis.size() > 2 || perfis.containsAll(Arrays.asList(new Perfil(2L), new Perfil(3L)))) {
 			attr.addFlashAttribute("falha",
@@ -111,7 +123,7 @@ public class UsuarioController {
 
 	@GetMapping("/editar/credenciais/usuario/{id}")
 	public ModelAndView preEditarCredenciais(@PathVariable("id") Long id) {
-		
+
 		return new ModelAndView("usuario/lista", "usuario", service.buscarPorId(id));
 	}
 
@@ -184,24 +196,26 @@ public class UsuarioController {
 			Veterinario veterinario = veterinarioService.buscarPorUsuarioId(id);
 			veterinarioService.remover(veterinario.getId());
 
-		} else if (u2.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
+		}
+		if (u2.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
 			Secretaria secretaria = secretariaService.buscarPorUsuarioId(id);
 			secretariaService.remover(secretaria.getId());
 
-		} else if (u2.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))
-				&& u2.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
-			Veterinario veterinario = veterinarioService.buscarPorUsuarioId(id);
-			Secretaria secretaria = secretariaService.buscarPorUsuarioId(id);
-			veterinarioService.remover(veterinario.getId());
-			secretariaService.remover(secretaria.getId());
-		} else {
-			service.remover(id);
+			/*
+			 * else if (u2.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))
+			 * && u2.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
+			 * Veterinario veterinario = veterinarioService.buscarPorUsuarioId(id);
+			 * Secretaria secretaria = secretariaService.buscarPorUsuarioId(id);
+			 * veterinarioService.remover(veterinario.getId());
+			 * secretariaService.remover(secretaria.getId());
+			 */
 		}
+
 		if (usuario.getId() == id) {
 			attr.addFlashAttribute("falha", "Você não pode deletar esse usuário");
 			return "redirect:/u/listar";
 		}
-
+		service.remover(id);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
 		return "redirect:/u/listar";
 	}

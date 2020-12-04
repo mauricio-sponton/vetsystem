@@ -42,7 +42,7 @@ public class Veterinario extends AbstractEntity{
 	private Integer crmv;
 	
 
-	@OneToOne(cascade = CascadeType.REMOVE)
+	@OneToOne()
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 

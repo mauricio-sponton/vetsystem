@@ -27,7 +27,7 @@ public class Secretaria extends AbstractEntity{
 	private String nome;
 	
 
-	@OneToOne(cascade = CascadeType.REMOVE)
+	@OneToOne()
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 
