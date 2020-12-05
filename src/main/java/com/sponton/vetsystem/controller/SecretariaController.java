@@ -139,7 +139,7 @@ public class SecretariaController {
 
 		service.removerNotificacaoPorSecretariaId(id, idNotificacao);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
-		return "redirect:/home";
+		return "redirect:/u/notificacoes";
 	}
 
 }

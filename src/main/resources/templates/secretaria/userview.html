@@ -21,9 +21,9 @@
 		<h1>página de perfil</h1>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${sec.foto == null}" th:src="@{/image/ultrasound.svg}"
+				<img th:if="${sec.foto.fileName == null}" th:src="@{/image/ultrasound.svg}"
 					style="width: 120px; height: auto; float: left" /> <img
-					th:if="${sec.foto != null}"
+					th:if="${sec.foto.fileName != null}"
 					th:src="@{${'/uploads/' + sec.foto.fileName}}"
 					style="width: 120px; height: auto; float: left" />
 			</div>

@@ -16,7 +16,7 @@
 			alt="Veterinária consultando cachorro." />
 		</a>
 
-		<div class="bem-vindo-user" >
+		<div class="bem-vindo-user">
 
 			<div th:switch="${currentRole}" sec:authorize="isAuthenticated()">
 				<div sec:authorize="hasAuthority('VETERINARIO')"
@@ -39,10 +39,10 @@
 						vindo(a), <span class="" sec:authentication="name"> </span>
 					</span>
 				</div>-->
-				<div sec:authorize="hasAuthority('SECRETARIA')" 
+				<div sec:authorize="hasAuthority('SECRETARIA')"
 					th:if="${secretaria.nome != null}">
 					<div th:if="${secretaria.sexo == 'Feminino'}">
-						<span style="color: white; font-size: 20px; float: left">Bem
+						<span style="color: white; font-size: 20px;">Bem
 							vinda, <span class="" th:text="${secretaria.nome}"> </span>
 						</span>
 					</div>
@@ -53,6 +53,7 @@
 					</div>
 
 				</div>
+
 				<!-- <div sec:authorize="hasAuthority('SECRETARIA')"
 					th:if="${secretaria.nome == null}">
 					<span style="color: white; font-size: 20px; float: left">Bem
@@ -67,8 +68,19 @@
 				</div>-->
 			</div>
 		</div>
+		<!--  <div class="wrap-bell">
+			<a href="#" role="button">
+						<i class="far fa-bell"
+						style="font-size: 20px; float: left; color: black"> </i>
+			</a> <span class="badge badge-danger">6</span>
 
-
+		</div>
+		-->
+		<div class="wrap-bell">
+			<a class="notify" th:href="@{/u/notificacoes}" role="button"> <span
+				class="notification"> </span>
+			</a><span class="badge badge-danger" th:if="${notify != 0}" th:text="${notify}"></span>
+		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarCollapse" aria-controls="navbarCollapse"
 			aria-expanded="false" aria-label="Toggle navigation">
@@ -147,25 +159,27 @@
 					method="post" class="form-inline ">
 					<div class="btn-group mb-2 mr-sm-2">
 
-		
-						
+
+
 						<div class="wrapper-foto"
 							sec:authorize="hasAuthority('VETERINARIO')">
 							<img alt=""
-								th:if="${veterinario.foto!= null && veterinario.foto.fileName != null}"
+								th:if="${veterinario.foto.fileName != null}"
 								th:src="@{${'/uploads/thumb/' + veterinario.foto.fileName}}">
-							<img th:if="${veterinario.foto ==null}" th:src="@{/image/profile-pic.jpg}"
-								alt="Foto de perfil do usuário." />
+							<img th:if="${veterinario.foto.fileName ==null}"
+								th:src="@{/image/profile-pic.jpg}"
+								alt="Foto de perfil do usuário." style="width:55px; height:auto" />
 
 						</div>
 						<div class="wrapper-foto"
 							sec:authorize="hasAuthority('SECRETARIA')"
 							th:if="${secretaria != null}">
 							<img alt=""
-								th:if="${secretaria.foto!= null && secretaria.foto.fileName != null}"
+								th:if="${secretaria.foto.fileName!= null}"
 								th:src="@{${'/uploads/thumb/' + secretaria.foto.fileName}}">
-								<img th:if="${secretaria.foto ==null}" th:src="@{/image/profile-pic.jpg}"
-								alt="Foto de perfil do usuário." />
+							<img th:if="${secretaria.foto.fileName ==null}"
+								th:src="@{/image/profile-pic.jpg}"
+								alt="Foto de perfil do usuário." style="width:55px; height:auto"/>
 
 						</div>
 
@@ -177,8 +191,10 @@
 						<div class="dropdown-menu dropdown-menu-right">
 
 							<a sec:authorize="hasAuthority('VETERINARIO')"
-								class="dropdown-item" th:href="@{/veterinarios/dados}">Meu Perfil</a> <a sec:authorize="hasAuthority('SECRETARIA')"
-								class="dropdown-item" th:href="@{/secretarias/dados}">Meu Perfil</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">Editar
+								class="dropdown-item" th:href="@{/veterinarios/dados}">Meu
+								Perfil</a> <a sec:authorize="hasAuthority('SECRETARIA')"
+								class="dropdown-item" th:href="@{/secretarias/dados}">Meu
+								Perfil</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">Editar
 								senha</a>
 							<button type="submit" class="dropdown-item">Sair</button>
 						</div>

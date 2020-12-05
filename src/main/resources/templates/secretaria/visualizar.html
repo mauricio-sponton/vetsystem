@@ -27,10 +27,10 @@
 		<span th:replace="secretaria/modal :: modal-form"></span>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${secretaria.foto == null}"
+				<img th:if="${secretaria.foto.fileName == null}"
 					th:src="@{/image/ultrasound.svg}"
 					style="width: 120px; height: auto; float: left" /> <img
-					th:if="${secretaria.foto != null}"
+					th:if="${secretaria.foto.fileName != null}"
 					th:src="@{${'/uploads/' + secretaria.foto.fileName}}"
 					style="width: 120px; height: auto; float: left" />
 			</div>

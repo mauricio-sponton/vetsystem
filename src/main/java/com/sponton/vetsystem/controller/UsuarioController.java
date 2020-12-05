@@ -25,12 +25,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sponton.vetsystem.domain.CargaHoraria;
+import com.sponton.vetsystem.domain.Notificacao;
 import com.sponton.vetsystem.domain.Perfil;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Secretaria;
 import com.sponton.vetsystem.domain.Usuario;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.CargaHorariaService;
+import com.sponton.vetsystem.service.NotificacaoService;
 import com.sponton.vetsystem.service.SecretariaService;
 import com.sponton.vetsystem.service.UsuarioService;
 import com.sponton.vetsystem.service.VeterinarioService;
@@ -50,6 +52,9 @@ public class UsuarioController {
 
 	@Autowired
 	private CargaHorariaService cargaHorariaService;
+
+	@Autowired
+	private NotificacaoService notificacaoService;
 
 	// abrir cadastro de usuarios (vet/admin/secretaria)
 	@GetMapping("/novo/cadastro/usuario")
@@ -252,4 +257,17 @@ public class UsuarioController {
 		return "login";
 	}
 
+	@GetMapping("/notificacoes")
+	public String visualizarNotificacoes(ModelMap model, @AuthenticationPrincipal User user) {
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
+			Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
+			if(secretaria.hasId()) {
+				List<Notificacao> notificacoes = notificacaoService.buscarNotificacaoPorSecretariaId(secretaria.getId());
+				model.addAttribute("notificacoes", notificacoes);
+				model.addAttribute("secretaria", secretaria);
+			}
+			
+		}
+		return "usuario/notificacoes";
+	}
 }

@@ -115,8 +115,6 @@ public class HomeController {
 				return "redirect:/secretarias/dados";
 			}
 			if(secretaria.hasId()) {
-				List<Notificacao> notificacoes = notificacaoService.buscarNotificacaoPorSecretariaId(secretaria.getId());
-				model.addAttribute("notificacoes", notificacoes);
 				model.addAttribute("secretaria", secretaria);
 				List<Agendamento> agendamentos = agendamentoService.buscarTodos();
 				LocalDate hoje = LocalDate.now();

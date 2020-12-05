@@ -363,7 +363,7 @@ margin-top: 2px
 
 }
 .wrapper-foto{
-	
+	border: 2px solid white;
 	width: 55px;
 	height: 55px;
 	border-radius: 50%;
@@ -535,9 +535,7 @@ table .btn-danger{
 	width: 100%;
 
 }
-a{
-	width: 100%;
-}
+
 
 .user-btn {
 	width: 400px;
@@ -810,3 +808,56 @@ button:focus {
 	color: black
 }
 
+.badge{
+    padding: 3px 5px 2px;
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    display: inline-block;
+    min-width: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 10px;
+}
+.badge-danger {
+    background-color: #db5565;
+}
+
+.wrap-bell{
+	margin-left: 85%;
+	display: inline-block;
+	position:fixed
+}
+.notification {
+    display: inline-block;
+    padding: 0.6em 0.8em;
+    font-size: 1.5em;
+ 	
+}
+
+.notification::before 
+{
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.notification::before {
+    display: block;
+    content: "\f0f3";
+    font-family: "Font Awesome 5 Free";
+   
+}
+
+.deletar {
+	width: 10%;
+	float: right;
+}
+.titulo{
+	width: 80%;
+	float: left;
+}
