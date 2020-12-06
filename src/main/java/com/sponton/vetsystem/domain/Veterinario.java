@@ -75,6 +75,7 @@ public class Veterinario extends AbstractEntity{
 	@Column(name = "cpf", unique = true, nullable = false)
 	private String cpf;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(
 			name = "veterinarios_tem_notificacoes",

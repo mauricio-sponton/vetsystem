@@ -85,9 +85,9 @@ public class AgendamentoController {
 	@PostMapping("/salvar")
 	public String salvar(@Valid Agendamento agendamento, BindingResult result, RedirectAttributes attr, ModelMap model,
 			@AuthenticationPrincipal User user) {
-		
-		if (result.hasErrors() || (agendamento.getAnimal().getNome().isEmpty() && agendamento.getSem_cadastro().isEmpty())) {
-			//|| agendamento.getVeterinario().getNome().isEmpty() 
+
+		if (result.hasErrors()
+				|| (agendamento.getAnimal().getNome().isEmpty() && agendamento.getSem_cadastro().isEmpty())) {
 			model.addAttribute("erro", "por favor preencha os campos");
 			return "/agendamento/agenda";
 		}
@@ -99,9 +99,9 @@ public class AgendamentoController {
 
 		try {
 			if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
-			   Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
-			   Veterinario veterinario= agendamento.getVeterinario();
-				//Veterinario veterinario = veterinarioService.buscarPorTitulos(new String[] { vet }).stream().findFirst().get();
+				Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
+				Veterinario veterinario = agendamento.getVeterinario();
+				Veterinario v2 = veterinarioService.buscarPorId(veterinario.getId());
 				if (!agendamento.getAnimal().getNome().isEmpty()) {
 					String titulo = agendamento.getAnimal().getNome();
 					Animal animal = animalService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
@@ -110,16 +110,33 @@ public class AgendamentoController {
 				} else {
 					agendamento.setAnimal(null);
 				}
-			
-			
+
 				if (agendamento.hasNotId()) {
-					
+
 					agendamento.setVeterinario(veterinario);
 					agendamento.setSecretaria(secretaria);
+					Notificacao notificacao = new Notificacao();
+					LocalDate data = LocalDate.now();
+					notificacao.setData(data);
+					notificacao.setTitulo("Nova consulta agendada");
+					LocalTime horas = agendamento.getInicio().toLocalTime();
+					String paciente = null;
+					if (agendamento.getAnimal() != null) {
+						paciente = agendamento.getAnimal().getNome();
+					} else {
+						paciente = agendamento.getSem_cadastro();
+					}
+					notificacao.setDescricao("Uma nova consulta foi agendada para o dia "
+							+ agendamento.getInicio().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+							+ " às " + horas + " ;" + "Nome do paciente: " + paciente + ";" + "Consulta agendada por: "
+							+ agendamento.getSecretaria().getNome());
+					v2.getNotificacoes().add(notificacao);
+
 					service.salvar(agendamento);
+
 					attr.addFlashAttribute("sucesso", "Agendamento cadastrado com sucesso");
 				} else {
-					
+
 					agendamento.setVeterinario(veterinario);
 					agendamento.setSecretaria(secretaria);
 					service.salvar(agendamento);
@@ -157,7 +174,7 @@ public class AgendamentoController {
 			tudo.put("description", agendamento.getDescricao() != null ? agendamento.getDescricao() : "");
 			tudo.put("backgroundColor", agendamento.getColor());
 			extend.put("veterinario", agendamento.getVeterinario());
-			
+
 			extend.put("secretaria",
 					agendamento.getSecretaria().getNome() != null ? agendamento.getSecretaria().getNome() : "");
 			if (agendamento.getAnimal() != null) {
@@ -184,24 +201,37 @@ public class AgendamentoController {
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr, @AuthenticationPrincipal User user) {
-		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
-			Agendamento agendamento = service.buscarPorId(id);
-			List<Secretaria> secretarias = secretariaService.buscarTodos();
+		Agendamento agendamento = service.buscarPorId(id);
+		LocalDate data = LocalDate.now();
+		LocalTime horas = agendamento.getInicio().toLocalTime();
+		String paciente = null;
+		if (agendamento.getAnimal() != null) {
+			paciente = agendamento.getAnimal().getNome();
+		} else {
+			paciente = agendamento.getSem_cadastro();
+		}
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
+			Veterinario v2 = veterinarioService.buscarPorId(agendamento.getVeterinario().getId());
 			Notificacao notificacao = new Notificacao();
-			LocalDate data = LocalDate.now();
 			notificacao.setData(data);
 			notificacao.setTitulo("Cancelamento de consulta");
-			LocalTime horas = agendamento.getInicio().toLocalTime();
-			String paciente = null;
-			if (agendamento.getAnimal() != null) {
-				paciente = "Paciente: " + agendamento.getAnimal().getNome();
-			} else {
-				paciente = "Paciente: " + agendamento.getSem_cadastro();
-			}
+			notificacao.setDescricao("A consulta agendada para o dia "
+					+ agendamento.getInicio().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)) + " às "
+					+ horas + " do " + paciente + " foi cancelada! " + ";" + "Cancelamento da consulta realizado por: "
+					+ agendamento.getSecretaria().getNome() + ";");
+			v2.getNotificacoes().add(notificacao);
+
+		}
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
+			List<Secretaria> secretarias = secretariaService.buscarTodos();
+			Notificacao notificacao = new Notificacao();
+			notificacao.setData(data);
+			notificacao.setTitulo("Cancelamento de consulta");
 			notificacao.setDescricao("Consulta agendada para o dia "
 					+ agendamento.getInicio().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)) + " às "
-					+ horas + ";" + paciente + ";" + "Agendada por: " + agendamento.getSecretaria().getNome() + ";"
-					+ "Cancelada por: " + agendamento.getVeterinario().getNome());
+					+ horas + ";" + "Paciente: " + paciente + ";" + "Agendada por: "
+					+ agendamento.getSecretaria().getNome() + ";" + "Cancelada por: "
+					+ agendamento.getVeterinario().getNome());
 
 			for (Secretaria s : secretarias) {
 				s.getNotificacoes().add(notificacao);

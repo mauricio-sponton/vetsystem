@@ -8,41 +8,65 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<main role="main">
-			<div th:if="${notificacoes!=null}">
-				<div id="accordion">
-					<div class="card" th:each="n: ${notificacoes}">
-						<div class="card-header" id="headingOne">
-							<h5 class="mb-0 titulo">
-								<button id="btn-titulo" class="btn btn-link"
-									data-toggle="collapse"
-									th:attr="data-target='#colapsar' + ${n.id}"
-									aria-expanded="true" aria-controls="collapseOne">
-									<span style="color: black" th:text="${n.titulo}"></span>
-									
-								</button>
-								<span style="color: gray; font-size: 0.8em" th:text="${#temporals.format(n.data, 'dd/MM/yyyy')}"></span>
-							</h5>
-							<a th:if="${secretaria !=null}"
-								class="btn btn-danger btn-sm btn-block deletar"
-								th:href="@{'/secretarias/excluir/'+ ${secretaria.id} + '/notificacao/' + ${n.id}}"
-								role="button"><i class="fas fa-times-circle"></i></a>
-							<a
-							th:if="${veterinario !=null}"
-							class="btn btn-danger btn-sm btn-block deletar"
-							th:href="@{'/veterinarios/excluir/'+ ${veterinario.id} + '/notificacao/' + ${n.id}}"
-							role="button"><i class="fas fa-times-circle"></i></a> 
-						</div>
+			<div class="container">
+				<!--  
+				<div th:if="${notificacoes!=null}">
+					<div id="accordion">
+						<div class="card" th:each="n: ${notificacoes}">
+							<div class="card-header" id="headingOne">
+								<h5 class="mb-0 titulo">
+									<button id="btn-titulo" class="btn btn-link"
+										data-toggle="collapse"
+										th:attr="data-target='#colapsar' + ${n.id}"
+										aria-expanded="true" aria-controls="collapseOne">
+										<span style="color: black" th:text="${n.titulo}"></span>
 
-						<div th:id="'colapsar' + ${n.id}" class="collapse"
-							aria-labelledby="headingOne" data-parent="#accordion">
-							<div class="card-body">
-								<span style="color: black"
-									th:utext="${#strings.replace(n.descricao, ';' , '<br>')}"></span>
+									</button>
+									<span style="color: gray; font-size: 0.8em"
+										th:text="${#temporals.format(n.data, 'dd/MM/yyyy')}"></span>
+								</h5>
+								<a th:if="${secretaria !=null}"
+									class="btn btn-danger btn-sm btn-block deletar"
+									th:href="@{'/secretarias/excluir/'+ ${secretaria.id} + '/notificacao/' + ${n.id}}"
+									role="button"><i class="fas fa-times-circle"></i></a> <a
+									th:if="${veterinario !=null}"
+									class="btn btn-danger btn-sm btn-block deletar"
+									th:href="@{'/veterinarios/excluir/'+ ${veterinario.id} + '/notificacao/' + ${n.id}}"
+									role="button"><i class="fas fa-times"></i></a>
+							</div>
+
+							<div th:id="'colapsar' + ${n.id}" class="collapse"
+								aria-labelledby="headingOne" data-parent="#accordion">
+								<div class="card-body">
+									<span style="color: black"
+										th:utext="${#strings.replace(n.descricao, ';' , '<br>')}"></span>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
+				-->
+				<div th:if="${notificacoes!=null}">
+					<div class="timeline_card" th:each="n: ${notificacoes}">
+						<header class="card__header">
+							<time class="time">
+								<span class="time__day"
+									th:text="${#temporals.format(n.data, 'dd/MM/yyyy')}"></span>
+							</time>
+							<a th:if="${veterinario !=null}" class="deletar-notificacao"
+								th:href="@{'/veterinarios/excluir/'+ ${veterinario.id} + '/notificacao/' + ${n.id}}"
+								role="button"><i class="fas fa-times"></i></a> <a
+								th:if="${secretaria !=null}"
+								class="deletar-notificacao"
+								th:href="@{'/secretarias/excluir/'+ ${secretaria.id} + '/notificacao/' + ${n.id}}"
+								role="button"><i class="fas fa-times-circle"></i></a>
+							<h3 class="card__title r-title" th:text="${n.titulo}"></h3>
+						</header>
+						<div class="card__content">
+							<p th:utext="${#strings.replace(n.descricao, ';' , '<br>')}"></p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</main>
 	</section>
