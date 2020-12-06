@@ -33,6 +33,7 @@ import com.sponton.vetsystem.domain.Foto;
 import com.sponton.vetsystem.domain.FotoInternacao;
 import com.sponton.vetsystem.domain.HistoricoAnimal;
 import com.sponton.vetsystem.domain.Internacao;
+import com.sponton.vetsystem.domain.Notificacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AnimalService;
@@ -76,8 +77,8 @@ public class InternacaoController {
 
 	@Autowired
 	private VacinaService vacinaService;
-	
-	@Autowired 
+
+	@Autowired
 	private FotoInternacaoService fotoInternacaoService;
 
 	@GetMapping("/cadastrar")
@@ -136,6 +137,18 @@ public class InternacaoController {
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus("Internado");
+				
+				List<Veterinario> veterinarios = veterinarioService.buscarTodosVeterinarios();
+				Notificacao notificacao = new Notificacao();
+				notificacao.setData(data);
+				notificacao.setTitulo("Paciente internado");
+				notificacao.setDescricao("O paciente " + internacao.getAnimal().getNome() + " foi internado no dia "
+						+ internacao.getDataEntrada().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+						+ " às " + internacao.getHoraEntrada() + ";" + "Veterinário responsável pela internação : "
+						+ veterinario.getNome());
+				for(Veterinario v : veterinarios) {
+					v.getNotificacoes().add(notificacao);
+				}
 
 			}
 			if (internacao.hasId() && status.equals("Ativa")) {
@@ -182,6 +195,18 @@ public class InternacaoController {
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus("Normal");
+				
+				List<Veterinario> veterinarios = veterinarioService.buscarTodosVeterinarios();
+				Notificacao notificacao = new Notificacao();
+				notificacao.setData(data);
+				notificacao.setTitulo("Alta da internação");
+				notificacao.setDescricao("O paciente " + internacao.getAnimal().getNome() + " teve alta da internação no dia "
+						+ internacao.getDataSaida().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+						+ " às " + internacao.getHoraSaida().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)) + ";" + "Veterinário responsável pela alta : "
+						+ veterinario.getNome());
+				for(Veterinario v : veterinarios) {
+					v.getNotificacoes().add(notificacao);
+				}
 			}
 
 		}
@@ -193,7 +218,7 @@ public class InternacaoController {
 			for (int i = 0; i < files.length; i++) {
 				FotoInternacao foto = new FotoInternacao();
 				foto.setFileName(files[i].getOriginalFilename());
-				switch(files[i].getContentType()) {
+				switch (files[i].getContentType()) {
 				case "image/jpeg":
 					foto.setTipo("jpg");
 					break;
@@ -207,7 +232,6 @@ public class InternacaoController {
 					model.addAttribute("falha", "Tipos suportados de foto são: Jpg, Jpeg ou PNG");
 					break;
 				}
-
 
 				try {
 					foto.setInternacao(internacao);
@@ -243,6 +267,7 @@ public class InternacaoController {
 	public ResponseEntity<?> listarFotosDatatables(HttpServletRequest request, @PathVariable("idInternacao") Long id) {
 		return ResponseEntity.ok(fotoInternacaoService.buscarTodos(request, id));
 	}
+
 	@GetMapping("/datatables/server/{idAnimal}")
 	public ResponseEntity<?> listarInternacoesByAnimalDatatables(HttpServletRequest request,
 			@PathVariable("idAnimal") Long idAnimal) {
@@ -351,7 +376,7 @@ public class InternacaoController {
 			for (int i = 0; i < files.length; i++) {
 				FotoInternacao foto = new FotoInternacao();
 				foto.setFileName(files[i].getOriginalFilename());
-				switch(files[i].getContentType()) {
+				switch (files[i].getContentType()) {
 				case "image/jpeg":
 					foto.setTipo("jpg");
 					break;
@@ -365,7 +390,6 @@ public class InternacaoController {
 					model.addAttribute("falha", "Tipos suportados de foto são: Jpg, Jpeg ou PNG");
 					break;
 				}
-
 
 				try {
 					foto.setInternacao(internacao);
@@ -455,15 +479,18 @@ public class InternacaoController {
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso");
 		return "redirect:/pacientes/visualizar/{idAnimal}";
 	}
+
 	@GetMapping("/editar/foto/{id}/internacao/{idInternacao}")
-	public String preEditarFotos(@PathVariable("id") Long id,  @PathVariable("idInternacao") Long idInternacao, ModelMap model) {
+	public String preEditarFotos(@PathVariable("id") Long id, @PathVariable("idInternacao") Long idInternacao,
+			ModelMap model) {
 		model.addAttribute("internacao", service.buscarPorId(idInternacao));
 		model.addAttribute("fotoInternacao", fotoInternacaoService.buscarPorId(id));
 		return "internacao/visualizar";
 	}
 
 	@GetMapping("/excluir/foto/{id}/internacao/{idInternacao}")
-	public String excluirFotos(@PathVariable("id") Long id, @PathVariable("idInternacao") Long idInternacao, RedirectAttributes attr) {
+	public String excluirFotos(@PathVariable("id") Long id, @PathVariable("idInternacao") Long idInternacao,
+			RedirectAttributes attr) {
 		fotoInternacaoService.remover(id);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
 		return "redirect:/internacoes/visualizar/{idInternacao}";
@@ -474,10 +501,11 @@ public class InternacaoController {
 		model.addAttribute("foto", fotoInternacaoService.buscarPorId(id));
 		return "/foto/visualizar";
 	}
+
 	@PostMapping("/salvar/foto/internacao/{id}")
-	public String salvarFoto(@Valid FotoInternacao foto, @PathVariable("id") Long id, BindingResult result, RedirectAttributes attr,
-			@AuthenticationPrincipal User user,
-			@RequestParam("file") MultipartFile file, ModelMap model) {
+	public String salvarFoto(@Valid FotoInternacao foto, @PathVariable("id") Long id, BindingResult result,
+			RedirectAttributes attr, @AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file,
+			ModelMap model) {
 		Internacao internacao = service.buscarPorId(id);
 		if (result.hasErrors() || (file.isEmpty() && foto.hasNotId())) {
 			model.addAttribute("erro", "Por favor preencha os dados");
@@ -485,7 +513,7 @@ public class InternacaoController {
 			return "internacao/visualizar";
 		}
 		if (!file.isEmpty()) {
-			switch(file.getContentType()) {
+			switch (file.getContentType()) {
 			case "image/jpeg":
 				foto.setTipo("jpg");
 				break;
@@ -500,12 +528,12 @@ public class InternacaoController {
 				break;
 			}
 			try {
-				
+
 				foto.setInternacao(internacao);
 				fotoInternacaoService.salvarFoto(file, foto);
-				if(foto.hasId()) {
+				if (foto.hasId()) {
 					attr.addFlashAttribute("sucesso", "Foto cadastrada com sucesso");
-				}else {
+				} else {
 					attr.addFlashAttribute("sucesso", "Foto alterada com sucesso");
 				}
 
@@ -513,7 +541,7 @@ public class InternacaoController {
 				attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 			}
 		}
-		if(file.isEmpty() && foto.hasId()) {
+		if (file.isEmpty() && foto.hasId()) {
 			FotoInternacao f2 = fotoInternacaoService.buscarPorId(foto.getId());
 			foto.setFileName(f2.getFileName());
 			foto.setThumb(f2.getThumb());
@@ -522,7 +550,7 @@ public class InternacaoController {
 			foto.setInternacao(internacao);
 			fotoInternacaoService.salvar(foto);
 		}
-		
-		return"redirect:/internacoes/visualizar/{id}";
+
+		return "redirect:/internacoes/visualizar/{id}";
 	}
 }

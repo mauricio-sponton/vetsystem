@@ -18,17 +18,19 @@
 									th:attr="data-target='#colapsar' + ${n.id}"
 									aria-expanded="true" aria-controls="collapseOne">
 									<span style="color: black" th:text="${n.titulo}"></span>
+									
 								</button>
+								<span style="color: gray; font-size: 0.8em" th:text="${#temporals.format(n.data, 'dd/MM/yyyy')}"></span>
 							</h5>
 							<a th:if="${secretaria !=null}"
 								class="btn btn-danger btn-sm btn-block deletar"
 								th:href="@{'/secretarias/excluir/'+ ${secretaria.id} + '/notificacao/' + ${n.id}}"
 								role="button"><i class="fas fa-times-circle"></i></a>
-							<!--  <a
+							<a
 							th:if="${veterinario !=null}"
 							class="btn btn-danger btn-sm btn-block deletar"
 							th:href="@{'/veterinarios/excluir/'+ ${veterinario.id} + '/notificacao/' + ${n.id}}"
-							role="button"><i class="fas fa-times-circle"></i></a> -->
+							role="button"><i class="fas fa-times-circle"></i></a> 
 						</div>
 
 						<div th:id="'colapsar' + ${n.id}" class="collapse"

@@ -268,6 +268,14 @@ public class UsuarioController {
 			}
 			
 		}
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
+			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
+			if(veterinario.hasId()) {
+				List<Notificacao> notificacoes = notificacaoService.buscarNotificacaoPorVeterinarioId(veterinario.getId());
+				model.addAttribute("notificacoes", notificacoes);
+				model.addAttribute("veterinario", veterinario);
+			}
+		}
 		return "usuario/notificacoes";
 	}
 }

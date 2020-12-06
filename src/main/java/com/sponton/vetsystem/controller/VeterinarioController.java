@@ -263,4 +263,12 @@ public class VeterinarioController {
 	public ResponseEntity<?> listarUsuariosDatatables(HttpServletRequest request) {
 		return ResponseEntity.ok(service.buscarTodos(request));
 	}
+	@GetMapping("/excluir/{id}/notificacao/{idNotificacao}")
+	public String deletarNotificacaoPorVeterinarioId(@PathVariable("id") Long id,
+			@PathVariable("idNotificacao") Long idNotificacao, RedirectAttributes attr) {
+
+		service.removerNotificacaoPorVeterinarioId(id, idNotificacao);
+		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
+		return "redirect:/u/notificacoes";
+	}
 }

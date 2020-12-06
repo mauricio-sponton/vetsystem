@@ -48,6 +48,22 @@ public class Notificacao extends AbstractEntity{
 			inverseJoinColumns = @JoinColumn(name = "id_secretaria", referencedColumnName = "id")
     )
 	private List<Secretaria> secretarias;
+	
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(
+			name = "veterinarios_tem_notificacoes",
+			joinColumns = @JoinColumn(name = "id_notificacao", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "id_veterinario", referencedColumnName = "id")
+    )
+	private List<Veterinario> veterinarios;
+
+	public List<Veterinario> getVeterinarios() {
+		return veterinarios;
+	}
+
+	public void setVeterinarios(List<Veterinario> veterinarios) {
+		this.veterinarios = veterinarios;
+	}
 
 	public String getTitulo() {
 		return titulo;

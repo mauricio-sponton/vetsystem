@@ -44,6 +44,9 @@ public class InicialController {
 		if(user !=null) {
 			if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
 				Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
+				List<Notificacao> notificacoes = notificacaoService.buscarNotificacaoPorVeterinarioId(veterinario.getId());
+				int notifyVet = (int) notificacoes.stream().count();
+				model.addAttribute("notifyVet", notifyVet);
 				model.addAttribute("veterinario", veterinario);
 			}
 			if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {

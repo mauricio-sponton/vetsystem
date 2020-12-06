@@ -75,6 +75,22 @@ public class Veterinario extends AbstractEntity{
 	@Column(name = "cpf", unique = true, nullable = false)
 	private String cpf;
 	
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(
+			name = "veterinarios_tem_notificacoes",
+			joinColumns = @JoinColumn(name = "id_veterinario", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "id_notificacao", referencedColumnName = "id")
+    )
+	private List<Notificacao> notificacoes;
+	
+	public List<Notificacao> getNotificacoes() {
+		return notificacoes;
+	}
+
+	public void setNotificacoes(List<Notificacao> notificacoes) {
+		this.notificacoes = notificacoes;
+	}
+
 	public List<CargaHoraria> getHorarios() {
 		return horarios;
 	}

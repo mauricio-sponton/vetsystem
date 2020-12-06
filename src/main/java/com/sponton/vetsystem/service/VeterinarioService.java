@@ -107,5 +107,17 @@ public class VeterinarioService {
 		
 	}
 
+	@Transactional(readOnly = true)
+	public List<Veterinario> buscarTodosVeterinarios() {
+		return repository.findAll();
+	}
+
+	@Transactional(readOnly = false)
+	public void removerNotificacaoPorVeterinarioId(Long id, Long idNotificacao) {
+		Veterinario veterinario = repository.findById(id).get();
+		veterinario.getNotificacoes().removeIf(e -> e.getId().equals(idNotificacao));
+		
+	}
+
 
 }

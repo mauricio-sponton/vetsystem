@@ -24,7 +24,7 @@
 		<span th:replace="veterinario/modal :: modal-form"></span>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${veterinario.foto.fileName == null}"
+				<img th:if="${veterinario.id != null && veterinario.foto.fileName == null}"
 					th:src="@{/image/ultrasound.svg}"
 					style="width: 120px; height: auto; float: left" /> <img
 					th:if="${veterinario.foto.fileName != null}"

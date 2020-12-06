@@ -13,6 +13,9 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long>{
 	@Query("select n from Notificacao n join n.secretarias s where s.id =:id order by n.id DESC")
 	List<Notificacao> findNotificacaoBySecretariaId(Long id);
 
+	@Query("select n from Notificacao n join n.veterinarios v where v.id =:id order by n.id DESC")
+	List<Notificacao> findNotificacaoByVeterinarioId(Long id);
+
 	//@Query("select n from Notificacao n where n.agendamento.id = :id")
 	//Notificacao findNotificacaoByAgendamentoId(Long id);
 

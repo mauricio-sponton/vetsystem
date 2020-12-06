@@ -38,5 +38,10 @@ public class NotificacaoService {
 		return repository.findById(id).get();
 	}
 
+	@Transactional(readOnly = true)
+	public List<Notificacao> buscarNotificacaoPorVeterinarioId(Long id) {
+		return repository.findNotificacaoByVeterinarioId(id);
+	}
+
 
 }

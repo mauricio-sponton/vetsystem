@@ -80,6 +80,7 @@
 			<a class="notify" th:href="@{/u/notificacoes}" role="button"> <span
 				class="notification"> </span>
 			</a><span class="badge badge-danger" th:if="${notify != 0}" th:text="${notify}"></span>
+			<span class="badge badge-danger" th:if="${notifyVet != 0}" th:text="${notifyVet}"></span>
 		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarCollapse" aria-controls="navbarCollapse"
@@ -164,9 +165,9 @@
 						<div class="wrapper-foto"
 							sec:authorize="hasAuthority('VETERINARIO')">
 							<img alt=""
-								th:if="${veterinario.foto.fileName != null}"
+								th:if="${veterinario.id != null && veterinario.foto.fileName != null}"
 								th:src="@{${'/uploads/thumb/' + veterinario.foto.fileName}}">
-							<img th:if="${veterinario.foto.fileName ==null}"
+							<img th:if="${veterinario.id != null && veterinario.foto.fileName ==null}"
 								th:src="@{/image/profile-pic.jpg}"
 								alt="Foto de perfil do usuário." style="width:55px; height:auto" />
 
@@ -175,9 +176,9 @@
 							sec:authorize="hasAuthority('SECRETARIA')"
 							th:if="${secretaria != null}">
 							<img alt=""
-								th:if="${secretaria.foto.fileName!= null}"
+								th:if="${secretaria.id != null && secretaria.foto.fileName!= null}"
 								th:src="@{${'/uploads/thumb/' + secretaria.foto.fileName}}">
-							<img th:if="${secretaria.foto.fileName ==null}"
+							<img th:if="${secretaria.id != null && secretaria.foto.fileName ==null}"
 								th:src="@{/image/profile-pic.jpg}"
 								alt="Foto de perfil do usuário." style="width:55px; height:auto"/>
 
