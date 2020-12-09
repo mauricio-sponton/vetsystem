@@ -32,9 +32,11 @@ import com.sponton.vetsystem.domain.Animal;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.Notificacao;
+import com.sponton.vetsystem.domain.Perfil;
 import com.sponton.vetsystem.domain.PerfilTipo;
 import com.sponton.vetsystem.domain.Raca;
 import com.sponton.vetsystem.domain.Secretaria;
+import com.sponton.vetsystem.domain.Usuario;
 import com.sponton.vetsystem.domain.Veterinario;
 import com.sponton.vetsystem.service.AgendamentoService;
 import com.sponton.vetsystem.service.AnimalService;
@@ -44,6 +46,7 @@ import com.sponton.vetsystem.service.InternacaoService;
 import com.sponton.vetsystem.service.NotificacaoService;
 import com.sponton.vetsystem.service.RacaService;
 import com.sponton.vetsystem.service.SecretariaService;
+import com.sponton.vetsystem.service.UsuarioService;
 import com.sponton.vetsystem.service.VeterinarioService;
 
 @Controller
@@ -66,13 +69,13 @@ public class HomeController {
 
 	@Autowired
 	private RacaService racaService;
-	
-	@Autowired 
-	private NotificacaoService notificacaoService;
-	
+
+	@Autowired
+	private UsuarioService usuarioService;
+
 	@Autowired
 	private AgendamentoService agendamentoService;
-	
+
 	@Autowired
 	private InternacaoService internacaoService;
 
@@ -85,27 +88,20 @@ public class HomeController {
 						"Por favor preencha seus dados pessoais para continuar usando o sistema");
 				return "redirect:/veterinarios/dados";
 			}
-			if(veterinario.hasId()) {
+			if (veterinario.hasId()) {
 				List<Agendamento> agendamentos = agendamentoService.buscarVeterinarioPorId(veterinario.getId());
 				LocalDate hoje = LocalDate.now();
 				int contador = 0;
-				for(Agendamento a : agendamentos) {
+				for (Agendamento a : agendamentos) {
 					LocalDate l = a.getInicio().toLocalDate();
-					if(l.equals(hoje)) {
+					if (l.equals(hoje)) {
 						contador += 1;
 					}
-					
+
 				}
-				model.addAttribute("consultasHoje",contador);
+				model.addAttribute("consultasHoje", contador);
 				model.addAttribute("veterinario", veterinario);
 			}
-			/*
-			if(veterinario.hasId()) {
-				LocalDate hoje = LocalDate.now();	
-				List<Notificacao> notificacoes = notificacaoService.buscarNotificacaoPorVeterinarioIdEData(veterinario.getId(), hoje);
-				model.addAttribute("notificacoes", notificacoes);
-			}
-			*/
 		}
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
 			Secretaria secretaria = secretariaService.buscarPorEmail(user.getUsername());
@@ -114,33 +110,51 @@ public class HomeController {
 						"Por favor preencha seus dados pessoais para continuar usando o sistema");
 				return "redirect:/secretarias/dados";
 			}
-			if(secretaria.hasId()) {
+			if (secretaria.hasId()) {
 				model.addAttribute("secretaria", secretaria);
 				List<Agendamento> agendamentos = agendamentoService.buscarTodos();
 				LocalDate hoje = LocalDate.now();
 				int semana = hoje.get(ChronoField.ALIGNED_WEEK_OF_MONTH);
 				int contadorDia = 0;
 				int contadorSemana = 0;
-				for(Agendamento a : agendamentos) {
+				for (Agendamento a : agendamentos) {
 					LocalDate agendamentoHoje = a.getInicio().toLocalDate();
 					int week = agendamentoHoje.get(ChronoField.ALIGNED_WEEK_OF_MONTH);
 					System.out.println(week);
-					if(week == semana) {
+					if (week == semana) {
 						contadorSemana += 1;
 					}
-					if(agendamentoHoje.equals(hoje)) {
+					if (agendamentoHoje.equals(hoje)) {
 						contadorDia += 1;
 					}
-					
+
 				}
-				model.addAttribute("consultasHojeSec",contadorDia);
+				model.addAttribute("consultasHojeSec", contadorDia);
 				model.addAttribute("consultasSemana", contadorSemana);
 			}
-			
+
 		}
-		
+
 		List<Internacao> internacoes = internacaoService.buscarTodasInternacoesAtiva();
-		
+		List<Usuario> usuarios = usuarioService.buscarTodosUsuarios();
+		int totalsec =0;
+		int totalvet=0;
+		int totaladm=0;
+
+		for (Usuario u : usuarios) {
+			if (u.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
+				totalsec+=1;
+			}
+			if (u.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
+				totalvet+=1;
+			}
+			if (u.getPerfis().contains(new Perfil(PerfilTipo.ADMIN.getCod()))) {
+				totaladm+=1;
+			}
+		}
+		model.addAttribute("totalsec", totalsec);
+		model.addAttribute("totalvet", totalvet);
+		model.addAttribute("totaladm", totaladm);
 		List<Raca> racas = racaService.buscarTodasRacas();
 		if (racas.size() > 0) {
 			int t = 0;
@@ -152,8 +166,7 @@ public class HomeController {
 					t = (int) separado.stream().count();
 					surveyMap.put(r.getNome(), t);
 				}
-				
-				
+
 			}
 			model.addAttribute("surveyMap", surveyMap);
 		}
@@ -168,14 +181,14 @@ public class HomeController {
 					t = (int) separado.stream().count();
 					surveyMap.put(e.getNome(), t);
 				}
-				
+
 			}
 			model.addAttribute("especies", surveyMap);
 		}
 
 		model.addAttribute("animal", animalService.buscarTodosAnimais());
 		model.addAttribute("cliente", clienteService.buscarTodosClientes());
-		model.addAttribute("internacao",internacoes);
+		model.addAttribute("internacao", internacoes);
 		return "home";
 	}
 

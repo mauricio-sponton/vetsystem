@@ -73,6 +73,7 @@
 				success : function(data) {
 	               var newArray = new Array();
 	               console.log(data)
+	              
 	               var i = 0;
 	                $.each(data, function (k,v) {
 	                    var newObject = {
@@ -93,7 +94,27 @@
 		}
 	});
 	$(document).ready(function(){
-		
+		$("#animal").on('change', function(){
+			var animal = $("#animal").val(); 
+			$.ajax({
+				method : "GET",
+				url : "/pacientes/titulo/alergias",
+				data : {
+					animal : animal
+				},
+				success : function(data) {
+						if(data != ''){
+							$(".alerta").fadeIn('slow')
+							
+							$(".alergias").text(data);
+						}else{
+							$(".alerta").fadeOut('slow')
+							$(".alergias").text("")
+						}
+					
+				}
+			})
+		})
 		if(consulta != null){
 			$("#modal-consulta").modal('show');
 			$(".modal-title").text("Editar Consulta");
@@ -126,12 +147,16 @@
 			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
 			$("#msg-erro").hide();
 			$("#modal-consulta").modal('hide');
+			$(".alerta").hide()
+			$(".alergias").text("")
 			
 		});
 		
 		$(".btn-cadastrar-usuario").on("click", function(){
 			$(".form-control").val("");
 			$(".modal-title").text("Nova Consulta");
+			$(".alerta").hide()
+			$(".alergias").text("")
 		});	
 	});	
 	</script>

@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -59,17 +60,8 @@ public class ConsultaController {
 	@Autowired
 	private EspecieService especieService;
 
-	@GetMapping("/cadastrar")
-	public String novaConsulta(Consulta consulta) {
-		return "consulta/cadastro";
-	}
 
-	@GetMapping("/cadastrar/{id}")
-	public String novaConsultaPorAnimal(Consulta consulta, @PathVariable("id") Long id, ModelMap model) {
-		model.addAttribute("animal", animalService.buscarPorId(id));
-		return "consulta/cadastro-pelo-paciente";
-	}
-
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@PostMapping("/salvar")
 	public String salvarConsulta(@Valid Consulta consulta, BindingResult result, RedirectAttributes attr,
 			@AuthenticationPrincipal User user, ModelMap model) {
@@ -189,11 +181,13 @@ public class ConsultaController {
 		return ResponseEntity.ok(service.buscarConsultasPorAnimal(request, idAnimal));
 	}
 
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("consulta", service.buscarPorId(id));
 		return "consulta/lista";
 	}
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@GetMapping("/editar/{id}/paciente/{idAnimal}")
 	public String preEditarConsultaPorAnimal(@PathVariable("id") Long id, @PathVariable("idAnimal") Long idAnimal, ModelMap model, Internacao internacao, Aplicacao aplicacao) {
 		Animal animal = animalService.buscarPorId(idAnimal);
@@ -207,12 +201,14 @@ public class ConsultaController {
 		return "animal/visualizar";
 	}
 
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		service.remover(id);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
 		return "redirect:/consultas/listar";
 	}
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@GetMapping("/excluir/{id}/paciente/{idAnimal}")
 	public String excluirPorAnimal(@PathVariable("idAnimal") Long idAnimal, @PathVariable("id") Long id, RedirectAttributes attr) {
 		service.remover(id);
@@ -226,6 +222,7 @@ public class ConsultaController {
 		return "consulta/visualizar";
 	}
 
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@PostMapping("/salvar/paciente/{id}")
 	public String salvarConsultaPorAnimal(@Valid Consulta consulta, BindingResult result, RedirectAttributes attr,
 			@AuthenticationPrincipal User user, @PathVariable("id") Long id, Internacao internacao, Aplicacao aplicacao, ModelMap model) {

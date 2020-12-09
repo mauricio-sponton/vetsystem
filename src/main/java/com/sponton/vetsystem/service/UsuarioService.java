@@ -131,4 +131,10 @@ public class UsuarioService implements UserDetailsService{
 				: repository.findByEmailOrPerfilFuncionario(datatables.getSearch(), datatables.getPageable());
 		return datatables.getResponse(page);
 	}
+
+
+	@Transactional(readOnly = true)
+	public List<Usuario> buscarTodosUsuarios() {
+		return repository.findAll();
+	}
 }

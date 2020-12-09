@@ -136,11 +136,11 @@
 				<li><a th:href="@{/consultas/listar}" class="nav-link"> <i
 						class="fas fa-file-medical-alt"></i> Consultas
 				</a></li>
-				<li><a th:href="@{/internacoes/listar}" class="nav-link"><i
+				<li><a sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')" th:href="@{/internacoes/listar}" class="nav-link"><i
 						class="fas fa-heartbeat"></i> Internações</a></li>
 
-				<li><a th:href="@{/vacinas/listar}" class="nav-link"> <i
-						class="fas fa-syringe"></i> Vacinas
+				<li><a sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')" th:href="@{/vacinas/listar}" class="nav-link"> <i
+						class="fas fa-syringe"></i> Imunizações
 				</a></li>
 
 

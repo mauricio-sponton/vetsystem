@@ -33,7 +33,7 @@ h5 {
 				<img th:src="@{/image/admin-icon.svg}" />
 				<p>
 					Total de <strong>Admins</strong> cadastrados:<br> <span
-						th:text="${#lists.size(animal)}"> </span>
+						th:text="${totaladm}"> </span>
 
 				</p>
 			</div>
@@ -42,7 +42,7 @@ h5 {
 				<img th:src="@{/image/vet-icon.svg}" />
 				<p>
 					Total de <strong> Veterinários</strong> cadastrados:<br> <span
-						th:text="${#lists.size(animal)}"> </span>
+						th:text="${totalvet}"> </span>
 
 				</p>
 			</div>
@@ -52,7 +52,7 @@ h5 {
 				<img th:src="@{/image/secretary-icon.svg}" />
 				<p>
 					Total de <strong>Secretárias</strong> cadastradas:<br> <span
-						th:text="${#lists.size(animal)}"> </span>
+						th:text="${totalsec}"> </span>
 
 				</p>
 			</div>

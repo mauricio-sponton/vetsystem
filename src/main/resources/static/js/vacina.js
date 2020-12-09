@@ -45,4 +45,40 @@ $(document).ready(function () {
             }
         ]
     });
+    var table = $('#table-vacinas-sec').DataTable({
+    	"language":{
+    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
+    		"zeroRecords": "Nenhum registro encontrado",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": " ",
+            "search": "Pesquise: ",
+            "paginate": {
+                "first":      "Primeiro",
+                "last":       "Ultimo",
+                "next":       "Próximo",
+                "previous":   "Anterior"
+            } 
+    	},
+    	  "columnDefs":[
+          	{"width":"40%", "targets": [0]},
+          	{"width":"10%", "targets": [1,2,3]}
+          ],
+    	searching: true,
+    	order: [[ 0, "asc" ]],
+    	lengthMenu: [5, 10],
+        processing: true,
+        serverSide: true,
+        responsive: true,
+        ajax: {
+            url: '/vacinas/datatables/server',
+            data: 'data'
+        },
+        columns: [
+            {data: 'descricao'},
+            {data: 'doses'},
+            {data: 'intervalo'},
+            {data: 'especie.nome'},
+            
+        ]
+    });
 });    

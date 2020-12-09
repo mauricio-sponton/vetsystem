@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}"
+	class="no-js">
+<head>
+<meta charset="UTF-8" />
+<style>
+#alergias {
+	width: 30%;
+	height: 25px;
+	background-color: white;
+	transition: height 2s;
+	transition: background-color 1s linear;
+}
+
+.ativa {
+	color: green;
+}
+
+.encerrada {
+	color: red
+}
+
+#table-internacoes th {
+	background: #0cad5d;
+}
+
+#table-internacoes {
+	background: white;
+	border: none;
+	box-shadow: 2px 3px 7px gray;
+}
+
+</style>
+</head>
+<body>
+
+	<section class="layout-content" layout:fragment="corpo">
+		<main role="main">
+			<ul class="breadcrumb">
+				<li><a th:href="@{/home}">Dashboard </a></li>
+				<li class='active'>Internações</li>
+			</ul>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10">
+
+						<div th:replace="fragments/alert :: alerta-sucesso"></div>
+						<h2 class="internacoes-cadastradas">Internações Cadastradas</h2>
+
+						<table id="table-internacoes-sec" class="table table-sm table-striped nowrap"
+							style="width: 100%">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col">Status</th>
+									<th scope="col">Paciente</th>
+									<th scope="col">Admissão</th>
+									<th scope="col">Alta</th>
+									<th scope="col">Visualizar</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+
+
+		</main>
+
+	</section>
+	<script th:src="@{/js/internacao.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	</script>
+</body>
+</html>

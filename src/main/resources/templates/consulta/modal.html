@@ -25,15 +25,18 @@
 				<div class="modal-body">
 					<span th:text="${erro}" id="msg-erro"></span>
 					<form id="form-consulta" th:action="@{/consultas/salvar}"
-						method="POST" th:object="${consulta}">		
-						
+						method="POST" th:object="${consulta}">
+						<div class="alert alert-danger alerta" style="display:none"role="alert">
+							<strong>Paciente alérgico!</strong>
+							<p style="color:red "class="alergias"></p>
+						</div>
 						<div class="form-row">
 							<div class="form-group col-md-4">
 								<label for="animal">Paciente</label> <input type="text"
 									class="form-control" id="animal" placeholder="Taz..."
 									th:classappend="${#fields.hasErrors('animal.nome')} ? 'is-invalid'"
-									th:field="*{animal.nome}" />
-									<span id="erro-animal" style="display:none"></span>
+									th:field="*{animal.nome}" /> <span id="erro-animal"
+									style="display: none"></span>
 								<div class="invalid-feedback">
 									<span th:errors="*{animal.nome}"></span>
 								</div>
@@ -42,7 +45,7 @@
 							<div class="form-group col-md-4">
 								<label for="peso">Peso</label> <input type="text"
 									class="form-control" id="peso" data-mask="##,#"
-									 th:field="*{peso}"
+									th:field="*{peso}"
 									th:classappend="${#fields.hasErrors('peso')} ? 'is-invalid'" />
 								<div class="invalid-feedback">
 									<span th:errors="*{peso}"></span>
@@ -86,7 +89,7 @@
 								<div class="invalid-feedback">
 									<span th:errors="*{data}"></span>
 								</div>
-							</div>	
+							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-md-12">

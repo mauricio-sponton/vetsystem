@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -114,6 +115,11 @@ public class FotoInternacaoService {
 	
 		repository.save(foto);
 		
+	}
+
+	@Transactional(readOnly = true)
+	public List<FotoInternacao> buscarPorInternacaoId(Long id) {
+		return repository.findByInternacaoId(id);
 	}
 
 	

@@ -5,13 +5,23 @@
 <meta charset="UTF-8" />
 <style>
 #table-fotos td {
-	text-align: center;
+	
 	vertical-align: middle;
 }
 
-#table-fotos td:first-child {
-	
+
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_desc:before {
+    display: none !important;
+    border: none !important
 }
+ .table .thead-dark th{
+ 	padding: 0.5% 0% 0 0.5%
+ }
 
 .pop {
 	width: 250px;
@@ -45,10 +55,10 @@
 		<h1>Internação</h1>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${internacao.animal.foto == null}"
+				<img th:if="${internacao.animal.foto.fileName == null}"
 					th:src="@{/image/ultrasound.svg}"
 					style="width: 120px; height: auto; float: left" /> <img
-					th:if="${internacao.animal.foto != null}"
+					th:if="${internacao.animal.foto.fileName != null}"
 					th:src="@{${'/uploads/' + internacao.animal.foto.fileName}}"
 					style="width: 120px; height: auto; float: left" />
 			</div>
@@ -156,7 +166,7 @@
 		var idInternacao = [[${internacao.id}]];
 		var del = $('.ck-fotos').length
 		$(document).ready(function(){
-			
+			$('#table-fotos').find("thead th").removeClass("sorting_asc");
 			if(foto != null){
 				$("#modal-foto").modal('show');
 				$(".modal-title").text("Editar Foto");
@@ -185,6 +195,7 @@
 		})
 		$(document).ready(function () {
 			moment.locale('pt-BR');
+			
    			var table = $('#table-fotos').DataTable({
    				"language":{
    		    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
@@ -208,11 +219,10 @@
 			      content: function () { return '<img class="pop" src="' + $(this).data('img') + '" />'; }
 			    });
     	  },
+    	 
     	searching: true,
     	lengthMenu: [5, 10],
-    	order: [ 
-    		[ 0, "desc" ]
-    		],
+    	orderable: false,
         processing: true,
         serverSide: true,
         responsive:true,
@@ -221,16 +231,18 @@
             data: 'data'
         },
         "columnDefs": [
-            { "width": "10%", "targets": [1, 3, 4, 5]}
+            { "width": "10%", "targets": [1, 3, 4, 5]},
+            { "orderable": false, "targets": "_all" }
             
            
           ],
+       
         columns: [
         	
-            {orderable: false,
+            {
             	data: 'fileName',
             	"render": function(data, type, row){
-            		if(row.nome != null){
+            		if(row.nome != ""){
                 	  return '<a href="#" data-toggle="popover-hover"  data-img="/uploads/'+data+'" title="'+row.nome + '.' + row.tipo + '"><img src ="/uploads/thumb/'+data+'"/></a>';
             		}else{
                 	  return '<a href="#" data-toggle="popover-hover"  data-img="/uploads/'+data+'" title="'+data+'"><img src ="/uploads/thumb/'+data+'"/></a>';
@@ -240,7 +252,7 @@
             },
             {data: 'fileName',
             	"render": function(data, type, row){
-            		if(row.nome != null){
+            		if(row.nome != ""){
             			return row.nome.length> 10 ?  row.nome.substr( 0, 10 ) + '..' + ' .' + row.tipo: row.nome + ' .' + row.tipo;
             		}else{
             			return data.length > 10 ?  data.substr( 0, 10 ) + '.. ' + '.' + row.tipo: data;

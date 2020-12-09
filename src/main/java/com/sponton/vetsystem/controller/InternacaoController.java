@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -81,11 +82,7 @@ public class InternacaoController {
 	@Autowired
 	private FotoInternacaoService fotoInternacaoService;
 
-	@GetMapping("/cadastrar")
-	public String novaInternacao(Internacao internacao) {
-		return "internacao/cadastro";
-	}
-
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@PostMapping("/salvar")
 	public String salvarInternacao(@Valid Internacao internacao, BindingResult result, RedirectAttributes attr,
 			@AuthenticationPrincipal User user, @RequestParam("status") String status,
@@ -250,11 +247,15 @@ public class InternacaoController {
 		return "redirect:/internacoes/listar";
 	}
 
+	@PreAuthorize("hasAnyAuthority('VETERINARIO, SECRETARIA')")
 	@GetMapping("/listar")
-	public String listarInternacoes(ModelMap model, Internacao internacao) {
-		// model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
-		// model.addAttribute("internacaoEncerrada",
-		// service.buscarInternacaoEncerrada());
+	public String listarInternacoes(ModelMap model, Internacao internacao, @AuthenticationPrincipal User user) {
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
+			return "internacao/lista";
+		}
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
+			return "internacao/lista_sec";
+		}
 		return "internacao/lista";
 	}
 
@@ -274,15 +275,14 @@ public class InternacaoController {
 		return ResponseEntity.ok(service.buscarInternacaoPorAnimal(request, idAnimal));
 	}
 
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("internacao", service.buscarPorId(id));
-		// model.addAttribute("internacaoAtiva", service.buscarInternacaoAtiva());
-		// model.addAttribute("internacaoEncerrada",
-		// service.buscarInternacaoEncerrada());
 		return "internacao/lista";
 	}
 
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@GetMapping("/editar/{id}/paciente/{idAnimal}")
 	public String preEditarInternacaoPorAnimal(@PathVariable("id") Long id, ModelMap model,
 			@PathVariable("idAnimal") Long idAnimal, Aplicacao aplicacao, Consulta consulta) {
@@ -293,12 +293,11 @@ public class InternacaoController {
 		model.addAttribute("consulta", new Consulta());
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
-		// model.addAttribute("consulta",
-		// consultaService.buscarConsultaPorAnimal(idAnimal));
 		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 		return "animal/visualizar";
 	}
 
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		Internacao internacao = service.buscarPorId(id);
@@ -312,6 +311,7 @@ public class InternacaoController {
 		return "redirect:/internacoes/listar";
 	}
 
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@GetMapping("/excluir/{id}/paciente/{idAnimal}")
 	public String excluirPorAnimal(@PathVariable("id") Long id, @PathVariable("idAnimal") Long idAnimal,
 			RedirectAttributes attr) {
@@ -332,6 +332,7 @@ public class InternacaoController {
 		return "internacao/visualizar";
 	}
 
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@PostMapping("/salvar/paciente/{idAnimal}")
 	public String salvarInternacaoPorPaciente(@Valid Internacao internacao, BindingResult result,
 			RedirectAttributes attr, @AuthenticationPrincipal User user, @RequestParam("status") String status,
@@ -345,9 +346,6 @@ public class InternacaoController {
 			model.addAttribute("animal", animalService.buscarPorId(idAnimal));
 			model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(idAnimal));
 			model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
-			// model.addAttribute("consulta",
-			// consultaService.buscarConsultaPorAnimal(idAnimal));
-
 			return "animal/visualizar";
 		}
 		if (internacao.hasId()) {
@@ -419,6 +417,18 @@ public class InternacaoController {
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus("Internado");
+				
+				List<Veterinario> veterinarios = veterinarioService.buscarTodosVeterinarios();
+				Notificacao notificacao = new Notificacao();
+				notificacao.setData(data);
+				notificacao.setTitulo("Paciente internado");
+				notificacao.setDescricao("O paciente " + internacao.getAnimal().getNome() + " foi internado no dia "
+						+ internacao.getDataEntrada().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+						+ " às " + internacao.getHoraEntrada() + ";" + "Veterinário responsável pela internação : "
+						+ veterinario.getNome());
+				for(Veterinario v : veterinarios) {
+					v.getNotificacoes().add(notificacao);
+				}
 
 			}
 			if (internacao.hasId() && status.equals("Ativa")) {
@@ -465,6 +475,18 @@ public class InternacaoController {
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus("Normal");
+				
+				List<Veterinario> veterinarios = veterinarioService.buscarTodosVeterinarios();
+				Notificacao notificacao = new Notificacao();
+				notificacao.setData(data);
+				notificacao.setTitulo("Alta da internação");
+				notificacao.setDescricao("O paciente " + internacao.getAnimal().getNome() + " teve alta da internação no dia "
+						+ internacao.getDataSaida().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+						+ " às " + internacao.getHoraSaida().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)) + ";" + "Veterinário responsável pela alta : "
+						+ veterinario.getNome());
+				for(Veterinario v : veterinarios) {
+					v.getNotificacoes().add(notificacao);
+				}
 			}
 
 		}

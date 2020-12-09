@@ -277,17 +277,17 @@ h2 {
 							(h.tipo == 'Nova aplicacao' ? 'nova-aplicacao' : '') + 
 							(h.tipo == 'Edicao de aplicacao' ? 'edit-aplicacao' : '')}">
 									<div class="generico">
-										<p>
-											<span id="quebra"
+										<p style="text-align:left">
+											<span  id="quebra"
 												th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
 										</p>
-										<p>
+										<p style="text-align:left">
 											<span th:text="'Tipo: ' + ${h.tipo}"></span>
 										</p>
-										<p>
+										<p style="text-align:left">
 											<span th:text="'Usuario: ' + ${h.usuario}"></span>
 										</p>
-										<p>
+										<p style="text-align:left">
 											<span
 												th:text="'No dia : ' + ${#temporals.format(h.data, 'dd/MM/yyyy')} + ' às: ' + ${#temporals.format(h.hora, 'HH:mm')}"></span>
 										</p>
@@ -354,6 +354,7 @@ h2 {
 												<th scope="col">Editar</th>
 												<th scope="col">Excluir</th>
 												<th scope="col">Visualizar</th>
+												<th scope="col">Download</th>
 											</tr>
 										</thead>
 									</table>
@@ -419,7 +420,14 @@ h2 {
 			var aplicacao = [[${aplicacao.id}]];
 			var internacao = [[${internacao.id}]];
 			var consulta = [[${consulta.id}]];
+			var tipo = [[${historico}]];
 			$(document).ready(function () {
+				//for(var i = 0; i <=tipo.length; i++){
+					//if(tipo[i].tipo == "Dados"){
+						
+					//}
+					//console.log(tipo[i].id)
+				//}
 				moment.locale('pt-BR');
 			    var table = $('#table-aplicacoes').DataTable({
 			    	"language":{
@@ -664,7 +672,14 @@ h2 {
 			                	   return '<a class="btn btn-success btn-sm btn-block" href="/internacoes/visualizar/'+ 
 			                   	id +'" role="button"><i class="fas fa-eye"></i></a>';
 			                   }               
-			               }
+			               },
+			               {orderable: false,
+				                data: 'id',
+				                   "render": function(id) {
+				                	   return '<a class="btn btn-success btn-sm btn-block" href="/pacientes/download/internacao/'+ 
+				                   	id +'" role="button"><i class="fas fa-download"></i></a>';
+				                   }               
+				               }, 
 			        ]
 			    });
 			   

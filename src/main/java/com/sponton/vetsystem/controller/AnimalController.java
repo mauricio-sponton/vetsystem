@@ -72,6 +72,7 @@ import com.sponton.vetsystem.domain.Cliente;
 import com.sponton.vetsystem.domain.Consulta;
 import com.sponton.vetsystem.domain.Especie;
 import com.sponton.vetsystem.domain.Foto;
+import com.sponton.vetsystem.domain.FotoInternacao;
 import com.sponton.vetsystem.domain.HistoricoAnimal;
 import com.sponton.vetsystem.domain.Internacao;
 import com.sponton.vetsystem.domain.PerfilTipo;
@@ -84,6 +85,7 @@ import com.sponton.vetsystem.service.AplicacaoService;
 import com.sponton.vetsystem.service.ClienteService;
 import com.sponton.vetsystem.service.ConsultaService;
 import com.sponton.vetsystem.service.EspecieService;
+import com.sponton.vetsystem.service.FotoInternacaoService;
 import com.sponton.vetsystem.service.FotoService;
 import com.sponton.vetsystem.service.HistoricoAnimalService;
 import com.sponton.vetsystem.service.InternacaoService;
@@ -134,6 +136,9 @@ public class AnimalController {
 	
 	@Autowired
 	private InternacaoService internacaoService;
+	
+	@Autowired
+	private FotoInternacaoService fotoInternacaoService;
 
 	@GetMapping("/cadastrar")
 	public String novoAnimal(Animal animal) {
@@ -378,16 +383,12 @@ public class AnimalController {
 	@GetMapping("/visualizar/{id}")
 	public String visualizar(@PathVariable("id") Long id, Internacao internacao, Aplicacao aplicacao, Consulta consulta, ModelMap model) {
 		Animal animal = service.buscarPorId(id);
-		//aplicacao.setId(null);
-		//internacao.setId(null);
-		//consulta.setId(null);
 		model.addAttribute("aplicacao", new Aplicacao());
 		model.addAttribute("internacao", new Internacao());
 		model.addAttribute("consulta", new Consulta());
 		Especie especie = especieService.buscarEspeciePorAnimal(animal.getEspecie().getNome());
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
-		//model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
 		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
 		
 		
@@ -413,8 +414,8 @@ public class AnimalController {
 		return ResponseEntity.ok(animais);
 	}
 
-	@GetMapping("/titulo/{termo}")
-	public ResponseEntity<?> getAnimaisPorAlergias(@PathVariable("termo") String termo) {
+	@GetMapping("/titulo/alergias")
+	public ResponseEntity<?> getAnimaisPorAlergias(@RequestParam("animal") String termo) {
 		List<String> animais = service.buscarAnimaisByAlergias(termo);
 		return ResponseEntity.ok(animais);
 	}
@@ -426,8 +427,151 @@ public class AnimalController {
 		lista.add("Venenoso");
 		return lista;
 	}
-	@GetMapping(value ="/download/historico/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public @ResponseBody void criarArquivoHistorico(@PathVariable("id") Long id, RedirectAttributes attr, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+	@GetMapping(value = "/download/internacao/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void criarArquivoInternacao(@PathVariable("id") Long id, RedirectAttributes attr,
+			HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		Internacao internacao =  internacaoService.buscarPorId(id);
+		Animal animal = internacao.getAnimal();
+		List<FotoInternacao> fotos = fotoInternacaoService.buscarPorInternacaoId(id);
+		String arquivo = "internacao";
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
+		
+		StringBuilder paciente = new StringBuilder();
+		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append("<h2 style=\"color:green;font-weight:bold;\"\">DADOS DO PACIENTE</h2>");
+		paciente.append("<hr style=\"color:green;\"/>");
+		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
+		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Nome: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(animal.getNome());
+		paciente.append("</p></div>");
+		
+		paciente.append("<div style=\"width:200px; margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Data de nascimento: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(animal.getDataNascimento().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
+		paciente.append("</p></div>");
+		
+		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Sexo: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(animal.getSexo());
+		paciente.append("</p></div>");
+		paciente.append("</div>");
+		
+		paciente.append("<br/>");
+		
+		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
+		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Espécie: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(animal.getEspecie().getNome());
+		paciente.append("</p></div>");
+		
+		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Raça: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(animal.getRaca().getNome());
+		paciente.append("</p></div>");
+		
+		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Dono: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(animal.getCliente().getNome());
+		paciente.append("</p></div>");
+		
+		paciente.append("</div>");
+		
+		paciente.append("<h2 style=\"color:green;font-weight:bold;\"\">DADOS DA INTERNAÇÃO</h2>");
+		paciente.append("<hr style=\"color:green;\"/>");
+		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
+		
+		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Status da internação: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(internacao.getStatus());
+		paciente.append("</p></div>");
+		
+		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Data da admissão: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(internacao.getDataEntrada().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
+		paciente.append("</p></div>");
+		
+		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Horário da admissão: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(internacao.getHoraEntrada());
+		paciente.append("</p></div>");
+		
+		paciente.append("</div>");
+		
+		paciente.append("<br/>");
+		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
+		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Peso: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(internacao.getPeso() + " Kg");
+		paciente.append("</p></div>");
+		
+		paciente.append("<div style=\"width:200px;margin: 10px;float:left\">");
+		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Temperatura: </strong>");
+		paciente.append("<p style=\"font-size: 1.1em\">");
+		paciente.append(internacao.getTemperatura() + " ºC");
+		paciente.append("</p></div>");
+		
+		paciente.append("</div>");
+		
+		paciente.append("<br/>");
+		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
+		if(internacao.getDataSaida() != null) {
+			paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+			paciente.append("<strong style=\"color:green; font-size: 1.1em\">Data da alta: </strong>");
+			paciente.append("<p style=\"font-size: 1.1em\">");
+			paciente.append(internacao.getDataSaida().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
+			paciente.append("</p></div>");
+			
+			
+		}
+		if(internacao.getHoraSaida() != null) {
+			paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
+			paciente.append("<strong style=\"color:green; font-size: 1.1em\">Horário da alta: </strong>");
+			paciente.append("<p style=\"font-size: 1.1em\">");
+			paciente.append(internacao.getHoraSaida());
+			paciente.append("</p></div>");
+		
+			
+		}
+		paciente.append("</div>");
+		if(!internacao.getPrescricao().isEmpty()) {
+			paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
+			paciente.append("<strong style=\"color:green; font-size: 1.1em\">Prescrição: </strong>");
+			paciente.append("<p style=\"font-size: 1.1em;white-space: pre-wrap\">");
+			paciente.append(internacao.getPrescricao());
+			paciente.append("</p></div>");
+			paciente.append("<br/>");
+			
+		}
+		if(!internacao.getDescricao().isEmpty()) {
+			paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
+			paciente.append("<strong style=\"color:green; font-size: 1.1em\">Anotações: </strong>");
+			paciente.append("<p style=\"font-size: 1.1em;\">");
+			paciente.append(internacao.getDescricao());
+			paciente.append("</p></div>");
+			paciente.append("<br/>");
+			
+		}
+		paciente.append("<hr style=\"color:green;\"/>");
+		
+		writer.write(paciente.toString());
+		writer.close();
+		conveterHTMLparaPDF(arquivo, request, response);
+		
+	}
+	@GetMapping(value = "/download/historico/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void criarArquivoHistorico(@PathVariable("id") Long id, RedirectAttributes attr,
+			HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		Animal animal = service.buscarPorId(id);
 		List<HistoricoAnimal> historico = historicoAnimalService.buscarHistoricoPorAnimal(id);
 		String arquivo = "historico";

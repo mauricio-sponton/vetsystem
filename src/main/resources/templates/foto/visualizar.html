@@ -11,23 +11,36 @@
 
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-		<div class=teste>
-		
-			<img width="200" height="auto" alt="" th:src="@{${'/uploads/' + foto.fileName}}">
-			
-			<div th:if="${foto.nome != ''}">
-				<span  th:text="${foto.nome}"></span> 
+	<h1>Visualizar foto</h1>
+	<div class="global-color">
+			<div id="img-infs">
+				<img width="120" height="auto" alt="" style="float:left;" th:src="@{${'/uploads/' + foto.fileName}}">
 			</div>
-			<div th:if="${foto.nome == ''}">
-				<span  th:text="${foto.fileName}"></span> 
-			</div>
-			<div th:if="${foto.data != null}">
-				<span th:text="${#temporals.format(foto.data, 'dd/MM/yyyy')}"></span> 
-			</div>	
-			<div th:if="${foto.descricao != ''}">
-				<span th:text="${foto.descricao}"></span> 
-			</div>
-	
+			<section class="inf-content">
+				<div class="alinha-dados" th:if="${foto.nome != ''}">
+					<strong>Título da imagem: </strong>
+					<p th:text="${foto.nome}"></p>
+				</div>
+				<div class="alinha-dados" th:if="${foto.nome == ''}">
+					<strong>Título da imagem: </strong>
+					<p th:text="${foto.fileName}"></p>
+				</div>
+				<div class="alinha-dados" th:if="${foto.data != null}">
+					<strong>Data da imagem: </strong>
+					<p th:text="${#temporals.format(foto.data, 'dd/MM/yyyy')}"></p>
+				</div>
+			</section>
+	</div>
+	<h2 class="h2-textarea">Descrição da imagem</h2>
+	<div class="global-color">
+			<section class="inf-content">
+				<div class="alinha-dados area">
+					<p th:if="${foto.descricao != ''}"
+						style='white-space: pre-wrap' th:text="${foto.descricao}"></p>
+					<p th:if="${foto.descricao == ''}">Nenhuma informação
+						cadastrada.</p>
+				</div>
+			</section>
 		</div>
 
 	</section>
