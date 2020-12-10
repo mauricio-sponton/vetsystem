@@ -17,13 +17,14 @@
 	margin: 0 auto;
 	width: 100%;
 	font-weight: 300;
-	font-size: 1.25em;
+	font-size: 1.2em;
 }
 
 /* Nav */
 .tabs nav {
 	text-align: center;
 }
+
 
 .tabs nav ul {
 	position: relative;
@@ -71,12 +72,13 @@
 
 .tabs nav a span {
 	vertical-align: middle;
-	font-size: 0.75em;
+	font-size: 1em;
 }
 
 .tabs nav li.tab-current a {
 	color: #74777b;
 }
+
 
 .tabs nav a:focus {
 	outline: none;
@@ -149,7 +151,7 @@
 	margin: 0 auto;
 	padding: 1em;
 	max-width: 1200px;
-	text-align: center;
+/*	text-align: center;*/
 }
 
 .content-wrap section.content-current {

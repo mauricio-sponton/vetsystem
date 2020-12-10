@@ -70,7 +70,7 @@ $(document).ready(function () {
             {orderable: false,
                 data: 'id',
                    "render": function(id) {
-                	   return '<a class="btn btn-success btn-sm btn-block btn-view" href="/internacoes/visualizar/'+ 
+                	   return '<a class="btn btn-sm btn-block btn-view" href="/internacoes/visualizar/'+ 
                    	id +'" role="button"><i class="fas fa-glasses"></i></a>';
                    }               
                }

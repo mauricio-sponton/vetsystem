@@ -3,8 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <style type="text/css">
-.teste span {
-	color: blue
+strong {
+	color: #26C685;
+	font-size: 1.1em
+}
+
+p {
+	font-size: 1.1em
 }
 </style>
 </head>
@@ -15,8 +20,7 @@
 		<ul class="breadcrumb">
 			<li><a th:href="@{/home}">Dashboard </a></li>
 			<li><a th:href="@{/clientes/listar}">Clientes</a></li>
-			<li class ="active"><span 
-					th:text="${cliente.nome}"></span></li>
+			<li class="active"><span th:text="${cliente.nome}"></span></li>
 
 		</ul>
 		<h1>Perfil do Cliente</h1>
@@ -78,10 +82,12 @@
 			</section>
 		</div>
 
-		<h4 class="inf-h4">Lista de Animais de Estimação</h4>
+		<h4 th:if="${not #lists.isEmpty(cliente.animais)}" class="inf-h4">Lista
+			de Animais de Estimação</h4>
 
 
 		<div style="margin-left: 1%" th:each="a : ${animais}">
+
 			<button class="accordion">
 				<span th:text="${a.nome}"></span>
 			</button>
@@ -90,18 +96,27 @@
 
 				<div th:if="${a.foto == null}">
 					<img alt="" th:src="@{/image/animal_default.jpg}"
-						style="width: 200px; height: auto">
+						style="width: 120px; height: auto">
 				</div>
+
 				<div th:if="${a.foto!= null && a.foto.fileName != null}">
 					<img alt="" th:src="@{${'/uploads/' + a.foto.fileName}}"
-						style="width: 200px; height: auto">
+						style="width: 120px; height: auto">
 				</div>
+				<strong>Data de Nascimento:</strong>
 				<p th:text="${#temporals.format(a.dataNascimento, 'dd/MM/yyyy')}"></p>
+
+				<strong>Espécie: </strong>
 				<p th:text="${a.especie.nome}"></p>
+
+				<strong>Raça: </strong>
 				<p th:text="${a.raca.nome}"></p>
+
+
+				<strong>Sexo: </strong>
+				<p th:text="${a.sexo}"></p>
 			</div>
 		</div>
-
 		<div class="user-btn">
 
 			<!-- <button><i class="fas fa-edit"></i> Editar</button>-->
@@ -109,7 +124,6 @@
 				class="fas fa-arrow-left"></i>Voltar</a>
 
 		</div>
-
 	</section>
 
 

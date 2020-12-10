@@ -3,6 +3,7 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
+<title>Imunizações</title>
 <style type="text/css">
 #table-clientes td:first-child, #table-clientes th:first-child {
 	display: none
@@ -12,11 +13,17 @@
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<main role="main">
-			<div class="album py-5 bg-light">
+		
+		<ul class="breadcrumb">
+				<li><a th:href="@{/home}">Dashboard </a></li>
+				<li class="active">Imunizações</li>
+
+			</ul>
+			
 				<div class="container">
 
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-10">
 
 							<div th:replace="fragments/alert :: alerta-sucesso"></div>
 							<h2 class="vacinas-cadastradas">Imunizações Cadastradas</h2>
@@ -41,7 +48,7 @@
 					<a class="btn-cadastrar-usuario" href="#" role="button"
 					data-toggle="modal" data-target="#modal-vacina">Nova Vacina</a> <span
 					th:replace="vacina/modal :: modal-form"></span>
-			</div>
+		
 		</main>
 
 	</section>

@@ -25,7 +25,7 @@ $(document).ready(function () {
             data: 'data'
         },
         "columnDefs": [
-            { "width": "10%", "targets": [5,6] }
+            { "width": "10%", "targets": [4,5,6] }
           ],
         columns: [
             {data: 'nome'},
@@ -43,14 +43,14 @@ $(document).ready(function () {
              data: 'id',
                 "render": function(id) {
                     return '<a class="btn btn-danger btn-sm btn-block" href="/pacientes/excluir/'+ 
-                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
                 }               
             },
             {orderable: false,
                 data: 'id',
                    "render": function(id) {
-                       return '<a class="btn btn-danger btn-sm btn-block" href="/pacientes/visualizar/'+ 
-                       	id +'" role="button"><i class="fas fa-eye"></i></a>';
+                       return '<a class="btn btn-view btn-sm btn-block" href="/pacientes/visualizar/'+ 
+                       	id +'" role="button"><i class="fas fa-glasses"></i></a>';
                    }               
                }
         ]

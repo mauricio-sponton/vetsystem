@@ -77,9 +77,6 @@ public class AplicacaoController {
 	public String novoAnimal(Aplicacao aplicacao, @PathVariable("idAnimal") Long idAnimal, ModelMap model,
 			Internacao internacao, Consulta consulta) {
 		model.addAttribute("animal", animalService.buscarPorId(idAnimal));
-		// model.addAttribute("historico",
-		// historicoAnimalService.buscarHistoricoPorAnimal(id));
-		// model.addAttribute("consulta", consultaService.buscarConsultaPorAnimal(id));
 		return "aplicacao/cadastro";
 	}
 
@@ -152,7 +149,7 @@ public class AplicacaoController {
 				if(aplicacao.hasNotId()) {
 					historico.setDescricao("O paciente foi imunizado");
 					historico.setTipo("Nova aplicacao");
-					historico.setUsuario("Veterinário responsável: " + veterinario.getNome());
+					historico.setUsuario(veterinario.getNome());
 					historico.setData(data);
 					historico.setHora(hora);
 				}
@@ -172,7 +169,7 @@ public class AplicacaoController {
 					}
 					if(historico.getDescricao() != null) {
 						historico.setTipo("Edicao de aplicacao");
-						historico.setUsuario("Veterinário responsável: " + veterinario.getNome());
+						historico.setUsuario(veterinario.getNome());
 						historico.setData(data);
 						historico.setHora(hora);
 					}

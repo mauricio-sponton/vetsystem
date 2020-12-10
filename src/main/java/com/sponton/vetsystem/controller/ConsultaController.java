@@ -88,7 +88,7 @@ public class ConsultaController {
 			if (consulta.hasNotId()) {
 				historico.setDescricao("Uma nova consulta foi registrada");
 				historico.setTipo("Nova consulta");
-				historico.setUsuario(veterinario.getNome() + " (veterinario)");
+				historico.setUsuario(veterinario.getNome());
 				historico.setData(data);
 				historico.setHora(hora);
 
@@ -115,7 +115,7 @@ public class ConsultaController {
 					mud.append("A prescrição do paciente foi alterada " + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				if (status.getTermino() != consulta.getTermino()) {
+				if (!status.getTermino().equals(consulta.getTermino())) {
 					if(status.getTermino() == null) {
 						mud.append("A hora de término da consulta foi mudada de -- para "
 								+ consulta.getTermino() + "." + ";");
@@ -144,7 +144,7 @@ public class ConsultaController {
 
 				if(historico.getDescricao() != null) {
 					historico.setTipo("Alteração de consulta");
-					historico.setUsuario(veterinario.getNome() + " (veterinario)");
+					historico.setUsuario(veterinario.getNome());
 					historico.setData(data);
 					historico.setHora(hora);
 				}
@@ -164,6 +164,7 @@ public class ConsultaController {
 		return "redirect:/consultas/listar";
 	}
 
+	@PreAuthorize("hasAuthority('VETERINARIO')")
 	@GetMapping("/listar")
 	public String listarConsultas(Consulta consulta) {
 		return "consulta/lista";
@@ -251,7 +252,7 @@ public class ConsultaController {
 			if (consulta.hasNotId()) {
 				historico.setDescricao("Uma nova consulta foi registrada");
 				historico.setTipo("Nova consulta");
-				historico.setUsuario(veterinario.getNome() + " (veterinario)");
+				historico.setUsuario(veterinario.getNome());
 				historico.setData(data);
 				historico.setHora(hora);
 
@@ -278,7 +279,7 @@ public class ConsultaController {
 					mud.append("A prescrição do paciente foi alterada " + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				if (status.getTermino() != consulta.getTermino()) {
+				if (!status.getTermino().equals(consulta.getTermino())) {
 					if(status.getTermino() == null) {
 						mud.append("A hora de término da consulta foi mudada de -- para "
 								+ consulta.getTermino() + "." + ";");
@@ -307,7 +308,7 @@ public class ConsultaController {
 
 				if(historico.getDescricao() != null) {
 					historico.setTipo("Alteração de consulta");
-					historico.setUsuario(veterinario.getNome() + " (veterinario)");
+					historico.setUsuario(veterinario.getNome());
 					historico.setData(data);
 					historico.setHora(hora);
 				}

@@ -92,54 +92,54 @@
 		<div class="collapse navbar-collapse" id="navbarCollapse">
 			<ul class="navbar-nav mr-auto sidenav" id="navAccordion">
 
-				<li><a th:href="@{/home}" class="nav-link one" href="#"> <i
+				<li><a th:href="@{/home}" class="nav-link one home" href="#"> <i
 						class="fas fa-clinic-medical"></i> Dashboard
 				</a></li>
 
-				<li><a th:href="@{/agenda/abrir}" class="nav-link"> <i
+				<li><a th:href="@{/agenda/abrir}" class="nav-link agenda"> <i
 						class="fas fa-clock"></i> Agenda
 				</a></li>
 
-				<li><a th:href="@{/u/listar}" class="nav-link"> <i
+				<li><a th:href="@{/u/listar}" class="nav-link usuarios"> <i
 						class="fas fa-user-md"></i> Usuários
 				</a></li>
 
 
-				<li><a th:href="@{/clientes/listar}" class="nav-link"> <i
+				<li><a th:href="@{/clientes/listar}" class="nav-link clientes"> <i
 						class="fas fa-handshake"></i>Clientes
 				</a></li>
 
 
-				<li><a class="nav-link nav-link-collapse" href="#"
+				<li><a class="nav-link nav-link-collapse pacientes especies" href="#"
 					id="hasSubItems" data-toggle="collapse"
 					data-target="#collapseSubItems2" aria-controls="collapseSubItems2"
 					aria-expanded="false"><i class="fas fa-paw"></i> Pets</a>
 					<ul class="nav-second-level collapse " id="collapseSubItems2"
 						data-parent="#navAccordion">
 
-						<li class="nav-item"><a class="nav-link"
+						<li class="nav-item"><a class="nav-link pacientes"
 							th:href="@{/pacientes/listar}"> <span class="nav-link-text">Listar
 									Pacientes</span></a></li>
 
 
-						<li class="nav-item"><a class="nav-link"
+						<li class="nav-item"><a class="nav-link especies"
 							th:href="@{/especies/listar}"> <span class="nav-link-text">Listar
 									Espécies</span></a></li>
 
 
-						<li class="nav-item"><a class="nav-link"
+						<li class="nav-item"><a class="nav-link racas"
 							th:href="@{/racas/listar}"> <span class="nav-link-text">Listar
 									Raças</span></a></li>
 
 
 					</ul></li>
-				<li><a th:href="@{/consultas/listar}" class="nav-link"> <i
+				<li><a sec:authorize="hasAuthority('VETERINARIO')" th:href="@{/consultas/listar}" class="nav-link consultas"> <i
 						class="fas fa-file-medical-alt"></i> Consultas
 				</a></li>
-				<li><a sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')" th:href="@{/internacoes/listar}" class="nav-link"><i
+				<li><a sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')" th:href="@{/internacoes/listar}" class="nav-link internacoes"><i
 						class="fas fa-heartbeat"></i> Internações</a></li>
 
-				<li><a sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')" th:href="@{/vacinas/listar}" class="nav-link"> <i
+				<li><a sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')" th:href="@{/vacinas/listar}" class="nav-link imunizacoes"> <i
 						class="fas fa-syringe"></i> Imunizações
 				</a></li>
 

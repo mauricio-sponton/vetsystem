@@ -14,14 +14,16 @@
 		<ul class="breadcrumb">
 			<li><a th:href="@{/home}">Dashboard </a></li>
 			<li><a th:href="@{/u/listar}">Usuários</a></li>
-			<li class="active">Perfil: <span style="color:black" th:text="${sec.nome}"></span></li>
+			<li class="active">Perfil: <span style="color: black"
+				th:text="${sec.nome}"></span></li>
 
 		</ul>
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<h1>página de perfil</h1>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${sec.foto.fileName == null}" th:src="@{/image/ultrasound.svg}"
+				<img th:if="${sec.foto.fileName == null}"
+					th:src="@{/image/ultrasound.svg}"
 					style="width: 120px; height: auto; float: left" /> <img
 					th:if="${sec.foto.fileName != null}"
 					th:src="@{${'/uploads/' + sec.foto.fileName}}"
@@ -55,13 +57,19 @@
 
 		</div>
 
+		<div class="user-btn">
 
+			<!-- <button><i class="fas fa-edit"></i> Editar</button>-->
+			<a type="button" href="javascript:history.back()"><i
+				class="fas fa-arrow-left"></i>Voltar</a>
+
+		</div>
 
 	</section>
 
 	<script th:src="@{/js/secretaria.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
-	
+		
 	</script>
 </body>
 </html>

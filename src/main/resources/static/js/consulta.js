@@ -60,7 +60,7 @@ $(document).ready(function () {
             {orderable: false,
                 data: 'id',
                    "render": function(id) {
-                       return '<a class="btn btn-danger btn-sm btn-block btn-view" href="/consultas/visualizar/'+ 
+                       return '<a class="btn btn-sm btn-block btn-view" href="/consultas/visualizar/'+ 
                        	id +'" role="button"><i class="fas fa-glasses"></i></a>';
                    }               
                }

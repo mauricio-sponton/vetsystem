@@ -34,10 +34,10 @@ h2 {
 	<h1>Consulta do Paciente</h1>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${consulta.animal.foto == null}"
+				<img th:if="${consulta.animal.foto.fileName == null}"
 					th:src="@{/image/report.svg}"
 					style="width: 120px; height: auto; float: left" /> <img
-					th:if="${consulta.animal.foto != null}"
+					th:if="${consulta.animal.foto.fileName != null}"
 					th:src="@{${'/uploads/' + consulta.animal.foto.fileName}}"
 					style="width: 120px; height: auto; float: left" />
 			</div>
@@ -80,8 +80,8 @@ h2 {
 		<div class="global-color">
 			<section class="inf-content">
 				<div class="alinha-dados area">
-					<p th:if="${consulta.prescricao != null}" style='white-space:pre-wrap' th:text="${consulta.prescricao}"></p>
-					<p th:if="${consulta.prescricao == null}">Nenhuma informação cadastrada.</p>
+					<p th:if="${consulta.prescricao != ''}" style='white-space:pre-wrap' th:text="${consulta.prescricao}"></p>
+					<p th:if="${consulta.prescricao == ''}">Nenhuma informação cadastrada.</p>
 				</div>
 			
 			</section>

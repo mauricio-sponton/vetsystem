@@ -3,6 +3,20 @@
 <head>
 <meta charset="UTF-8" />
 <style type="text/css">
+#mensagem {
+	width: 95%;
+	margin-top: 2%;
+	margin-left: 2%;
+	background-color: #50B969;
+	padding: 20px;
+	float: left
+}
+
+#mensagem span {
+	color: white;
+	font-weight: bold;
+	text-transform: uppercase;
+}
 </style>
 </head>
 
@@ -11,14 +25,16 @@
 		<ul class="breadcrumb">
 			<li><a th:href="@{/home}">Dashboard </a></li>
 			<li><a th:href="@{/u/listar}">Usuários</a></li>
-			<li class="active">Perfil: <span style="color:black" th:text="${vet.nome}"></span></li>
+			<li class="active">Perfil: <span style="color: black"
+				th:text="${vet.nome}"></span></li>
 
 		</ul>
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 		<h1>página de perfil</h1>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${vet.foto.fileName == null}" th:src="@{/image/ultrasound.svg}"
+				<img th:if="${vet.foto.fileName == null}"
+					th:src="@{/image/ultrasound.svg}"
 					style="width: 120px; height: auto; float: left" /> <img
 					th:if="${vet.foto.fileName != null}"
 					th:src="@{${'/uploads/' + vet.foto.fileName}}"
@@ -55,9 +71,13 @@
 			</section>
 
 		</div>
-		<h2 class="h2-textarea">dias de trabalho</h2>
+		<div id="mensagem" th:if="${#lists.isEmpty(cargasVet)}">
+			<span>Esse usuário não possui cadastro de dias trabalhados! </span>
+		</div>
+		<h2 class="h2-textarea" th:if="${not #lists.isEmpty(cargasVet)}">dias
+			de trabalho</h2>
 		<form class="form-vet">
-			<table th:if="${cargasVet != null}"
+			<table th:if="${not #lists.isEmpty(cargasVet)}"
 				class="table table-horarios table-striped table-sm ">
 				<thead class="thead-dark">
 					<tr>
@@ -118,6 +138,13 @@
 				</tbody>
 			</table>
 		</form>
+		<div class="user-btn">
+
+			<!-- <button><i class="fas fa-edit"></i> Editar</button>-->
+			<a type="button" href="javascript:history.back()"><i
+				class="fas fa-arrow-left"></i>Voltar</a>
+
+		</div>
 	</section>
 
 	<script th:src="@{/js/veterinario.js(v=${version})}" th:fragment="js"></script>

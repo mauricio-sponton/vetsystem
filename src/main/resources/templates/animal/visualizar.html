@@ -4,52 +4,8 @@
 <head>
 <meta charset="UTF-8" />
 <style>
-h2 {
-	color: red
-}
-
-.layout-content span {
-	color: indigo
-}
-
-.generico {
-	margin-top: 15px
-}
-
 .separador {
 	margin: 15px 0
-}
-
-.historico-novo {
-	background-color: #3ffc7e;
-}
-
-.historico-editado {
-	background-color: yellow;
-}
-
-.historico-editado-consulta {
-	background-color: gray;
-}
-
-.historico-nova-consulta {
-	background-color: blue;
-}
-
-.nova-internacao {
-	background-color: orange;
-}
-
-.edit-internacao {
-	background-color: brown;
-}
-
-.edit-aplicacao {
-	background-color: tomato;
-}
-
-.nova-aplicacao {
-	background-color: beige;
 }
 
 .consulta {
@@ -62,9 +18,9 @@ h2 {
 #mensagem {
 	display: none;
 	width: 100%;
-	background-color: indigo;
+	background-color: #50B969;
 	padding: 20px;
-	margin-top: 2%
+	margin-top: 2%;
 }
 
 #mensagem span {
@@ -73,8 +29,8 @@ h2 {
 }
 
 .historico-wraper {
-	height: 600px;
-	background-color: pink;
+	max-height: 600px;
+	background-color: #f2f2f2;
 	overflow: auto;
 }
 /* width */
@@ -89,12 +45,12 @@ h2 {
 
 /* Handle */
 #scrollbar::-webkit-scrollbar-thumb {
-	background: #46A049;
+	background: #04D284;
 }
 
 /* Handle on hover */
 #scrollbar::-webkit-scrollbar-thumb:hover {
-	background: #555;
+	background: #17b679;
 }
 
 .is-invalid {
@@ -104,14 +60,19 @@ h2 {
 }
 
 .caracteristicas {
-	display: inline width: 10%;
+	display: inline;
+	width: 10%;
 }
 
 .castrado, .bravo {
-	padding: 10px;
+	font-size: 1.1em;
+	padding: 5px;
 	margin-left: 2%;
+	width: 90px;
+	border-radius: 3px;
 	display: inline;
 	float: left;
+	text-align: center;
 }
 
 .castrado {
@@ -120,18 +81,13 @@ h2 {
 }
 
 .bravo {
-	background-color: blue;
+	background-color: red;
 }
 
 #wrapper-caracteristicas {
 	display: block;
-	margin-top: 2%;
 	margin-bottom: 2%;
-	float: left
-}
-
-#wrapper-caracteristicas:first-child {
-	margin-left: 2%
+	width: 300px
 }
 
 #wrapper-caracteristicas span {
@@ -146,128 +102,232 @@ h2 {
 <body>
 
 	<section class="layout-content" layout:fragment="corpo">
+		<ul class="breadcrumb">
+			<li><a th:href="@{/home}">Dashboard </a></li>
+			<li><a th:href="@{/pacientes/listar}">Pacientes</a></li>
+			<li class="active"><span th:text="${animal.nome}"></span></li>
+
+		</ul>
 
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-		<h2 th:text="${animal.nome}"></h2>
-		<div th:if="${animal.foto == null}">
-			<img alt="" th:src="@{/image/animal_default.jpg}"
-				style="width: 200px; height: auto">
-		</div>
-		<div th:if="${animal.foto!= null && animal.foto.fileName != null}">
-			<img alt="" th:src="@{${'/uploads/' + animal.foto.fileName}}"
-				style="width: 200px; height: auto">
-		</div>
-		<div th:if="${animal.status != null}">
-			<span th:text="${animal.status}"></span>
-		</div>
-		<span th:text="${animal.especie.nome}"></span> <span
-			th:text="${#temporals.format(animal.dataNascimento, 'dd/MM/yyyy')}"></span>
+		<div class="align-h1">
+			<h1 th:text="${animal.nome}"></h1>
+			<a href="#" role="button" data-toggle="modal"
+				data-target="#modal-animal"> <img th:src="@{/image/lapis.png}"
+				style="width: 35px; height: auto;" />
+			</a>
+			<span
+				th:replace="animal/modal :: modal-form"></span>
 
-		<span th:text="${animal.cliente.nome}"></span> <span
-			th:text="${animal.cliente.email}"></span>
+		</div>
 
-		<div th:if="${animal.caracteristicas != null}">
-			<div id="wrapper-caracteristicas">
-				<div th:each="c: ${animal.caracteristicas}">
-					<div th:switch="${c}">
-						<div th:case="'Castrado'">
-							<span th:class='castrado' th:text="${c}"></span>
-						</div>
-						<div th:case="'Bravo'" class="caracteristicas">
-							<span th:class='bravo' th:text="${c}"></span>
-						</div>
-					</div>
+		<div class="global-color pacient">
+			<div id="img-infs">
+				<div th:if="${animal.foto.fileName == null}">
+					<img alt="" th:src="@{/image/animal_default.jpg}"
+						style="width: 120px; height: auto">
+				</div>
+				<div th:if="${animal.foto.fileName != null}">
+					<img alt="" th:src="@{${'/uploads/' + animal.foto.fileName}}"
+						style="width: 120px; height: auto">
+				</div>
+
+
+			</div>
+
+
+
+			<section class="inf-content">
+
+				<div class="alinha-dados">
+					<strong>Nome:</strong>
+					<p th:text="${animal.nome}"></p>
+				</div>
+
+				<div class="alinha-dados">
+					<strong>Sexo: </strong>
+					<p th:text="${animal.sexo}"></p>
 
 				</div>
-			</div>
+
+				<div class="alinha-dados">
+					<strong>Espécie: </strong>
+					<p th:text="${animal.especie.nome}"></p>
+				</div>
+
+
+				<div class="alinha-dados">
+					<strong>Raça: </strong>
+					<p th:text="${animal.raca.nome}"></p>
+
+				</div>
+
+			</section>
+
+			<section class="inf-content">
+
+				<div class="alinha-dados">
+					<strong>Data de Nascimento:</strong>
+					<p
+						th:text="${#temporals.format(animal.dataNascimento, 'dd/MM/yyyy')}"></p>
+				</div>
+
+
+				<div class="alinha-dados">
+					<strong>Nome do Dono:</strong>
+					<p th:text="${animal.cliente.nome}"></p>
+				</div>
+
+				<div class="alinha-dados">
+					<strong>E-mail do Dono:</strong>
+					<p th:text="${animal.cliente.email}"></p>
+				</div>
+
+
+				<div th:if="${animal.alergias != ''}" class="alinha-dados">
+
+					<strong>Alergia:</strong>
+					<p th:text="${animal.alergias}"></p>
+
+				</div>
+
+				<div th:if="${animal.alergias == ''}" class="alinha-dados">
+
+					<strong>Alergia:</strong>
+					<p>Não possui</p>
+
+				</div>
+
+
+			</section>
+
+			<section class="inf-content">
+				<div id="wrapper-caracteristicas">
+					<div th:if="${animal.status == 'Internado'}">
+						<span class="bravo" th:text="${animal.status}"></span>
+					</div>
+					<div th:if="${animal.caracteristicas != null}">
+
+						<div th:each="c: ${animal.caracteristicas}">
+							<div th:switch="${c}">
+
+
+								<div th:case="'Castrado'">
+									<span th:class='castrado' th:text="${c}"></span>
+								</div>
+								<div th:case="'Bravo'" class="caracteristicas">
+									<span th:class='bravo' th:text="${c}"></span>
+								</div>
+
+							</div>
+						</div>
+
+
+
+					</div>
+				</div>
+			</section>
 		</div>
 		<section>
 			<div class="tabs tabs-style-flip">
 				<nav>
 					<ul>
-						<li><a href="#section-flip-1" class="fas fa-file-medical-alt"><span>Histórico</span></a></li>
-						<li><a href="#section-flip-2" class="fas fa-notes-medical"
-							style="color: purple"><span>Consultas</span></a></li>
+						<li><a href="#section-flip-1"><i
+								class="fas fa-file-medical-alt"></i>Histórico</a></li>
+						<li><a href="#section-flip-2"><i
+								class="fas fa-notes-medical"></i> Consultas</a></li>
 
-						<li><a href="#section-flip-3"><span>Internações</span></a></li>
-						<li><a href="#section-flip-4"><span>Vacinas</span></a></li>
+						<li><a href="#section-flip-3"><i class="fas fa-heartbeat"></i>
+								Internações</a></li>
+						<li><a href="#section-flip-4"><i class="fas fa-syringe"></i>Imunizações</a></li>
 
 					</ul>
 				</nav>
-				<div class="content-wrap">
+				<div class="content-wqrap">
 
-					<section id="section-flip-1">
+					<div class="content-wrap">
 
-						<p>
+						<section id="section-flip-1">
+							<h2 class="paciente-h2">Histórico do Paciente</h2>
+							<p>
 
-							<button class="btn btn-primary" type="button"
-								data-toggle="collapse" data-target="#collapseTipo"
-								aria-controls="collapseTipo">Tipos</button>
-							<button class="btn btn-primary" type="button"
-								data-toggle="collapse" data-target="#collapseData"
-								aria-controls="collapseData">Datas</button>
-							<a class="btn btn-danger"
-								th:href="@{/pacientes/download/historico/paciente/{id} (id=${animal.id})}"
-								role="button"><i class="fas fa-download"></i></a>
+								<button class="btn btn-primary btn-historico" type="button"
+									data-toggle="collapse" data-target="#collapseTipo"
+									aria-controls="collapseTipo">Tipos</button>
+								<button class="btn btn-primary btn-historico" type="button"
+									data-toggle="collapse" data-target="#collapseData"
+									aria-controls="collapseData">Datas</button>
+								<a class="btn btn-danger btn-upload"
+									th:href="@{/pacientes/download/historico/paciente/{id} (id=${animal.id})}"
+									role="button"><i class="fas fa-download"></i></a>
 
 
 
-						</p>
-						<div class="row">
-							<div class="col">
-								<div class="collapse" id="collapseData">
-									<nav class="navbar navbar-light bg-light">
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="collapse" id="collapseData">
+
 										<form class="form-inline">
 											<input class="form-control mr-sm-2" type="date"
 												aria-label="Search" th:name="teste" id="data-busca" />
-										</form>
-										<button id="reset"
-											class="btn btn-outline-success my-2 my-sm-0">Resetar</button>
-									</nav>
 
+											<button id="reset"
+												class="btn btn-outline-danger my-2 my-sm-0 mr-auto">Resetar</button>
+
+										</form>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col">
-								<div class="collapse" id="collapseTipo">
+							<div class="row">
+								<div class="col-md-4 my-2">
+									<div class="collapse" id="collapseTipo">
 
-									<nav class="navbar navbar-light bg-light">
-										<form>
-											<select class="form-control mr-sm-2" th:name="tipo"
-												aria-label="Search" id="tipo">
-												<option value="">Mostrar Todos</option>
-												<option value="Dados">Cadastro do Paciente</option>
-												<option value="Mudar dados">Edição dos dados do
-													paciente</option>
-												<option value="Nova consulta">Cadastro de novas
-													consultas</option>
-												<option value="Alteração de consulta">Edição dos
-													dados de consultas</option>
-												<option value="Nova internação">Cadastro de novas
-													internações</option>
-												<option value="Alteração de internação">Edição dos
-													dados de internações</option>
-												<option value="Nova aplicacao">Cadastro de novas
-													imunizações</option>
-												<option value="Edicao de aplicacao">Edição de dados
-													de imunizações</option>
-											</select>
-										</form>
-									</nav>
+										<div class="forms-historico">
+											<form>
+												<select class="form-control mr-sm-2" th:name="tipo"
+													aria-label="Search" id="tipo">
+													<option value="">Mostrar Todos</option>
+													<option value="Dados">Cadastro do Paciente</option>
+													<option value="Mudar dados">Edição dos dados do
+														paciente</option>
+													<option value="Nova consulta">Cadastro de novas
+														consultas</option>
+													<option value="Alteração de consulta">Edição dos
+														dados de consultas</option>
+													<option value="Nova internação">Cadastro de novas
+														internações</option>
+													<option value="Alteração de internação">Edição dos
+														dados de internações</option>
+													<option value="Nova aplicacao">Cadastro de novas
+														imunizações</option>
+													<option value="Edicao de aplicacao">Edição de
+														dados de imunizações</option>
+												</select>
+											</form>
+										</div>
 
+									</div>
 								</div>
 							</div>
-						</div>
-
-						<div class="historico-wraper" id="scrollbar">
+							<div id="scrollbar" class="historico-wraper">
 							<div id="mensagem">
-								<span>Nenhum registro encontrado =/</span>
+								<span>Nenhum registro encontrado</span>
 							</div>
-							<div id="busca-estilo"></div>
-							<div class="listagem-historico" th:each="h: ${historico}">
-								<div
-									th:class="${(h.tipo == 'Nova consulta' ? 'historico-nova-consulta ' : '') + 
+								<div class="timeline" th:each="h: ${historico}" >
+								<div id="busca-estilo"></div>
+								
+									<div class="container-esquerdo left generico">
+										<span th:text="${#temporals.format(h.data, 'dd/MM/yyyy')}"></span><br>
+										<span th:text="${#temporals.format(h.hora, 'HH:mm')}"></span>
+									</div>
+									<div class="container-time right generico">
+
+										
+										
+										<div class="content-1">
+											<div
+												th:class="${(h.tipo == 'Nova consulta' ? 'historico-nova-consulta ' : '') + 
 							(h.tipo == 'Nova consulta' ? 'historico-nova-consulta ' : '') + 
 							(h.tipo == 'Dados' ? 'historico-novo' : '') +
 							(h.tipo == 'Mudar dados' ? 'historico-editado' : '') +
@@ -276,136 +336,149 @@ h2 {
 							(h.tipo == 'Alteração de internação' ? 'edit-internacao' : '') +
 							(h.tipo == 'Nova aplicacao' ? 'nova-aplicacao' : '') + 
 							(h.tipo == 'Edicao de aplicacao' ? 'edit-aplicacao' : '')}">
-									<div class="generico">
-										<p style="text-align:left">
-											<span  id="quebra"
-												th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
-										</p>
-										<p style="text-align:left">
-											<span th:text="'Tipo: ' + ${h.tipo}"></span>
-										</p>
-										<p style="text-align:left">
-											<span th:text="'Usuario: ' + ${h.usuario}"></span>
-										</p>
-										<p style="text-align:left">
-											<span
-												th:text="'No dia : ' + ${#temporals.format(h.data, 'dd/MM/yyyy')} + ' às: ' + ${#temporals.format(h.hora, 'HH:mm')}"></span>
-										</p>
+												<div class="content generico">
+													<div class="titulo-historico">
+														<div th:switch="${h.tipo}">
+															<span th:case="'Dados'">Paciente Cadastrado</span> <span
+																th:case="'Nova consulta'">Consulta Cadastrada</span> <span
+																th:case="'Mudar dados'">Alteração em Paciente</span> <span
+																th:case="'Alteração de consulta'">Alteração em
+																Consulta</span> <span th:case="'Nova internação'">Internação
+																Cadastrada</span> <span th:case="'Alteração de internação'">Alteração
+																de Internação</span> <span th:case="'Nova aplicacao'">Imunização
+																Cadastrada</span> <span th:case="'Edicao de aplicacao'">Alteração
+																na Imunização</span>
+														</div>
+
+													</div>
+													<p>
+														<span id="quebra" style="display:block"
+															th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
+														<span th:text="'Alteração feita por: ' + ${h.usuario}"></span>
+													</p>
+
+												
+												</div>
+
+											</div>
+										</div>
+
 									</div>
-
 								</div>
 							</div>
-						</div>
-					</section>
-					<section id="section-flip-2">
+						</section>
+						<section id="section-flip-2">
 
-						<div class="container">
+							<div class="container">
 
-							<div class="row">
-								<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-12">
 
 
-									<h2>Consultas Cadastradas</h2>
+										<h2 class="paciente-h2">Consultas Cadastradas</h2>
 
-									<table id="table-consultas"
-										class="table table-sm table-striped nowrap"
-										style="width: 100%">
-										<thead class="thead-dark">
-											<tr>
-												<th scope="col">Paciente</th>
-												<th scope="col">Data</th>
-												<th scope="col">Término</th>
-												<th scope="col">Editar</th>
-												<th scope="col">Excluir</th>
-												<th scope="col">Visualizar</th>
-											</tr>
-										</thead>
-									</table>
+										<table id="table-consultas"
+											class="table table-sm table-striped table-bordered nowrap table-pacient"
+											style="width: 100%">
+											<thead class="thead-dark">
+												<tr>
+													<th scope="col">Paciente</th>
+													<th scope="col">Data</th>
+													<th scope="col">Término</th>
+													<th scope="col">Editar</th>
+													<th scope="col">Excluir</th>
+													<th scope="col">Visualizar</th>
+												</tr>
+											</thead>
+										</table>
+									</div>
 								</div>
 							</div>
-						</div>
-						<a class="btn-cadastrar-usuario" id="cadastrar-consulta"
-							data-toggle="modal" data-target="#modal-consulta-paciente"
-							href="#" role="button">Nova Consulta</a> <a
-							class="btn btn-danger"
-							th:href="@{/pacientes/download/consultas/paciente/{id} (id=${animal.id})}"
-							role="button"><i class="fas fa-download"></i></a>
-
-
-					</section>
-					<section id="section-flip-3">
-						<div class="container">
-
-							<div class="row">
-								<div class="col-md-12">
-
-
-									<h2>Internações Cadastradas</h2>
-
-									<table id="table-internacoes"
-										class="table table-sm table-striped nowrap"
-										style="width: 100%">
-										<thead class="thead-dark">
-											<tr>
-												<th scope="col">Status</th>
-												<th scope="col">Paciente</th>
-												<th scope="col">Data de Entrada</th>
-												<th scope="col">Data de Saída</th>
-												<th scope="col">Editar</th>
-												<th scope="col">Excluir</th>
-												<th scope="col">Visualizar</th>
-												<th scope="col">Download</th>
-											</tr>
-										</thead>
-									</table>
-								</div>
-							</div>
-							<a class="btn-cadastrar-usuario" id="cadastrar-internacao"
-								data-toggle="modal" data-target="#modal-internacao-paciente"
-								href="#" role="button">Nova Internação</a>
-						</div>
-
-					</section>
-					<section id="section-flip-4">
-						<div class="container">
-
-							<div class="row">
-								<div class="col-md-12">
-									<h2>Aplicações Cadastradas</h2>
-
-									<table id="table-aplicacoes"
-										class="table table-sm table-striped nowrap"
-										style="width: 100%">
-										<thead class="thead-dark">
-											<tr>
-												<th scope="col">Descrição</th>
-												<th scope="col">Doses</th>
-												<th scope="col">Data da Aplicação</th>
-												<th scope="col">Próxima Aplicação</th>
-												<th scope="col">Editar</th>
-												<th scope="col">Excluir</th>
-											</tr>
-										</thead>
-									</table>
-								</div>
-							</div>
-							<a class="btn-cadastrar-usuario" id="cadastrar-aplicacao"
-								data-toggle="modal" data-target="#modal-aplicacao" href="#"
-								role="button">Nova Aplicação</a> <a class="btn btn-danger"
-								th:href="@{/pacientes/download/imunizacoes/paciente/{id} (id=${animal.id})}"
+							<a class="btn-cadastrar-usuario" id="cadastrar-consulta"
+								data-toggle="modal" data-target="#modal-consulta-paciente"
+								href="#" role="button">Nova Consulta</a> <a
+								class="btn btn-danger"
+								th:href="@{/pacientes/download/consultas/paciente/{id} (id=${animal.id})}"
 								role="button"><i class="fas fa-download"></i></a>
-						</div>
-					</section>
 
 
-					<span th:replace="aplicacao/modal :: modal-form"></span> <span
-						th:replace="internacao/modal-por-paciente :: modal-internacao-paciente"></span>
-					<span
-						th:replace="consulta/modal-consulta-paciente :: modal-consulta-paciente"></span>
+						</section>
+						<section id="section-flip-3">
+							<div class="container">
+
+								<div class="row">
+									<div class="col-md-12">
 
 
+										<h2 class="paciente-h2">Internações Cadastradas</h2>
+
+										<table id="table-internacoes"
+											class="table table-sm table-striped table-bordered nowrap table-pacient"
+											style="width: 100%">
+											<thead class="thead-dark">
+												<tr>
+													<th scope="col">Status</th>
+													<th scope="col">Paciente</th>
+													<th scope="col">Data de Entrada</th>
+													<th scope="col">Data de Saída</th>
+													<th scope="col">Editar</th>
+													<th scope="col">Excluir</th>
+													<th scope="col">Visualizar</th>
+													<th scope="col">Download</th>
+												</tr>
+											</thead>
+										</table>
+									</div>
+								</div>
+								<a class="btn-cadastrar-usuario" id="cadastrar-internacao"
+									data-toggle="modal" data-target="#modal-internacao-paciente"
+									href="#" role="button">Nova Internação</a>
+							</div>
+
+						</section>
+						<section id="section-flip-4">
+							<div class="container">
+
+								<div class="row">
+									<div class="col-md-12">
+										<h2 class="paciente-h2">Aplicações Cadastradas</h2>
+
+										<table id="table-aplicacoes"
+											class="table table-sm table-striped table-bordered nowrap table-pacient"
+											style="width: 100%">
+											<thead class="thead-dark">
+												<tr>
+													<th scope="col">Descrição</th>
+													<th scope="col">Doses</th>
+													<th scope="col">Data da Aplicação</th>
+													<th scope="col">Próxima Aplicação</th>
+													<th scope="col">Editar</th>
+													<th scope="col">Excluir</th>
+												</tr>
+											</thead>
+										</table>
+									</div>
+								</div>
+								<a class="btn-cadastrar-usuario" id="cadastrar-aplicacao"
+									data-toggle="modal" data-target="#modal-aplicacao" href="#"
+									role="button">Nova Aplicação</a> <a class="btn btn-danger"
+									th:href="@{/pacientes/download/imunizacoes/paciente/{id} (id=${animal.id})}"
+									role="button"><i class="fas fa-download"></i></a>
+							</div>
+						</section>
+
+
+						<span th:replace="aplicacao/modal :: modal-form"></span> <span
+							th:replace="internacao/modal-por-paciente :: modal-internacao-paciente"></span>
+						<span
+							th:replace="consulta/modal-consulta-paciente :: modal-consulta-paciente"></span>
+
+
+					</div>
+					<!-- /content -->
 				</div>
-				<!-- /content -->
+				<!-- /tabs -->
+
 			</div>
 			<!-- /tabs -->
 		</section>
@@ -496,7 +569,7 @@ h2 {
 			    });
 			   
 		$("#cadastrar-aplicacao").on('click', function(){	  		
-			$("#datePickerId").val("");
+			$("#datePickerIdAplicacao").val("");
 			$("#vacina").val("");	  		 
 			$('#idAplicacao').val(null);           
 			$(".modal-title").text("Nova Aplicação"); 
@@ -557,18 +630,18 @@ h2 {
 				var pes = [[${consulta.peso}]];
 			if(consulta !=null){
 			
-				var teste = parseFloat($("#temperatura").val());
-				var peso = parseFloat($("#peso").val());
+				var teste = parseFloat($("#temperaturaConsulta").val());
+				var peso = parseFloat($("#pesoConsulta").val());
 				$(".modal-title").text("Editar Consulta");
 	 	    	$("#modal-consulta-paciente").modal('show');
 	 	    	$("#animalConsulta").attr('readonly', 'readonly');
 	 	    	if(teste != temperat){
 					var t =temperat.toString().replace('.', ',');
-					$("#temperatura").val(t);
+					$("#temperaturaConsulta").val(t);
 				}
 				if(peso != pes){
 					var p =pes.toString().replace('.', ',');
-					$("#peso").val(p);
+					$("#pesoConsulta").val(p);
 				}
 			}
 
@@ -798,43 +871,43 @@ h2 {
 			function corpo(result){
 				
 				$.each(result, function(k,v){
+					var replace = v.descricao.toString().replace(/\;/g, '<br>')
+					var titulo = "";
+					
 					$("#mensagem").hide();
-					$("#busca-estilo").append('<div class="separador">' +
-					 '<p><span>'+ v.descricao +'</span></p>' +
-					 '<p><span>'+ v.tipo +'</span></p>'      +
-					 '<p><span>'+ v.usuario +'</span></p>'   +
-					 '<p><span>'+ moment(v.data).format('DD/MM/YYYY') +' às ' +  moment(v.hora, 'HH:mm:ss').format('HH:mm') + '</span></p></div>'
-					).hide().fadeIn('slow');
-					switch(v.tipo){
-					case 'Dados':
-						$('.separador').addClass('historico-novo');
-						
-					break;
-					case 'Mudar dados':
-						$('.separador').addClass('historico-editado');
-					break;
-					case 'Nova consulta':
-						$('.separador').addClass('historico-nova-consulta');
-					break;
-					case 'Alteração de consulta':
-						$('.separador').addClass('historico-editado-consulta');
-						
-					break;
-					case 'Nova internação':
-						$('.separador').addClass('nova-internacao');
-					break;
-					case 'Alteração de internação':
-						$('.separador').addClass('edit-internacao');
-					break;
-					case 'Nova aplicacao':
-						$('.separador').addClass('nova-aplicacao');
-					break;
-					case 'Edicao de aplicacao':
-						$('.separador').addClass('edit-aplicacao');
-					break;
-				
-						
+					if(v.tipo == 'Alteração de internação' ){
+						titulo = 'Alteração em Internação';
 					}
+					if(v.tipo == 'Nova internação' ){
+						titulo = 'Internação Cadastrada';
+					}
+					if(v.tipo == 'Nova aplicacao' ){
+						titulo = 'Imunização Cadastrada';
+					}
+					if(v.tipo == 'Edicao de aplicacao' ){
+						titulo = 'Alteração em Imunização';
+					}
+					if(v.tipo == 'Dados' ){
+						titulo = 'Paciente Cadastrado';
+					}
+					if(v.tipo == 'Mudar dados' ){
+						titulo = 'Alteração em Paciente';
+					}
+					if(v.tipo == 'Nova consulta' ){
+						titulo = 'Consulta Cadastrada';
+					}
+					if(v.tipo == 'Alteração de consulta' ){
+						titulo = 'Alteração em consulta';
+					}
+					$("#busca-estilo").append('<div class="container-esquerdo esquerdo"><span>'+  moment(v.data).format('DD/MM/YYYY')+'</span><br><span>'+ moment(v.hora, 'HH:mm:ss').format('HH:mm')+
+							'</span></div><div class = "container-time right"><div class="content"><div class="titulo-historico"><span>'+titulo+'</span></div>' +
+					 '<p><span style="display:block">'+ replace +'</span>' +
+					 '<span> Alteração feita por: '+ v.usuario +'</span></p>' +
+					 '</div></div>'
+					).hide().fadeIn('slow');
+					
+
+				
 				})
 			}
 		

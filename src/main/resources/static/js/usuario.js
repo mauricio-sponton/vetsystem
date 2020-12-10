@@ -1,6 +1,20 @@
 $(document).ready(function() {
 	moment.locale('pt-BR');
 	var table = $('#table-usuarios').DataTable({
+		"language":{
+    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
+    		"zeroRecords": "Nenhum registro encontrado",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": " ",
+            "search": "Pesquise: ",
+            "searchPlaceholder": "Descrição...",
+            "paginate": {
+                "first":      "Primeiro",
+                "last":       "Ultimo",
+                "next":       "Próximo",
+                "previous":   "Anterior"
+            } 
+    	},
 		searching : true,
 		lengthMenu : [ 5, 10 ],
 		processing : true,
@@ -41,7 +55,7 @@ $(document).ready(function() {
 				},
 				{	data : 'id',	
 					render : function(id) {
-						return ''.concat('<a class="btn btn-info btn-sm btn-block btn-view"', ' ') 
+						return ''.concat('<a class="btn btn-sm btn-block btn-view"', ' ') 
 								 .concat('id="dp_').concat(id).concat('"', ' ') 
 								 .concat('role="button" title="Visualizar" data-toggle="tooltip" data-placement="right">', ' ')
 								 .concat('<i class="fas fa-glasses"></i></a>');

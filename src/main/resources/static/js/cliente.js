@@ -48,7 +48,7 @@ $(document).ready(function () {
             {orderable: false,
                 data: 'id',
                    "render": function(id) {
-                	   return '<a class="btn btn-success btn-sm btn-block btn-view" href="/clientes/visualizar/'+ 
+                	   return '<a class="btn btn-sm btn-block btn-view" href="/clientes/visualizar/'+ 
                    	id +'" role="button"><i class="fas fa-glasses"></i></a>';
                    }               
                }

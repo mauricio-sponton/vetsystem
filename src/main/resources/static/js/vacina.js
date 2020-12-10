@@ -24,6 +24,9 @@ $(document).ready(function () {
             url: '/vacinas/datatables/server',
             data: 'data'
         },
+        "columnDefs":[
+         	{"width":"5%", "targets": [4,5]}
+         ],
         columns: [
             {data: 'descricao'},
             {data: 'doses'},

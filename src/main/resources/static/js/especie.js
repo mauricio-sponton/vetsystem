@@ -25,6 +25,9 @@ $(document).ready(function () {
             url: '/especies/datatables/server',
             data: 'data'
         },
+        "columnDefs": [
+            { "width": "10%", "targets": [1,2] }
+          ],
         columns: [
             {data: 'nome'},
             {orderable: false, 
@@ -40,14 +43,7 @@ $(document).ready(function () {
                     return '<a class="btn btn-danger btn-sm btn-block" href="/especies/excluir/'+ 
                     	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
                 }               
-            },
-            {orderable: false,
-                data: 'id',
-                   "render": function(id) {
-                       return '<a class="btn btn-danger btn-sm btn-block" href="/especies/visualizar/'+ 
-                       	id +'" role="button"><i class="fas fa-eye"></i></a>';
-                   }               
-               }
+            }
         ]
     });
 });    

@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	th:with="version=${#strings.randomAlphanumeric(3)}">
 <head>
-<title>Clínica Spring Security</title>
+<title>Vet System</title>
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport"
@@ -100,6 +100,8 @@
 		})();
 		$(document).ready(function(){
 			var referrer =  document.referrer;
+			var location = window.location.href;
+			
 			if(referrer.startsWith("http://localhost:8080/pacientes/visualizar")){
 				$("#por-paciente").removeClass('por-paciente')
 				$("#por-consulta").addClass('por-consulta');
@@ -107,6 +109,47 @@
 				$("#por-paciente").addClass('por-paciente');
 				$("#por-consulta").removeClass('por-consulta')
 			}
+			
+				switch(location){
+				case "http://localhost:8080/home":
+					$('.home, .home i').css('color', '#50B969')
+					break;
+				case "http://localhost:8080/agenda/abrir":
+					$('.agenda, .agenda i').css('color', '#50B969');
+					break;
+				case "http://localhost:8080/pacientes/listar":
+					$('.pacientes, .pacientes i').css('color', '#50B969');
+					$('a').removeClass('collapsed')
+					$('.nav-second-level').collapse('show')
+					break;
+				case "http://localhost:8080/especies/listar":
+					$('.especies, .especies i').css('color', '#50B969');
+					$('a').removeClass('collapsed')
+					$('.nav-second-level').collapse('show')
+					break;
+				case "http://localhost:8080/racas/listar":
+					$('.racas, .racas i').css('color', '#50B969');
+					$('a').removeClass('collapsed')
+					$('.nav-second-level').collapse('show')
+					break;
+				case "http://localhost:8080/u/listar":
+					$('.usuarios, .usuarios i').css('color', '#50B969');
+					break;
+				case "http://localhost:8080/clientes/listar":
+					$('.clientes, .clientes i').css('color', '#50B969');
+					break;
+				case "http://localhost:8080/consultas/listar":
+					$('.consultas, .consultas i').css('color', '#50B969');
+					break;
+				case "http://localhost:8080/internacoes/listar":
+					$('.internacoes, .internacoes i').css('color', '#50B969');
+					break;
+				case "http://localhost:8080/vacinas/listar":
+					$('.imunizacoes, .imunizacoes i').css('color', '#50B969');
+					break;
+				}
+				
+				
 			
 		})
 	

@@ -130,7 +130,7 @@ public class InternacaoController {
 			if (internacao.hasNotId() && status.equals("Ativa")) {
 				historico.setDescricao("O paciente " + internacao.getAnimal().getNome() + " foi internado.");
 				historico.setTipo("Nova internação");
-				historico.setUsuario(veterinario.getNome() + " (veterinario)");
+				historico.setUsuario(veterinario.getNome());
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus("Internado");
@@ -176,7 +176,7 @@ public class InternacaoController {
 				if (historico.getDescricao() != null) {
 
 					historico.setTipo("Alteração de internação");
-					historico.setUsuario(veterinario.getNome() + " (veterinario)");
+					historico.setUsuario(veterinario.getNome());
 					historico.setData(data);
 					historico.setHora(hora);
 
@@ -188,7 +188,7 @@ public class InternacaoController {
 				internacao.setHoraSaida(hora);
 				historico.setDescricao("O paciente " + internacao.getAnimal().getNome() + " saiu da internação.");
 				historico.setTipo("Nova internação");
-				historico.setUsuario(veterinario.getNome() + " (veterinario)");
+				historico.setUsuario(veterinario.getNome());
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus("Normal");
@@ -413,7 +413,7 @@ public class InternacaoController {
 			if (internacao.hasNotId() && status.equals("Ativa")) {
 				historico.setDescricao("O paciente " + internacao.getAnimal().getNome() + " foi internado.");
 				historico.setTipo("Nova internação");
-				historico.setUsuario(veterinario.getNome() + " (veterinario)");
+				historico.setUsuario(veterinario.getNome());
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus("Internado");
@@ -471,7 +471,7 @@ public class InternacaoController {
 				internacao.setHoraSaida(hora);
 				historico.setDescricao("O paciente " + internacao.getAnimal().getNome() + " saiu da internação.");
 				historico.setTipo("Nova internação");
-				historico.setUsuario(veterinario.getNome() + " (veterinario)");
+				historico.setUsuario(veterinario.getNome());
 				historico.setData(data);
 				historico.setHora(hora);
 				animal.setStatus("Normal");

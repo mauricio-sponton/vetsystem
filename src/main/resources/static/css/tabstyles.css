@@ -4,22 +4,38 @@
 /* Flip */
 /*****************************/
 
+
 .tabs-style-flip {
 	max-width: 1200px;
 }
 
 .tabs-style-flip nav a {
 	padding: 0.5em 0;
-	color: #2CC185;
+	color: #2CC185 !important;
+	font-size:1.1em;
+	font-weight:bold;
 	-webkit-transition: color 0.3s;
 	transition: color 0.3s;
+	margin-left:2px
 }
 
-.tabs-style-flip nav a:hover,
-.tabs-style-flip nav a:focus,
+.tabs-style-flip nav a i{
+	color: #2CC185;
+	margin-right:10px;
+	}
+
+
+.tabs-style-flip nav li.tab-current i,
 .tabs-style-flip nav li.tab-current a {
-	color: #74777b;
+	color: white !important;
+	text-decoration:none
 }
+
+.tabs-style-flip nav a:hover {
+	text-decoration:none
+}
+
+
 
 .tabs-style-flip nav a span {
 	text-transform: uppercase;
@@ -45,14 +61,17 @@
 	transform-origin: 50% 100%;
 	-webkit-perspective-origin: 50% 100%;
 	perspective-origin: 50% 100%;
+	
 }
 
 .tabs-style-flip nav li.tab-current a::after {
-	background-color: seagreen;
+	background-color: #17b679;
 	-webkit-transform: perspective(900px) rotate3d(1,0,0,0deg);
 	transform: perspective(900px) rotate3d(1,0,0,0deg);
+	border:1px solid #17b679;
+
 }
 
 .tabs-style-flip .content-wrap {
-	background: seagreen;
+	background: #fff;	
 }
