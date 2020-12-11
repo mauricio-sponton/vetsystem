@@ -1,4 +1,6 @@
+
 $(document).ready(function () {
+	
 	moment.locale('pt-BR');
     var table = $('#table-consultas').DataTable({
     	"language":{
@@ -7,6 +9,7 @@ $(document).ready(function () {
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": " ",
             "search": "Pesquise: ",
+            "searchPlaceholder": "Paciente...",
             "paginate": {
                 "first":      "Primeiro",
                 "last":       "Ultimo",
@@ -66,6 +69,7 @@ $(document).ready(function () {
                }
         ]
     });
+ 
 });  
 
 $('#animal').on('change', function() {

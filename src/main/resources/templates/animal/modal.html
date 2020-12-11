@@ -36,7 +36,7 @@
 									<span th:errors="*{nome}"></span>
 								</div>
 							</div>
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-6">
 								<label for="cliente">Dono</label> <select
 									th:classappend="${#fields.hasErrors('cliente')} ? 'is-invalid'"
 									id="cliente" class="form-control" th:field=*{cliente}>
@@ -50,7 +50,7 @@
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-6">
 								<label for="datePickerId">Selecione a data da consulta</label> <input
 									class="form-control" type="date" id="datePickerId"
 									th:classappend="${#fields.hasErrors('dataNascimento')} ? 'is-invalid'"
@@ -59,7 +59,7 @@
 									<span th:errors="*{dataNascimento}"></span>
 								</div>
 							</div>
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-6">
 								<label for="sexo">Sexo</label> <select
 									th:classappend="${#fields.hasErrors('sexo')} ? 'is-invalid'"
 									id="sexo" class="form-control" th:field=*{sexo}>
@@ -73,7 +73,7 @@
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-6">
 								<label for="especie">Espécie</label> <input type="text"
 									class="form-control" id="especie" placeholder="Canino..."
 									th:classappend="${#fields.hasErrors('especie.nome')} ? 'is-invalid'"
@@ -83,7 +83,7 @@
 								</div>
 							</div>
 
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-6">
 								<label for="raca">Raça</label> <input type="text"
 									class="form-control" id="raca" placeholder="Labrador..."
 									onfocus="mudar();"
@@ -96,7 +96,7 @@
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-10">
 								<label for="alergias">Alergias</label>
 								<textarea class="form-control" id="alergias"
 									autofocus="autofocus" th:field="*{alergias}"
@@ -105,24 +105,36 @@
 									<span th:errors="*{alergias}"></span>
 								</div>
 							</div>
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-2">
 								<div th:each="c: ${caracteristicas}">
-									<input type="checkbox"  th:value="${c}"  th:field="*{caracteristicas}">
-									
-									<label th:text="${c}"></label>
+									<input type="checkbox" th:value="${c}"
+										th:field="*{caracteristicas}"> <label th:text="${c}"></label>
 								</div>
-								
+
 
 							</div>
-							
+
 						</div>
 						<div class="form-row">
-							<label for="file">Foto</label> <input type="file" id="file"
-								th:name="file" value="Upload">
+							<input type="file" id="file" th:name="file" value="Upload"
+								class="inputfile inputfile-6"><label for="file"><span></span>
+								<strong><i class="fas fa-upload"></i> Escolha as
+									imagens&hellip;</strong></label>
 						</div>
 						<input type="hidden" id="id" th:field="*{id}" /> <input
 							type="hidden" id="id-foto" th:field="*{foto.id}" />
-						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+
+						<div class="form-group row">
+							<div class="col-sm-10">
+								<button type="button" class="btn btn-danger btn-cancelar"
+									data-dismiss="modal" aria-label="Close" data-toggle="tooltip"
+									data-placement="right">Cancelar</button>
+
+
+								<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+
+							</div>
+						</div>
 					</form>
 				</div>
 

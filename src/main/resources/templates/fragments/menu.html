@@ -42,8 +42,8 @@
 				<div sec:authorize="hasAuthority('SECRETARIA')"
 					th:if="${secretaria.nome != null}">
 					<div th:if="${secretaria.sexo == 'Feminino'}">
-						<span style="color: white; font-size: 20px;">Bem
-							vinda, <span class="" th:text="${secretaria.nome}"> </span>
+						<span style="color: white; font-size: 20px;">Bem vinda, <span
+							class="" th:text="${secretaria.nome}"> </span>
 						</span>
 					</div>
 					<div th:if="${secretaria.sexo == 'Masculino'}">
@@ -77,10 +77,12 @@
 		</div>
 		-->
 		<div class="wrap-bell">
-			<a class="notify" th:href="@{/u/notificacoes}" role="button"> <span
+			<a class="notify" th:href="@{/u/notificacoes}" role="button"
+				sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')"> <span
 				class="notification"> </span>
-			</a><span class="badge badge-danger" th:if="${notify != 0}" th:text="${notify}"></span>
-			<span class="badge badge-danger" th:if="${notifyVet != 0}" th:text="${notifyVet}"></span>
+			</a><span class="badge badge-danger" th:if="${notify != 0}"
+				th:text="${notify}"></span> <span class="badge badge-danger"
+				th:if="${notifyVet != 0}" th:text="${notifyVet}"></span>
 		</div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarCollapse" aria-controls="navbarCollapse"
@@ -92,12 +94,13 @@
 		<div class="collapse navbar-collapse" id="navbarCollapse">
 			<ul class="navbar-nav mr-auto sidenav" id="navAccordion">
 
-				<li><a th:href="@{/home}" class="nav-link one home" href="#"> <i
-						class="fas fa-clinic-medical"></i> Dashboard
+				<li><a th:href="@{/home}" class="nav-link one home" href="#">
+						<i class="fas fa-clinic-medical"></i> Dashboard
 				</a></li>
 
-				<li><a th:href="@{/agenda/abrir}" class="nav-link agenda"> <i
-						class="fas fa-clock"></i> Agenda
+				<li><a th:href="@{/agenda/abrir}"
+					sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')"
+					class="nav-link agenda"> <i class="fas fa-clock"></i> Agenda
 				</a></li>
 
 				<li><a th:href="@{/u/listar}" class="nav-link usuarios"> <i
@@ -105,13 +108,15 @@
 				</a></li>
 
 
-				<li><a th:href="@{/clientes/listar}" class="nav-link clientes"> <i
-						class="fas fa-handshake"></i>Clientes
+				<li><a th:href="@{/clientes/listar}"
+					sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')"
+					class="nav-link clientes"> <i class="fas fa-handshake"></i>Clientes
 				</a></li>
 
 
-				<li><a class="nav-link nav-link-collapse pacientes especies" href="#"
-					id="hasSubItems" data-toggle="collapse"
+				<li><a class="nav-link nav-link-collapse pacientes especies"
+					href="#" id="hasSubItems" data-toggle="collapse"
+					sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')"
 					data-target="#collapseSubItems2" aria-controls="collapseSubItems2"
 					aria-expanded="false"><i class="fas fa-paw"></i> Pets</a>
 					<ul class="nav-second-level collapse " id="collapseSubItems2"
@@ -133,13 +138,18 @@
 
 
 					</ul></li>
-				<li><a sec:authorize="hasAuthority('VETERINARIO')" th:href="@{/consultas/listar}" class="nav-link consultas"> <i
+				<li><a sec:authorize="hasAuthority('VETERINARIO')"
+					th:href="@{/consultas/listar}" class="nav-link consultas"> <i
 						class="fas fa-file-medical-alt"></i> Consultas
 				</a></li>
-				<li><a sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')" th:href="@{/internacoes/listar}" class="nav-link internacoes"><i
+				<li><a
+					sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')"
+					th:href="@{/internacoes/listar}" class="nav-link internacoes"><i
 						class="fas fa-heartbeat"></i> Internações</a></li>
 
-				<li><a sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')" th:href="@{/vacinas/listar}" class="nav-link imunizacoes"> <i
+				<li><a
+					sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')"
+					th:href="@{/vacinas/listar}" class="nav-link imunizacoes"> <i
 						class="fas fa-syringe"></i> Imunizações
 				</a></li>
 
@@ -160,16 +170,23 @@
 					method="post" class="form-inline ">
 					<div class="btn-group mb-2 mr-sm-2">
 
+						<div class="wrapper-foto"
+							th:if="${#authorization.expression('hasAuthority(''ADMIN'')') && #authorization.expression('!hasAuthority(''VETERINARIO'')')  && #authorization.expression('!hasAuthority(''SECRETARIA'')')}">
+							<img alt="" th:src="@{/image/profile-pic.jpg}" style="width: 55px; height: auto" >
 
+
+						</div>
 
 						<div class="wrapper-foto"
 							sec:authorize="hasAuthority('VETERINARIO')">
 							<img alt=""
 								th:if="${veterinario.id != null && veterinario.foto.fileName != null}"
 								th:src="@{${'/uploads/thumb/' + veterinario.foto.fileName}}">
-							<img th:if="${veterinario.id != null && veterinario.foto.fileName ==null}"
+							<img
+								th:if="${veterinario.id != null && veterinario.foto.fileName ==null}"
 								th:src="@{/image/profile-pic.jpg}"
-								alt="Foto de perfil do usuário." style="width:55px; height:auto" />
+								alt="Foto de perfil do usuário."
+								style="width: 55px; height: auto" />
 
 						</div>
 						<div class="wrapper-foto"
@@ -178,9 +195,11 @@
 							<img alt=""
 								th:if="${secretaria.id != null && secretaria.foto.fileName!= null}"
 								th:src="@{${'/uploads/thumb/' + secretaria.foto.fileName}}">
-							<img th:if="${secretaria.id != null && secretaria.foto.fileName ==null}"
+							<img
+								th:if="${secretaria.id != null && secretaria.foto.fileName ==null}"
 								th:src="@{/image/profile-pic.jpg}"
-								alt="Foto de perfil do usuário." style="width:55px; height:auto"/>
+								alt="Foto de perfil do usuário."
+								style="width: 55px; height: auto" />
 
 						</div>
 

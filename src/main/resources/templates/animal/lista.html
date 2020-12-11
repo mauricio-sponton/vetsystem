@@ -3,10 +3,12 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
-<title>Pacientes</title>
+<title>Vet System - Pacientes Cadastrados</title>
 <style type="text/css">
-#table-clientes td:first-child, #table-clientes th:first-child {
-	display: none
+
+#table-animais_filter input {
+margin-right: 50px;
+width: 72%
 }
 </style>
 </head>
@@ -22,10 +24,10 @@
 			<div class="container">
 
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-11">
 
-						<div th:replace="fragments/alert :: alerta-sucesso"></div>
-						<h2>Pacientes Cadastrados</h2>
+						<div th:replace="fragments/alert :: alerta-sucesso" ></div>
+						<h2 class="pacientes-cadastrados">Pacientes Cadastrados</h2>
 
 						<table id="table-animais"
 							class="table table-sm table-striped nowrap" style="width: 100%">
@@ -126,6 +128,8 @@
 			$(".modal-title").text("Excluir Paciente");
 			$('#subtitulo').text('Todas as informaçãoes referentes a este paciente serão deletadas do sistema!');
 		})
+		
+		(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);
 	</script>
 </body>
 </html>

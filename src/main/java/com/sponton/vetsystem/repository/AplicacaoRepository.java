@@ -11,8 +11,8 @@ import com.sponton.vetsystem.domain.Aplicacao;
 
 public interface AplicacaoRepository extends JpaRepository<Aplicacao, Long> {
 
-	@Query("select a from Aplicacao a where a.vacina.descricao like :search%")
-	Page<Aplicacao> findByName(String search, Pageable pageable);
+	@Query("select a from Aplicacao a where a.vacina.descricao like :search% and a.animal.id = :idAnimal")
+	Page<Aplicacao> findByName(String search, Pageable pageable, Long idAnimal);
 
 	@Query("select a from Aplicacao a where a.id = :id order by a.id DESC")
 	List<Aplicacao> findAplicacaoPorAnimal(Long id);

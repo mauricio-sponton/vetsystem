@@ -167,7 +167,11 @@
 				$("#erro-especie").hide();
 				$(".modal-title").text("Nova Internação");
 			});	
+			$('#confirm-modal').on('show.bs.modal', function(){
+				$(".modal-title").text("Excluir Internação");
+			})
 		});	
+		
 		(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);
 	</script>
 </body>

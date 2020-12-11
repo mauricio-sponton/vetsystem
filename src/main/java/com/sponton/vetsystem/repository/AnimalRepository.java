@@ -13,7 +13,7 @@ import com.sponton.vetsystem.domain.Foto;
 
 public interface AnimalRepository extends JpaRepository<Animal, Long>{
 
-	@Query("select a from Animal a where a.nome like :search% or a.especie.nome like :search% or a.raca.nome like :search%")
+	@Query("select a from Animal a where a.nome like :search% or a.especie.nome like :search% or a.raca.nome like :search% or a.cliente.nome like :search%")
 	Page<Animal> findByName(String search, Pageable pageable);
 
 	@Query("select a from Animal a where a.cliente.id = :id")

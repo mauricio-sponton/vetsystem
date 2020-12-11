@@ -7,6 +7,7 @@ $(document).ready(function () {
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": " ",
             "search": "Pesquise: ",
+            "searchPlaceholder": "Descrição ou Espécie...",
             "paginate": {
                 "first":      "Primeiro",
                 "last":       "Ultimo",
@@ -43,7 +44,7 @@ $(document).ready(function () {
              data: 'id',
                 "render": function(id) {
                     return '<a class="btn btn-danger btn-sm btn-block" href="/vacinas/excluir/'+ 
-                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+                    	id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
                 }               
             }
         ]
@@ -55,6 +56,7 @@ $(document).ready(function () {
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": " ",
             "search": "Pesquise: ",
+            "searchPlaceholder": "Descrição ou Espécie...",
             "paginate": {
                 "first":      "Primeiro",
                 "last":       "Ultimo",

@@ -67,7 +67,7 @@ public class InternacaoService {
 		datatables.setRequest(request);
 		datatables.setColunas(DatatablesColunas.INTERNACOES);
 		Page<Internacao> page =datatables.getSearch().isEmpty() ? repository.findInternacaoByAnimal(datatables.getPageable(),idAnimal)
-				: repository.findByStatusOrAnimal(datatables.getSearch(), datatables.getPageable());
+				: repository.findByStatusOrAnimalByPaciente(datatables.getSearch(), datatables.getPageable(), idAnimal);
 		return datatables.getResponse(page);
 	}
 

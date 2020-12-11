@@ -21,6 +21,9 @@ public interface InternacaoRepository extends JpaRepository<Internacao, Long> {
 	@Query("select i from Internacao i where i.status like :search% OR i.animal.nome like :search% order by i.id DESC")
 	Page<Internacao> findByStatusOrAnimal(String search, Pageable pageable);
 
+	@Query("select i from Internacao i where i.animal.id = :idAnimal and (i.status like :search% OR i.animal.nome like :search%) order by i.id DESC")
+	Page<Internacao> findByStatusOrAnimalByPaciente(String search, Pageable pageable, Long idAnimal);
+	
 	@Query("select i from Internacao i where i.animal.id = :id order by i.id DESC")
 	Page<Internacao> findInternacaoByAnimal(Pageable pageable, Long id);
 

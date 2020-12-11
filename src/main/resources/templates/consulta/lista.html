@@ -14,35 +14,34 @@
 				<li><a th:href="@{/home}">Dashboard </a></li>
 				<li class='active'>Consultas</li>
 			</ul>
-				<div class="container">
+			<div class="container">
 
-					<div class="row">
-						<div class="col-md-10">
+				<div class="row">
+					<div class="col-md-10">
 
-							<div th:replace="fragments/alert :: alerta-sucesso"></div>
-							<h2 class="consultas-cadastradas">Consultas Cadastradas</h2>
+						<div th:replace="fragments/alert :: alerta-sucesso"></div>
+						<h2 class="consultas-cadastradas">Consultas Cadastradas</h2>
 
-							<table id="table-consultas"
-								class="table table-sm table-striped nowrap"
-								style="width: 100%">
-								<thead class="thead-dark">
-									<tr>
-										<th scope="col">Paciente</th>
-										<th scope="col">Data</th>
-										<th scope="col">Término</th>
-										<th scope="col">Editar</th>
-										<th scope="col">Excluir</th>
-										<th scope="col">Visualizar</th>
-									</tr>
-								</thead>
-							</table>
-						</div>
+						<table id="table-consultas"
+							class="table table-sm table-striped nowrap" style="width: 100%">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col">Paciente</th>
+									<th scope="col">Data</th>
+									<th scope="col">Término</th>
+									<th scope="col">Editar</th>
+									<th scope="col">Excluir</th>
+									<th scope="col">Visualizar</th>
+								</tr>
+							</thead>
+						</table>
 					</div>
 				</div>
-				<a class="btn-cadastrar-usuario" href="#" role="button"
-					data-toggle="modal" data-target="#modal-consulta">Nova Consulta</a>
-				<span th:replace="consulta/modal :: modal-form"></span>
-			
+			</div>
+			<a class="btn-cadastrar-usuario" href="#" role="button"
+				data-toggle="modal" data-target="#modal-consulta">Nova Consulta</a>
+			<span th:replace="consulta/modal :: modal-form"></span>
+
 		</main>
 
 	</section>
@@ -52,8 +51,11 @@
 	var data = [[${consulta.data}]];
 	var temperat = [[${consulta.temperatura}]];
 	var pes = [[${consulta.peso}]];
+	
 	$(document).ready(
 			function() {
+				
+				
 					document.getElementById('datePickerId').min = new Date(
 							new Date().getTime()
 									- new Date().getTimezoneOffset() * 60000)
@@ -160,6 +162,10 @@
 			$(".alergias").text("")
 		});	
 	});	
+	$('#confirm-modal').on('show.bs.modal', function(){
+		$(".modal-title").text("Excluir Consulta");
+		
+	})
 	</script>
 </body>
 </html>

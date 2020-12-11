@@ -12,7 +12,7 @@ import com.sponton.vetsystem.domain.Vacina;
 
 public interface VacinaRepository extends JpaRepository<Vacina, Long>{
 
-	@Query("select v from Vacina v where v.descricao like :search%")
+	@Query("select v from Vacina v where v.descricao like :search% or v.especie.nome like :search%")
 	Page<Vacina> findByName(String search, Pageable pageable);
 
 	@Query("select v from Vacina v where v.descricao like :descricao and v.especie.nome like :especie")

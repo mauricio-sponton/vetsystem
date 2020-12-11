@@ -7,6 +7,7 @@ $(document).ready(function () {
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": " ",
             "search": "Pesquise: ",
+            "searchPlaceholder": "Nome, Dono, Espécie ou Raça...",
             "paginate": {
                 "first":      "Primeiro",
                 "last":       "Ultimo",
@@ -25,7 +26,8 @@ $(document).ready(function () {
             data: 'data'
         },
         "columnDefs": [
-            { "width": "10%", "targets": [4,5,6] }
+            { "width": "10%", "targets": [4,5,6] },
+            { "width": "30%", "targets": [0] }
           ],
         columns: [
             {data: 'nome'},

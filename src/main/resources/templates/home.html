@@ -3,14 +3,13 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard</title>
+<title>Vet System - Dashboard</title>
 
 
 <style>
 .testando span {
 	color: purple
 }
-
 
 h5 {
 	width: 40%;
@@ -25,10 +24,10 @@ h5 {
 <body>
 	<section class="layout-content" layout:fragment="corpo">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
-			<h1>Dashboard</h1>
+		<h1 class="dashboard-h">Dashboard</h1>
 		<div class="dashboard-content">
 
-			
+
 			<div class="cards">
 				<img th:src="@{/image/admin-icon.svg}" />
 				<p>
@@ -59,7 +58,10 @@ h5 {
 
 		</div>
 
-		<div class="dashboard-content">
+		<div class="dashboard-content"
+			th:if="${(#authorization.expression('!hasAuthority(''ADMIN'')')) 
+			|| #authorization.expression('hasAuthority(''ADMIN'')') && #authorization.expression('hasAuthority(''VETERINARIO'')')  
+			|| #authorization.expression('hasAuthority(''ADMIN'')') && #authorization.expression('hasAuthority(''SECRETARIA'')')}">
 			<div class="cards">
 				<img th:src="@{/image/paw.svg}" />
 				<p>
@@ -114,7 +116,7 @@ h5 {
 			</p>
 
 		</div>
-		
+
 		<fieldset>
 			<form>
 

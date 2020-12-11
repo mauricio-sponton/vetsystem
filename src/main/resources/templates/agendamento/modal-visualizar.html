@@ -25,22 +25,29 @@
 				<div class="modal-body">
 					<span th:text="${erro}" class="msg-erro"></span>
 					<div class="visualizacao">
-						<div class="modal-body">
-							<span id="visualizar-title"></span><br>
-							<span style="background:green">Inicio: </span> <span
-								id="visualizar-start"></span><br> <span id="visualizar-end"></span><br>
-							<span id="visualizar-secretaria"></span><br> <span
-								id="visualizar-veterinario"></span><br>
-								<div id="visualizar-cliente"><span ></span><br></div>
-							<span id="visualizar-paciente"></span><br> <span
-								id="visualizar-description"></span>
+						<div class="modal-body agenda" style="font-size: 1.2em; color: black">
+							<div class="dados-agenda">
+								<p>Tipo do agendamento: </p> <span id="visualizar-title"></span><br> 
+								<p>Início: </p><span id="visualizar-start"></span>  <br>
+								<p>Término: </p><span id="visualizar-end"></span><br> 
+								<p>Agendamento realizado por: </p><span id="visualizar-secretaria"></span><br> 
+							</div>
+							
+							<div class="dados-agenda">
+								<p>Veterinário: </p><span id="visualizar-veterinario"></span><br>
+								<p>Cliente: </p><span id="visualizar-cliente">
+									</span><br>
+								
+								<p>Paciente: </p><span id="visualizar-paciente"></span><br>
+								<p>Anotações: </p><span id="visualizar-description"></span>
+							</div>
 						</div>
+						<div class="modal-footer" >
 
-						<div class="modal-footer">
-							
-								<button sec:authorize="hasAuthority('SECRETARIA')" id="edit-agendamento" class="btn btn-warning">Editar</button>
-							
-							<button id="edit-excluir" class="btn btn-danger">Excluir</button>
+							<button sec:authorize="hasAuthority('SECRETARIA')"
+								id="edit-agendamento" class="btn btn-warning" style="float: left">Editar</button>
+
+							<button id="edit-excluir" class="btn btn-danger btn-cancelar" style="float: left">Excluir</button>
 						</div>
 
 					</div>

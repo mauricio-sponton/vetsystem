@@ -3,7 +3,7 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
-<title>Funcionários Cadastrados</title>
+<title>Vet System - Funcionários Cadastrados</title>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
@@ -50,6 +50,20 @@
 	});
 	$(document).ready(function(){
 		var table = $('#table-funcionarios').DataTable({
+			"language":{
+	    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
+	    		"zeroRecords": "Nenhum registro encontrado",
+	            "info": "Mostrando página _PAGE_ de _PAGES_",
+	            "infoEmpty": " ",
+	            "search": "Pesquise: ",
+	            "searchPlaceholder": "Email ou Perfil...",
+	            "paginate": {
+	                "first":      "Primeiro",
+	                "last":       "Ultimo",
+	                "next":       "Próximo",
+	                "previous":   "Anterior"
+	            } 
+	    	},
 		searching : true,
 		lengthMenu : [ 5, 10 ],
 		processing : true,

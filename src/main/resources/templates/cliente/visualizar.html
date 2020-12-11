@@ -2,6 +2,7 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
+<title>Vet System - Perfil do Cliente</title>
 <style type="text/css">
 strong {
 	color: #26C685;
@@ -10,6 +11,10 @@ strong {
 
 p {
 	font-size: 1.1em
+}
+
+.inf-profile {
+	float: left; margin-right:50px; margin-top:20px;
 }
 </style>
 </head>
@@ -68,7 +73,7 @@ p {
 					<strong>Bairro:</strong>
 					<p th:text="${cliente.endereco.bairro}"></p>
 				</div>
-				<div class="alinha-dados">
+				<div class="alinha-dados" th:if="${cliente.endereco.complemento != ''}">
 					<strong>Complemento</strong>
 					<p th:text="${cliente.endereco.complemento}"></p>
 				</div>
@@ -82,8 +87,8 @@ p {
 			</section>
 		</div>
 
-		<h4 th:if="${not #lists.isEmpty(cliente.animais)}" class="inf-h4">Lista
-			de Animais de Estimação</h4>
+		<h2 th:if="${not #lists.isEmpty(cliente.animais)}" class="inf-h4">Lista
+			de Animais de Estimação</h2>
 
 
 		<div style="margin-left: 1%" th:each="a : ${animais}">
@@ -92,35 +97,40 @@ p {
 				<span th:text="${a.nome}"></span>
 			</button>
 			<div class="panel">
+				<div class="inf-profile">
 
+					<div th:if="${a.foto.fileName == null}">
+						<img alt="" th:src="@{/image/animal_default.jpg}"
+							style="width: 120px; height: auto">
+					</div>
 
-				<div th:if="${a.foto == null}">
-					<img alt="" th:src="@{/image/animal_default.jpg}"
-						style="width: 120px; height: auto">
+					<div th:if="${a.foto != null && a.foto.fileName != null}">
+						<img alt="" th:src="@{${'/uploads/' + a.foto.fileName}}"
+							style="width: 120px; height: auto">
+					</div>
+				</div>
+				<div class="inf-profile">
+					<strong>Data de Nascimento:</strong>
+					<p th:text="${#temporals.format(a.dataNascimento, 'dd/MM/yyyy')}"></p>
+
+					<strong>Espécie: </strong>
+					<p th:text="${a.especie.nome}"></p>
 				</div>
 
-				<div th:if="${a.foto!= null && a.foto.fileName != null}">
-					<img alt="" th:src="@{${'/uploads/' + a.foto.fileName}}"
-						style="width: 120px; height: auto">
+				<div class="inf-profile">
+					<strong>Raça: </strong>
+					<p th:text="${a.raca.nome}"></p>
+
+
+					<strong>Sexo: </strong>
+					<p th:text="${a.sexo}"></p>
 				</div>
-				<strong>Data de Nascimento:</strong>
-				<p th:text="${#temporals.format(a.dataNascimento, 'dd/MM/yyyy')}"></p>
-
-				<strong>Espécie: </strong>
-				<p th:text="${a.especie.nome}"></p>
-
-				<strong>Raça: </strong>
-				<p th:text="${a.raca.nome}"></p>
-
-
-				<strong>Sexo: </strong>
-				<p th:text="${a.sexo}"></p>
 			</div>
 		</div>
 		<div class="user-btn">
 
 			<!-- <button><i class="fas fa-edit"></i> Editar</button>-->
-			<a type="button" href="javascript:history.back()"><i
+			<a type="button" th:href="@{/clientes/listar}"><i
 				class="fas fa-arrow-left"></i>Voltar</a>
 
 		</div>

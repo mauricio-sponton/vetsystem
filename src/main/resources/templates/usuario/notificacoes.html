@@ -3,7 +3,7 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
-<title>Usuários Cadastrados</title>
+<title>Notificações</title>
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
@@ -46,6 +46,7 @@
 					</div>
 				</div>
 				-->
+				<h1 style="margin-left:1%">Notificações</h1>
 				<div th:if="${notificacoes!=null}">
 					<div class="timeline_card" th:each="n: ${notificacoes}">
 						<header class="card__header">

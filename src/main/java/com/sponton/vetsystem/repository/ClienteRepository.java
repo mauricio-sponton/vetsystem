@@ -9,7 +9,7 @@ import com.sponton.vetsystem.domain.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-	@Query("select c from Cliente c where c.nome like :search%")
+	@Query("select c from Cliente c where c.nome like :search% or c.email like :search%")
 	Page<Cliente> findByName(String search, Pageable pageable);
 
 }

@@ -3,7 +3,7 @@
 	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8">
-<title>Agenda</title>
+<title>Vet System - Agenda</title>
 <style>
 
 
@@ -13,9 +13,7 @@
     margin: 0 auto;
     color: black
   }
-  #modal-agendamento-visualizar span, #modal-agendamento-visualizar div{
-	color: indigo
-  } 
+
  .visualizacao{
  	display: block
  } 
@@ -42,13 +40,13 @@
 		</ul>
 	<div th:replace="fragments/alert :: alerta-sucesso"></div>
 	
-	<h1>Agenda</h1>
+	<h1 class = "agenda-h">Agenda</h1>
 	<a class="btn-cadastrar-usuario" style="margin-left:20px;"sec:authorize="hasAuthority('SECRETARIA')" href="#" role="button"
 					data-toggle="modal" data-target="#modal-agendamento">Novo Evento</a> <span
 					th:replace="agendamento/modal :: modal-form"></span>
 					<span
 					th:replace="agendamento/modal-visualizar :: modal-form"></span>
-		<div id='calendar'></div>
+		<div style="margin-left:2%" id='calendar'></div>
 
 	</section>
 	<script th:src="@{/js/agendamento.js(v=${version})}" th:fragment="js"></script>
@@ -103,32 +101,32 @@
   			      
   			    eventClick: function(data) {
   			    	var inicio = moment(data.event.start).locale('pt-br').format('dddd, DD[/]MM[/]YYYY, [às] HH:mm');
-  			    	var termino = moment(data.event.end).locale('pt-br').format('dddd, DD [de] MMMM [de] YYYY, [às] HH:mm');
+  			    	var termino = moment(data.event.end).locale('pt-br').format('dddd, DD[/]MM[/]YYYY, [às] HH:mm');
   			    	var inicio_edt = moment(data.event.start).format('YYYY-MM-DDTHH:mm:ss.SSS');
   			    	var fim_edt = moment(data.event.end).format('YYYY-MM-DDTHH:mm:ss.SSS');
   			   		//apagar
   			   		$("#apagar_evento").attr("href", "/agenda/excluir/" + data.event.id);
   			    	//visualizacao
   			    	$("#visualizar-start").text(inicio);
-  			    	$("#visualizar-end").text("Término: " + termino);
-  			    	$("#visualizar-veterinario").text("Veterinário: " +  data.event.extendedProps.veterinario.nome);
-  			    	$("#visualizar-title").text("Tipo do agendamento: " + data.event.title);
+  			    	$("#visualizar-end").text(termino);
+  			    	$("#visualizar-veterinario").text(data.event.extendedProps.veterinario.nome);
+  			    	$("#visualizar-title").text(data.event.title);
   			    	if(data.event.extendedProps.description != ""){
   			    		$("#visualizar-description").show();
-  			    		 $("#visualizar-description").text("Anotações: " + data.event.extendedProps.description).append('<br>');
+  			    		 $("#visualizar-description").text(data.event.extendedProps.description).append('<br>');
   			    		
   			    	}else{
-  			    		$("#visualizar-description").hide();
+  			    		$("#visualizar-description").text("Sem informações cadastradas.").append('<br>');
   			    	}
-  			    	$("#visualizar-secretaria").text("Agendamento realizado por: " + data.event.extendedProps.secretaria);
+  			    	$("#visualizar-secretaria").text(data.event.extendedProps.secretaria);
   			    
   			    	if(data.event.extendedProps.paciente != null){
   			    		$("#visualizar-cliente").show();
-  			    		$("#visualizar-cliente").text("Cliente: " +  data.event.extendedProps.cliente);
-  			    		$("#visualizar-paciente").text("Paciente: " + data.event.extendedProps.paciente);
+  			    		$("#visualizar-cliente").text(data.event.extendedProps.cliente);
+  			    		$("#visualizar-paciente").text(data.event.extendedProps.paciente);
   			    	}else{
   			    		$("#visualizar-cliente").hide();
-  			    		$("#visualizar-paciente").text("Paciente: " + data.event.extendedProps.pacienteNaoCadastrado);
+  			    		$("#visualizar-paciente").text(data.event.extendedProps.pacienteNaoCadastrado);
   			    	}
   			    	//edicao
   			    	

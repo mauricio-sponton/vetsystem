@@ -7,7 +7,7 @@ $(document).ready(function() {
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": " ",
             "search": "Pesquise: ",
-            "searchPlaceholder": "Descrição...",
+            "searchPlaceholder": "Email ou Perfil...",
             "paginate": {
                 "first":      "Primeiro",
                 "last":       "Ultimo",

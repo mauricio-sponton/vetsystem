@@ -67,7 +67,13 @@ h2 {
 	font-weight: 600;
 	color: #50B969;
 }
-
+.inf-h4 {
+	margin: 18% 0% 1.5% 2%;
+	font-size: 2em;
+	color: #50B969;
+	text-transform: Uppercase;
+	
+}
 h5.modal-title {
 	color: #04D284;
 	font-weight: 600;
@@ -225,7 +231,7 @@ ul.breadcrumb li+li:before {
 	color: black
 }
 /*BOTÕES*/
-.btn-cadastrar-usuario, .btn-cancelar, .btn-primary {
+.btn-cadastrar-usuario, .btn-cancelar, .btn-primary, .btn-warning {
 	border: none;
 	font-family: inherit;
 	font-size: 1.1em;
@@ -235,7 +241,7 @@ ul.breadcrumb li+li:before {
 	padding: 15px 5px;
 	width: 20%;
 	display: inline-block;
-	margin: 1% 1% 2% 1%;
+	margin: 1% 1% 2% 1.5%;
 	text-transform: uppercase;
 	text-align: center;
 	letter-spacing: 1px;
@@ -247,17 +253,42 @@ ul.breadcrumb li+li:before {
 	transition: all 0.3s;
 	border-bottom: 4px solid #17b679;
 }
-
+.btn-cadastrar-aplicacao{
+	border: none;
+	font-family: inherit;
+	font-size: 1.1em;
+	color: #fff;
+	background-color: #04D284;
+	cursor: pointer;
+	padding: 15px 5px;
+	width: 20%;
+	display: inline-block;
+	margin: 1% 1% 2% 0;
+	text-transform: uppercase;
+	text-align: center;
+	letter-spacing: 1px;
+	font-weight: 700;
+	outline: none;
+	position: relative;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+	border-bottom: 4px solid #17b679;
+}
 .btn-cancelar {
 	background-color: #cc0000;
 	border-bottom: 4px solid #b30000;
+	margin-left: 0
 }
-
+.btn-cancelar:focus {
+	background-color: #cc0000;
+	border-bottom: 4px solid #b30000;
+}
 button.close {
 	background-color: #cc0000
 }
 
-.btn-primary:hover, .btn-cadastrar-usuario:hover {
+.btn-primary:hover, .btn-cadastrar-usuario:hover, .btn-cadastrar-aplicacao:hover {
 	background: #00cc88 !important;
 	text-decoration: none;
 	color: white;
@@ -442,7 +473,7 @@ table i {
 	font-size: 1.2em
 }
 
-table .btn-success, table .btn-view, table .btn-danger {
+table .btn-success, table .btn-view, table .btn-danger, table .btn-down{
 	padding: 6px;
 	color: #eee;
 	border: none;
@@ -453,12 +484,41 @@ table .btn-success, table .btn-view, table .btn-danger {
 	display: block;
 	margin: auto;
 }
+.a-down{
+	padding: 6px;
+	color: white;
+	border: none;
+	width: 120px;
+	margin-right: 8px;
+	text-align: center;
+	border-radius: 5px;
+	display: inline;
+	
 
-table .btn-success {
-	background-color: #ff9933;
+}
+.a-down i {
+	margin: auto;
+	padding: 10px;
+	color: white
+}
+table .btn-success, .btn-warning {
+	background-color: #ff9933; 
 	border-bottom: 2px solid #ff8000;
 }
-
+.btn-warning{
+	background-color: #ff9933; 
+	border-bottom: 4px solid #ff8000;
+}
+.btn-warning:hover {
+	background-color: #ff8533;
+	border-bottom: 4px solid #ff8000;
+	color: white
+}
+.btn-warning:focus {
+	background: #ff9900 !important;
+	border-bottom: 4px solid #e68a00 !important;
+	color: white !important
+}
 table .btn-success:hover {
 	background-color: #ff8533;
 	border-bottom: 2px solid #ff8000;
@@ -473,7 +533,16 @@ table .btn-view {
 	background-color: #04D284;
 	border-bottom: 2px solid #50B969
 }
+table .btn-down, .a-down {
+	background-color: #478fe6;
+	border-bottom: 2px solid #3786e6
+}
 
+table .btn-down:hover, table .btn-down:focus, .a-down:hover, .a-down:focus {
+	background-color: #126fe0;
+	border-bottom: 2px solid #3786e6;
+	cursor: pointer
+}
 table .btn-view:hover {
 	background-color: #00b36b;
 	border-bottom: 2px solid #50B969;
@@ -493,7 +562,7 @@ table .btn-danger {
 	border: 1px solid #17b679
 }
 
-#table-usuarios .btn-view, #table-usuarios .btn-danger, #table-usuarios .btn-success
+#table-usuarios .btn-view, #table-usuarios .btn-danger, #table-usuarios .btn-success, .btn-down
 	{
 	width: 140px;
 	text-align: center;
@@ -531,13 +600,7 @@ table .btn-danger {
 }
 
 
-.inf-h4 {
-	margin: 18% 0% 1.5% 1.6%;
-	font-weight: 600;
-	font-size: 1.4em;
-	color: #5B5A5A;
-	
-}
+
 
 
 .alinha-dados strong {
@@ -697,6 +760,28 @@ button:focus {
 	margin-right: 1%;
 	font-family: "Font Awesome 5 Free";
 }
+.dashboard-h::before {
+	content: "\f7f2";
+	font-weight: 600;
+	display: inline-block;
+	margin-right: 1%;
+	font-family: "Font Awesome 5 Free";
+}
+.pacientes-cadastrados::before {
+	content: "\f1b0";
+	font-weight: 600;
+	display: inline-block;
+	margin-right: 1%;
+	font-family: "Font Awesome 5 Free";
+}
+.agenda-h::before {
+	content: "\f017";
+	font-weight: 600;
+	display: inline-block;
+	margin-right: 1%;
+	margin-left:0;
+	font-family: "Font Awesome 5 Free";
+}
 /*INPUT FILE*/
 .js .inputfile {
 	width: 0.1px;
@@ -708,7 +793,7 @@ button:focus {
 }
 
 .inputfile+label {
-	max-width: 80%;
+	max-width: 100%;
 	font-size: 1.25rem;
 	/* 20px */
 	font-weight: 700;
@@ -750,6 +835,8 @@ button:focus {
 	border: 1px solid #04D284;
 	background-color: white;
 	padding: 0;
+	width: 100%;
+	
 }
 
 .inputfile-6:focus+label, .inputfile-6.has-focus+label, .inputfile-6+label:hover
@@ -775,11 +862,14 @@ button:focus {
 
 .inputfile-6+label strong {
 	height: 100%;
-	color: #f1e5e6;
+	color: #fff;
 	background-color: #04D284;
 	display: inline-block;
+	float: right;
 }
-
+.inputfile-6+label strong i{
+	color: white
+}
 .inputfile-6:focus+label strong, .inputfile-6.has-focus+label strong,
 	.inputfile-6+label:hover strong {
 	background-color: #208a15;
@@ -874,6 +964,7 @@ button:focus {
 	display: inline-block;
 	padding: 0.6em 0.8em;
 	font-size: 1.5em;
+	margin-left:20px
 }
 
 .notification::before {
@@ -1092,4 +1183,39 @@ button:focus {
 .btn-historico{
 	
 	margin: 0 auto
+}
+/*SCROLLBAR*/
+#scrollbar-body::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+#scrollbar-body::-webkit-scrollbar-thumb {
+	background: #50B969;
+}
+
+/* Handle on hover */
+#scrollbar-body::-webkit-scrollbar-thumb:hover {
+	background: #17b679;
+}
+/* width */
+#scrollbar-body::-webkit-scrollbar {
+	width: 15px;
+}
+/* MODAL AGENDA*/
+.agenda p {
+	color: #50B969 !important;
+	font-weight: 600;
+	margin: 0;
+	padding: 0
+}
+
+.agenda span {
+	color: #000 !important
+}
+
+.dados-agenda {
+	float: left;
+	width: 50%;
+	margin-bottom: 4%;
 }

@@ -8,6 +8,15 @@
 	margin: 15px 0
 }
 
+.table td a {
+	margin: 0 0 1% 0;
+}
+
+.table td:last-child, .table td:nth-child(5), #table-consultas td:nth-child(4),
+	#table-internacoes td:nth-child(6), #table-internacoes td:nth-child(7), #table-internacoes td:nth-child(4) {
+	width: 5%
+}
+
 .consulta {
 	width: 100%;
 	background-color: green;
@@ -115,9 +124,11 @@
 			<a href="#" role="button" data-toggle="modal"
 				data-target="#modal-animal"> <img th:src="@{/image/lapis.png}"
 				style="width: 35px; height: auto;" />
-			</a>
+			</a> <span th:replace="animal/modal :: modal-form"></span> <span
+				th:replace="aplicacao/modal :: modal-form"></span> <span
+				th:replace="internacao/modal-por-paciente :: modal-internacao-paciente"></span>
 			<span
-				th:replace="animal/modal :: modal-form"></span>
+				th:replace="consulta/modal-consulta-paciente :: modal-consulta-paciente"></span>
 
 		</div>
 
@@ -311,20 +322,20 @@
 								</div>
 							</div>
 							<div id="scrollbar" class="historico-wraper">
-							<div id="mensagem">
-								<span>Nenhum registro encontrado</span>
-							</div>
-								<div class="timeline" th:each="h: ${historico}" >
-								<div id="busca-estilo"></div>
-								
+								<div id="mensagem">
+									<span>Nenhum registro encontrado</span>
+								</div>
+								<div class="timeline" th:each="h: ${historico}">
+									<div id="busca-estilo"></div>
+
 									<div class="container-esquerdo left generico">
 										<span th:text="${#temporals.format(h.data, 'dd/MM/yyyy')}"></span><br>
 										<span th:text="${#temporals.format(h.hora, 'HH:mm')}"></span>
 									</div>
 									<div class="container-time right generico">
 
-										
-										
+
+
 										<div class="content-1">
 											<div
 												th:class="${(h.tipo == 'Nova consulta' ? 'historico-nova-consulta ' : '') + 
@@ -352,12 +363,12 @@
 
 													</div>
 													<p>
-														<span id="quebra" style="display:block"
+														<span id="quebra" style="display: block"
 															th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
 														<span th:text="'Alteração feita por: ' + ${h.usuario}"></span>
 													</p>
 
-												
+
 												</div>
 
 											</div>
@@ -372,13 +383,13 @@
 							<div class="container">
 
 								<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-10">
 
 
 										<h2 class="paciente-h2">Consultas Cadastradas</h2>
 
 										<table id="table-consultas"
-											class="table table-sm table-striped table-bordered nowrap table-pacient"
+											class="table table-sm table-striped nowrap table-pacient"
 											style="width: 100%">
 											<thead class="thead-dark">
 												<tr>
@@ -397,7 +408,7 @@
 							<a class="btn-cadastrar-usuario" id="cadastrar-consulta"
 								data-toggle="modal" data-target="#modal-consulta-paciente"
 								href="#" role="button">Nova Consulta</a> <a
-								class="btn btn-danger"
+								class="a-down"
 								th:href="@{/pacientes/download/consultas/paciente/{id} (id=${animal.id})}"
 								role="button"><i class="fas fa-download"></i></a>
 
@@ -413,14 +424,13 @@
 										<h2 class="paciente-h2">Internações Cadastradas</h2>
 
 										<table id="table-internacoes"
-											class="table table-sm table-striped table-bordered nowrap table-pacient"
+											class="table table-sm table-striped nowrap table-pacient"
 											style="width: 100%">
 											<thead class="thead-dark">
 												<tr>
 													<th scope="col">Status</th>
-													<th scope="col">Paciente</th>
-													<th scope="col">Data de Entrada</th>
-													<th scope="col">Data de Saída</th>
+													<th scope="col">Admissão</th>
+													<th scope="col">Alta</th>
 													<th scope="col">Editar</th>
 													<th scope="col">Excluir</th>
 													<th scope="col">Visualizar</th>
@@ -430,7 +440,7 @@
 										</table>
 									</div>
 								</div>
-								<a class="btn-cadastrar-usuario" id="cadastrar-internacao"
+								<a class="btn-cadastrar-aplicacao" id="cadastrar-internacao"
 									data-toggle="modal" data-target="#modal-internacao-paciente"
 									href="#" role="button">Nova Internação</a>
 							</div>
@@ -444,7 +454,7 @@
 										<h2 class="paciente-h2">Aplicações Cadastradas</h2>
 
 										<table id="table-aplicacoes"
-											class="table table-sm table-striped table-bordered nowrap table-pacient"
+											class="table table-sm table-striped nowrap table-pacient"
 											style="width: 100%">
 											<thead class="thead-dark">
 												<tr>
@@ -459,19 +469,16 @@
 										</table>
 									</div>
 								</div>
-								<a class="btn-cadastrar-usuario" id="cadastrar-aplicacao"
+								<a class="btn-cadastrar-aplicacao" id="cadastrar-aplicacao"
 									data-toggle="modal" data-target="#modal-aplicacao" href="#"
-									role="button">Nova Aplicação</a> <a class="btn btn-danger"
+									role="button">Nova Aplicação</a> <a class="a-down"
 									th:href="@{/pacientes/download/imunizacoes/paciente/{id} (id=${animal.id})}"
 									role="button"><i class="fas fa-download"></i></a>
 							</div>
 						</section>
 
 
-						<span th:replace="aplicacao/modal :: modal-form"></span> <span
-							th:replace="internacao/modal-por-paciente :: modal-internacao-paciente"></span>
-						<span
-							th:replace="consulta/modal-consulta-paciente :: modal-consulta-paciente"></span>
+
 
 
 					</div>
@@ -509,6 +516,7 @@
 			            "info": "Mostrando página _PAGE_ de _PAGES_",
 			            "infoEmpty": " ",
 			            "search": "Pesquise: ",
+			            "searchPlaceholder": "Descrição...",
 			            "paginate": {
 			                "first":      "Primeiro",
 			                "last":       "Ultimo",
@@ -530,6 +538,7 @@
 			           
 			        
 			        },
+			        
 			        columns: [
 			            {data: 'vacina.descricao'},
 			            {data:'doses', render: function(data, type, row){
@@ -561,7 +570,7 @@
 			             data: 'id',
 			                "render": function(id) {
 			                    return '<a class="btn btn-danger btn-sm btn-block" href="/aplicacoes/excluir/'+ 
-			                    	id +'/paciente/'+idAnimal +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+			                    	id +'/paciente/'+idAnimal +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
 			                }               
 			            },
 			    
@@ -685,8 +694,21 @@
 			
 				moment.locale('pt-BR');
 			    var table = $('#table-internacoes').DataTable({
+			    	"language":{
+			    		"lengthMenu": "Mostrando _MENU_ registros por páginas",
+			    		"zeroRecords": "Nenhum registro encontrado",
+			            "info": "Mostrando página _PAGE_ de _PAGES_",
+			            "infoEmpty": " ",
+			            "search": "Pesquise: ",
+			            "searchPlaceholder": "Paciente ou Status...",
+			            "paginate": {
+			                "first":      "Primeiro",
+			                "last":       "Ultimo",
+			                "next":       "Próximo",
+			                "previous":   "Anterior"
+			            } 
+			    	},
 			    	searching: true,
-			 
 			    	lengthMenu: [5, 10],
 			        processing: true,
 			        serverSide: true,
@@ -708,7 +730,7 @@
 			        		}
 			        	}
 			        },
-			            {data: 'animal.nome'},
+			         
 			            {data: 'dataEntrada', render:
 			                function( data ) {
 			                    return moment(data).format('L');
@@ -717,7 +739,7 @@
 			            {data: 'dataSaida', render:
 			                function( data, type, row ) {
 			            		if(row.dataSaida == null){
-			            			return "Internação em andamento"
+			            			return "Em andamento"
 			            		}
 			                    return moment(data).format('L');
 			                }
@@ -736,20 +758,20 @@
 			             data: 'id',
 			                "render": function(id) {
 			                    return '<a class="btn btn-danger btn-sm btn-block" href="/internacoes/excluir/'+ 
-			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
 			                }               
 			            },
 			            {orderable: false,
 			                data: 'id',
 			                   "render": function(id) {
-			                	   return '<a class="btn btn-success btn-sm btn-block" href="/internacoes/visualizar/'+ 
-			                   	id +'" role="button"><i class="fas fa-eye"></i></a>';
+			                	   return '<a class="btn btn-sm btn-block btn-view" href="/internacoes/visualizar/'+ 
+			                   	id +'" role="button"><i class="fas fa-glasses"></i></a>';
 			                   }               
 			               },
 			               {orderable: false,
 				                data: 'id',
 				                   "render": function(id) {
-				                	   return '<a class="btn btn-success btn-sm btn-block" href="/pacientes/download/internacao/'+ 
+				                	   return '<a class="btn btn-sm btn-block btn-down" href="/pacientes/download/internacao/'+ 
 				                   	id +'" role="button"><i class="fas fa-download"></i></a>';
 				                   }               
 				               }, 
@@ -767,6 +789,7 @@
 			            "info": "Mostrando página _PAGE_ de _PAGES_",
 			            "infoEmpty": " ",
 			            "search": "Pesquise: ",
+			            "searchPlaceholder": "Paciente...",
 			            "paginate": {
 			                "first":      "Primeiro",
 			                "last":       "Ultimo",
@@ -811,14 +834,14 @@
 			             data: 'id',
 			                "render": function(id) {
 			                    return '<a class="btn btn-danger btn-sm btn-block" href="/consultas/excluir/'+ 
-			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
 			                }               
 			            },
 			            {orderable: false,
 			                data: 'id',
 			                   "render": function(id) {
-			                       return '<a class="btn btn-danger btn-sm btn-block" href="/consultas/visualizar/'+ 
-			                       	id +'" role="button"><i class="fas fa-eye"></i></a>';
+			                       return '<a class="btn btn-sm btn-block btn-view" href="/consultas/visualizar/'+ 
+			                       	id +'" role="button"><i class="fas fa-glasses"></i></a>';
 			                   }               
 			               }
 			        ]

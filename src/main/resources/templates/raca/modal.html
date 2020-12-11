@@ -47,7 +47,14 @@
 							</div>
 						</div>
 						<input type="hidden" id="id" th:field="*{id}" />
-						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+						<div class="form-group row">
+							<div class="col-sm-10">
+								<button type="button" class="btn btn-danger btn-cancelar"
+									data-dismiss="modal" aria-label="Close" data-toggle="tooltip"
+									data-placement="right">Cancelar</button>
+								<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+							</div>
+						</div>
 					</form>
 				</div>
 

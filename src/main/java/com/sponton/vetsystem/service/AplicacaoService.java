@@ -37,7 +37,7 @@ public class AplicacaoService {
 		datatables.setRequest(request);
 		datatables.setColunas(DatatablesColunas.APLICACOES);
 		Page<Aplicacao> page =datatables.getSearch().isEmpty() ? repository.findByAnimalId(datatables.getPageable(),idAnimal)
-				: repository.findByName(datatables.getSearch(), datatables.getPageable());
+				: repository.findByName(datatables.getSearch(), datatables.getPageable(), idAnimal);
 		return datatables.getResponse(page);
 	}
 
