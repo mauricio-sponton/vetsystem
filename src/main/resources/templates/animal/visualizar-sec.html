@@ -365,7 +365,7 @@
 													<p>
 														<span id="quebra" style="display: block"
 															th:utext="${#strings.replace(h.descricao, ';' , '<br>')}"></span>
-														<span th:text="'Alteração feita por: ' + ${h.usuario}"></span>
+														<span th:text="'Realizado por: ' + ${h.usuario}"></span>
 													</p>
 
 
@@ -397,8 +397,6 @@
 													<th scope="col">Temperatura</th>
 													<th scope="col">Data</th>
 													<th scope="col">Término</th>
-													<th scope="col">Editar</th>
-													<th scope="col">Excluir</th>
 													<th scope="col">Visualizar</th>
 													<th scope="col">Download</th>
 												</tr>
@@ -406,13 +404,12 @@
 										</table>
 									</div>
 								</div>
-							</div>
-							<a class="btn-cadastrar-usuario" id="cadastrar-consulta"
-								data-toggle="modal" data-target="#modal-consulta-paciente"
-								href="#" role="button">Nova Consulta</a> <a
+								 <a
 								class="a-down"
 								th:href="@{/pacientes/download/consultas/paciente/{id} (id=${animal.id})}"
 								role="button"><i class="fas fa-download"></i></a>
+							</div>
+							
 
 
 						</section>
@@ -433,8 +430,6 @@
 													<th scope="col">Status</th>
 													<th scope="col">Admissão</th>
 													<th scope="col">Alta</th>
-													<th scope="col">Editar</th>
-													<th scope="col">Excluir</th>
 													<th scope="col">Visualizar</th>
 													<th scope="col">Download</th>
 												</tr>
@@ -442,9 +437,7 @@
 										</table>
 									</div>
 								</div>
-								<a class="btn-cadastrar-aplicacao" id="cadastrar-internacao"
-									data-toggle="modal" data-target="#modal-internacao-paciente"
-									href="#" role="button">Nova Internação</a>
+								
 							</div>
 
 						</section>
@@ -464,16 +457,13 @@
 													<th scope="col">Doses</th>
 													<th scope="col">Data da Aplicação</th>
 													<th scope="col">Próxima Aplicação</th>
-													<th scope="col">Editar</th>
-													<th scope="col">Excluir</th>
+	
 												</tr>
 											</thead>
 										</table>
 									</div>
 								</div>
-								<a class="btn-cadastrar-aplicacao" id="cadastrar-aplicacao"
-									data-toggle="modal" data-target="#modal-aplicacao" href="#"
-									role="button">Nova Aplicação</a> <a class="a-down"
+								 <a class="a-down"
 									th:href="@{/pacientes/download/imunizacoes/paciente/{id} (id=${animal.id})}"
 									role="button"><i class="fas fa-download"></i></a>
 							</div>
@@ -504,12 +494,7 @@
 			var consulta = [[${consulta.id}]];
 			var tipo = [[${historico}]];
 			$(document).ready(function () {
-				//for(var i = 0; i <=tipo.length; i++){
-					//if(tipo[i].tipo == "Dados"){
-						
-					//}
-					//console.log(tipo[i].id)
-				//}
+				
 				moment.locale('pt-BR');
 			    var table = $('#table-aplicacoes').DataTable({
 			    	"language":{
@@ -560,132 +545,12 @@
 			                    return moment(data).format('L');
 			                }
 			            },
-			            {orderable: false, 
-			             data: 'id',
-			                "render": function(id) {
-			              		
-			                    return '<a class="btn btn-success btn-sm btn-block" id ="btn-editar" href="/aplicacoes/editar/'+ 
-			                    	id +'/paciente/'+idAnimal +'" role="button" ><i class="fas fa-edit"></i></a>';
-			                }
-			            },
-			            {orderable: false,
-			             data: 'id',
-			                "render": function(id) {
-			                    return '<a class="btn btn-danger btn-sm btn-block" href="/aplicacoes/excluir/'+ 
-			                    	id +'/paciente/'+idAnimal +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
-			                }               
-			            },
+			            
+			     
 			    
 			        ]
 			    });
-			   
-		$("#cadastrar-aplicacao").on('click', function(){	  		
-			$("#datePickerIdAplicacao").val("");
-			$("#vacina").val("");	  		 
-			$('#idAplicacao').val(null);           
-			$(".modal-title").text("Nova Aplicação"); 
-			$(".invalid-feedback span").html("");
-			$("input, select").removeClass("is-invalid");
-			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
-			$(".msg-erro").hide();
 			
-		});
-		$("#cadastrar-internacao").on('click', function(){	  		
-			$("#animal").val(nome);
-			$("#animal").attr('readonly', 'readonly');	
-			$("#status").val("");	
-			$("#dataEntrada").val("");	
-			$("#inicio").val("");
-			$("#descricao").val("");
-			$("#prescricao").val("");
-			$('#idInternacao').val(null);           
-			$(".modal-title").text("Nova Internacao"); 
-			$(".invalid-feedback span").html("");
-			$("input, select").removeClass("is-invalid");
-			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
-			$(".msg-erro").hide();
-			
-			
-		});
-		$("#cadastrar-consulta").on('click', function(){	  		
-			$("#animalConsulta").val(nome);
-			$("#animalConsulta").attr('readonly', 'readonly');		
-			$("#datePickerIdConsulta").val("");	
-			$("#inicioConsulta").val("");
-			$("#terminoConsulta").val("");
-			$("#descricaoConsulta").val("");
-			$("#prescricaoConsulta").val("");
-			$("#temperaturaConsulta").val("");
-			$("#pesoConsulta").val("");
-			$('#idConsulta').val(null);           
-			$(".modal-title").text("Nova Consulta"); 
-			$(".invalid-feedback span").html("");
-			$("input, select").removeClass("is-invalid");
-			$(".is-invalid").removeClass("is-invalid").removeAttr('style');
-			$(".msg-erro").hide();
-			
-			
-		});
-			if(aplicacao !=null ){
-				
-				$("#modal-aplicacao").modal('show');
-	    		$(".modal-title").text("Editar Aplicação");
-	    		$("#animalConsulta").attr('readonly', 'readonly');		
-			}
-			if(internacao !=null){
-				   $(".modal-title").text("Editar Internação");
-			    	$("#modal-internacao-paciente").modal('show');
-			    	$("#animal").attr('readonly', 'readonly');		
-			}
-			 var temperat = [[${consulta.temperatura}]];
-				var pes = [[${consulta.peso}]];
-			if(consulta !=null){
-			
-				var teste = parseFloat($("#temperaturaConsulta").val());
-				var peso = parseFloat($("#pesoConsulta").val());
-				$(".modal-title").text("Editar Consulta");
-	 	    	$("#modal-consulta-paciente").modal('show');
-	 	    	$("#animalConsulta").attr('readonly', 'readonly');
-	 	    	if(teste != temperat){
-					var t =temperat.toString().replace('.', ',');
-					$("#temperaturaConsulta").val(t);
-				}
-				if(peso != pes){
-					var p =pes.toString().replace('.', ',');
-					$("#pesoConsulta").val(p);
-				}
-			}
-
-        if($("#modal-internacao-paciente .invalid-feedback span").html() != null){
-        	$("#modal-internacao-paciente").modal('show');	
-        	if(internacao != null){
-        		$(".modal-title").text("Editar Internacao");   
-        	}else{
-        		$(".modal-title").text("Nova Internacao");   
-        	}
-        	
-        }
-        if($("#modal-aplicacao .invalid-feedback span").html() != null){
-        	$("#modal-aplicacao").modal('show');
-        	if(aplicacao != null){
-        		$(".modal-title").text("Editar Aplicacao");  
-        	}else{
-        		$(".modal-title").text("Nova Aplicacao");   
-        	}
-        	
-        }
-        if($("#modal-consulta-paciente .invalid-feedback span").html() != null){
-        	$("#modal-consulta-paciente").modal('show');
-        	if(consulta != null){
-        		$(".modal-title").text("Editar Consulta");  
-        	}else{
-        		$(".modal-title").text("Nova Consulta");   
-        	}
-        	
-        }   	 	
-        if ($(".msg-erro").html() != "") {
-        	$(".invalid-feedback span").css("color", "red");
-		} 	
 			    
 			  			
 			}); 
@@ -746,23 +611,8 @@
 			                    return moment(data).format('L');
 			                }
 			            },
-			            {orderable: false, 
-			             data: 'id',
-			                "render": function(id) {
-			                		
-			                		return '<a class="btn btn-success btn-sm btn-block" id ="btn_edt" href="/internacoes/editar/'+ 
-			                    	id +'/paciente/'+idAnimal+'" role="button"><i class="fas fa-edit"></i></a>';
-			                	
-			                    
-			                }
-			            },
-			            {orderable: false,
-			             data: 'id',
-			                "render": function(id) {
-			                    return '<a class="btn btn-danger btn-sm btn-block" href="/internacoes/excluir/'+ 
-			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
-			                }               
-			            },
+			           
+			           
 			            {orderable: false,
 			                data: 'id',
 			                   "render": function(id) {
@@ -834,20 +684,7 @@
 			                }
 			            },
 			           
-			            {orderable: false, 
-			             data: 'id',
-			                "render": function(id) {
-			                    return '<a class="btn btn-success btn-sm btn-block" href="/consultas/editar/'+ 
-			                    id +'/paciente/'+idAnimal+'" role="button"><i class="fas fa-edit"></i></a>';
-			                }
-			            },
-			            {orderable: false,
-			             data: 'id',
-			                "render": function(id) {
-			                    return '<a class="btn btn-danger btn-sm btn-block" href="/consultas/excluir/'+ 
-			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
-			                }               
-			            },
+			
 			            {orderable: false,
 			                data: 'id',
 			                   "render": function(id) {

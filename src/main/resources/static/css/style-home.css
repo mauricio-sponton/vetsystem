@@ -488,8 +488,8 @@ table .btn-success, table .btn-view, table .btn-danger, table .btn-down{
 	padding: 6px;
 	color: white;
 	border: none;
-	width: 120px;
 	margin-right: 8px;
+	margin-top:1%;
 	text-align: center;
 	border-radius: 5px;
 	display: inline;
@@ -772,6 +772,15 @@ button:focus {
 	font-weight: 600;
 	display: inline-block;
 	margin-right: 1%;
+	font-family: "Font Awesome 5 Free";
+}
+
+.ajuda::before {
+	content: "\f05a";
+	font-weight: 600;
+	display: inline-block;
+	margin-right: 1%;
+	margin-left:0;
 	font-family: "Font Awesome 5 Free";
 }
 .agenda-h::before {

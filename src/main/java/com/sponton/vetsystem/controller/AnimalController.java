@@ -133,10 +133,10 @@ public class AnimalController {
 
 	@Autowired
 	private VacinaService vacinaService;
-	
+
 	@Autowired
 	private InternacaoService internacaoService;
-	
+
 	@Autowired
 	private FotoInternacaoService fotoInternacaoService;
 
@@ -170,7 +170,7 @@ public class AnimalController {
 				Foto foto = new Foto();
 				foto.setFileName(file.getOriginalFilename());
 				foto.setPath("/uploads/");
-				
+
 				try {
 					fotoService.salvarFoto(file, foto);
 					animal.setFoto(foto);
@@ -183,15 +183,14 @@ public class AnimalController {
 			Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
 			foto.setFileName(file.getOriginalFilename());
 			foto.setPath("/uploads/");
-			
-			
+
 			try {
-				fotoService.salvarFoto(file,foto);
+				fotoService.salvarFoto(file, foto);
 				animal.setFoto(foto);
 			} catch (Exception e) {
 				attr.addFlashAttribute("falha", "Erro ao cadastrar foto!");
 			}
-			
+
 		}
 		if (file.isEmpty() && animal.hasId()) {
 			Foto foto = fotoService.buscarFotoId(animal.getFoto().getId());
@@ -204,7 +203,7 @@ public class AnimalController {
 		}
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
 			Veterinario veterinario = veterinarioService.buscarPorEmail(user.getUsername());
-			
+
 			if (animal.hasNotId()) {
 				historico.setDescricao("O paciente foi criado com sucesso");
 				historico.setTipo("Dados");
@@ -257,18 +256,17 @@ public class AnimalController {
 					mud.append("As alergias do paciente foram alteradas " + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				
+
 				if (historico.getDescricao() != null) {
 					historico.setTipo("Mudar dados");
 					historico.setUsuario(veterinario.getNome() + " (veterinario)");
 					historico.setData(data);
 					historico.setHora(hora);
-					
-					
+
 				}
-				if(!status.getStatus().equals("Internado")) {
+				if (!status.getStatus().equals("Internado")) {
 					animal.setStatus("Normal");
-				}else {
+				} else {
 					animal.setStatus("Internado");
 				}
 			}
@@ -326,24 +324,24 @@ public class AnimalController {
 					mud.append("As alergias do paciente foram alteradas " + "." + ";");
 					historico.setDescricao(mud.toString());
 				}
-				
+
 				if (historico.getDescricao() != null) {
 					historico.setTipo("Mudar dados");
 					historico.setUsuario(secretaria.getNome() + " (secretária)");
 					historico.setData(data);
 					historico.setHora(hora);
-					
+
 				}
-				if(!status.getStatus().equals("Internado")) {
+				if (!status.getStatus().equals("Internado")) {
 					animal.setStatus("Normal");
-				}else {
+				} else {
 					animal.setStatus("Internado");
 				}
 			}
 		}
-		
+
 		try {
-			
+
 			animal.setEspecie(especie);
 			animal.setRaca(raca);
 			service.salvarAnimal(animal);
@@ -390,7 +388,8 @@ public class AnimalController {
 	}
 
 	@GetMapping("/visualizar/{id}")
-	public String visualizar(@PathVariable("id") Long id, Internacao internacao, Aplicacao aplicacao, Consulta consulta, ModelMap model) {
+	public String visualizar(@PathVariable("id") Long id, Internacao internacao, Aplicacao aplicacao, Consulta consulta,
+			ModelMap model, @AuthenticationPrincipal User user) {
 		Animal animal = service.buscarPorId(id);
 		model.addAttribute("aplicacao", new Aplicacao());
 		model.addAttribute("internacao", new Internacao());
@@ -399,20 +398,26 @@ public class AnimalController {
 		model.addAttribute("animal", service.buscarPorId(id));
 		model.addAttribute("historico", historicoAnimalService.buscarHistoricoPorAnimal(id));
 		model.addAttribute("vacinas", vacinaService.buscarTodasVacinasPorEspecie(especie.getNome()));
-		
-		
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
+			return "animal/visualizar-sec";
+		}
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.VETERINARIO.getDesc()))) {
+			return "animal/visualizar";
+		}
 		return "animal/visualizar";
 	}
 
 	@GetMapping("/buscar/tipo/{tipo}/paciente/{id}")
-	public ResponseEntity<?> getPorTipo(@PathVariable("tipo") String tipo, ModelMap model, @PathVariable("id") Long id) {
+	public ResponseEntity<?> getPorTipo(@PathVariable("tipo") String tipo, ModelMap model,
+			@PathVariable("id") Long id) {
 		List<HistoricoAnimal> historico = historicoAnimalService.buscarHistoricoPorTipo(tipo, id);
 		return ResponseEntity.ok(historico);
 	}
 
 	@GetMapping("/buscar/data/{data}/paciente/{id}")
-	public ResponseEntity<?> getPorData(@PathVariable("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
-			ModelMap model, @PathVariable("id") Long id) {
+	public ResponseEntity<?> getPorData(
+			@PathVariable("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data, ModelMap model,
+			@PathVariable("id") Long id) {
 		List<HistoricoAnimal> historico = historicoAnimalService.buscarHistoricoPorData(data, id);
 		return ResponseEntity.ok(historico);
 	}
@@ -428,6 +433,7 @@ public class AnimalController {
 		List<String> animais = service.buscarAnimaisByAlergias(termo);
 		return ResponseEntity.ok(animais);
 	}
+
 	@ModelAttribute("caracteristicas")
 	public List<String> getCaracteristicas() {
 		List<String> lista = new ArrayList<>();
@@ -435,17 +441,19 @@ public class AnimalController {
 		lista.add("Bravo");
 		return lista;
 	}
+
 	@GetMapping(value = "/download/internacao/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public @ResponseBody void criarArquivoInternacao(@PathVariable("id") Long id, RedirectAttributes attr,
-			HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
-		Internacao internacao =  internacaoService.buscarPorId(id);
+			HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
+		Internacao internacao = internacaoService.buscarPorId(id);
 		Animal animal = internacao.getAnimal();
 		List<FotoInternacao> fotos = fotoInternacaoService.buscarPorInternacaoId(id);
 		String arquivo = "internacao";
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
-		
+
 		StringBuilder paciente = new StringBuilder();
-		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append(
+				"<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
 		paciente.append("<h2 style=\"color:green;font-weight:bold;\"\">DADOS DO PACIENTE</h2>");
 		paciente.append("<hr style=\"color:green;\"/>");
 		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
@@ -454,67 +462,67 @@ public class AnimalController {
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(animal.getNome());
 		paciente.append("</p></div>");
-		
+
 		paciente.append("<div style=\"width:200px; margin: 10px; float:left\">");
 		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Data de nascimento: </strong>");
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(animal.getDataNascimento().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
 		paciente.append("</p></div>");
-		
+
 		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
 		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Sexo: </strong>");
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(animal.getSexo());
 		paciente.append("</p></div>");
 		paciente.append("</div>");
-		
+
 		paciente.append("<br/>");
-		
+
 		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
 		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
 		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Espécie: </strong>");
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(animal.getEspecie().getNome());
 		paciente.append("</p></div>");
-		
+
 		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
 		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Raça: </strong>");
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(animal.getRaca().getNome());
 		paciente.append("</p></div>");
-		
+
 		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
 		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Dono: </strong>");
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(animal.getCliente().getNome());
 		paciente.append("</p></div>");
-		
+
 		paciente.append("</div>");
-		
+
 		paciente.append("<h2 style=\"color:green;font-weight:bold;\"\">DADOS DA INTERNAÇÃO</h2>");
 		paciente.append("<hr style=\"color:green;\"/>");
 		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
-		
+
 		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
 		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Status da internação: </strong>");
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(internacao.getStatus());
 		paciente.append("</p></div>");
-		
+
 		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
 		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Data da admissão: </strong>");
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(internacao.getDataEntrada().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
 		paciente.append("</p></div>");
-		
+
 		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
 		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Horário da admissão: </strong>");
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(internacao.getHoraEntrada());
 		paciente.append("</p></div>");
-		
+
 		paciente.append("</div>");
-		
+
 		paciente.append("<br/>");
 		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
 		paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
@@ -522,156 +530,166 @@ public class AnimalController {
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(internacao.getPeso() + " Kg");
 		paciente.append("</p></div>");
-		
+
 		paciente.append("<div style=\"width:200px;margin: 10px;float:left\">");
 		paciente.append("<strong style=\"color:green; font-size: 1.1em\">Temperatura: </strong>");
 		paciente.append("<p style=\"font-size: 1.1em\">");
 		paciente.append(internacao.getTemperatura() + " ºC");
 		paciente.append("</p></div>");
-		
+
 		paciente.append("</div>");
-		
+
 		paciente.append("<br/>");
 		paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
-		if(internacao.getDataSaida() != null) {
+		if (internacao.getDataSaida() != null) {
 			paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
 			paciente.append("<strong style=\"color:green; font-size: 1.1em\">Data da alta: </strong>");
 			paciente.append("<p style=\"font-size: 1.1em\">");
 			paciente.append(internacao.getDataSaida().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
 			paciente.append("</p></div>");
-			
-			
+
 		}
-		if(internacao.getHoraSaida() != null) {
+		if (internacao.getHoraSaida() != null) {
 			paciente.append("<div style=\"width:200px;margin: 10px; float:left\">");
 			paciente.append("<strong style=\"color:green; font-size: 1.1em\">Horário da alta: </strong>");
 			paciente.append("<p style=\"font-size: 1.1em\">");
 			paciente.append(internacao.getHoraSaida());
 			paciente.append("</p></div>");
-		
-			
+
 		}
 		paciente.append("</div>");
-		if(!internacao.getPrescricao().isEmpty()) {
+		if (!internacao.getPrescricao().isEmpty()) {
 			paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
 			paciente.append("<strong style=\"color:green; font-size: 1.1em\">Prescrição: </strong>");
 			paciente.append("<p style=\"font-size: 1.1em;white-space: pre-wrap\">");
 			paciente.append(internacao.getPrescricao());
 			paciente.append("</p></div>");
 			paciente.append("<br/>");
-			
+
 		}
-		if(!internacao.getDescricao().isEmpty()) {
+		if (!internacao.getDescricao().isEmpty()) {
 			paciente.append("<div style=\"width: 100%; margin: 2% 0; float:left\">");
 			paciente.append("<strong style=\"color:green; font-size: 1.1em\">Anotações: </strong>");
 			paciente.append("<p style=\"font-size: 1.1em;\">");
 			paciente.append(internacao.getDescricao());
 			paciente.append("</p></div>");
 			paciente.append("<br/>");
-			
+
 		}
 		paciente.append("<hr style=\"color:green;\"/>");
-		
+
 		writer.write(paciente.toString());
 		writer.close();
 		conveterHTMLparaPDF(arquivo, request, response);
-		
+
 	}
+
 	@GetMapping(value = "/download/historico/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public @ResponseBody void criarArquivoHistorico(@PathVariable("id") Long id, RedirectAttributes attr,
-			HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+			HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
 		Animal animal = service.buscarPorId(id);
 		List<HistoricoAnimal> historico = historicoAnimalService.buscarHistoricoPorAnimal(id);
 		String arquivo = "historico";
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
-		
+
 		StringBuilder paciente = new StringBuilder();
-		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append(
+				"<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
 		paciente.append("<h2 style=\"color:green;font-weight:bold;\">");
-		paciente.append(String.format("%10s%n%n","Paciente: " + animal.getNome()));
+		paciente.append(String.format("%10s%n%n", "Paciente: " + animal.getNome()));
 		paciente.append("</h2>");
 		writer.write(paciente.toString());
-		for(HistoricoAnimal h : historico) {
+		for (HistoricoAnimal h : historico) {
 			StringBuilder build = new StringBuilder();
 			build.append("<span style=\"color:gray;font-weight:bold;\">");
 			build.append("Dia: " + h.getData().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
 			build.append("</span>");
 			build.append("<span style=\"color:gray;font-weight:bold;display:inline\">");
-			build.append(String.format("%10s%n%n", "às: " + h.getHora().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))));
+			build.append(String.format("%10s%n%n",
+					"às: " + h.getHora().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))));
 			build.append("</span><p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
-			build.append(String.format("%10s%n%n","Ocorrência: " + h.getDescricao()));
+			build.append(String.format("%10s%n%n", "Ocorrência: " + h.getDescricao()));
 			build.append("</p>");
 			writer.write(build.toString());
 		}
 		writer.close();
 		conveterHTMLparaPDF(arquivo, request, response);
-		
+
 	}
-	@GetMapping(value ="/download/consulta/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public @ResponseBody void criarArquivoConsulta(@PathVariable("id") Long id, RedirectAttributes attr, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+
+	@GetMapping(value = "/download/consulta/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void criarArquivoConsulta(@PathVariable("id") Long id, RedirectAttributes attr,
+			HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
 		Consulta consulta = consultaService.buscarPorId(id);
 		String arquivo = "consulta-unica";
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
-		
+
 		StringBuilder paciente = new StringBuilder();
 		paciente.append("<hr/>");
-		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append(
+				"<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
 		paciente.append("<h2 style=\"color:green;font-weight:bold;\">");
 		paciente.append("Paciente: " + consulta.getAnimal().getNome());
 		paciente.append("</h2>");
 		paciente.append("<hr/>");
 		writer.write(paciente.toString());
-		
-			StringBuilder build = new StringBuilder();
-			build.append("<span style=\"color:gray;font-weight:bold;\">");
-			build.append("Consulta realizada no dia: " + consulta.getData().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
-			build.append("</span>");
-			build.append("<span style=\"color:gray;font-weight:bold;display:inline\">");
-			build.append("às: " + consulta.getHora().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
-			build.append("</span>");
+
+		StringBuilder build = new StringBuilder();
+		build.append("<span style=\"color:gray;font-weight:bold;\">");
+		build.append("Consulta realizada no dia: "
+				+ consulta.getData().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+		build.append("</span>");
+		build.append("<span style=\"color:gray;font-weight:bold;display:inline\">");
+		build.append("às: " + consulta.getHora().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
+		build.append("</span>");
+		build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+		build.append("Peso: " + consulta.getPeso() + "Kg ");
+		build.append("Temperatura: " + consulta.getTemperatura() + "ºC");
+		build.append("</p>");
+		if (consulta.getTermino() != null) {
 			build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
-			build.append("Peso: " + consulta.getPeso() + "Kg ");
-			build.append("Temperatura: " + consulta.getTemperatura() + "ºC");
+			build.append("Consulta encerrada às: "
+					+ consulta.getTermino().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
 			build.append("</p>");
-			if(consulta.getTermino() !=null) {
-				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
-				build.append("Consulta encerrada às: " + consulta.getTermino().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
-				build.append("</p>");
-			}
-			if(!consulta.getDescricao().isEmpty()) {
-				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
-				build.append("Anotações: " + consulta.getDescricao());
-				build.append("</p>");
-			}
-			if(!consulta.getPrescricao().isEmpty()) {
-				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
-				build.append("Prescrição: " + consulta.getPrescricao());
-				build.append("</p>");
-			}
-			build.append("<div style=\"width: 100%; height: 2px; background-color: gray\" />");
-			writer.write(build.toString());
+		}
+		if (!consulta.getDescricao().isEmpty()) {
+			build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+			build.append("Anotações: " + consulta.getDescricao());
+			build.append("</p>");
+		}
+		if (!consulta.getPrescricao().isEmpty()) {
+			build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+			build.append("Prescrição: " + consulta.getPrescricao());
+			build.append("</p>");
+		}
+		build.append("<div style=\"width: 100%; height: 2px; background-color: gray\" />");
+		writer.write(build.toString());
 		writer.close();
 		conveterHTMLparaPDF(arquivo, request, response);
 	}
-	@GetMapping(value ="/download/consultas/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public @ResponseBody void criarArquivoConsultas(@PathVariable("id") Long id, RedirectAttributes attr, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+
+	@GetMapping(value = "/download/consultas/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void criarArquivoConsultas(@PathVariable("id") Long id, RedirectAttributes attr,
+			HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
 		Animal animal = service.buscarPorId(id);
 		List<Consulta> consultas = consultaService.buscarConsultaPorAnimal(id);
 		String arquivo = "consulta";
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
-		
+
 		StringBuilder paciente = new StringBuilder();
 		paciente.append("<hr/>");
-		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append(
+				"<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
 		paciente.append("<h2 style=\"color:green;font-weight:bold;\">");
-		paciente.append(String.format("%10s%n%n","Paciente: " + animal.getNome()));
+		paciente.append(String.format("%10s%n%n", "Paciente: " + animal.getNome()));
 		paciente.append("</h2>");
 		paciente.append("<hr/>");
 		writer.write(paciente.toString());
-		for(Consulta c : consultas) {
+		for (Consulta c : consultas) {
 			StringBuilder build = new StringBuilder();
 			build.append("<span style=\"color:gray;font-weight:bold;\">");
-			build.append("Consulta realizada no dia: " + c.getData().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+			build.append("Consulta realizada no dia: "
+					+ c.getData().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
 			build.append("</span>");
 			build.append("<span style=\"color:gray;font-weight:bold;display:inline\">");
 			build.append("às: " + c.getHora().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
@@ -680,17 +698,18 @@ public class AnimalController {
 			build.append("Peso: " + c.getPeso() + "Kg ");
 			build.append("Temperatura: " + c.getTemperatura() + "ºC");
 			build.append("</p>");
-			if(c.getTermino() !=null) {
+			if (c.getTermino() != null) {
 				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
-				build.append("Consulta encerrada às: " + c.getTermino().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
+				build.append("Consulta encerrada às: "
+						+ c.getTermino().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
 				build.append("</p>");
 			}
-			if(!c.getDescricao().isEmpty()) {
+			if (!c.getDescricao().isEmpty()) {
 				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
 				build.append("Anotações: " + c.getDescricao());
 				build.append("</p>");
 			}
-			if(!c.getPrescricao().isEmpty()) {
+			if (!c.getPrescricao().isEmpty()) {
 				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
 				build.append("Prescrição: " + c.getPrescricao());
 				build.append("</p>");
@@ -700,59 +719,65 @@ public class AnimalController {
 		}
 		writer.close();
 		conveterHTMLparaPDF(arquivo, request, response);
-		
+
 	}
-	@GetMapping(value ="/download/imunizacoes/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public @ResponseBody void criarArquivoAplicacao(@PathVariable("id") Long id, RedirectAttributes attr, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+
+	@GetMapping(value = "/download/imunizacoes/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void criarArquivoAplicacao(@PathVariable("id") Long id, RedirectAttributes attr,
+			HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
 		Animal animal = service.buscarPorId(id);
 		List<Aplicacao> aplicacoes = aplicacaoService.buscarAplicacaoPorIdAnimal(id);
 		String arquivo = "imunizacoes";
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
-		
+
 		StringBuilder paciente = new StringBuilder();
 		paciente.append("<hr/>");
-		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append(
+				"<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
 		paciente.append("<h2 style=\"color:green;font-weight:bold;\">");
-		paciente.append(String.format("%10s%n%n","Paciente: " + animal.getNome()));
+		paciente.append(String.format("%10s%n%n", "Paciente: " + animal.getNome()));
 		paciente.append("</h2>");
 		paciente.append("<hr/>");
 		writer.write(paciente.toString());
-		for(Aplicacao a : aplicacoes) {
+		for (Aplicacao a : aplicacoes) {
 			StringBuilder build = new StringBuilder();
 			build.append("<p style=\"color:gray;font-weight:bold;\">");
-			build.append("Imunização aplicada no dia: " + a.getDataAplicacao().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+			build.append("Imunização aplicada no dia: "
+					+ a.getDataAplicacao().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
 			build.append("</p>");
-			
-			if(a.getDoses() == 0) {
+
+			if (a.getDoses() == 0) {
 				build.append("<p style=\"color:gray;font-weight:bold;\">");
 				build.append("Dose anual");
 				build.append("</p>");
-			}else {
+			} else {
 				build.append("<p style=\"color:gray;font-weight:bold\">");
 				build.append(a.getDoses() + "ª dose de " + a.getVacina().getDoses());
 				build.append("</p>");
 			}
-			
-			
+
 			build.append("<p style=\"color:gray;font-weight:bold;\">");
-			build.append("Próxima aplicação estimada: " + a.getProximaAplicacao().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+			build.append("Próxima aplicação estimada: "
+					+ a.getProximaAplicacao().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
 			build.append("</p><br/>");
 			build.append("<div style=\"width: 100%; height: 2px; background-color: gray;\">");
 			build.append("</div>");
-			
+
 			writer.write(build.toString());
 		}
 		writer.close();
 		conveterHTMLparaPDF(arquivo, request, response);
-		
+
 	}
-	private void conveterHTMLparaPDF(String arquivo, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException {
+
+	private void conveterHTMLparaPDF(String arquivo, HttpServletRequest request, HttpServletResponse response)
+			throws IOException, DocumentException {
 		Document document = new Document();
 		PdfWriter writerPdf = PdfWriter.getInstance(document, new FileOutputStream(file + arquivo + ".pdf"));
 		document.open();
 		XMLWorkerHelper.getInstance().parseXHtml(writerPdf, document, new FileInputStream(file + arquivo + ".html"));
 		document.close();
-		
+
 		File files = new File(file + arquivo + ".pdf");
 		FileInputStream in = new FileInputStream(files);
 		byte[] content = new byte[(int) files.length()];
@@ -764,58 +789,48 @@ public class AnimalController {
 		response.setContentLength(content.length);
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + files.getName() + "\"");
 		org.springframework.util.FileCopyUtils.copy(content, response.getOutputStream());
-		
-		
+
 	}
 
 	/*
-	@GetMapping(value ="/download/historico/pdf")
-	public String downloadEmPdf(RedirectAttributes attr) throws DocumentException, IOException {
-		
-		Document pdfDoc = new Document(PageSize.A4);
-		PdfWriter.getInstance(pdfDoc, new FileOutputStream(file + "teste.pdf")).setPdfVersion(PdfWriter.PDF_VERSION_1_7);
-		pdfDoc.open();
-		
-		Font myFont = new Font();
-		myFont.setStyle(Font.NORMAL);
-		myFont.setSize(12);
-		pdfDoc.add(new Paragraph("\n"));
-		
-		BufferedReader br = new BufferedReader(new FileReader(file + "teste.html"));
-		String strLine;
-		while((strLine = br.readLine()) != null) {
-			Paragraph para = new Paragraph(strLine + "\n", myFont);
-			para.setAlignment(Element.ALIGN_JUSTIFIED);
-			pdfDoc.add(para);
-		}
-		pdfDoc.close();
-		br.close();
-		
-		Document document = new Document();
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file + "teste.pdf"));
-		document.open();
-		XMLWorkerHelper.getInstance().parseXHtml(writer, document, new FileInputStream(file + "teste.html"));
-		document.close();
-		attr.addFlashAttribute("sucesso", "historico criado");
-		return "redirect:/pacientes/listar";
-	}
-	
-	@GetMapping(value ="/download/historico", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public @ResponseBody void downloadHistorico(HttpServletRequest request, HttpServletResponse response) throws IOException{	
-		File files = new File(file + "teste.pdf");
-		FileInputStream in = new FileInputStream(files);
-		byte[] content = new byte[(int) files.length()];
-		in.read(content);
-		ServletContext sc = request.getSession().getServletContext();
-		String mimetype = sc.getMimeType(files.getName());
-		response.reset();
-		response.setContentType(mimetype);
-		response.setContentLength(content.length);
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + files.getName() + "\"");
-		org.springframework.util.FileCopyUtils.copy(content, response.getOutputStream());
-		
-	}
-	*/
+	 * @GetMapping(value ="/download/historico/pdf") public String
+	 * downloadEmPdf(RedirectAttributes attr) throws DocumentException, IOException
+	 * {
+	 * 
+	 * Document pdfDoc = new Document(PageSize.A4); PdfWriter.getInstance(pdfDoc,
+	 * new FileOutputStream(file +
+	 * "teste.pdf")).setPdfVersion(PdfWriter.PDF_VERSION_1_7); pdfDoc.open();
+	 * 
+	 * Font myFont = new Font(); myFont.setStyle(Font.NORMAL); myFont.setSize(12);
+	 * pdfDoc.add(new Paragraph("\n"));
+	 * 
+	 * BufferedReader br = new BufferedReader(new FileReader(file + "teste.html"));
+	 * String strLine; while((strLine = br.readLine()) != null) { Paragraph para =
+	 * new Paragraph(strLine + "\n", myFont);
+	 * para.setAlignment(Element.ALIGN_JUSTIFIED); pdfDoc.add(para); }
+	 * pdfDoc.close(); br.close();
+	 * 
+	 * Document document = new Document(); PdfWriter writer =
+	 * PdfWriter.getInstance(document, new FileOutputStream(file + "teste.pdf"));
+	 * document.open(); XMLWorkerHelper.getInstance().parseXHtml(writer, document,
+	 * new FileInputStream(file + "teste.html")); document.close();
+	 * attr.addFlashAttribute("sucesso", "historico criado"); return
+	 * "redirect:/pacientes/listar"; }
+	 * 
+	 * @GetMapping(value ="/download/historico", produces =
+	 * MediaType.APPLICATION_OCTET_STREAM_VALUE) public @ResponseBody void
+	 * downloadHistorico(HttpServletRequest request, HttpServletResponse response)
+	 * throws IOException{ File files = new File(file + "teste.pdf");
+	 * FileInputStream in = new FileInputStream(files); byte[] content = new
+	 * byte[(int) files.length()]; in.read(content); ServletContext sc =
+	 * request.getSession().getServletContext(); String mimetype =
+	 * sc.getMimeType(files.getName()); response.reset();
+	 * response.setContentType(mimetype); response.setContentLength(content.length);
+	 * response.setHeader("Content-Disposition", "attachment; filename=\"" +
+	 * files.getName() + "\""); org.springframework.util.FileCopyUtils.copy(content,
+	 * response.getOutputStream());
+	 * 
+	 * }
+	 */
 
-	
 }

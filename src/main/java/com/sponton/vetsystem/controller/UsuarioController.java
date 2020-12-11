@@ -62,6 +62,11 @@ public class UsuarioController {
 
 		return "usuario/cadastro";
 	}
+	@GetMapping("/ajuda")
+	public String abrirPaginaAjuda(Usuario usuario) {
+
+		return "usuario/ajuda";
+	}
 
 	@GetMapping("/listar")
 	public String listarUsuarios(Usuario usuario, @AuthenticationPrincipal User user) {

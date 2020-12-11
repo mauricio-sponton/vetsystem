@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+<title>Vet System - Ajuda</title>
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<main role="main">
+
+			<ul class="breadcrumb">
+				<li><a th:href="@{/home}">Dashboard</a></li>
+				<li class="active">Ajuda</li>
+
+			</ul>
+
+			<h1 class="ajuda" style="margin-bottom: 2%">Ajuda</h1>
+
+			<div class="container">
+				<div class="row">
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Como Gerenciar a Agenda</span>
+					</button>
+
+					<div class="panel" style="width: 95%; margin-left: 2%;">
+
+						<span style="color: #2CD682;">1 - Cadastrar Evento</span><br>
+						<p>
+							- No menu de navegação, clique no link “Agenda”;<br> - Ao
+							clicar no botão “Novo Evento”, aparecerá na tela um modal com o
+							formulário de cadastro do agendamento; <br> - Após preencher
+							todos os campos, clique em “Salvar” para cadastrar o agendamento.
+							Se clicar em “Cancelar”, as ações serão desfeitas e o usuário
+							retornará para a página “Agenda”.
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">2 - Editar Agendamento</span><br>
+
+							- É necessário procurar o agendamento na agenda, podendo utilizar
+							para encontrá-lo mais facilmente as pesquisas por “Dia”,
+							“Semana”, “Mês” ou “Lista”; <br> - Ao encontra-lo, clica-se
+							em cima do agendamento desejado, dessa forma o visualizando,
+							imediatamente é aberto um modal, onde tem o botão “Editar e
+							“Cancelar”; <br> - Ao clicar no botão “Editar”, é aberto um
+							formulário de edição; <br> - Ao preencher os campos de
+							edição clique em "Salvar" para continuar ou em "Cancelar" para
+							não completar a operação.
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">3 - Cancelar Agendamento</span><br>
+							- Abra o agendamento desejado; <br> - Clique no botão
+							vermelho "Cancelar";<br> - Ao fazer isso, é aberto um
+							formulário de confirmação de exclusão;<br> - Para continuar
+							a ação, clique em "Confirmar", para desistir clique em
+							"Cancelar".
+						</p>
+
+					</div>
+
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Como Gerenciar Usuários</span>
+					</button>
+
+
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+
+						Ao clicar no link “Usuários” no menu de navegação, é aberta a
+						página que contém a tabela com todos os usuários cadastrados no
+						sistema.
+						<p>
+							<span style="color: #2CD682;">1 - Cadastrar Usuários</span><br>
+
+							- Na página com a lista de usuários, clique no botão "Novo
+							Usuário"; <br> - Preencha os campos de formulário de
+							cadastro;<br> - Ao terminar de preencher, clique no botão
+							"Salvar" para realizar o cadastro ou "Cancelar" para não
+							finalizar.<br>
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">2 - Editar Usuários</span><br>
+							- Na página de lista de usuários, clique no botão laranja na
+							coluna “Credenciais” na linha do usuário desejado. Ao fazer isso,
+							é aberto um modal de edição; <br> - Após preencher os
+							campos, clique no botão "Salvar" para realizar a edição ou
+							"Cancelar" para não finalizar.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">3 - Excluir Usuários</span><br>
+							- Para deletar, clica-se no botão vermelho da coluna "Excluir" na
+							linha do usuário desejado; <br> - Ao fazer isso, é aberto um
+							formulário de confirmação de exclusão;<br> - Para continuar
+							a ação, clique em "Confirmar", para desistir clique em
+							"Cancelar".
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">4 - Visualizar Usuários</span><br>
+							- Para visualizar as informações do usuário, clica-se no botão
+							verde na coluna “Dados pessoais” na linha do usuário desejado; <br>
+							- Ao fazer isso, abrirá a página de perfil do usuário se ele a
+							tiver criado.
+
+						</p>
+
+					</div>
+
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Como Gerenciar Clientes</span>
+					</button>
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+
+						Ao clicar no link “Clientes” no menu de navegação, é aberta a
+						página que contém a tabela com todos os clientes cadastrados no
+						sistema.<br>
+						<p>
+							<span style="color: #2CD682;">1 - Cadastrar Clientes</span><br>
+
+							- Na página com a lista de usuários, clique no botão "Novo
+							Cliente"; <br> - Preencha os campos de formulário de
+							cadastro; <br> - Ao terminar de preencher, clique no botão
+							"Salvar" para realizar o cadastro ou "Cancelar" para não
+							finalizar.<br>
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">2 - Editar Clientes</span><br>
+							- Na página de lista de clientes, clique no botão laranja na
+							coluna “Editar” na linha do cliente desejado. Ao fazer isso, é
+							aberto um modal de edição; <br> - Após preencher os campos,
+							clique no botão "Salvar" para realizar a edição ou "Cancelar"
+							para não finalizar.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">3 - Excluir Clientes</span><br>
+							- Para deletar, clica-se no botão vermelho da coluna "Excluir" na
+							linha do cliente desejado; <br> - Ao fazer isso, é aberto um
+							formulário de confirmação de exclusão;<br> - Para continuar
+							a ação, clique em "Confirmar", para desistir clique em
+							"Cancelar".
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">4 - Visualizar Clientes</span><br>
+							- Para visualizar as informações do cliente, clica-se no botão
+							verde na coluna “Visualizar” na linha do cliente desejado; <br>
+							- Ao fazer isso, abrirá a página com informações do cliente.
+
+						</p>
+
+					</div>
+
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Como Gerenciar Pacientes</span>
+					</button>
+
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+						Ao clicar no link "Pets" e depois em “Listar Pacientes” no menu de
+						navegação, é aberta a página que contém a tabela com todos os
+						pacientes cadastrados no sistema.
+						<p>
+							<span style="color: #2CD682;">1 - Cadastrar Paciente</span><br>
+							- Para cadastrar um paciente clica-se no botão “Novo Paciente”,
+							após isso é aberto um modal com o formulário de cadastro; <br>
+							- Ao fazer isso, abrirá a página com informações do cliente.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">2 - Editar Paciente</span><br>
+							- Para editar um paciente clica-se no botão laranja da coluna
+							“Editar” na linha do paciente desejado. Ao fazer isso, é aberto
+							um modal de edição; <br> - Preencha os campos do formulário
+							de edição, clique no botão “Salvar” para editar. Para não
+							finalizar a edição, clique no botão “Cancelar”.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">3 - Excluir Paciente</span><br>
+							- Para deletar, clica-se no botão vermelho da coluna “Excluir” na
+							linha do paciente desejado; <br> - Ao fazer isso é aberta
+							uma mensagem de confirmação de exclusão, para prosseguir clique
+							em “Confirmar”, se desistir de realizar a exclusão clique em
+							“Cancelar”.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">4 - Visualizar Paciente</span><br>
+							- Para visualizar as informações do paciente, clica-se no botão
+							verde na coluna “Visualizar” na linha do paciente desejado;<br>
+							- Na página do Paciente, é possível acessar o histórico, as
+							consultas, internação e aplicações de vacinas do paciente.
+
+						</p>
+
+						<p>
+							<i style="color: #000; font-size: 1em">Histórico</i><br>
+							Nessa seção o usuário pode procurar informações dos cadastros e
+							alterações que foram feitas ao paciente;<br> - Ao clicar no
+							botão “Tipos” o usuário pode buscar pela ação podendo ser
+							“Cadastro de Paciente” ou “Edição de Paciente”, por exemplo. E
+							também pela data desejada;<br> - Ao clicar no botão de
+							impressão, o usuário pode imprimir as informações que estão sendo
+							mostradas no histórico.
+
+						</p>
+
+						<p>
+							<i style="color: #000; font-size: 1em">Consultas</i><br>
+							Nessa seção, as consultas podem ser gerenciadas pelo usuário
+							(explicado em “Gerenciar Consultas”). E também há a possibilidade
+							de impressão de consultas.
+
+						</p>
+
+						<p>
+							<i style="color: #000; font-size: 1em">Internações</i><br>
+							Nessa seção, as internações podem ser gerenciadas pelo usuário
+							(explicado em “Gerenciar Internações”). E também há a
+							possibilidade de impressão da ficha de internações.
+
+						</p>
+
+						<p>
+							<i style="color: #000; font-size: 1em">Imunizações</i><br> Nessa
+							sessão, as vacinas do paciente podem ser adicionadas, editadas,
+							excluídas e impressas (como explicado em “Gerenciar Vacinas”).E
+							também há a possibilidade de impressão de vacinas.
+
+						</p>
+
+					</div>
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Como Gerenciar Espécies</span>
+					</button>
+
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+
+						Ao clicar no link "Pets" e depois em “Listar Espécies” no menu de
+						navegação, é aberta a página que contém a tabela com todos as
+						espécies cadastradas no sistema.<br>
+						<p>
+							<span style="color: #2CD682;">1 - Cadastrar Espécie</span><br>
+
+							- Na página com a lista de Espécies, clique no botão "Nova
+							Espécie"; <br> - Preencha os campos de formulário de
+							cadastro;<br> - Ao terminar de preencher, clique no botão
+							"Salvar" para realizar o cadastro ou "Cancelar" para não
+							finalizar.<br>
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">2 - Editar Espécie</span><br>
+							- Na página de lista de espécies, clique no botão laranja na
+							coluna “Editar” na linha da espécie desejada. Ao fazer isso, é
+							aberto um modal de edição; <br> - Após preencher os campos,
+							clique no botão "Salvar" para realizar a edição ou "Cancelar"
+							para não finalizar.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">3 - Excluir Espécie</span><br>
+							- Para deletar, clica-se no botão vermelho da coluna "Excluir" na
+							linha da espécie desejada; <br> - Ao fazer isso, é aberto um
+							formulário de confirmação de exclusão;<br> - Para continuar
+							a ação, clique em "Confirmar", para desistir clique em
+							"Cancelar".
+
+						</p>
+					</div>
+
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Como Gerenciar raças</span>
+					</button>
+
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+
+						Ao clicar no link "Pets" e depois em “Listar Raças” no menu de
+						navegação, é aberta a página que contém a tabela com todos as
+						espécies cadastradas no sistema.<br>
+						<p>
+							<span style="color: #2CD682;">1 - Cadastrar Raça</span><br>
+
+							- Na página com a lista de Raças, clique no botão "Nova Raça". <br>
+							- Preencha os campos de formulário de cadastro;<br> - Ao
+							terminar de preencher, clique no botão "Salvar" para realizar o
+							cadastro ou "Cancelar" para não finalizar.<br>
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">2 - Editar Raça</span><br> -
+							Na página de lista de raças, clique no botão laranja na coluna
+							“Editar” na linha da raça desejada. Ao fazer isso, é aberto um
+							modal de edição; <br> - Após preencher os campos, clique no
+							botão "Salvar" para realizar a edição ou "Cancelar" para não
+							finalizar.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">3 - Excluir Raça</span><br> -
+							Para deletar, clica-se no botão vermelho da coluna "Excluir" na
+							linha da raça desejada; <br> - Ao fazer isso, é aberto um
+							formulário de confirmação de exclusão;<br> - Para continuar
+							a ação, clique em "Confirmar", para desistir clique em
+							"Cancelar".
+
+						</p>
+					</div>
+
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Como Gerenciar Consultas</span>
+					</button>
+
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+
+						Ao clicar no link do menu “Consultas”, é aberta a página com todas
+						as consultas cadastradas no sistema. O veterinário pode fazer
+						todas as ações abaixo, enquanto a secretária apenas visualizar.<br>
+						<p>
+							<span style="color: #2CD682;">1 - Cadastrar consulta</span><br>
+
+							- O usuário deve clicar no botão “Nova Consulta”; <br> -
+							Cadastrar os dados da consulta no formulário; <br>- Clique
+							no botão “Salvar” se desejar cadastrar, se não clique no botão
+							“Cancelar”;<br>
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">2 - Editar consulta</span><br>-
+							Clique no botão laranja na coluna “Editar” da tabela, na linha da
+							consulta desejada; <br> - Preencha os campos desejados do
+							formulário de edição e clique no botão “Salvar” se desejar fazer
+							a alteração, se não clique no botão “Cancelar”.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">3 - Excluir Consulta</span><br>
+							- Clique no botão vermelho na coluna “Excluir” da tabela na linha
+							da consulta desejada;<br> - Ao fazer isso, é aberto um
+							formulário de confirmação de exclusão;<br> - Para continuar
+							a ação, clique em "Confirmar", para desistir clique em
+							"Cancelar".
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">4 - Visualizar Consulta</span><br>
+							- Clique no botão verde na coluna “Visualizar” da tabela na linha
+							da consulta desejada, ao fazer isso será aberta a página da
+							consulta escolhida.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">5 - Imprimir Consulta</span><br>
+							Alerta: Essa Função só está disponível dentro das páginas de
+							perfis dos animais, na aba “Consultas”; <br> - Clique no
+							botão azul na coluna “Imprimir” da tabela, na linha da consulta
+							desejada, ao fazer isso será feita a impressão.
+
+
+						</p>
+					</div>
+
+
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Como Gerenciar Internações</span>
+					</button>
+
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+
+						Ao clicar no link do menu de navegação “Internações”, é aberta a
+						página com todas as internações cadastradas no sistema. O
+						veterinário pode fazer todas as ações abaixo, enquanto a
+						secretária apenas visualizar.<br>
+						<p>
+							<span style="color: #2CD682;">1 - Cadastrar Internação</span><br>
+
+							- O usuário deve clicar no botão “Nova Internação”; <br> -
+							Cadastrar os dados da internação no formulário; <br>-
+							Clique no botão “Salvar” se desejar cadastrar, se não clique no
+							botão “Cancelar”;<br>
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">2 - Editar Internação</span><br>-
+							Clique no botão laranja na coluna “Editar” da tabela, na linha da
+							internação desejada; <br> - Preencha os campos desejados do
+							formulário de edição e clique no botão “Salvar” se desejar fazer
+							a alteração, se não clique no botão “Cancelar”.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">3 - Excluir Internação</span><br>
+							- Clique no botão vermelho na coluna “Excluir” da tabela na linha
+							da intenração desejada;<br> - Ao fazer isso, é aberto um
+							formulário de confirmação de exclusão;<br> - Para continuar
+							a ação, clique em "Confirmar", para desistir clique em
+							"Cancelar".
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">4 - Visualizar Internação</span><br>
+							- Clique no botão verde na coluna “Visualizar” da tabela na linha
+							da internação desejada, ao fazer isso será aberta a página da
+							internação escolhida.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">5 - Imprimir Internação</span><br>
+							Alerta: Essa Função só está disponível dentro das páginas de
+							perfis dos animais, na aba “Internação”. <br> - Clique no
+							botão azul na coluna “Imprimir” da tabela, na linha da internação
+							desejada, ao fazer isso será feita a impressão.
+
+
+						</p>
+					</div>
+
+
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Como Gerenciar Imunizações</span>
+					</button>
+
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+						Ao clicar no link “Imunizações” no menu de navegação, é aberta a
+						página de todas as vacinas cadastradas no sistema. O veterinário
+						pode fazer todas as ações abaixo, enquanto a secretária apenas
+						visualizar a tabela.<br>
+						<p>
+							<span style="color: #2CD682;">1 - Cadastrar Imunização</span><br>
+
+							- O usuário deve clicar no botão “Nova Imunização”; <br> -
+							Cadastrar os dados da imunização no formulário; <br>-
+							Clique no botão “Salvar” se desejar cadastrar, se não clique no
+							botão “Cancelar”.<br>
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">2 - Editar Imunização</span><br>-
+							Clique no botão laranja na coluna “Editar” da tabela, na linha da
+							imunização desejada; <br> - Preencha os campos desejados do
+							formulário de edição e clique no botão “Salvar” se desejar fazer
+							a alteração, se não clique no botão “Cancelar”.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">3 - Excluir Imunização</span><br>
+							- Clique no botão vermelho na coluna “Excluir” da tabela na linha
+							da imunização desejada;<br> - Ao fazer isso, é aberto um
+							formulário de confirmação de exclusão;<br> - Para continuar
+							a ação, clique em "Confirmar", para desistir clique em
+							"Cancelar".
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">4 - Visualizar Imunização</span><br>
+							- Clique no botão verde na coluna “Visualizar” da tabela na linha
+							da imunização desejada, ao fazer isso será aberta a página da
+							imunização escolhida.
+
+						</p>
+
+						<p>
+							<span style="color: #2CD682;">5 - Imprimir Imunização</span><br>
+							Alerta: Essa Função só está disponível dentro das páginas de
+							perfis dos animais, na aba “Internação”. <br> - Clique no
+							botão azul na coluna “Imprimir” da tabela, na linha da imunização
+							desejada, ao fazer isso será feita a impressão.
+
+
+						</p>
+					</div>
+
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Notificações</span>
+					</button>
+
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+
+						<p>
+
+							<span style="color: #2CD682;">1 - Visualizar Notificação</span><br>
+							- Para entrar na página de notificação, clique no sininho que
+							está no cabeçalho.
+
+						</p>
+						<p>
+							<span style="color: #2CD682;">2 - Excluir Notificação</span><br>
+
+							- Para excluir a notificação clique no botão “X” no canto direito
+							da notificação escolhida.
+
+						</p>
+
+					</div>
+
+					<button class="accordion" style="width: 95%; margin-left: 2%">
+						<span>Meu Perfil</span>
+					</button>
+
+
+					<div class="panel" style="width: 95%; margin-left: 2%">
+						
+						<p>
+
+							<span style="color: #2CD682;">1 - Visualizar Perfil</span><br>
+							- Para os usuários secretária e veterinário visualizarem e editarem suas informações de perfil, devem clicar no menu dropdown no cabeçalho, ao lado do sino de notificação, e clicar no link “Meu Perfil”.
+
+						</p>
+						<p>
+							<span style="color: #2CD682;">2 - Editar Perfil</span><br>
+
+							- Ao clicar no lápis o usuário abre um cadastro de edição de perfil; <br>
+							- Preencha os campos e clique no botão "Salvar" para realizar alterações ou "Cancelar" para
+							desistir.
+							
+
+						</p>
+						
+							<p>
+							<span style="color: #2CD682;">3 - Editar Dias de Trabalho</span><br>
+
+							Na página do perfil do usuário há uma tabela com os sete dias da semana e horários de trabalho que o veterinário deve preencher. <br>
+							- Para adicionar um dia de folga, clique no checkbox na linha desejada na coluna "Folga";<br>
+							- Para adicionar os horários de trabalho, os escolha no dia da semana desejado nas colunas "Entrada" e "Saída".
+							
+
+						</p>
+						
+
+					</div>
+
+
+
+
+				</div>
+			</div>
+
+		</main>
+	</section>
+	<script th:src="@{/js/usuario.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		var acc = document.getElementsByClassName("accordion");
+		var i;
+
+		for (i = 0; i < acc.length; i++) {
+			acc[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				var panel = this.nextElementSibling;
+				if (panel.style.maxHeight) {
+					panel.style.maxHeight = null;
+				} else {
+					panel.style.maxHeight = panel.scrollHeight + "px";
+				}
+			});
+		}
+	</script>
+</body>
+</html>
