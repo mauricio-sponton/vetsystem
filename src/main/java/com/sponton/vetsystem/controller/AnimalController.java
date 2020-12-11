@@ -263,9 +263,14 @@ public class AnimalController {
 					historico.setUsuario(veterinario.getNome() + " (veterinario)");
 					historico.setData(data);
 					historico.setHora(hora);
-					animal.setStatus(status.getStatus());
+					
+					
 				}
-
+				if(!status.getStatus().equals("Internado")) {
+					animal.setStatus("Normal");
+				}else {
+					animal.setStatus("Internado");
+				}
 			}
 		}
 		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SECRETARIA.getDesc()))) {
@@ -327,9 +332,13 @@ public class AnimalController {
 					historico.setUsuario(secretaria.getNome() + " (secretária)");
 					historico.setData(data);
 					historico.setHora(hora);
-					animal.setStatus(status.getStatus());
+					
 				}
-
+				if(!status.getStatus().equals("Internado")) {
+					animal.setStatus("Normal");
+				}else {
+					animal.setStatus("Internado");
+				}
 			}
 		}
 		
@@ -424,7 +433,6 @@ public class AnimalController {
 		List<String> lista = new ArrayList<>();
 		lista.add("Castrado");
 		lista.add("Bravo");
-		lista.add("Venenoso");
 		return lista;
 	}
 	@GetMapping(value = "/download/internacao/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -598,6 +606,52 @@ public class AnimalController {
 		writer.close();
 		conveterHTMLparaPDF(arquivo, request, response);
 		
+	}
+	@GetMapping(value ="/download/consulta/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody void criarArquivoConsulta(@PathVariable("id") Long id, RedirectAttributes attr, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
+		Consulta consulta = consultaService.buscarPorId(id);
+		String arquivo = "consulta-unica";
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file + arquivo + ".html"));
+		
+		StringBuilder paciente = new StringBuilder();
+		paciente.append("<hr/>");
+		paciente.append("<img style=\"width:200px;height:60px;\" src=\"src/main/resources/static/image/loginho.png\"/>");
+		paciente.append("<h2 style=\"color:green;font-weight:bold;\">");
+		paciente.append("Paciente: " + consulta.getAnimal().getNome());
+		paciente.append("</h2>");
+		paciente.append("<hr/>");
+		writer.write(paciente.toString());
+		
+			StringBuilder build = new StringBuilder();
+			build.append("<span style=\"color:gray;font-weight:bold;\">");
+			build.append("Consulta realizada no dia: " + consulta.getData().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " ");
+			build.append("</span>");
+			build.append("<span style=\"color:gray;font-weight:bold;display:inline\">");
+			build.append("às: " + consulta.getHora().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
+			build.append("</span>");
+			build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+			build.append("Peso: " + consulta.getPeso() + "Kg ");
+			build.append("Temperatura: " + consulta.getTemperatura() + "ºC");
+			build.append("</p>");
+			if(consulta.getTermino() !=null) {
+				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+				build.append("Consulta encerrada às: " + consulta.getTermino().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
+				build.append("</p>");
+			}
+			if(!consulta.getDescricao().isEmpty()) {
+				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+				build.append("Anotações: " + consulta.getDescricao());
+				build.append("</p>");
+			}
+			if(!consulta.getPrescricao().isEmpty()) {
+				build.append("<p style=\"color:gray;font-weight:bold;display:block; margin-bottom:5px\">");
+				build.append("Prescrição: " + consulta.getPrescricao());
+				build.append("</p>");
+			}
+			build.append("<div style=\"width: 100%; height: 2px; background-color: gray\" />");
+			writer.write(build.toString());
+		writer.close();
+		conveterHTMLparaPDF(arquivo, request, response);
 	}
 	@GetMapping(value ="/download/consultas/paciente/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public @ResponseBody void criarArquivoConsultas(@PathVariable("id") Long id, RedirectAttributes attr, HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{

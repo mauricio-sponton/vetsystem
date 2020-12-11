@@ -32,7 +32,7 @@
 				<div class="modal-body">
 					<span th:text="${erro}" id="msg-erro"></span>
 					<div th:if="${aviso != null}">
-						<div class="alert alert-warning alert-dismissible fade show"
+						<div class="alert alert-danger alert-dismissible fade show"
 							role="alert">
 							<i class="oi oi-check"></i> <span> <strong
 								th:text="${aviso}"></strong>
@@ -47,7 +47,7 @@
 						th:object="${veterinario}" method="POST"
 						enctype="multipart/form-data">
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-8">
 								<label for="nome">Nome</label> <input type="text"
 									class="form-control" id="nome" placeholder="Nome completo"
 									th:field="*{nome}"
@@ -103,15 +103,17 @@
 							</div>
 						</div>
 						<div class="form-row">
-							<label for="file">Foto</label> <input type="file" id="file"
-								th:name="file">
+							<input type="file" id="file" name="file-7[]" th:name="file" value="Upload"
+								class="inputfile inputfile-6" data-multiple-caption="{count} files selected"><label for="file" ><span></span>
+								<strong><i class="fas fa-upload"></i> Escolha a imagem&hellip;</strong></label>
 						</div>
 
 						<input type="hidden" name="uid" th:field="*{usuario.id}">
 						<input type="hidden" name="id" th:field="*{id}"> <input
 							type="hidden" id="id" th:field="*{foto.id}" />
-
-						<button type="submit" class="btn-trabalho">Salvar</button>
+						<button type="button" class="btn btn-danger  btn-cancelar "
+							data-dismiss="modal" id="cancelar-modal">Cancelar</button>
+						<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 					</form>
 				</div>
 

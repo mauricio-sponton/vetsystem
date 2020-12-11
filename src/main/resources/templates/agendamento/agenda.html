@@ -275,6 +275,7 @@
  				 $('div').remove(".custom-radio");
  				var fim = $("#fim").val();			
 				var inicio = $("#inicio").val();
+				$("#vets div strong").text("");
 				var diaInicial = moment( $("#inicio").val()).weekday() + 1;
 				var diaFinal = moment( $("#fim").val()).weekday() + 1;
 						$.ajax({
@@ -329,6 +330,7 @@
  				 $('div').remove(".custom-radio");
  				var fim = $("#fim-edicao").val();			
 				var inicio = $("#inicio-edicao").val();
+				$("#vets-edicao div strong").text("");
 				var diaInicial = moment( $("#inicio-edicao").val()).weekday() + 1;
 				var diaFinal = moment( $("#fim-edicao").val()).weekday() + 1;
 						$.ajax({
@@ -343,7 +345,14 @@
 							},
 							success : function(data) {
 								var ultimo = data.length - 1; 
-								
+								if(data.length == 0){
+									$("#vets-edicao").append( 
+						    				 '<div>'	
+						    				+  '<strong style = "color: red">Não há veterinários trabalhando nesse horário!!</strong>'
+							
+											+'</div>'
+						    			);
+								}
 								$.each(data, function (k, v) {
 									
 									if ( k == ultimo ) {

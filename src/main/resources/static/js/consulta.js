@@ -42,7 +42,7 @@ $(document).ready(function () {
             		if(row.termino == null){
             			return "Não cadastrado";
             		}
-                    return  data;
+            		 return  moment(data, 'HH:mm:ss').format('HH:mm');
                 }
             },
            

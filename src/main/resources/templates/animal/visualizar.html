@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <style>
@@ -12,7 +12,7 @@
 	margin: 0 0 1% 0;
 }
 
-.table td:last-child, .table td:nth-child(5), #table-consultas td:nth-child(4),
+.table td:last-child, .table td:nth-child(5), #table-consultas td:nth-child(4), #table-consultas td:nth-child(6), #table-consultas td:nth-child(8), #table-consultas td:nth-child(7),
 	#table-internacoes td:nth-child(6), #table-internacoes td:nth-child(7), #table-internacoes td:nth-child(4) {
 	width: 5%
 }
@@ -383,7 +383,7 @@
 							<div class="container">
 
 								<div class="row">
-									<div class="col-md-10">
+									<div class="col-md-12">
 
 
 										<h2 class="paciente-h2">Consultas Cadastradas</h2>
@@ -393,12 +393,14 @@
 											style="width: 100%">
 											<thead class="thead-dark">
 												<tr>
-													<th scope="col">Paciente</th>
+													<th scope="col">Peso</th>
+													<th scope="col">Temperatura</th>
 													<th scope="col">Data</th>
 													<th scope="col">Término</th>
 													<th scope="col">Editar</th>
 													<th scope="col">Excluir</th>
 													<th scope="col">Visualizar</th>
+													<th scope="col">Download</th>
 												</tr>
 											</thead>
 										</table>
@@ -808,8 +810,17 @@
 			            data: 'data'
 			        },
 			        columns: [
-			        	 {data: 'animal.nome'},
-			        	{data: 'data', render:
+			        	 {data: 'peso', render:
+			        		 function(data){
+			        		 	return data.toString().replace('.', ',');
+			        	 	 }
+			        	 },
+			        	 {data: 'temperatura', render:
+			        		 function(data){
+			        		 	return data.toString().replace('.', ',');
+			        	 	 }
+			        	 },
+			        	 {data: 'data', render:
 			                function( data ) {
 			                    return moment(data).format('L');
 			                }
@@ -843,7 +854,14 @@
 			                       return '<a class="btn btn-sm btn-block btn-view" href="/consultas/visualizar/'+ 
 			                       	id +'" role="button"><i class="fas fa-glasses"></i></a>';
 			                   }               
-			               }
+			               },
+			               {orderable: false,
+				                data: 'id',
+				                   "render": function(id) {
+				                	   return '<a class="btn btn-sm btn-block btn-down" href="/pacientes/download/consulta/'+ 
+				                   	id +'" role="button"><i class="fas fa-download"></i></a>';
+				                   }               
+				               }, 
 			        ]
 			    });
 			});  

@@ -102,17 +102,7 @@
 										não cadastrado</label>
 								</div>
 							</div>
-							<div class="form-row">
-								<div class="form-group col-md-4">
-									<label for="color-edicao">Selecione a cor que você deseja:</label> <input
-										th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
-										type="color" id="color-edicao" th:field=*{color}
-										class="form-control" name="color" value="#36299e">
-									<div class="invalid-feedback">
-										<span th:errors="*{color}"></span>
-									</div>
-								</div>
-							</div>
+							
 							<div class="form-row">
 								<div class="form-group col-md-4">
 									<label for="inicio-edicao">Selecione a data de início</label> <input
@@ -133,6 +123,15 @@
 										<span th:errors="*{fim}"></span>
 									</div>
 								</div>
+								<div class="form-group col-md-4">
+									<label for="color-edicao">Selecione a cor desejada:</label> <input
+										th:classappend="${#fields.hasErrors('color')} ? 'is-invalid'"
+										type="color" id="color-edicao" th:field=*{color}
+										class="form-control" name="color" value="#36299e">
+									<div class="invalid-feedback">
+										<span th:errors="*{color}"></span>
+									</div>
+								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-12">
@@ -147,7 +146,7 @@
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-12">
 									<label for="descricao-edicao">Anotações</label>
 									<textarea class="form-control" id="descricao-edicao"
 										placeholder="Taz..." autofocus="autofocus"
@@ -164,7 +163,7 @@
 
 						</form>
 						<div class="modal-footer">
-							<button id="cancela-edt" class="btn btn-primary">Cancelar</button>
+							<button id="cancela-edt" class="btn btn-danger btn-cancelar">Cancelar</button>
 						</div>
 					</div>
 					<div class="exclusao">
@@ -172,8 +171,8 @@
 							esse ítem?</div>
 						<div class="modal-footer">
 							<button id="cancela-exclusao" type="button"
-								class="btn btn-danger">Cancelar</button>
-							<a id="apagar_evento" type="button" class="btn btn-success">Confirmar</a>
+								class="btn btn-danger btn-cancelar">Cancelar</button>
+							<a id="apagar_evento" type="button" class="btn btn-primary btn-success">Confirmar</a>
 						</div>
 					</div>
 				</div>

@@ -846,7 +846,7 @@ button:focus {
 
 .inputfile-6+label span, .inputfile-6+label strong {
 	padding: 0.625rem 1.25rem;
-	color: indigo;
+	color: #7E8388;
 	/* 10px 20px */
 }
 
@@ -883,6 +883,13 @@ button:focus {
 	margin-left: 2%
 }
 
+.form-caracteristicas{
+	display: inline;
+	margin-left: 0
+}
+.form-caracteristicas label{
+	margin-right: 2%
+}
 .btn-trabalho {
 	border: none;
 	font-family: inherit;

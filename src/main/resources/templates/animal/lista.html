@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <title>Vet System - Pacientes Cadastrados</title>
@@ -127,9 +127,8 @@ width: 72%
 		$('#confirm-modal').on('show.bs.modal', function(){
 			$(".modal-title").text("Excluir Paciente");
 			$('#subtitulo').text('Todas as informaçãoes referentes a este paciente serão deletadas do sistema!');
-		})
+		});
 		
-		(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);
 	</script>
 </body>
 </html>

@@ -57,7 +57,7 @@ public class ConsultaService {
 		datatables.setRequest(request);
 		datatables.setColunas(DatatablesColunas.CONSULTAS);
 		Page<Consulta> page =datatables.getSearch().isEmpty() ? repository.findByAnimalId(datatables.getPageable(), idAnimal)
-				: repository.findByName(datatables.getSearch(), datatables.getPageable(), idAnimal);
+				: repository.findByAnimal(datatables.getSearch(), datatables.getPageable(), idAnimal);
 		return datatables.getResponse(page);
 	}
 
