@@ -96,7 +96,8 @@
 #wrapper-caracteristicas {
 	display: block;
 	margin-bottom: 2%;
-	width: 300px
+	width: 300px;
+	margin-left: 4px
 }
 
 #wrapper-caracteristicas span {
@@ -134,8 +135,12 @@
 
 		<div class="global-color pacient">
 			<div id="img-infs">
-				<div th:if="${animal.foto.fileName == null}">
-					<img alt="" th:src="@{/image/animal_default.jpg}"
+				<div th:if="${animal.foto.fileName == null && animal.sexo == 'Macho'}">
+					<img alt="" th:src="@{/image/dog.svg}"
+						style="width: 120px; height: auto">
+				</div>
+				<div th:if="${animal.foto.fileName == null && animal.sexo == 'Fêmea'}">
+					<img alt="" th:src="@{/image/cat.svg}"
 						style="width: 120px; height: auto">
 				</div>
 				<div th:if="${animal.foto.fileName != null}">

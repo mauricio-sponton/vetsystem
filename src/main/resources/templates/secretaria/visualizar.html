@@ -27,9 +27,13 @@
 		<span th:replace="secretaria/modal :: modal-form"></span>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${secretaria.foto.fileName == null}"
-					th:src="@{/image/ultrasound.svg}"
-					style="width: 120px; height: auto; float: left" /> <img
+				<img th:if="${secretaria.id != null && secretaria.foto.fileName == null && secretaria.sexo == 'Feminino'}"
+					th:src="@{/image/default_female.png}"
+					style="width: 120px; height: auto; float: left" />
+					<img th:if="${secretaria.id != null && secretaria.foto.fileName == null && secretaria.sexo == 'Masculino'}"
+					th:src="@{/image/default_male.png}"
+					style="width: 120px; height: auto; float: left" /> 
+					 <img
 					th:if="${secretaria.foto.fileName != null}"
 					th:src="@{${'/uploads/' + secretaria.foto.fileName}}"
 					style="width: 120px; height: auto; float: left" />

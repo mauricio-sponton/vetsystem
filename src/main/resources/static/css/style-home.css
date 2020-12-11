@@ -36,7 +36,9 @@ body {
 .table-pacient tbody{
 	color:black
 }
-
+.foto-neutra{
+	position: absolute; width: 65px; height: auto; top: -6px; right: 26px;
+}
 h1, h2 {
 	font-size: 2em;
 	margin: 1% 1% 0.5% 1%;

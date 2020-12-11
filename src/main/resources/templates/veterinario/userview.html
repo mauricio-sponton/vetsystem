@@ -33,9 +33,13 @@
 		<h1>página de perfil</h1>
 		<div class="global-color">
 			<div id="img-infs">
-				<img th:if="${vet.foto.fileName == null}"
-					th:src="@{/image/ultrasound.svg}"
-					style="width: 120px; height: auto; float: left" /> <img
+				<img th:if="${vet.foto.fileName == null && vet.sexo == 'Masculino'}"
+					th:src="@{/image/default_male.png}"
+					style="width: 120px; height: auto; float: left" /> 
+					<img th:if="${vet.foto.fileName == null && vet.sexo == 'Feminino'}"
+					th:src="@{/image/default_female.png}"
+					style="width: 120px; height: auto; float: left" />
+					<img
 					th:if="${vet.foto.fileName != null}"
 					th:src="@{${'/uploads/' + vet.foto.fileName}}"
 					style="width: 120px; height: auto; float: left" />

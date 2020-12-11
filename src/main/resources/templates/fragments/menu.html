@@ -180,16 +180,21 @@
 
 						</div>
 
-						<div class="wrapper-foto"
+						<div class="wrapper-foto" 
 							sec:authorize="hasAuthority('VETERINARIO')">
 							<img alt=""
 								th:if="${veterinario.id != null && veterinario.foto.fileName != null}"
 								th:src="@{${'/uploads/thumb/' + veterinario.foto.fileName}}">
 							<img
-								th:if="${veterinario.id != null && veterinario.foto.fileName ==null}"
-								th:src="@{/image/profile-pic.jpg}"
+								th:if="${veterinario.id != null && veterinario.foto.fileName ==null && veterinario.sexo == 'Masculino'}"
+								th:src="@{/image/default_male.png}"
 								alt="Foto de perfil do usuário."
-								style="width: 55px; height: auto" />
+								class="foto-neutra" />
+							<img
+								th:if="${veterinario.id != null && veterinario.foto.fileName ==null && veterinario.sexo == 'Feminino'}"
+								th:src="@{/image/default_female.png}"
+								alt="Foto de perfil do usuário."
+								class="foto-neutra" />
 
 						</div>
 						<div class="wrapper-foto"
@@ -199,10 +204,15 @@
 								th:if="${secretaria.id != null && secretaria.foto.fileName!= null}"
 								th:src="@{${'/uploads/thumb/' + secretaria.foto.fileName}}">
 							<img
-								th:if="${secretaria.id != null && secretaria.foto.fileName ==null}"
-								th:src="@{/image/profile-pic.jpg}"
+								th:if="${secretaria.id != null && secretaria.foto.fileName ==null && secretaria.sexo == 'Feminino'}"
+								th:src="@{/image/default_female.png}"
 								alt="Foto de perfil do usuário."
-								style="width: 55px; height: auto" />
+								class="foto-neutra" />
+							<img
+								th:if="${secretaria.id != null && secretaria.foto.fileName ==null && secretaria.sexo == 'Masculino'}"
+								th:src="@{/image/default_male.png}"
+								alt="Foto de perfil do usuário."
+								class="foto-neutra" />
 
 						</div>
 
