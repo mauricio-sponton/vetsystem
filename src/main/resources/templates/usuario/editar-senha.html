@@ -6,10 +6,12 @@
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
+		<h1 style="margin-left:2.6%;">Editar Senha</h1>
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 			<div class="container">
-
-				<div class="d-flex justify-content-center">
+				
+				
+				
 					<div class="col-md-8 ">
 						<form th:action="@{/u/confirmar/senha}" method="POST">
 
@@ -40,7 +42,7 @@
 
 							<div class="form-group row">
 								<div class="col-sm-10">
-									<button type="submit" class="btn btn-primary"
+									<button type="submit" class="btn btn-primary" style="margin-left: 0%"
 										data-toggle="tooltip" data-placement="right" title="Salvar">
 										Salvar
 									</button>
@@ -49,7 +51,7 @@
 						</form>
 					</div>
 				</div>
-			</div>
+			
 	</section>
 
 	<script th:src="@{/js/usuario.js(v=${version})}" th:fragment="js"></script>

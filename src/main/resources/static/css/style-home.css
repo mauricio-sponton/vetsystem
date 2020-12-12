@@ -1237,3 +1237,23 @@ button:focus {
 	width: 50%;
 	margin-bottom: 4%;
 }
+.mensagem-home {
+	width: 78.8%;
+	margin-top: 2%;
+	margin-left: 1.8%;
+	background-color: #F59422;
+	padding: 20px;
+	
+}
+.perfis{
+	width: 40%;
+	
+}
+.perfis div{
+	display:inline
+}
+.mensagem-home strong {
+	color: white;
+	font-weight: bold;
+	text-transform: uppercase;
+}

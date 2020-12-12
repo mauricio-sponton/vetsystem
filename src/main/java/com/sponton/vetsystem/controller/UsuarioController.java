@@ -105,13 +105,21 @@ public class UsuarioController {
 			Usuario u2 = service.buscarPorId(usuario.getId());
 			if (u2.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))
 					&& usuario.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))) {
+				
 				Secretaria secretaria = secretariaService.buscarPorUsuarioId(usuario.getId());
-				secretariaService.remover(secretaria.getId());
+				if(secretaria.hasId()) {
+					secretariaService.remover(secretaria.getId());
+				}
+				
 			}
 			if (u2.getPerfis().contains(new Perfil(PerfilTipo.VETERINARIO.getCod()))
 					&& usuario.getPerfis().contains(new Perfil(PerfilTipo.SECRETARIA.getCod()))) {
+				
 				Veterinario veterinario = veterinarioService.buscarPorUsuarioId(usuario.getId());
-				veterinarioService.remover(veterinario.getId());
+				if(veterinario.hasId()) {
+					veterinarioService.remover(veterinario.getId());
+				}
+				
 			}
 		}
 		List<Perfil> perfis = usuario.getPerfis();

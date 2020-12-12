@@ -155,6 +155,7 @@ public class HomeController {
 		model.addAttribute("totalsec", totalsec);
 		model.addAttribute("totalvet", totalvet);
 		model.addAttribute("totaladm", totaladm);
+		/*
 		List<Raca> racas = racaService.buscarTodasRacas();
 		if (racas.size() > 0) {
 			int t = 0;
@@ -185,7 +186,7 @@ public class HomeController {
 			}
 			model.addAttribute("especies", surveyMap);
 		}
-
+		*/
 		model.addAttribute("animal", animalService.buscarTodosAnimais());
 		model.addAttribute("cliente", clienteService.buscarTodosClientes());
 		model.addAttribute("internacao", internacoes);

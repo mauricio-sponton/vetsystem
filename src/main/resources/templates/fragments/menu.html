@@ -22,60 +22,39 @@
 				<div sec:authorize="hasAuthority('VETERINARIO')"
 					th:if="${veterinario.nome != null}">
 					<div th:if="${veterinario.sexo == 'Feminino'}">
-						<span style="color: white; font-size: 20px; float: left">Bem
-							vinda, <span class="" th:text="${veterinario.nome}"> </span>
+						<span style="color: white; font-size: 20px; float: left">Bem-vinda, <span class="" th:text="${veterinario.nome}"> </span>
 						</span>
 					</div>
 					<div th:if="${veterinario.sexo == 'Masculino'}">
-						<span style="color: white; font-size: 20px; float: left">Bem
-							vindo, <span class="" th:text="${veterinario.nome}"> </span>
+						<span style="color: white; font-size: 20px; float: left">Bem-vindo, <span class="" th:text="${veterinario.nome}"> </span>
 						</span>
 					</div>
 
 				</div>
-				<!--<div sec:authorize="hasAuthority('VETERINARIO')"
-					th:if="${veterinario.nome == null}">
-					<span style="color: white; font-size: 20px; float: left">Bem
-						vindo(a), <span class="" sec:authentication="name"> </span>
-					</span>
-				</div>-->
 				<div sec:authorize="hasAuthority('SECRETARIA')"
 					th:if="${secretaria.nome != null}">
 					<div th:if="${secretaria.sexo == 'Feminino'}">
-						<span style="color: white; font-size: 20px;">Bem vinda, <span
+						<span style="color: white; font-size: 20px;">Bem-vinda, <span
 							class="" th:text="${secretaria.nome}"> </span>
 						</span>
 					</div>
 					<div th:if="${secretaria.sexo == 'Masculino'}">
-						<span style="color: white; font-size: 20px; float: left">Bem
-							vindo, <span class="" th:text="${secretaria.nome}"> </span>
+						<span style="color: white; font-size: 20px; float: left">Bem-vindo, <span class="" th:text="${secretaria.nome}"> </span>
 						</span>
 					</div>
 
 				</div>
-
-				<!-- <div sec:authorize="hasAuthority('SECRETARIA')"
-					th:if="${secretaria.nome == null}">
-					<span style="color: white; font-size: 20px; float: left">Bem
-						vindo(a), <span class="" sec:authentication="name"> </span>
-					</span>
+				<div 
+							th:if="${#authorization.expression('hasAuthority(''ADMIN'')') 
+							&& #authorization.expression('!hasAuthority(''VETERINARIO'')')  
+							&& #authorization.expression('!hasAuthority(''SECRETARIA'')')}">
+				<span style="color: white; font-size: 20px; float: left" >Olá, 
+				<span sec:authentication="name"> </span>
+				</span>
+					
 				</div>
-
-				<div th:if="${veterinario == null && secretaria == null}">
-					<span style="color: white; font-size: 20px; float: left">Bem
-						vindo(a), <span class="" sec:authentication="name"> </span>
-					</span>
-				</div>-->
 			</div>
 		</div>
-		<!--  <div class="wrap-bell">
-			<a href="#" role="button">
-						<i class="far fa-bell"
-						style="font-size: 20px; float: left; color: black"> </i>
-			</a> <span class="badge badge-danger">6</span>
-
-		</div>
-		-->
 		<div class="wrap-bell">
 			<a class="notify" th:href="@{/u/notificacoes}" role="button"
 				sec:authorize="hasAnyAuthority('VETERINARIO, SECRETARIA')"> <span
@@ -175,7 +154,7 @@
 
 						<div class="wrapper-foto"
 							th:if="${#authorization.expression('hasAuthority(''ADMIN'')') && #authorization.expression('!hasAuthority(''VETERINARIO'')')  && #authorization.expression('!hasAuthority(''SECRETARIA'')')}">
-							<img alt="" th:src="@{/image/profile-pic.jpg}" style="width: 55px; height: auto" >
+							<img alt="" th:src="@{/image/adm.png}" class="foto-neutra" >
 
 
 						</div>
@@ -240,49 +219,5 @@
 
 	</nav>
 
-
-	<!-- <ul>
-
-			<li><a th:href="@{/home}"><i class="fas fa-clinic-medical"></i>Dashboard</a></li>
-			<li><a th:href="@{/agenda/abrir}"><i class="fas fa-clock"></i>Agenda</a></li>
-			<li><a th:href="@{/u/listar}"><i class="fas fa-user-md"></i>Usuários</a></li>
-			<li><a th:href="@{/clientes/listar}"><i
-					class="fas fa-handshake"></i>Clientes</a></li>
-			<li class="nav-item dropdown"><a
-				class="btn btn-dark dropdown-toggle" href="#" id="dropdown02"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-					class="fas fa-paw"></i>Pacientes</a>
-				<div class="dropdown-menu" aria-labelledby="dropdown02">
-				<a class="dropdown-item" th:href="@{/pacientes/listar}">Listar Pacientes</a> 
-					<a class="dropdown-item" th:href="@{/especies/listar}">Listar
-						Espécie</a> 
-					<a class="dropdown-item" th:href="@{/racas/listar}">Listar
-						Raça</a>
-				</div></li>
-			<li><a th:href="@{/vacinas/listar}"><i class="fas fa-clock"></i>Vacinas</a></li>
-			<li><a th:href="@{/internacoes/listar}"><i class="fas fa-heartbeat"></i>Internação</a></li>
-			<li><a>Exames</a></li>
-			<li class="nav-item dropdown"><a
-				class="btn btn-dark dropdown-toggle" href="#" id="dropdown02"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Secretárias</a>
-				<div class="dropdown-menu" aria-labelledby="dropdown02">
-					<a class="dropdown-item" th:href="@{/secretarias/dados}">Dados
-						Cadastrais</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">
-						Editar senha</a>
-						<a class="dropdown-item" th:href="@{/secretarias/editar/horarios}">
-						Editar horários</a>
-				</div></li>
-			<li class="nav-item dropdown"><a
-				class="btn btn-dark dropdown-toggle" href="#" id="dropdown02"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Veterinários</a>
-				<div class="dropdown-menu" aria-labelledby="dropdown02">
-					<a class="dropdown-item" th:href="@{/veterinarios/dados}">Dados
-						Cadastrais</a> <a class="dropdown-item" th:href="@{/u/editar/senha}">Editar
-						senha</a>
-				</div></li>
-				<li><a th:href="@{/consultas/listar}"><i class="fas fa-clock"></i>Consultas</a></li>
-		</ul>
-
-	</div>-->
 </body>
 </html>

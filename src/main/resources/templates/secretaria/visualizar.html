@@ -62,6 +62,12 @@
 					<strong>CPF: </strong>
 					<p th:text="${secretaria.cpf}"></p>
 				</div>
+				<div class="alinha-dados perfis">
+				<strong>Perfil: </strong><br>
+					<div th:each="p, iterStat : ${secretaria.usuario.perfis}">	
+						<span th:text="!${iterStat.last} ? ${p.desc} + ', ' : ${p.desc}"></span>
+					</div>
+				</div>
 			</section>
 
 		</div>

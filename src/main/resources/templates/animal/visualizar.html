@@ -576,7 +576,7 @@
 			            {orderable: false,
 			             data: 'id',
 			                "render": function(id) {
-			                    return '<a class="btn btn-danger btn-sm btn-block" href="/aplicacoes/excluir/'+ 
+			                    return '<a class="btn btn-danger btn-sm btn-block" id="del-vacina" href="/aplicacoes/excluir/'+ 
 			                    	id +'/paciente/'+idAnimal +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
 			                }               
 			            },
@@ -599,7 +599,9 @@
 			$("#animal").val(nome);
 			$("#animal").attr('readonly', 'readonly');	
 			$("#status").val("");	
-			$("#dataEntrada").val("");	
+			$("#dataEntrada").val("");
+			$("#peso").val("");	
+			$("#temperatura").val("");	
 			$("#inicio").val("");
 			$("#descricao").val("");
 			$("#prescricao").val("");
@@ -694,7 +696,9 @@
 			    
 			  			
 			}); 
-			
+		$("#modal-animal").on('shown.bs.modal', function(){
+			$(".modal-title").text("Editar Paciente");
+		});
 			
 			
 			$(document).ready(function () {
@@ -764,7 +768,7 @@
 			            {orderable: false,
 			             data: 'id',
 			                "render": function(id) {
-			                    return '<a class="btn btn-danger btn-sm btn-block" href="/internacoes/excluir/'+ 
+			                    return '<a class="btn btn-danger btn-sm btn-block del-internacao" href="/internacoes/excluir/'+ 
 			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
 			                }               
 			            },
@@ -786,7 +790,11 @@
 			    });
 			   
 			    
-			});    
+			});   
+			
+			$('#confirm-modal').on('show.bs.modal', function(){	
+				$(".modal-title").text("Excluir");
+			})
 			$(document).ready(function () {
 				moment.locale('pt-BR');
 			    var table = $('#table-consultas').DataTable({
@@ -849,7 +857,7 @@
 			            {orderable: false,
 			             data: 'id',
 			                "render": function(id) {
-			                    return '<a class="btn btn-danger btn-sm btn-block" href="/consultas/excluir/'+ 
+			                    return '<a class="btn btn-danger id="del-consulta" btn-sm btn-block" href="/consultas/excluir/'+ 
 			                    	id +'/paciente/'+idAnimal+'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-trash-alt"></i></a>';
 			                }               
 			            },

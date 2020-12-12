@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+	xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <style>
@@ -31,6 +31,10 @@ table.dataTable thead .sorting_desc:before {
 .popover-body {
 	width: 300px;
 }
+ .layout-content span {
+	color: #8AC6DD
+}
+
 </style>
 </head>
 <body>
@@ -144,7 +148,7 @@ table.dataTable thead .sorting_desc:before {
 
 								<th scope="col">Foto</th>
 								<th scope="col">Nome</th>
-								<th scope="col">Descricao</th>
+								<th scope="col">Descrição</th>
 								<th scope="col">Editar</th>
 								<th scope="col">Excluir</th>
 								<th scope="col">Visualizar</th>
@@ -252,7 +256,7 @@ table.dataTable thead .sorting_desc:before {
             },
             {data: 'fileName',
             	"render": function(data, type, row){
-            		if(row.nome != ""){
+            		if(row.nome != null){
             			return row.nome.length> 10 ?  row.nome.substr( 0, 10 ) + '..' + ' .' + row.tipo: row.nome + ' .' + row.tipo;
             		}else{
             			return data.length > 10 ?  data.substr( 0, 10 ) + '.. ' + '.' + row.tipo: data;

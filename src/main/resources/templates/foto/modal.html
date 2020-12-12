@@ -64,8 +64,9 @@
 							</div>
 						</div>
 						<div class="form-row">
-							<label for="file">Adicionar foto:</label> <input type="file"
-								id="file" th:name="file">
+							<input type="file" id="file" name="file-7[]" th:name="file" value="Upload"
+								class="inputfile inputfile-6" data-multiple-caption="{count} files selected"><label for="file" ><span></span>
+								<strong><i class="fas fa-upload"></i> Escolha a imagem&hellip;</strong></label>
 						</div>
 						<input type="hidden" id="id" th:field="*{id}" />
 						<input

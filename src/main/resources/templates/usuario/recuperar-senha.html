@@ -46,7 +46,7 @@
 	<div id="mensagem">
 		<div th:replace="fragments/alert :: alerta-sucesso"></div>
 	</div>
-	<img th:src="@{/image/veterinaria.jpg}" class="img_login" />
+	<img th:src="@{/image/vet-1.jpg}" class="img_login" />
 	<form th:action="@{/u/p/nova/senha/}" th:object="${usuario}"
 		class="form-signin was-validated form_login" method="POST">
 		<div class="text-center mb-4">
@@ -60,7 +60,7 @@
 		<div class="login">
 			<div class="form-label-group">
 				<label for="inputEmail" class="label-login">Email</label> <input
-					type="email" id="inputEmail" class="form-control input-login"
+					type="email" id="inputEmail" class="input-login"
 					placeholder="e-mail" th:field="*{email}" required autofocus />
 					<i class="fas fa-envelope"></i>
 				<div class="invalid-feedback"><span>Use seu email como login.</span></div>
@@ -69,7 +69,7 @@
 		<div class="login">
 			<div class="form-label-group">
 				<label for="inputPassword" class="label-login">Nova Senha</label> <input
-					type="password" id="inputPassword" class="form-control input-login"
+					type="password" id="inputPassword" class="input-login"
 					placeholder="Senha" th:field="*{senha}" required />
 					<i class="fas fa-lock"></i>
 				<div class="invalid-feedback"><span>Digite uma nova senha.</span></div>
@@ -79,7 +79,7 @@
 			<div class="form-label-group">
 				<label for="inputCodigoVerificador" class="label-login">Código
 					Verificador</label> <input type="text" id="inputCodigoVerificador"
-					class="form-control input-login" placeholder="Código"
+					class="input-login" placeholder="Código"
 					th:field="*{codigoVerificador}" required />
 						<i class="fas fa-shield-alt"></i>
 				<div class="invalid-feedback"><span>Insira o código que recebeu por

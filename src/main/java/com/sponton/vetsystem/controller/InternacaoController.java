@@ -370,34 +370,7 @@ public class InternacaoController {
 			animal.setStatus("Normal");
 		}
 
-		if (files.length > 0) {
-			for (int i = 0; i < files.length; i++) {
-				FotoInternacao foto = new FotoInternacao();
-				foto.setFileName(files[i].getOriginalFilename());
-				switch (files[i].getContentType()) {
-				case "image/jpeg":
-					foto.setTipo("jpg");
-					break;
-				case "image/jpg":
-					foto.setTipo("jpg");
-					break;
-				case "image/png":
-					foto.setTipo("png");
-					break;
-				default:
-					model.addAttribute("falha", "Tipos suportados de foto são: Jpg, Jpeg ou PNG");
-					break;
-				}
-
-				try {
-					foto.setInternacao(internacao);
-					fotoInternacaoService.salvarFotos(files, foto);
-				} catch (Exception e) {
-					System.out.println(e);
-				}
-			}
-
-		}
+		
 		HistoricoAnimal historico = new HistoricoAnimal();
 		LocalDate data = LocalDate.now();
 		LocalTime hora = LocalTime.now();
@@ -494,6 +467,34 @@ public class InternacaoController {
 		internacao.setAnimal(animal);
 
 		service.salvarInternacao(internacao);
+		if (files.length > 0) {
+			for (int i = 0; i < files.length; i++) {
+				FotoInternacao foto = new FotoInternacao();
+				foto.setFileName(files[i].getOriginalFilename());
+				switch (files[i].getContentType()) {
+				case "image/jpeg":
+					foto.setTipo("jpg");
+					break;
+				case "image/jpg":
+					foto.setTipo("jpg");
+					break;
+				case "image/png":
+					foto.setTipo("png");
+					break;
+				default:
+					model.addAttribute("falha", "Tipos suportados de foto são: Jpg, Jpeg ou PNG");
+					break;
+				}
+
+				try {
+					foto.setInternacao(internacao);
+					fotoInternacaoService.salvarFotos(files, foto);
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+			}
+
+		}
 		if (historico.getDescricao() != null) {
 			historico.setAnimal(animal);
 			historicoAnimalService.salvar(historico);

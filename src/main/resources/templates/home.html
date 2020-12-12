@@ -31,12 +31,12 @@ h5 {
 			<div class="cards">
 				<img th:src="@{/image/admin-icon.svg}" />
 				<p>
-					Total de <strong>Admins</strong> cadastrados:<br> 
-					<span th:text="${totaladm}"> </span>
+					Total de <strong>Admins</strong> cadastrados:<br> <span
+						th:text="${totaladm}"> </span>
 
 				</p>
-				
-				
+
+
 			</div>
 
 			<div class="cards">
@@ -98,28 +98,38 @@ h5 {
 		</div>
 
 
-		<div class="testando">
 
 
-			<p th:if="${consultasHoje !=null}">
-				<span th:if="${consultasHoje == 0}"> Você não possui
-					consultas agendadas para hoje. </span> <span th:if="${consultasHoje > 0}"
-					th:text="'Você possui um total de ' + ${consultasHoje} + ' consultas agendadas para hoje.'"></span>
-			</p>
-			<p th:if="${consultasHojeSec !=null}">
-				<span
-					th:text="${consultasHojeSec} + ' consultas estão agendadas para hoje.'"></span>
-			</p>
+		<div class="mensagem-home" th:if="${consultasHoje !=null}">
+			<strong th:if="${consultasHoje == 0}"> Você não possui
+				consultas agendadas para hoje. </strong> <strong
+				th:if="${consultasHoje == 1}"
+				th:text="'Você possui um total de ' + ${consultasHoje} + ' consulta agendada para hoje.'"></strong>
+			<strong th:if="${consultasHoje > 1}"
+				th:text="'Você possui um total de ' + ${consultasHoje} + ' consultas agendadas para hoje.'"></strong>
+		</div>
+		<div class="mensagem-home" th:if="${consultasHojeSec !=null}">
+			<strong th:if="${consultasHojeSec == 0}">Não há consultas
+				agendadas para hoje.</strong> <strong th:if="${consultasHojeSec == 1}"
+				th:text="${consultasHojeSec} + ' consulta está agendada para hoje.'"></strong>
 
-
-			<p>
-				<span th:if="${consultasSemana !=null}"
-					th:text="'Essa semana possui um total de ' + ${consultasSemana} + ' consultas agendadas.'"></span>
-			</p>
-
+			<strong th:if="${consultasHojeSec > 1}"
+				th:text="${consultasHojeSec} + ' consultas estão agendadas para hoje.'"></strong>
 		</div>
 
-		<fieldset>
+
+		<div class="mensagem-home" th:if="${consultasSemana !=null}">
+			<strong th:if="${consultasSemana == 1}"
+				th:text="'Essa semana possui um total de ' + ${consultasSemana} + ' consulta agendada.'"></strong>
+			<strong th:if="${consultasSemana > 1}"
+				th:text="'Essa semana possui um total de ' + ${consultasSemana} + ' consultas agendadas.'"></strong>
+			<strong th:if="${consultasSemana == 0}"
+				th:text="'Essa semana não possui consultas agendadas.'"></strong>
+		</div>
+
+
+
+		<!-- <fieldset>
 			<form>
 
 				<legend> Filtros </legend>
@@ -132,113 +142,14 @@ h5 {
 						for="ck-especies"> Espécies </label>
 				</div>
 			</form>
-		</fieldset>
+		</fieldset>  
 
 		<div id="container"></div>
-		<div id="especies"></div>
+		<div id="especies"></div> -->
 	</section>
 	<script th:src="@{/js/home.js(v=${version})}" th:fragment="js"></script>
 	<script th:inline="javascript" th:fragment="inlinescript">
-	$(document).ready(function(){
-		$("#ck-racas").on('change', function(){
-			if($(this).is(':checked')){
-				$("#container").slideToggle();
-			}else{
-				$("#container").slideToggle();
-			}
-			
-		})
-		$("#ck-especies").on('change', function(){
-			if($(this).is(':checked')){
-				$("#especies").slideToggle();
-			}else{
-				$("#especies").slideToggle();
-			}
-			
-		})
-			
 		
-	});
-	$(function(){
-		    Highcharts.chart('container', {
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: 'Pacientes por raça'
-		        },
-		    
-		        xAxis: {
-		            categories: [[${surveyMap.keySet()}]],
-		            crosshair: true
-		        },
-		        yAxis: {
-		            min: 0,
-		            max:50,
-		            title: {
-		                text: 'Quantidade de pacientes'
-		            }
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:1f}</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        plotOptions: {
-		            column: {
-		                pointPadding: 0.2,
-		                borderWidth: 0
-		            }
-		        },
-		        series: [{
-		            name: 'Pacientes ',
-		            data: [[${surveyMap.values()}]]
-		        }]
-		    });
-		    });
-	$(function(){
-	    Highcharts.chart('especies', {
-	        chart: {
-	            type: 'column'
-	        },
-	        title: {
-	            text: 'Pacientes por espécie'
-	        },
-	    
-	        xAxis: {
-	            categories: [[${especies.keySet()}]],
-	            crosshair: true
-	        },
-	        yAxis: {
-	            min: 0,
-	            max:50,
-	            title: {
-	                text: 'Quantidade de pacientes'
-	            }
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:1f}</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0
-	            }
-	        },
-	        series: [{
-	            name: 'Pacientes ',
-	            data: [[${especies.values()}]]
-	        }]
-	    });
-	    });
 	</script>
 
 
